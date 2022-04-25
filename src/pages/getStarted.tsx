@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ConnectWalletButton } from "../components";
 
 const GetStarted = () => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<any>(null);
   const [selectedAddress, setSelectedAddress] = useState<string>();
 
   const addressChanged = useCallback((address: string | undefined) => {
@@ -11,23 +11,25 @@ const GetStarted = () => {
 
   useEffect(() => {
     if (formData) {
-      console.log("formData from useEffect", formData);
       fetch("http://localhost:3001/user", {
         method: "POST",
-        redirect: "follow",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: `{\"name\": \"${formData.name}\",\"walletID\":\"${formData.walletID}\",\"email\":\"${formData.email}\",\"discordID\":\"${formData.discordID}\",\"isFounder\":${formData.isFounder}}`,
       })
-        .then((response) => response.json())
-        .then((result) =>
-          console.log("stuff back from res is hardcoded :/", result)
-        )
-        .catch((error) => console.log("error", error));
+        .then((response) => {
+          console.log("response", response);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }, [formData]);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
     setFormData({
-      userID: 1,
       name: event.target.name.value,
       walletID: selectedAddress,
       email: event.target.email.value,
@@ -35,7 +37,6 @@ const GetStarted = () => {
       isFounder: event.target.isFounder.value,
     });
   };
-  console.log("formData", formData);
 
   return (
     <form onSubmit={handleSubmit}>
