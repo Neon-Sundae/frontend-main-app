@@ -1,82 +1,87 @@
-// @ts-ignore
-import Web3 from "web3/dist/web3.min.js";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import * as loginApi from "./../api/login";
+import { useState, useEffect } from "react";
 
-const web3 = new Web3(
-  Web3.givenProvider || "ws://some.local-or-remote.node:8546"
-);
+import PrimaryButton from "../components/buttons/primaryButton";
+import StyledInfoBtn from "../components/buttons/infoButton";
+import DiscordIcon from "../components/icons/discord";
+import FoundersLabIcon from "../components/icons/founderslab";
+import MetaMaskIcon from "../components/icons/metamask";
+import SuccessIcon from "../components/icons/success";
+import { StyledHeading } from "../components/partials.styled";
+import { StyledContainer, StyledWrap } from "../components/containers.styled";
+import { StyledVideo } from "../components/containers.styled";
+import bgVideo from "./../assets/videos/bg.mp4";
+import { StyledText } from "../components/partials.styled";
+import { StyledInfoWrapper } from "../components/containers.styled";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const connectToMetaMask = async () => {
-    window.ethereum
-      .request({ method: "eth_requestAccounts" })
-      .then((result: any) => {
-        fetchUsersFromWalletId(result[0]);
-      })
-      .catch((err: any) => {
-        console.log("err", err);
-      });
+  const [userAuthenticated, setUserAuthenticated] = useState<any>(false);
+
+  useEffect(() => {
+    setUserAuthenticated(localStorage.getItem("walletId"));
+  }, []);
+
+  const loginWithMetaMaskWallet = async () => {
+    const walletId = await loginApi.connectToMetaMaskWallet();
+    if (walletId) localStorage.setItem("walletId", walletId);
+    const userData = await loginApi.fetchUserFromWalletId(walletId);
+    const tokenData = await loginApi.generateAToken(userData);
+    if (tokenData) setUserAuthenticated(walletId);
   };
-  const fetchUsersFromWalletId = async (walletId: any) => {
-    const options = {
-      method: "GET",
-      url: "http://localhost:3001/auth/verify-walletid",
-      headers: {
-        "Content-Type": "application/json",
-        walletId: walletId.toLowerCase(),
-      },
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data);
-        if (!response.data.length) {
-          navigate("../get-started", { replace: true });
-        } else {
-          const nonce = response.data[0].nonce;
-          generateAToken(nonce, walletId);
-        }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  };
-  const generateAToken = async (nonce: number, walletId: string) => {
-    try {
-      const signature = await web3!.eth.personal.sign(
-        `I am signing my one-time nonce: ${nonce}`,
-        walletId,
-        "" // MetaMask will ignore the password argument here
-      );
-      const options = {
-        method: "GET",
-        url: "http://localhost:3001/auth/verify-signature",
-        headers: {
-          signature: signature,
-          nonce: nonce,
-          walletId: walletId,
-        },
-      };
-      axios
-        .request(options)
-        .then(function (response) {
-          // fixme: remove this later
-          console.log("response.data", response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-      return { signature, nonce };
-    } catch (err) {
-      throw new Error("You need to sign the message to be able to log in.");
-    }
+
+  const connectToDiscord = () => {
+    console.log("connect to discord");
   };
 
   return (
     <>
-      <button onClick={connectToMetaMask}>Use Metamask</button>
+      <StyledVideo autoPlay muted loop id="bgvid">
+        <source src={bgVideo} type="video/mp4" />
+      </StyledVideo>
+      <StyledContainer>
+        <StyledWrap>
+          <FoundersLabIcon />
+          {!userAuthenticated ? (
+            <>
+              <StyledHeading>
+                Welcome to Founders Lab, <br /> connect your wallet <br /> to
+                get started.
+              </StyledHeading>
+              <PrimaryButton
+                onClick={loginWithMetaMaskWallet}
+                icon={<MetaMaskIcon />}
+              >
+                Metamask
+              </PrimaryButton>
+              <PrimaryButton
+                onClick={connectToDiscord}
+                disabled={true}
+                icon={<DiscordIcon />}
+              >
+                Discord
+              </PrimaryButton>
+            </>
+          ) : (
+            <>
+              <StyledInfoWrapper>
+                <SuccessIcon />
+                <p>Successful!</p>
+              </StyledInfoWrapper>
+
+              <StyledInfoBtn icon={<MetaMaskIcon />}>
+                You're connected with &nbsp;
+                {userAuthenticated.slice(0, 4) +
+                  "..." +
+                  userAuthenticated.slice(-5)}
+              </StyledInfoBtn>
+              <StyledText>
+                Authentication is successful, wait for a few <br />
+                seconds to automatically open dashboard.
+              </StyledText>
+            </>
+          )}
+        </StyledWrap>
+      </StyledContainer>
     </>
   );
 };
