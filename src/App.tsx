@@ -5,7 +5,7 @@ const App = () => {
     <>
       <div className="App">
         <h1>FoundersLab</h1>
-        <Link to="/new-user">Get Started</Link>
+        <Link to="/login">Get Started</Link>
       </div>
     </>
   );

@@ -14,6 +14,7 @@ import { StyledVideo } from "../components/containers.styled";
 import bgVideo from "./../assets/videos/bg.mp4";
 import { StyledText } from "../components/partials.styled";
 import { StyledInfoWrapper } from "../components/containers.styled";
+import * as userApi from "./../api/user";
 
 const Login = () => {
   const [userAuthenticated, setUserAuthenticated] = useState<any>(false);
@@ -25,23 +26,43 @@ const Login = () => {
         navigate("../new-user", { replace: true });
       }, 2000);
   }, []);
+
   const loginWithMetaMaskWallet = async () => {
+    let oldUserData: any;
     const walletId = await loginApi.connectToMetaMaskWallet();
     if (walletId) localStorage.setItem("walletId", walletId);
     const userData = await loginApi.fetchUserFromWalletId(walletId);
     const tokenData = await loginApi.generateAToken(userData);
     if (tokenData) {
       localStorage.setItem("accessToken", tokenData.data.accessToken);
+      const existingUserData = await userApi.fetchUserData(
+        userData.data.id,
+        tokenData.data.accessToken
+      );
       setUserAuthenticated(walletId);
+      if (existingUserData.email && existingUserData.name) {
+        oldUserData = {
+          email: existingUserData.email,
+          name: existingUserData.name,
+        };
+        navigate("../home", {
+          replace: true,
+          state: { id: userData.data.id },
+        });
+      }
     }
-    navigate("../new-user", {
-      replace: true,
-      state: { id: userData.data.id },
-    });
+    if (!oldUserData.email && !oldUserData.name) {
+      navigate("../new-user", {
+        replace: true,
+        state: { id: userData.data.id },
+      });
+    }
   };
+
   const connectToDiscord = () => {
     console.log("connect to discord");
   };
+
   return (
     <>
       <StyledVideo autoPlay muted loop id="bgvid">
