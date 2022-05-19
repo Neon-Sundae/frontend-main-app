@@ -1,6 +1,7 @@
-import * as loginApi from "./../api/login";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
+import * as loginApi from "./../api/login";
 import PrimaryButton from "../components/buttons/primaryButton";
 import StyledInfoBtn from "../components/buttons/infoButton";
 import DiscordIcon from "../components/icons/discord";
@@ -16,23 +17,31 @@ import { StyledInfoWrapper } from "../components/containers.styled";
 
 const Login = () => {
   const [userAuthenticated, setUserAuthenticated] = useState<any>(false);
-
+  let navigate = useNavigate();
   useEffect(() => {
     setUserAuthenticated(localStorage.getItem("walletId"));
+    if (localStorage.getItem("walletId") && localStorage.getItem("accessToken"))
+      setTimeout(() => {
+        navigate("../new-user", { replace: true });
+      }, 2000);
   }, []);
-
   const loginWithMetaMaskWallet = async () => {
     const walletId = await loginApi.connectToMetaMaskWallet();
     if (walletId) localStorage.setItem("walletId", walletId);
     const userData = await loginApi.fetchUserFromWalletId(walletId);
     const tokenData = await loginApi.generateAToken(userData);
-    if (tokenData) setUserAuthenticated(walletId);
+    if (tokenData) {
+      localStorage.setItem("accessToken", tokenData.data.accessToken);
+      setUserAuthenticated(walletId);
+    }
+    navigate("../new-user", {
+      replace: true,
+      state: { id: userData.data.id },
+    });
   };
-
   const connectToDiscord = () => {
     console.log("connect to discord");
   };
-
   return (
     <>
       <StyledVideo autoPlay muted loop id="bgvid">

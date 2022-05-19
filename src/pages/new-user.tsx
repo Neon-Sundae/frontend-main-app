@@ -1,117 +1,124 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import * as loginApi from "./../api/login";
+import PrimaryButton from "../components/buttons/primaryButton";
+import FoundersLabIcon from "../components/icons/founderslab";
+import { StyledHeading } from "../components/partials.styled";
+import { StyledContainer, StyledWrap } from "../components/containers.styled";
+import { StyledVideo } from "../components/containers.styled";
+import bgVideo from "./../assets/videos/bg.mp4";
+import {
+  StyledForm,
+  Container,
+  StyledInput,
+  Label,
+} from "../components/forms/partials.styled";
+import { StyledInfoWrapper } from "../components/containers.styled";
+import SuccessIcon from "../components/icons/success";
+import { StyledText } from "../components/partials.styled";
 
 const NewUser = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState<any>(null);
-  const [selectedAddress, setSelectedAddress] = useState<any>();
+  const [submitted, setSubmitted] = useState<any>(false);
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (
+      !localStorage.getItem("accessToken") ||
+      !localStorage.getItem("walletId")
+    ) {
+      if (confirm("You need to login!") == true) {
+        navigate("../login", { replace: true });
+      }
+    }
+    if (localStorage.getItem("submit")) {
+      setSubmitted(true);
+    }
+  }, []);
 
   useEffect(() => {
-    if (formData) {
-      const options = {
-        method: "POST",
-        url: "http://localhost:3001/user",
-        headers: { "Content-Type": "application/json" },
-        data: {
-          name: formData.name,
-          walletId: selectedAddress.toLowerString(),
-          email: formData.email,
-          discordID: formData.discordID,
-          isFounder: formData.isFounder,
-        },
-      };
-      axios
-        .request(options)
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
+    if (submitted) {
+      setTimeout(() => {
+        navigate("../home", {
+          replace: true,
         });
+      }, 2000);
     }
-  }, [formData]);
+  }, [submitted]);
 
-  const handleWalletConnect = (e: any) => {
-    e.preventDefault();
-    window.ethereum
-      .request({ method: "eth_requestAccounts" })
-      .then((result: any) => {
-        const options = {
-          method: "GET",
-          url: "http://localhost:3001/auth/verify-walletid",
-          headers: {
-            "Content-Type": "application/json",
-            walletId: result[0].toLowerCase(),
-          },
-        };
-        axios
-          .request(options)
-          .then(function (response) {
-            console.log(response.data);
-            if (!response.data.length) {
-              setSelectedAddress(result[0]);
-            } else {
-              alert("you're already registered!");
-              navigate("../login", { replace: true });
-            }
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      })
-      .catch((err: any) => {
-        console.log("err", err);
-      });
-  };
-
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    setFormData({
-      name: event.target.name.value,
-      walletID: selectedAddress?.toLowerCase(),
-      email: event.target.email.value,
-      discordID: event.target.discordId.value,
-      isFounder: event.target.isFounder.value,
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (data: any) => {
+    const { name, email } = data;
+    const accessToken: any = localStorage.getItem("accessToken");
+    loginApi.submitProfileData(accessToken, name, email);
+    localStorage.setItem("submit", "true");
+    setSubmitted(true);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Name:
-        <input type="text" name="name" />
-      </label>{" "}
-      <br />
-      <label>
-        Email:
-        <input type="email" name="email" />
-      </label>
-      <br />
-      <label>
-        Discord id:
-        <input type="text" name="discordId" />
-      </label>
-      <br />
-      <button
-        onClick={(e) => {
-          handleWalletConnect(e);
-        }}
-        disabled={selectedAddress}
-      >
-        {selectedAddress
-          ? `wallet address: ${selectedAddress}`
-          : "connect wallet"}
-      </button>
-      <br />
-      Are you a founder?
-      <input type="radio" id="true" name="isFounder" value="true" />
-      <label>yes</label>
-      <input type="radio" id="css" name="isFounder" value="false" checked />
-      <label>no</label>
-      <br />
-      <input type="submit" value="Submit" />
-    </form>
+    <>
+      <StyledVideo autoPlay muted loop id="bgvid">
+        <source src={bgVideo} type="video/mp4" />
+      </StyledVideo>
+      <StyledContainer>
+        <StyledWrap>
+          <FoundersLabIcon />
+          {submitted ? (
+            <>
+              <StyledInfoWrapper>
+                <SuccessIcon />
+                <p>Successful!</p>
+              </StyledInfoWrapper>
+
+              <StyledText>
+                Authentication is successful, wait
+                <br /> for a few seconds to automatically open <br />
+                dashboard
+              </StyledText>
+            </>
+          ) : (
+            <>
+              {" "}
+              <StyledHeading>Create your profile</StyledHeading>
+              <StyledForm onSubmit={handleSubmit(onSubmit)}>
+                <Container>
+                  <StyledInput
+                    {...register("name", {
+                      required: true,
+                      maxLength: 20,
+                      pattern: /^([a-z]|[](?![])){2,20}$/,
+                    })}
+                    className={errors.name ? "error" : ""}
+                    placeholder={errors.name ? "invalid username" : ""}
+                  />
+                  <Label>Name</Label>
+                </Container>
+                <Container>
+                  <StyledInput
+                    {...register("email", {
+                      required: true,
+                      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    })}
+                    className={errors.email ? "error" : ""}
+                    placeholder={errors.email ? "invalid email" : ""}
+                  />
+                  <Label>Email</Label>
+                </Container>
+                <PrimaryButton
+                  type="submit"
+                  disabled={errors.name || errors.email}
+                >
+                  Let's get started!
+                </PrimaryButton>
+              </StyledForm>
+            </>
+          )}
+        </StyledWrap>
+      </StyledContainer>
+    </>
   );
 };
 

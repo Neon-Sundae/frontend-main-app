@@ -1,6 +1,4 @@
-import * as React from "react";
-
-const SuccessIcon = (props) => (
+const SuccessIcon = (props: any) => (
   <svg
     width={155}
     height={155}

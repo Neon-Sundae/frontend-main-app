@@ -5,12 +5,12 @@ export const StyledPrimaryButton = styled.button`
   background: #504b64;
   color: #fff;
   border-radius: 30px;
-  width: 85%;
+  width: 100%;
   margin-bottom: 25px;
   height: 80px;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  font-size: 28px;
+  font-size: 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

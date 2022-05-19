@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const StyledHeading = styled.p`
   font-family: "Roboto", sans-serif;
   font-size: 35px;
-  line-height: 52px;
-  padding-top: 50px;
+  line-height: 40px;
+  padding-top: 30px;
   padding-bottom: 50px;
   @media (min-width: 983px) and (max-width: 1280px) {
   }
