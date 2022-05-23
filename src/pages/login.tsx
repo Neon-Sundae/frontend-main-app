@@ -21,7 +21,9 @@ const Login = () => {
   let navigate = useNavigate();
   useEffect(() => {
     setUserAuthenticated(localStorage.getItem("walletId"));
-    if (localStorage.getItem("walletId") && localStorage.getItem("accessToken"))
+    const walletId = localStorage.getItem("walletId");
+    const accessToken = localStorage.getItem("accessToken");
+    if (walletId?.length && accessToken?.length)
       setTimeout(() => {
         navigate("../new-user", { replace: true });
       }, 2000);
@@ -31,7 +33,7 @@ const Login = () => {
     let oldUserData: any;
     const walletId = await loginApi.connectToMetaMaskWallet();
     if (walletId) localStorage.setItem("walletId", walletId);
-    const userData = await loginApi.fetchUserFromWalletId(walletId);
+    const userData = await loginApi.loginOrRegister(walletId, "");
     const tokenData = await loginApi.generateAToken(userData);
     if (tokenData) {
       localStorage.setItem("accessToken", tokenData.data.accessToken);
@@ -40,7 +42,7 @@ const Login = () => {
         tokenData.data.accessToken
       );
       setUserAuthenticated(walletId);
-      if (existingUserData.email && existingUserData.name) {
+      if (existingUserData && existingUserData.email && existingUserData.name) {
         oldUserData = {
           email: existingUserData.email,
           name: existingUserData.name,
@@ -60,7 +62,13 @@ const Login = () => {
   };
 
   const connectToDiscord = () => {
-    console.log("connect to discord");
+    const state: any = Math.floor(Math.random() * 1000000);
+    localStorage.setItem("state", state);
+    const discordClientID = import.meta.env.VITE_DISCORD_CLIENT_ID;
+    window.open(
+      `https://discord.com/api/oauth2/authorize?response_type=token&client_id=${discordClientID}&state=${state}&scope=identify%20email`,
+      "_self"
+    );
   };
 
   return (
@@ -83,11 +91,7 @@ const Login = () => {
               >
                 Metamask
               </PrimaryButton>
-              <PrimaryButton
-                onClick={connectToDiscord}
-                disabled={true}
-                icon={<DiscordIcon />}
-              >
+              <PrimaryButton onClick={connectToDiscord} icon={<DiscordIcon />}>
                 Discord
               </PrimaryButton>
             </>
