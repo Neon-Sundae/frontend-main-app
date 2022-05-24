@@ -1,44 +1,34 @@
-// @ts-ignore
-import Web3 from "web3/dist/web3.min.js";
-import axios from "axios";
 import jwt_decode from "jwt-decode";
-
-const web3 = new Web3(
-  Web3.givenProvider || "ws://some.local-or-remote.node:8546"
-);
+import { ethers } from "ethers";
 
 const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN;
+const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
 export const connectToMetaMaskWallet = async (): Promise<any> => {
   try {
-    const walletId = await window.ethereum
-      .request({ method: "eth_requestAccounts" })
-      .then((result: any) => {
-        return result[0];
-      })
-      .catch((err: any) => {
-        return err;
-      });
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const walletId = await signer.getAddress();
+    localStorage.setItem("walletId", walletId);
     return walletId;
   } catch {
     throw "error";
   }
 };
 
-export const fetchUserFromWalletId = async (walletId: any) => {
-  const options = {
-    method: "GET",
-    url: `${backendDomain}/auth/login`,
-    headers: { walletid: walletId },
-  };
+export const loginOrRegister = async (walletId: any) => {
   try {
-    const userData = await axios
-      .request(options)
-      .then((response: any) => {
-        return response;
+    const userData = await fetch(`${backendDomain}/auth/login`, {
+      method: "GET",
+      headers: {
+        walletid: walletId,
+      },
+    })
+      .then((response) => {
+        return response.json();
       })
-      .catch(function (error) {
-        console.error(error);
+      .catch((err) => {
+        console.log(err);
       });
     return userData;
   } catch {
@@ -47,32 +37,28 @@ export const fetchUserFromWalletId = async (walletId: any) => {
 };
 
 export const generateAToken = async (userData: any) => {
-  const {
-    data: { nonce, walletId, id },
-  } = userData;
+  const { nonce, id, walletId } = userData;
   try {
-    const sig = await web3!.eth.personal.sign(
-      `I am signing my one-time nonce: ${nonce}`,
-      walletId,
-      "" // MetaMask will ignore the password argument here
-    );
-    const options = {
-      method: "GET",
-      url: `${backendDomain}/auth/verify`,
+    const from = walletId;
+    const message: any = `I am signing my one-time nonce: ${nonce}`;
+    const sig = await provider.provider.request?.({
+      method: "personal_sign",
+      params: [message, from, ""],
+    });
+    const tokens = await fetch(`${backendDomain}/auth/verify`, {
+      method: "POST",
       headers: {
         id: id,
         sig: sig,
         nonce: nonce,
         walletid: walletId,
       },
-    };
-    const tokens = axios
-      .request(options)
-      .then(function (response) {
-        return response;
+    })
+      .then((response) => {
+        return response.json();
       })
-      .catch(function (error) {
-        console.error(error);
+      .catch((err) => {
+        console.log(err);
       });
     return tokens;
   } catch (err) {
@@ -83,30 +69,35 @@ export const generateAToken = async (userData: any) => {
 export const submitProfileData = async (
   accessToken: any,
   name: any,
-  email: any
+  email: any,
+  discordId: any
 ) => {
   const decoded: any = jwt_decode(accessToken);
   const dateNow = new Date();
   if (decoded.exp < dateNow.getTime() / 1000) {
     return new Error("Token expired!");
   }
-  const options = {
-    method: "PUT",
-    url: `${backendDomain}/user/${decoded.id}`,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-    data: { name: name, email: email },
-  };
   try {
-    const profileDataSubmit = axios
-      .request(options)
-      .then(function (response) {
-        return response.data;
+    const profileDataSubmit = await fetch(
+      `${backendDomain}/user/${decoded.id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: {
+          name,
+          email,
+          discordId,
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
       })
-      .catch(function (error) {
-        console.log("error", error);
+      .catch((err) => {
+        console.error(err);
       });
     return profileDataSubmit;
   } catch (error) {

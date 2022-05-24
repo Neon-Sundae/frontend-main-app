@@ -18,10 +18,16 @@ import * as userApi from "./../api/user";
 
 const Login = () => {
   const [userAuthenticated, setUserAuthenticated] = useState<any>(false);
+  const [authData, setAuthData] = useState<any>({
+    at: null,
+    walletId: null,
+  });
+
   let navigate = useNavigate();
+
   useEffect(() => {
-    setUserAuthenticated(localStorage.getItem("walletId"));
     const walletId = localStorage.getItem("walletId");
+    setUserAuthenticated(walletId);
     const accessToken = localStorage.getItem("accessToken");
     if (walletId?.length && accessToken?.length)
       setTimeout(() => {
@@ -33,13 +39,14 @@ const Login = () => {
     let oldUserData: any;
     const walletId = await loginApi.connectToMetaMaskWallet();
     if (walletId) localStorage.setItem("walletId", walletId);
-    const userData = await loginApi.loginOrRegister(walletId, "");
+    const userData = await loginApi.loginOrRegister(walletId);
     const tokenData = await loginApi.generateAToken(userData);
+    console.log(tokenData);
     if (tokenData) {
-      localStorage.setItem("accessToken", tokenData.data.accessToken);
-      const existingUserData = await userApi.fetchUserData(
-        userData.data.id,
-        tokenData.data.accessToken
+      localStorage.setItem("accessToken", tokenData.accessToken);
+      const existingUserData: any = await userApi.fetchUserData(
+        userData.id,
+        tokenData.accessToken
       );
       setUserAuthenticated(walletId);
       if (existingUserData && existingUserData.email && existingUserData.name) {
@@ -56,7 +63,7 @@ const Login = () => {
     if (!oldUserData.email && !oldUserData.name) {
       navigate("../new-user", {
         replace: true,
-        state: { id: userData.data.id },
+        state: { id: userData.id },
       });
     }
   };

@@ -1,26 +1,43 @@
-import axios from "axios";
-
 const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN;
 
 export const fetchUserData = async (userId: any, accessToken: any) => {
-  const options = {
-    method: "GET",
-    url: `${backendDomain}/user/${userId}`,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
   try {
-    const fetchedUserData = axios
-      .request(options)
-      .then(function (response) {
-        return response.data;
+    const fetchedUser = await fetch(`${backendDomain}/user/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        console.log(response);
       })
-      .catch(function (error) {
-        console.error(error);
+      .catch((err) => {
+        console.error(err);
       });
-    return fetchedUserData;
+    return fetchedUser;
+  } catch (error) {
+    throw new Error("You need to sign in.");
+  }
+};
+
+export const fetchDiscordProfile = async function name(
+  discordAccessToken: any
+) {
+  try {
+    const discordUserData = fetch("https://discordapp.com/api/users/@me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${discordAccessToken}`,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    return discordUserData;
   } catch {
-    throw new Error("You need to sign the message to be able to log in.");
+    throw new Error("Something went wrong.");
   }
 };
