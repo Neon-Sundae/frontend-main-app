@@ -1,0 +1,23 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+    <defs>
+      <linearGradient id="myGradient" gradientTransform="rotate(0)">
+        <stop offset="-0.01%"  stop-color="#FEEB90" />
+        <stop offset="23.99%" stop-color="#F8C27B" />
+        <stop offset="38.99%" stop-color="#F7B5A4" />
+        <stop offset="54.16%" stop-color="#F7AFB9" />
+        <stop offset="65.62%" stop-color="#F3B6C0" />
+        <stop offset="80.2%" stop-color="#E7C8D4" />
+        <stop offset="99.98%" stop-color="#D5E6F4" />
+        <stop offset="99.99%" stop-color="#D0EDFC" />
+      </linearGradient>
+    </defs>
+
+  <g>
+    <!-- using my linear gradient -->
+    <circle cx="62" cy="62" r="62" fill="url('#myGradient')" />
+    <line x1="38" x2="55" y1="62" y2="78" stroke="white" stroke-width="15" stroke-linecap="round" />
+    <line x1="55" x2="85" y1="78" y2="45" stroke="white" stroke-width="15" stroke-linecap="round" />
+  </g>
+</svg>
