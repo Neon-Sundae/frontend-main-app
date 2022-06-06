@@ -1,0 +1,56 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:react/jsx-runtime"
+  ],
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["*.svg", "*.ttf", "*.png", "*.json"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "off",
+    "func-names": "off",
+    "import/no-unresolved": 0,
+    "react/jsx-filename-extension": [1, {
+      "extensions": [
+        ".ts",
+        ".tsx"
+      ]
+    }],
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "arrowParens": "avoid",
+        "endOfLine": "auto"
+      }
+    ],
+    "no-use-before-define": ["error", { "variables": false }],
+    "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
+    "import/extensions": ["error", "never", {"svg": "always", "png": "always", "css": "always", "mp4": "always", "scss": "always", "js": "always"}],
+    "react/prop-types": 0,
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "react/function-component-definition": "off",
+    "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-empty-function": "warn",
+    "@typescript-eslint/no-empty-function": ["warn"],
+    "dot-notation": "warn",
+    "default-param-last": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
+  }
+}

@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  // background: var(--color-bg);
+  // color: var(--color-primary);
+  font-family: var(--font-family-roboto-regular);
+  // font-size: var(--font-size-regular);
+  line-height: 1.5;
+  // max-height: 100vh;
+}
+
+b {
+  font-family: var(--font-family-roboto-bold);
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1;
+  margin: 0;
+}
+
+a {
+  // color: var(--color-secondary);
+  text-decoration: none;
+}
+
+p {
+  margin: 0;
+}
+
+ol,
+ul {
+  margin: 0;
+  padding-inline-start: 32px;
+}
+
+strong {
+  font-family: var(--font-family-roboto-bold);
+}

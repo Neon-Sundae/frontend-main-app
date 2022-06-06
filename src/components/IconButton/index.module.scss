@@ -1,0 +1,27 @@
+.IconButton {
+  $self: &;
+
+  border: 0;
+  background: #504b64;
+  color: #fff;
+  border-radius: 30px;
+  width: 500px;
+  height: 97px;
+  cursor: pointer;
+  font-family: var(--font-family-poppins-medium);
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 35px;
+
+  &:disabled {
+    background: #ebebe4;
+    cursor: auto;
+  }
+
+  & > svg {
+    margin-right: 32px;
+    margin-bottom: 6px;
+  }
+}

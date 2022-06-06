@@ -1,0 +1,80 @@
+.title {
+  font-family: var(--font-family-roboto-medium);
+  font-weight: 500;
+  font-size: 36px;
+  color: #504b64;
+  text-align: center;
+  margin-top: 48px;
+  margin-bottom: 17px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  font-family: var(--font-family-roboto-regular);
+  font-weight: 400;
+  font-size: 22px;
+  color: #878787;
+  margin-top: 25px;
+
+  &--error {
+    color: #c0392b;
+  }
+
+  & > input {
+    height: 70px;
+    border: none;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    font-size: 20px;
+    outline: none;
+    padding: 0 25px;
+    margin-top: 20px;
+  }
+}
+
+.form-submit-btn {
+  height: 90px;
+  background-color: #504b64;
+  border-radius: 31px;
+  font-family: var(--font-family-poppins-regular);
+  font-weight: 400;
+  font-size: 28px;
+  color: white;
+  border: none;
+  outline: none;
+  margin-top: 50px;
+  cursor: pointer;
+}
+
+.error-text {
+  font-family: var(--font-family-roboto-regular);
+  font-size: 16px;
+  color: #c0392b;
+  margin-top: 5px;
+}
+
+.LoginContainer {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.StepContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 587px;
+  height: 687px;
+  background-color: white;
+  border-radius: 53px;
+  padding: 50px 0;
+}

@@ -1,16 +1,15 @@
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from 'reducers';
+import App from './App';
+import 'styles/main.scss';
 
-import { NewUser, Home, Login } from "./pages";
+const store = createStore(reducer);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/new-user" element={<NewUser />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
-  </BrowserRouter>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
