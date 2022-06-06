@@ -1,0 +1,42 @@
+.title {
+  font-family: var(--font-family-roboto-medium);
+  font-size: 40px;
+  color: #504b64;
+  text-align: center;
+  line-height: 50px;
+}
+
+.SuccessIcon {
+  margin: 50px 0;
+}
+
+.connection-container {
+  border: 2px solid #504b64;
+  border-radius: 33px;
+  width: 500px;
+  height: 98px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 34px;
+
+  & > svg {
+    margin-right: 20px;
+    margin-bottom: 5px;
+  }
+}
+
+.connection-text {
+  font-family: var(--font-family-roboto-regular);
+  font-size: 24px;
+  color: #504b64;
+}
+
+.success-text {
+  font-family: var(--font-family-roboto-regular);
+  font-size: 24px;
+  color: #504b64;
+  text-align: center;
+  max-width: 507px;
+}
