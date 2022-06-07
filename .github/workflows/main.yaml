@@ -48,4 +48,4 @@ jobs:
           aws-region: us-east-2
 
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./build s3://founderslab-dev-deployment
+        run: aws s3 sync ./dist s3://founderslab-dev-deployment
