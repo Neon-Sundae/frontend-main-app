@@ -23,20 +23,9 @@ jobs:
       - name: Checking out code
         uses: actions/checkout@master
 
-      # Cache mechanism for caching the installed deps (npm)
-      - name: Cache npm dependencies
-        uses: actions/cache@v2
-        id: cache-packages
-        with:
-          path: '~/.npm'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       # Installing deps based on cache condition
       - name: Install dependencies
         run: npm install
-        if: steps.cache-packages.outputs.cache-hit != 'true'
 
       # Building the app
       - name: Building application
