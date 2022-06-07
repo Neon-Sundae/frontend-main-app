@@ -35,6 +35,10 @@ jobs:
         run: npm install
         if: steps.cache-packages.outputs.cache-hit != 'true'
 
+      # Building the app
+      - name: Building application
+        run: npm run build
+
       # Deploying to S3 using an Open source github action
       - name: Copy to S3
         uses: jakejarvis/s3-sync-action@master
