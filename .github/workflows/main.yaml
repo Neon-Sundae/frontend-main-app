@@ -1,6 +1,9 @@
 # name of the workflow
 name: dev-build-and-deploy
 
+env:
+  VITE_APPLICATION_ENV: ${{ secrets.VITE_APPLICATION_ENV }}
+
 # Run workflow only on push to dev branch
 on:
   push:
