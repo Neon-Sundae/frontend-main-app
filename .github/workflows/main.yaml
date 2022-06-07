@@ -17,10 +17,8 @@ jobs:
 
     # Steps - sequence of tasks to be performed sequentially
     steps:
-
-       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-       name: Checking out code
-      - uses: actions/checkout@master
+      - name: Checking out code
+        uses: actions/checkout@master
 
       # Cache mechanism for caching the installed deps (npm)
       - name: Cache npm dependencies
@@ -34,17 +32,17 @@ jobs:
 
       # Installing deps based on cache condition
       - name: Install dependencies
-      run: npm install
-      if: steps.cache-packages.outputs.cache-hit != 'true'
+        run: npm install
+        if: steps.cache-packages.outputs.cache-hit != 'true'
 
       # Deploying to S3 using an Open source github action
       - name: Copy to S3
-      uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl public-read --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        SOURCE_DIR: ${{ secrets.SOURCE_DIR }}
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: ${{ secrets.SOURCE_DIR }}
