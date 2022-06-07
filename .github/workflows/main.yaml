@@ -17,8 +17,6 @@ jobs:
 
     # Steps - sequence of tasks to be performed sequentially
     steps:
-
-       # Checks-out your repository, so your job can access it
       - name: Checking out code
       uses: actions/checkout@master
 
