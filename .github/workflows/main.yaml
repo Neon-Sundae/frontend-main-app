@@ -19,8 +19,8 @@ jobs:
     steps:
 
        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-       name: Checking out code
-      - uses: actions/checkout@master
+      - name: Checking out code
+      uses: actions/checkout@master
 
       # Cache mechanism for caching the installed deps (npm)
       - name: Cache npm dependencies
