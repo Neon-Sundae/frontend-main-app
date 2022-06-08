@@ -1,0 +1,50 @@
+.container {
+  max-width: 248px;
+  background: #2d2d35;
+  padding: 10px 23px;
+  border-radius: 20px;
+  margin-right: 38px;
+  display: flex;
+  justify-content: space-evenly;
+
+  & > .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+  }
+
+  & > .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & > .text {
+      font-family: var(--font-family-inter-medium);
+      font-weight: 500;
+
+      &--primary {
+        color: #ffffff;
+        font-size: 20px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      &--secondary {
+        color: #929799;
+        font-size: 15px;
+        line-height: 0.9;
+        text-transform: capitalize;
+      }
+
+      &--align {
+        display: flex;
+        align-items: center;
+      }
+
+      &--clickable {
+        cursor: pointer;
+      }
+    }
+  }
+}
