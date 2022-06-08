@@ -1,0 +1,106 @@
+.ProfileImage {
+  display: flex;
+  justify-content: center;
+
+  .ImageWrapper {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+
+    .Image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.NameDesignation {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .Name {
+    // TODO - Needs to be roboto flex
+    font-family: var(--font-family-roboto-bold);
+    font-size: 35px;
+    color: white;
+    margin-top: 28px;
+  }
+
+  .Designation {
+    // TODO - Needs to be roboto flex
+    font-family: var(--font-family-roboto-medium);
+    font-weight: 500;
+    font-size: 18px;
+    color: white;
+    margin-top: 8px;
+  }
+}
+
+.ExperiencePoints {
+  display: flex;
+  justify-content: center;
+
+  .Value {
+    font-family: var(--font-family-roboto-slab-medium);
+    font-size: 30px;
+    color: white;
+
+    .Label {
+      font-family: var(--font-family-roboto-bold);
+      font-size: 23px;
+      background: -webkit-linear-gradient(
+        298.19deg,
+        #ffbedf 27.52%,
+        #eac4ff 48.39%,
+        #ffc9af 69.27%,
+        #ffd9a0 94.32%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+
+.ProfileAddressChain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .AddressContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 15px;
+    width: 291px;
+    height: 52px;
+    margin: 0 auto;
+
+    .ProfileAddress {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 17px;
+      color: white;
+    }
+
+    .CopyIcon {
+      color: white;
+    }
+  }
+
+  .SyncText {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 300;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .SyncIcon {
+      color: white;
+    }
+  }
+}

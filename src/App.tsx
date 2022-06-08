@@ -7,6 +7,7 @@ import useSetAppMetadata from 'hooks/useSetAppMetadata';
 
 const Login = lazy(() => import('containers/login'));
 const Dashboard = lazy(() => import('containers/dashboard'));
+const Profile = lazy(() => import('containers/profile'));
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
@@ -23,6 +24,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
               </PrivateRoute>
             }
           />
