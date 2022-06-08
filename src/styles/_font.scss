@@ -52,6 +52,36 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: interLight;
+  src: url('./fonts/inter/Inter-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: interRegular;
+  src: url('./fonts/inter/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: interMedium;
+  src: url('./fonts/inter/Inter-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: interSemiBold;
+  src: url('./fonts/inter/Inter-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: interBold;
+  src: url('./fonts/inter/Inter-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
 /*
   * Material icons font file
   * Refer here for getting icons - https://fonts.google.com/icons
@@ -91,4 +121,10 @@
   --font-family-roboto-regular: RobotoRegular, sans-serif;
   --font-family-roboto-medium: RobotoMedium, sans-serif;
   --font-family-roboto-bold: RobotoBold, sans-serif;
+
+  --font-family-inter-light: InterLight, sans-serif;
+  --font-family-inter-regular: InterRegular, sans-serif;
+  --font-family-inter-medium: InterMedium, sans-serif;
+  --font-family-inter-semi-bold: InterSemiBold, sans-serif;
+  --font-family-inter-bold: InterBold, sans-serif;
 }
