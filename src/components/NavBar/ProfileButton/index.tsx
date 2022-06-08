@@ -19,7 +19,9 @@ const ProfileButton: FC = () => {
             styles['text--clickable']
           )}
         >
-          <div>
+          <div
+          //	TODO - Implement center ellipsis for text overflow
+          >
             <span>8D4322...</span>
             <span>DFDFSD</span>
           </div>
