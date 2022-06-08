@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import clsx from 'clsx';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import styles from './index.module.scss';
@@ -11,15 +10,16 @@ const BasicDetails: FC = () => {
       <NameDesignation />
       <ExperiencePoints />
       <ProfileAddressChain />
+      <ProfileBio />
     </>
   );
 };
 
 const ProfileImage: FC = () => {
   return (
-    <div className={styles.ProfileImage}>
-      <div className={styles.ImageWrapper}>
-        <img alt="user" className={styles.Image} src={userImage} />
+    <div className={styles['profile-image']}>
+      <div className={styles['image-wrapper']}>
+        <img alt="user" src={userImage} />
       </div>
     </div>
   );
@@ -27,18 +27,18 @@ const ProfileImage: FC = () => {
 
 const NameDesignation: FC = () => {
   return (
-    <div className={styles.NameDesignation}>
-      <h2 className={styles.Name}>Rachel Green</h2>
-      <h5 className={styles.Designation}>Product Designer</h5>
+    <div className={styles['name-designation']}>
+      <h2 className={styles.name}>Rachel Green</h2>
+      <h5 className={styles.designation}>Product Designer</h5>
     </div>
   );
 };
 
 const ExperiencePoints: FC = () => {
   return (
-    <div className={styles.ExperiencePoints}>
-      <span className={styles.Value}>
-        1230 <span className={styles.Label}>XP</span>
+    <div className={styles['experience-points']}>
+      <span className={styles.value}>
+        1230 <span className={styles.label}>XP</span>
       </span>
     </div>
   );
@@ -46,19 +46,26 @@ const ExperiencePoints: FC = () => {
 
 const ProfileAddressChain: FC = () => {
   return (
-    <div className={styles.ProfileAddressChain}>
-      <div className={styles.AddressContainer}>
+    <div className={styles['profile-address-chain']}>
+      <div className={styles['address-container']}>
         <FoundersLabIcon width={28} height={28} />
-        <p className={styles.ProfileAddress}>6j6p2W....TzLSHWQfFc</p>
-        <i className={clsx('material-icons-200', styles.CopyIcon)}>
-          content_copy
-        </i>
+        <p className={styles['profile-address']}>6j6p2W....TzLSHWQfFc</p>
+        <i className="material-icons-200">content_copy</i>
       </div>
-      <p className={styles.SyncText}>
-        Sync On Chain{' '}
-        <i className={clsx('material-icons-200', styles.SyncIcon)}>sync</i>
+      <p className={styles['sync-text']}>
+        Sync On Chain <i className="material-icons-200">sync</i>
       </p>
     </div>
+  );
+};
+
+const ProfileBio: FC = () => {
+  return (
+    <p className={styles['profile-bio']}>
+      BioLorem imsum text is here imsum text is here imsum text is here imsum
+      text is here imsum text is here imsum text is here imsum text is here
+      imsum.
+    </p>
   );
 };
 

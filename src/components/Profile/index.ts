@@ -1,4 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import ProfileContainer from './ProfileContainer';
+import Landing from './Landing';
 
-export { ProfileContainer };
+export { Landing };

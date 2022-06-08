@@ -1,13 +1,8 @@
-/* eslint-disable react/jsx-no-useless-fragment */
-import { ProfileContainer } from 'components/Profile';
+import { Landing } from 'components/Profile';
 import { FC } from 'react';
 
 const Profile: FC = () => {
-  return (
-    <>
-      <ProfileContainer />
-    </>
-  );
+  return <Landing />;
 };
 
 export default Profile;

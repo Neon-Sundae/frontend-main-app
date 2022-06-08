@@ -1,13 +1,15 @@
 import { FC } from 'react';
+import NavBar from 'components/NavBar';
 import ProfileCard from '../ProfileCard';
 import styles from './index.module.scss';
 
-const ProfileContainer: FC = () => {
+const Landing: FC = () => {
   return (
-    <div className={styles.ProfileContainer}>
+    <div className={styles.container}>
+      <NavBar />
       <ProfileCard />
     </div>
   );
 };
 
-export default ProfileContainer;
+export default Landing;
