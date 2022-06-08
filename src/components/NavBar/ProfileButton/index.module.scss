@@ -62,11 +62,11 @@
 
 .indicator-outer {
   box-sizing: content-box;
-  width: 11px;
-  height: 11px;
+  width: 15px;
+  height: 15px;
   background-color: rgba(170, 244, 213, 0.2);
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,8 +75,8 @@
 }
 
 .indicator-fill {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   background-color: #aaf4d5;
-  border-radius: 3px;
+  border-radius: 4px;
 }

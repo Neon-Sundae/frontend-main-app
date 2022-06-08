@@ -45,6 +45,10 @@
       &--clickable {
         cursor: pointer;
       }
+
+      &--clickable > svg {
+        margin-left: 5px;
+      }
     }
   }
 }
