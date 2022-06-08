@@ -19,9 +19,10 @@ const ProfileButton: FC = () => {
             styles['text--clickable']
           )}
         >
-          <div>
-            <span>8D4322...</span>
-            <span>DFDFSD</span>
+          <div
+          //	TODO - Implement center ellipsis for text overflow
+          >
+            <span>8D4322...DFDFSD</span>
           </div>
           <span className="material-icons">keyboard_arrow_down</span>
         </div>
