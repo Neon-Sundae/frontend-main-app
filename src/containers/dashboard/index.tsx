@@ -1,7 +1,7 @@
 import { FirstTimeUser } from 'components/Dashboard';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { removeAccessToken } from 'utils/authFn';
 
@@ -34,6 +34,7 @@ const Dashboard: FC = () => {
       <button type="button" onClick={handleLogout}>
         Disconnect
       </button>
+      <Link to="/profile">Profile</Link>
     </>
   );
 };
