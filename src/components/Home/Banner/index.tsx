@@ -10,8 +10,8 @@ const Banner: FC = () => {
         <span className={styles['text--primary']}>Rachel!</span>
       </div>
       <div>
-        <BannerBtn title="Start a Project" onClick={() => {}}/>
-        <BannerBtn title="Create Organisation" onClick={() => {}}/>
+        <BannerBtn title="Start a Project" onClick={() => {}} />
+        <BannerBtn title="Create Organisation" onClick={() => {}} />
       </div>
     </div>
   );
@@ -19,12 +19,16 @@ const Banner: FC = () => {
 
 interface BannerBtnProps {
   title: string;
-	onClick: () => void;
+  onClick: () => void;
 }
 
 const BannerBtn: FC<BannerBtnProps> = ({ title, onClick }) => {
   return (
-    <button type="button" className={clsx(styles.bannerBtn, styles.glass)} onClick={onClick}>
+    <button
+      type="button"
+      className={clsx(styles.bannerBtn, styles.glass)}
+      onClick={onClick}
+    >
       <span className={styles.title}>{title}</span>
       <span className={clsx('material-icons', styles.icon)}>trending_flat</span>
     </button>
