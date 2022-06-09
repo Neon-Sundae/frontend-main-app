@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import ProfileImage from 'assets/images/metadata/walletProfile.png';
+import ProfileImage from 'assets/images/profile/user-image.png';
 import styles from './index.module.scss';
 
 const ProfileButton: FC = () => {

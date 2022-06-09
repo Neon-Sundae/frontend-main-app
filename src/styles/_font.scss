@@ -87,6 +87,30 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: asapRegular;
+  src: url('./fonts/asap/Asap-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: asapMedium;
+  src: url('./fonts/asap/Asap-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: asapSemiBold;
+  src: url('./fonts/asap/Asap-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: asapBold;
+  src: url('./fonts/asap/Asap-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
 /*
   * Material icons font file
   * Refer here for getting icons - https://fonts.google.com/icons
@@ -158,4 +182,9 @@
   --font-family-inter-medium: InterMedium, sans-serif;
   --font-family-inter-semi-bold: InterSemiBold, sans-serif;
   --font-family-inter-bold: InterBold, sans-serif;
+
+  --font-family-asap-regular: InterRegular, sans-serif;
+  --font-family-asap-medium: InterMedium, sans-serif;
+  --font-family-asap-semi-bold: InterSemiBold, sans-serif;
+  --font-family-asap-bold: InterBold, sans-serif;
 }
