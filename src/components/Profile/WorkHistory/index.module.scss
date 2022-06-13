@@ -1,0 +1,45 @@
+@import '../../../styles/mixins/scrollbar.scss';
+
+.work-history-container {
+  margin-top: 50px;
+  height: 580px;
+  overflow: auto;
+
+  // @include customScrollbar;
+}
+
+.work-history-card {
+  width: 80%;
+  color: white;
+  margin-bottom: 45px;
+
+  .role {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 22px;
+  }
+
+  .organisation-date-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+
+    .text {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 14.7px;
+    }
+
+    & > span {
+      margin: 0 15px;
+    }
+  }
+
+  .description {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 300;
+    font-size: 16.5px;
+    line-height: 26.5px;
+  }
+}
