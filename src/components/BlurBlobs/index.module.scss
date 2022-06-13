@@ -1,0 +1,41 @@
+// Bigger Blob - Blue
+.blob-blue-1 {
+  filter: blur(150px);
+  position: absolute;
+  bottom: -50px;
+  left: 550px;
+}
+
+// Medium Blob - Blue
+.blob-blue-2 {
+  filter: blur(150px);
+  position: absolute;
+  bottom: 110px;
+  left: 750px;
+}
+
+// Small Blob - Blue
+.blob-blue-3 {
+  filter: blur(150px);
+  mix-blend-mode: overlay;
+  position: absolute;
+  bottom: 197px;
+  left: 830px;
+}
+
+// Bigger Blob - Purple
+.blob-purple-1 {
+  filter: blur(210px);
+  position: absolute;
+  top: 200px;
+  right: 0;
+}
+
+// Medium Blob - Purple
+.blob-purple-2 {
+  filter: blur(140px);
+  mix-blend-mode: overlay;
+  position: absolute;
+  top: 500px;
+  right: 380px;
+}
