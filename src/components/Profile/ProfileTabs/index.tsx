@@ -2,9 +2,9 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import clsx from 'clsx';
 import { FC, useState } from 'react';
-import Education from '../Education';
-import Tasks from '../Tasks';
-import WorkHistory from '../WorkHistory';
+import Education from 'components/Education';
+import Tasks from 'components/Tasks';
+import WorkHistory from 'components/WorkHistory';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
@@ -32,7 +32,7 @@ const ProfileTabs: FC = () => {
   };
 
   return (
-    <div>
+    <>
       <div className={styles['profile-tab-header']}>
         <h3
           className={clsx(
@@ -81,8 +81,8 @@ const ProfileTabs: FC = () => {
           Education
         </h3>
       </div>
-      <div>{renderTabs()}</div>
-    </div>
+      {renderTabs()}
+    </>
   );
 };
 

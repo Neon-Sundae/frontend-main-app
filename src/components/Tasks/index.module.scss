@@ -1,4 +1,4 @@
-@import '../../../styles/mixins/scrollbar.scss';
+@import '../../styles/mixins/scrollbar.scss';
 
 .tasks-container {
   margin-top: 50px;
@@ -17,7 +17,7 @@
     rgba(255, 255, 255, 0.03) 73.08%
   );
 
-  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  // box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
   /* Note: backdrop-filter has minimal browser support */
 

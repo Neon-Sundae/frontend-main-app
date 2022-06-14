@@ -1,11 +1,11 @@
-@import '../../../styles/mixins/scrollbar.scss';
+@import '../../styles/mixins/scrollbar.scss';
 
 .education-container {
   margin-top: 50px;
   height: 580px;
-  overflow: auto;
+  backdrop-filter: blur(40px);
 
-  // @include customScrollbar;
+  @include customScrollbar;
 }
 
 .education-card {

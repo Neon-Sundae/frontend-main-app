@@ -1,11 +1,11 @@
-@import '../../../styles/mixins/scrollbar.scss';
+@import '../../styles/mixins/scrollbar.scss';
 
 .work-history-container {
   margin-top: 50px;
   height: 580px;
-  overflow: auto;
+  backdrop-filter: blur(40px);
 
-  // @include customScrollbar;
+  @include customScrollbar;
 }
 
 .work-history-card {
