@@ -1,4 +1,4 @@
-import { FILL_PROFILE_DATA } from 'actions/profile/types';
+import { EDIT_PROFILE, FILL_PROFILE_DATA } from 'actions/profile/types';
 import {
   IProfile,
   IProfileApiResponse,
@@ -14,12 +14,18 @@ interface State {
   education: IProfileEducation[];
   workplaces: IProfileWorkplace[];
   profileSkills: IProfileSkills[];
+  isEditable: boolean;
 }
 
-type Action = {
-  type: typeof FILL_PROFILE_DATA;
-  profile: IProfileApiResponse;
-};
+type Action =
+  | {
+      type: typeof FILL_PROFILE_DATA;
+      profile: IProfileApiResponse;
+    }
+  | {
+      type: typeof EDIT_PROFILE;
+      isEditable: boolean;
+    };
 
 const initialState: State = {
   profile: null,
@@ -27,6 +33,7 @@ const initialState: State = {
   education: [],
   workplaces: [],
   profileSkills: [],
+  isEditable: false,
 };
 
 const profile = (state = initialState, action: Action): State => {
@@ -43,6 +50,11 @@ const profile = (state = initialState, action: Action): State => {
         profileSkills,
       };
     }
+    case EDIT_PROFILE:
+      return {
+        ...state,
+        isEditable: action.isEditable,
+      };
     default:
       return { ...state };
   }

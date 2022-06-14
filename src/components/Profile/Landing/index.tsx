@@ -1,33 +1,28 @@
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
-import ProfileCard from '../ProfileCard';
+import ProfileCard from 'components/ProfileCard';
+import ProfileCardEdit from 'components/ProfileCardEdit';
 import styles from './index.module.scss';
 import useGetProfileData from './hooks';
 import ProfileContent from '../ProfileContent';
 
 const Landing: FC = () => {
+  const isEditable = useSelector(
+    (state: RootState) => state.profile.isEditable
+  );
   useGetProfileData();
 
   return (
     <div className={styles.container}>
-      {/* <Box /> */}
       <BlurBlobs />
       <NavBar />
       <div className={styles['profile-card-content-container']}>
-        <ProfileCard />
+        {isEditable ? <ProfileCardEdit /> : <ProfileCard />}
         <ProfileContent />
       </div>
-    </div>
-  );
-};
-
-const Box: FC = () => {
-  return (
-    <div className={styles['box-1']}>
-      <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, deleniti!
-      </p>
     </div>
   );
 };

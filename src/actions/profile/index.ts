@@ -2,6 +2,7 @@ import { ISkills } from 'actions/skills';
 import { IProfileApiResponse } from 'interfaces/profile';
 import {
   ADD_PROFILE_SKILL,
+  EDIT_PROFILE,
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_SKILL,
 } from './types';
@@ -19,4 +20,9 @@ export const addProfileSkill = (skill: ISkills) => ({
 export const removeProfileSkill = (skillId: number) => ({
   type: REMOVE_PROFILE_SKILL,
   skillId,
+});
+
+export const editProfile = (isEditable: boolean) => ({
+  type: EDIT_PROFILE,
+  isEditable,
 });

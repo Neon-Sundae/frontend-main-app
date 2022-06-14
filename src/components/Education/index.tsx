@@ -4,14 +4,14 @@ import styles from './index.module.scss';
 const data = [
   {
     educationId: 1,
-    degree: 'Creative Designer',
+    degree: 'Java Google Certificate',
     university: 'Google Corporation',
     startDate: 'April 2019',
     endDate: 'June 2022',
   },
   {
     educationId: 2,
-    degree: 'Creative Designer',
+    degree: 'Harvard University',
     university: 'Google Corporation',
     startDate: 'April 2019',
     endDate: 'June 2022',
@@ -25,6 +25,34 @@ const data = [
   },
   {
     educationId: 4,
+    degree: 'Creative Designer',
+    university: 'Google Corporation',
+    startDate: 'April 2019',
+    endDate: 'June 2022',
+  },
+  {
+    educationId: 5,
+    degree: 'Creative Designer',
+    university: 'Google Corporation',
+    startDate: 'April 2019',
+    endDate: 'June 2022',
+  },
+  {
+    educationId: 6,
+    degree: 'Creative Designer',
+    university: 'Google Corporation',
+    startDate: 'April 2019',
+    endDate: 'June 2022',
+  },
+  {
+    educationId: 7,
+    degree: 'Creative Designer',
+    university: 'Google Corporation',
+    startDate: 'April 2019',
+    endDate: 'June 2022',
+  },
+  {
+    educationId: 8,
     degree: 'Creative Designer',
     university: 'Google Corporation',
     startDate: 'April 2019',

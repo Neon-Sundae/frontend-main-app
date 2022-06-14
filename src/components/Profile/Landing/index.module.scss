@@ -6,22 +6,3 @@
 .profile-card-content-container {
   display: flex;
 }
-
-.box-1 {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(
-    126.59deg,
-    rgba(255, 255, 255, 0.12) 12.11%,
-    rgba(255, 255, 255, 0.03) 73.08%
-  );
-  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(40px);
-  position: absolute;
-  left: 760px;
-  bottom: 0;
-
-  & > p {
-    color: white;
-  }
-}
