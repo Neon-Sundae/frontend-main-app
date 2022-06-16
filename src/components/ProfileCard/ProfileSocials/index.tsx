@@ -13,6 +13,9 @@ const ProfileSocials: FC = () => {
     <div className={styles['profile-socials-container']}>
       {profile?.linkedin && <LinkedinIcon width={40} height={40} />}
       {profile?.twitter && <TwitterIcon width={40} height={40} />}
+      {profile?.instagram && <InstagramIcon width={40} height={40} />}
+      {profile?.github && <LinkedinIcon width={40} height={40} />}
+      {profile?.portfolio && <LinkedinIcon width={40} height={40} />}
     </div>
   );
 };
