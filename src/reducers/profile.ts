@@ -1,4 +1,10 @@
-import { EDIT_PROFILE, FILL_PROFILE_DATA } from 'actions/profile/types';
+import {
+  ADD_PROFILE_SKILL,
+  EDIT_PROFILE,
+  FILL_PROFILE_DATA,
+  REMOVE_PROFILE_SKILL,
+} from 'actions/profile/types';
+import { ISkills } from 'actions/skills';
 import {
   IProfile,
   IProfileApiResponse,
@@ -25,6 +31,14 @@ type Action =
   | {
       type: typeof EDIT_PROFILE;
       isEditable: boolean;
+    }
+  | {
+      type: typeof ADD_PROFILE_SKILL;
+      skill: ISkills;
+    }
+  | {
+      type: typeof REMOVE_PROFILE_SKILL;
+      skills: ISkills[];
     };
 
 const initialState: State = {
@@ -50,6 +64,16 @@ const profile = (state = initialState, action: Action): State => {
         profileSkills,
       };
     }
+    case ADD_PROFILE_SKILL:
+      return {
+        ...state,
+        profileSkills: [...state.profileSkills, action.skill],
+      };
+    case REMOVE_PROFILE_SKILL:
+      return {
+        ...state,
+        profileSkills: action.skills,
+      };
     case EDIT_PROFILE:
       return {
         ...state,

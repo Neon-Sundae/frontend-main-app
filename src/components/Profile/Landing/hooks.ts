@@ -1,4 +1,5 @@
 import { fillProfileData } from 'actions/profile';
+import { fillProfileSkillsData } from 'actions/skills';
 import config from 'config';
 import { IProfileApiResponse } from 'interfaces/profile';
 import { useEffect } from 'react';
@@ -6,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
+import { normalizeSkills } from 'utils/normalizeSkills';
 
 const useGetProfileData = () => {
   const dispatch = useDispatch();
@@ -31,7 +33,9 @@ const useGetProfileData = () => {
           );
 
           const json: IProfileApiResponse = await handleApiErrors(response);
+          const skillsData = normalizeSkills(json.profileSkills);
           dispatch(fillProfileData(json));
+          dispatch(fillProfileSkillsData(skillsData));
         } catch (error) {
           console.log(error);
         }

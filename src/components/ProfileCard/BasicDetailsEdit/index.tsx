@@ -1,13 +1,12 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
-import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { editProfile } from 'actions/profile';
 import { RootState } from 'reducers';
+import { editProfile } from 'actions/profile';
 import styles from './index.module.scss';
 
-const BasicDetails: FC = () => {
+const BasicDetailsEdit: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
 
   return (
@@ -17,23 +16,21 @@ const BasicDetails: FC = () => {
       <ExperiencePoints />
       <ProfileAddressChain />
       <ProfileBio description={profile?.description} />
-      <EditIconContainer />
+      <SaveProfile />
     </>
   );
 };
 
-const EditIconContainer: FC = () => {
+const SaveProfile: FC = () => {
   const dispatch = useDispatch();
 
-  const handleEdit = () => dispatch(editProfile(true));
+  const handleSave = () => dispatch(editProfile(false));
 
   return (
-    <EditIcon
-      width={50}
-      height={50}
-      className={styles['edit-icon']}
-      onClick={handleEdit}
-    />
+    <div className={styles['save-profile']} onClick={handleSave}>
+      <span className={styles.text}>Save</span>
+      <i className="material-icons">done</i>
+    </div>
   );
 };
 
@@ -53,11 +50,31 @@ interface INameDesignation {
 
 const NameDesignation: FC<INameDesignation> = ({ title }) => {
   const user = useSelector((state: RootState) => state.user.user);
+  const [name, setName] = useState(user?.name ?? 'Rachel Green');
+  const [localTitle, setLocalTitle] = useState(title ?? 'Product Designer');
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setName(e.target.value);
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setLocalTitle(e.target.value);
 
   return (
     <div className={styles['name-designation']}>
-      <h2 className={styles.name}>{user?.name ?? 'Rachel Green'}</h2>
-      <h5 className={styles.designation}>{title ?? 'Product Designer'}</h5>
+      <input
+        type="text"
+        className={styles.name}
+        value={name}
+        onChange={handleNameChange}
+      />
+      <input
+        type="text"
+        className={styles.designation}
+        value={localTitle}
+        onChange={handleTitleChange}
+      />
+      {/* <h2 className={styles.name}>{user?.name ?? 'Rachel Green'}</h2>
+      <h5 className={styles.designation}>Product Designer</h5> */}
     </div>
   );
 };
@@ -92,14 +109,22 @@ interface IProfileBio {
 }
 
 const ProfileBio: FC<IProfileBio> = ({ description }) => {
+  const [localDescription, setLocalDescription] = useState(
+    description ??
+      'Lorem imsum text is here imsum text is here imsum text is here imsum text is here imsum text is here imsum text is here imsum text is here imsum.'
+  );
+
+  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
+    setLocalDescription(e.target.value);
+
   return (
-    <p className={styles['profile-bio']}>
-      {description ??
-        `Lorem imsum text is here imsum text is here imsum text is here imsum
-      text is here imsum text is here imsum text is here imsum text is here
-      imsum.`}
-    </p>
+    <textarea
+      className={styles['profile-bio']}
+      maxLength={140}
+      value={localDescription}
+      onChange={handleDescriptionChange}
+    />
   );
 };
 
-export default BasicDetails;
+export default BasicDetailsEdit;
