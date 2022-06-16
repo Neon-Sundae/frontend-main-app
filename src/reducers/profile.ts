@@ -1,8 +1,10 @@
+import { IUpdateProfileSocial } from 'actions/profile';
 import {
   ADD_PROFILE_SKILL,
   EDIT_PROFILE,
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_SKILL,
+  UPDATE_PROFILE_SOCIALS,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
 import {
@@ -39,6 +41,14 @@ type Action =
   | {
       type: typeof REMOVE_PROFILE_SKILL;
       skills: ISkills[];
+    }
+  | {
+      type: typeof UPDATE_PROFILE_SOCIALS;
+      portfolio: string;
+      linkedin: string;
+      twitter: string;
+      instagram: string;
+      github: string;
     };
 
 const initialState: State = {
@@ -79,6 +89,24 @@ const profile = (state = initialState, action: Action): State => {
         ...state,
         isEditable: action.isEditable,
       };
+    case UPDATE_PROFILE_SOCIALS: {
+      const { portfolio, linkedin, twitter, instagram, github } = action;
+
+      if (state.profile) {
+        return {
+          ...state,
+          profile: {
+            ...state.profile,
+            portfolio,
+            linkedin,
+            twitter,
+            instagram,
+            github,
+          },
+        };
+      }
+      return { ...state };
+    }
     default:
       return { ...state };
   }
