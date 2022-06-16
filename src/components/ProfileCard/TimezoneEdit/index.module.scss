@@ -1,0 +1,28 @@
+.timezone-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 18px;
+
+  background: rgba(60, 60, 70, 0.5);
+  border: 0.7px solid #141414;
+  border-radius: 10.4px;
+  text-align: center;
+  outline: none;
+  width: 85%;
+  padding: 5px 0;
+  cursor: pointer;
+
+  & > svg {
+    margin-right: 12px;
+  }
+
+  & > span {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+    font-size: 16px;
+    color: white;
+    text-transform: capitalize;
+  }
+}

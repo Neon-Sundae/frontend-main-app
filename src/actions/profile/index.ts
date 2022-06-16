@@ -12,14 +12,14 @@ export const fillProfileData = (profile: IProfileApiResponse) => ({
   profile,
 });
 
-export const addProfileSkill = (skill: ISkills) => ({
+export const addProfileSkillAction = (skill: ISkills) => ({
   type: ADD_PROFILE_SKILL,
   skill,
 });
 
-export const removeProfileSkill = (skillId: number) => ({
+export const removeProfileSkillAction = (skills: ISkills[]) => ({
   type: REMOVE_PROFILE_SKILL,
-  skillId,
+  skills,
 });
 
 export const editProfile = (isEditable: boolean) => ({

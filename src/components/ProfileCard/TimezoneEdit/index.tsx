@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
-const Timezone: FC = () => {
+const TimezoneEdit: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
 
   return (
@@ -15,4 +15,4 @@ const Timezone: FC = () => {
   );
 };
 
-export default Timezone;
+export default TimezoneEdit;

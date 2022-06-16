@@ -1,6 +1,9 @@
 import { FC } from 'react';
+import clsx from 'clsx';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
+import { useDispatch } from 'react-redux';
+import { editProfile } from 'actions/profile';
 import styles from './index.module.scss';
 
 const BasicDetails: FC = () => {
@@ -11,7 +14,21 @@ const BasicDetails: FC = () => {
       <ExperiencePoints />
       <ProfileAddressChain />
       <ProfileBio />
+      <SaveProfile />
     </>
+  );
+};
+
+const SaveProfile: FC = () => {
+  const dispatch = useDispatch();
+
+  const handleSave = () => dispatch(editProfile(false));
+
+  return (
+    <div className={styles['save-profile']} onClick={handleSave}>
+      <span className={styles.text}>Save</span>
+      <i className={clsx('material-icons', styles['check-icon'])}>done</i>
+    </div>
   );
 };
 

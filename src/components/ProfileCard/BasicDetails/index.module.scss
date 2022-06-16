@@ -28,16 +28,15 @@
   align-items: center;
 
   .name {
-    // TODO - Needs to be roboto flex
-    font-family: var(--font-family-roboto-bold);
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 600;
     font-size: 35px;
     color: white;
     margin-top: 28px;
   }
 
   .designation {
-    // TODO - Needs to be roboto flex
-    font-family: var(--font-family-roboto-medium);
+    font-family: var(--font-family-roboto-flex);
     font-weight: 500;
     font-size: 18px;
     color: white;

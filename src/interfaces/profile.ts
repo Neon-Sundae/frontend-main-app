@@ -7,6 +7,8 @@ export interface IProfile {
   portfolio: string | null;
   linkedin: string | null;
   twitter: string | null;
+  instagram: string | null;
+  github: string | null;
   userId: number;
 }
 
