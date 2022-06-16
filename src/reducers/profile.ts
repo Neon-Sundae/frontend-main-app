@@ -1,10 +1,10 @@
-import { IUpdateProfileSocial } from 'actions/profile';
 import {
   ADD_PROFILE_SKILL,
   EDIT_PROFILE,
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_SKILL,
   UPDATE_PROFILE_SOCIALS,
+  UPDATE_PROFILE_TIMEZONE,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
 import {
@@ -49,6 +49,10 @@ type Action =
       twitter: string;
       instagram: string;
       github: string;
+    }
+  | {
+      type: typeof UPDATE_PROFILE_TIMEZONE;
+      timezone: string;
     };
 
 const initialState: State = {
@@ -107,6 +111,17 @@ const profile = (state = initialState, action: Action): State => {
       }
       return { ...state };
     }
+    case UPDATE_PROFILE_TIMEZONE:
+      if (state.profile) {
+        return {
+          ...state,
+          profile: {
+            ...state.profile,
+            timezone: action.timezone,
+          },
+        };
+      }
+      return { ...state };
     default:
       return { ...state };
   }

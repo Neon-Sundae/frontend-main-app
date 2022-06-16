@@ -40,7 +40,7 @@
     ],
     "no-use-before-define": ["error", { "variables": false }],
     "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
-    "import/extensions": ["error", "never", {"svg": "always", "png": "always", "css": "always", "mp4": "always", "scss": "always", "js": "always"}],
+    "import/extensions": ["error", "never", {"svg": "always", "png": "always", "css": "always", "mp4": "always", "scss": "always", "js": "always", "json": "always"}],
     "react/prop-types": 0,
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
