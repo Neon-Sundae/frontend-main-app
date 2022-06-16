@@ -1,7 +1,6 @@
 .profile-skills-container {
   display: flex;
   flex-wrap: wrap;
-  max-width: 350px;
   margin: 0 auto;
   justify-content: center;
 }
@@ -14,6 +13,5 @@
   background-color: white;
   border-radius: 30px;
   padding: 11px 25px;
-  margin-right: 28px;
-  margin-bottom: 20px;
+  margin: 0 14px 20px 14px;
 }

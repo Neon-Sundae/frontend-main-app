@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import ProfileCardContainer from 'components/ProfileCardContainer';
 import BasicDetails from './BasicDetails';
-import ProfileCardContainer from './ProfileCardContainer';
 import ProfileSkills from './ProfileSkills';
 import ProfileSocials from './ProfileSocials';
 import Timezone from './Timezone';
