@@ -6,6 +6,7 @@ import {
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_SKILL,
   UPDATE_PROFILE_SOCIALS,
+  UPDATE_PROFILE_TIMEZONE,
 } from './types';
 
 export const fillProfileData = (profile: IProfileApiResponse) => ({
@@ -49,4 +50,9 @@ export const updateProfileSocialAction = (
   twitter,
   instagram,
   github,
+});
+
+export const updateProfileTimezoneAction = (timezone: string) => ({
+  type: UPDATE_PROFILE_TIMEZONE,
+  timezone,
 });
