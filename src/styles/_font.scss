@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap');
+
 @font-face {
   font-family: RobotoLight;
   src: url('./fonts/roboto/Roboto-Light.ttf') format('truetype');
@@ -20,11 +22,6 @@
   font-family: RobotoBold;
   src: url('./fonts/roboto/Roboto-Bold.ttf') format('truetype');
   font-weight: 700;
-}
-
-@font-face {
-  font-family: RobotoFlex;
-  src: url('./fonts/robotoflex/Roboto-Flex.ttf') format('truetype');
 }
 
 @font-face {
@@ -169,7 +166,7 @@
   --font-family-roboto-medium: RobotoMedium, sans-serif;
   --font-family-roboto-bold: RobotoBold, sans-serif;
 
-  --font-family-roboto-flex: RobotoFlex, sans-serif;
+  --font-family-roboto-flex: 'Roboto Flex', sans-serif;
 
   --font-family-roboto-slab-light: RobotoSlabLight, sans-serif;
   --font-family-roboto-slab-regular: RobotoSlabRegular, sans-serif;

@@ -1,0 +1,19 @@
+.profile-skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 350px;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.profile-skill-tag {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 14px;
+  color: #4b4b4b;
+  background-color: white;
+  border-radius: 30px;
+  padding: 11px 25px;
+  margin-right: 28px;
+  margin-bottom: 20px;
+}

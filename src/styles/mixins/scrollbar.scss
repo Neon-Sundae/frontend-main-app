@@ -1,0 +1,25 @@
+@mixin customScrollbar {
+  overflow: auto;
+
+  /* Works on Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    // background: orange;
+    -webkit-box-shadow: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
+    backdrop-filter: blur(40px);
+    -webkit-box-shadow: none;
+    border-radius: 20px;
+    border: 2px solid #414141;
+  }
+}
