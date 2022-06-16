@@ -2,9 +2,9 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import Modal from 'components/Modal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import clsx from 'clsx';
 import gradientBtn from 'assets/illustrations/button/button-gradient.svg';
 import styles from './index.module.scss';
+import useUpdateProfileSocial from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -19,8 +19,21 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
   const [instagram, setInstagram] = useState(profile?.instagram ?? '');
   const [github, setGithub] = useState(profile?.github ?? '');
 
+  const updateProfileSocial = useUpdateProfileSocial();
+
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSave = () => {
+    updateProfileSocial({
+      portfolio,
+      linkedin,
+      twitter,
+      instagram,
+      github,
+      setOpen,
+    });
   };
 
   return (
@@ -51,7 +64,7 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
         value={portfolio}
         handleChange={e => setPortfolio(e.target.value)}
       />
-      <div className={styles['gradient-save-btn']} onClick={handleClose}>
+      <div className={styles['gradient-save-btn']} onClick={handleSave}>
         <div
           className={styles['gradient-blur']}
           style={{ backgroundImage: `url(${gradientBtn})` }}

@@ -130,6 +130,7 @@
   position: relative;
   margin: 0 auto;
   cursor: pointer;
+  z-index: 1;
 
   & > .gradient-blur {
     width: 99.9%;
