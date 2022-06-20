@@ -1,34 +1,45 @@
-import React, { FC, useRef, useState } from 'react';
+import { FC, SetStateAction, Dispatch, useState, ChangeEvent } from 'react';
 import BaseModal from 'components/Home/BaseModal';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
 import styles from './index.module.scss';
+import useCreateOrg from './hook';
 
 interface ComponentProps {
   onClose: () => void;
 }
 
 const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
+  const [orgName, setOrgName] = useState('');
+  const [orgDesc, setOrgDesc] = useState('');
+
   const [showStepTwo, setShowStepTwo] = useState(false);
-  const orgNameInput = useRef<HTMLInputElement>(null);
-  const orgDescInput = useRef<HTMLInputElement>(null);
+
+  const { createOrganisation } = useCreateOrg();
+
+  const handleCreateOrganisation = () => {
+    if (orgName && orgDesc) {
+      createOrganisation({
+        name: orgName,
+        description: orgDesc,
+      });
+    }
+  };
 
   const handleStepOne = () => {
-    const orgName = orgNameInput.current?.value;
-    if (orgName?.trim().length === 0) return;
+    if (orgName.trim().length === 0) return;
 
     setShowStepTwo(true);
   };
 
   const handleStepTwo = () => {
-    const orgDesc = orgDescInput.current?.value;
-    if (orgDesc?.trim().length === 0) return;
+    if (orgDesc.trim().length === 0) return;
 
-    onClose();
+    handleCreateOrganisation();
   };
 
   const StepOneModal = (
     <StepModal
-      ref={orgNameInput}
+      setInputChange={setOrgName}
       onClose={onClose}
       onNext={handleStepOne}
       placeholder="enter organisation name"
@@ -37,7 +48,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
 
   const StepTwoModal = (
     <StepModal
-      ref={orgDescInput}
+      setInputChange={setOrgDesc}
       onClose={onClose}
       onNext={handleStepTwo}
       placeholder="enter short description"
@@ -56,27 +67,36 @@ interface IStepProps {
   onClose: () => void;
   onNext: () => void;
   placeholder: string;
+  setInputChange: Dispatch<SetStateAction<string>>;
 }
 
-const StepModal = React.forwardRef<HTMLInputElement, IStepProps>(
-  ({ onClose, onNext, placeholder }, ref) => {
-    return (
-      <BaseModal
-        header="Start an Organization"
-        onClose={onClose}
-        onNext={onNext}
-      >
-        <section className={styles.content}>
-          <div className={styles.uploadPicture}>
-            <Stroke height={30} width={30} />
-          </div>
-          <div className={styles['input-container']}>
-            <input type="text" placeholder={placeholder} required ref={ref} />
-          </div>
-        </section>
-      </BaseModal>
-    );
-  }
-);
+const StepModal: FC<IStepProps> = ({
+  onClose,
+  onNext,
+  placeholder,
+  setInputChange,
+}) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputChange(event.target.value);
+  };
+
+  return (
+    <BaseModal header="Start an Organization" onClose={onClose} onNext={onNext}>
+      <section className={styles.content}>
+        <div className={styles.uploadPicture}>
+          <Stroke height={30} width={30} />
+        </div>
+        <div className={styles['input-container']}>
+          <input
+            type="text"
+            placeholder={placeholder}
+            required
+            onChange={handleInputChange}
+          />
+        </div>
+      </section>
+    </BaseModal>
+  );
+};
 
 export default StartOrgModal;

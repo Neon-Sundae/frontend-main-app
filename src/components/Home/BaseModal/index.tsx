@@ -10,7 +10,7 @@ interface ComponentProps {
   onClose: () => void;
 }
 
-const ModalCont: FC<ComponentProps> = ({
+const BaseModal: FC<ComponentProps> = ({
   header,
   children,
   onNext,
@@ -57,4 +57,4 @@ const ModalBlobs: FC = () => {
   );
 };
 
-export default ModalCont;
+export default BaseModal;
