@@ -1,4 +1,4 @@
-import { UPDATE_USER } from './types';
+import { UPDATE_USER, UPDATE_USER_NAME } from './types';
 
 export interface IUser {
   userId: number;
@@ -13,4 +13,9 @@ export interface IUser {
 export const updateUser = (user: Partial<IUser>) => ({
   type: UPDATE_USER,
   user,
+});
+
+export const updateUserName = (name: string) => ({
+  type: UPDATE_USER_NAME,
+  name,
 });

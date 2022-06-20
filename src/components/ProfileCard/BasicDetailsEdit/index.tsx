@@ -1,31 +1,58 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { editProfile } from 'actions/profile';
 import styles from './index.module.scss';
+import useUpdateProfileDetails from './hooks';
 
 const BasicDetailsEdit: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const [name, setName] = useState(user?.name ?? 'Rachel Green');
+  const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
+  const [bio, setBio] = useState(
+    profile?.description ??
+      `Lorem imsum text is here imsum text is here imsum text is here imsum
+  text is here imsum text is here imsum text is here imsum text is here
+  imsum.`
+  );
+
+  const updateProfileDetails = useUpdateProfileDetails();
+
+  const handleSave = () => {
+    updateProfileDetails({
+      userId: user?.userId,
+      profileId: profile?.profileId,
+      name,
+      title,
+      description: bio,
+    });
+  };
 
   return (
     <>
       <ProfileImage />
-      <NameDesignation title={profile?.title} />
+      <NameDesignation
+        title={title}
+        setTitle={setTitle}
+        name={name}
+        setName={setName}
+      />
       <ExperiencePoints />
       <ProfileAddressChain />
-      <ProfileBio description={profile?.description} />
-      <SaveProfile />
+      <ProfileBio bio={bio} setBio={setBio} />
+      <SaveProfile handleSave={handleSave} />
     </>
   );
 };
 
-const SaveProfile: FC = () => {
-  const dispatch = useDispatch();
+interface ISaveProfile {
+  handleSave: () => void;
+}
 
-  const handleSave = () => dispatch(editProfile(false));
-
+const SaveProfile: FC<ISaveProfile> = ({ handleSave }) => {
   return (
     <div className={styles['save-profile']} onClick={handleSave}>
       <span className={styles.text}>Save</span>
@@ -45,19 +72,23 @@ const ProfileImage: FC = () => {
 };
 
 interface INameDesignation {
-  title: string | null | undefined;
+  title: string;
+  setTitle: Dispatch<SetStateAction<string>>;
+  name: string;
+  setName: Dispatch<SetStateAction<string>>;
 }
 
-const NameDesignation: FC<INameDesignation> = ({ title }) => {
-  const user = useSelector((state: RootState) => state.user.user);
-  const [name, setName] = useState(user?.name ?? 'Rachel Green');
-  const [localTitle, setLocalTitle] = useState(title ?? 'Product Designer');
-
+const NameDesignation: FC<INameDesignation> = ({
+  title,
+  setTitle,
+  name,
+  setName,
+}) => {
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setLocalTitle(e.target.value);
+    setTitle(e.target.value);
 
   return (
     <div className={styles['name-designation']}>
@@ -70,11 +101,9 @@ const NameDesignation: FC<INameDesignation> = ({ title }) => {
       <input
         type="text"
         className={styles.designation}
-        value={localTitle}
+        value={title}
         onChange={handleTitleChange}
       />
-      {/* <h2 className={styles.name}>{user?.name ?? 'Rachel Green'}</h2>
-      <h5 className={styles.designation}>Product Designer</h5> */}
     </div>
   );
 };
@@ -105,23 +134,19 @@ const ProfileAddressChain: FC = () => {
 };
 
 interface IProfileBio {
-  description: string | null | undefined;
+  bio: string;
+  setBio: Dispatch<SetStateAction<string>>;
 }
 
-const ProfileBio: FC<IProfileBio> = ({ description }) => {
-  const [localDescription, setLocalDescription] = useState(
-    description ??
-      'Lorem imsum text is here imsum text is here imsum text is here imsum text is here imsum text is here imsum text is here imsum text is here imsum.'
-  );
-
+const ProfileBio: FC<IProfileBio> = ({ bio, setBio }) => {
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
-    setLocalDescription(e.target.value);
+    setBio(e.target.value);
 
   return (
     <textarea
       className={styles['profile-bio']}
       maxLength={140}
-      value={localDescription}
+      value={bio}
       onChange={handleDescriptionChange}
     />
   );

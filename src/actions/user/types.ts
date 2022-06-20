@@ -1,2 +1,2 @@
-/* eslint-disable import/prefer-default-export */
 export const UPDATE_USER = 'UPDATE_USER';
+export const UPDATE_USER_NAME = 'UPDATE_USER_NAME';

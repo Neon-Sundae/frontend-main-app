@@ -1,7 +1,7 @@
 import {
-  addProfileEducationAction,
-  removeProfileEducationAction,
-  updateProfileEducationAction,
+  addProfileWorkplaceAction,
+  removeProfileWorkplaceAction,
+  updateProfileWorkplaceAction,
 } from 'actions/profile';
 import config from 'config';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,11 +10,11 @@ import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleUnAuthorization } from 'utils/handleUnAuthorization';
 
-const useAddProfileEducation = () => {
+const useAddProfileWorkplace = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile.profile);
 
-  const addProfileEducation = () => {
+  const addProfileWorkplace = () => {
     const accessToken = getAccessToken();
 
     if (accessToken) {
@@ -25,15 +25,17 @@ const useAddProfileEducation = () => {
       (async () => {
         try {
           const payload = {
-            degree: 'Creative Designer',
-            university: 'Google Corporation',
+            role: 'Creative Designer',
+            name: 'Google Corporation',
+            description:
+              'Lorem imsum text is here imsum text is here   imsum text is here imsum text is here imsumz shs s.  BioLorem imsum text is here imsum text is here   imsum text is here imsum text is here  imsum  here BioLorem imsum text is    imsum text is here imsum text is here imsum. BioLorem imsum text isimsum text is here   imsum text is here imsum text is here imsum. here imsum text is here',
             startDate: now.toISOString(),
             endDate: now.toISOString(),
             profileId: profile?.profileId,
           };
 
           const response = await fetch(
-            `${config.ApiBaseUrl}/profile/education`,
+            `${config.ApiBaseUrl}/profile/workplace`,
             {
               signal,
               method: 'POST',
@@ -46,7 +48,7 @@ const useAddProfileEducation = () => {
           );
           const json = await handleApiErrors(response);
 
-          dispatch(addProfileEducationAction(json));
+          dispatch(addProfileWorkplaceAction(json));
         } catch (err) {
           console.log(err);
           handleUnAuthorization(err);
@@ -55,13 +57,13 @@ const useAddProfileEducation = () => {
     }
   };
 
-  return addProfileEducation;
+  return addProfileWorkplace;
 };
 
-const useRemoveProfileEducation = () => {
+const useRemoveProfileWorkplace = () => {
   const dispatch = useDispatch();
 
-  const removeProfileEducation = (educationId: number) => {
+  const removeProfileWorkplace = (workplaceId: number) => {
     const accessToken = getAccessToken();
 
     if (accessToken) {
@@ -71,7 +73,7 @@ const useRemoveProfileEducation = () => {
       (async () => {
         try {
           const response = await fetch(
-            `${config.ApiBaseUrl}/profile/education/${educationId}`,
+            `${config.ApiBaseUrl}/profile/workplace/${workplaceId}`,
             {
               signal,
               method: 'DELETE',
@@ -83,7 +85,7 @@ const useRemoveProfileEducation = () => {
           );
           await handleApiErrors(response);
 
-          dispatch(removeProfileEducationAction(educationId));
+          dispatch(removeProfileWorkplaceAction(workplaceId));
         } catch (err) {
           console.log(err);
           handleUnAuthorization(err);
@@ -92,27 +94,29 @@ const useRemoveProfileEducation = () => {
     }
   };
 
-  return removeProfileEducation;
+  return removeProfileWorkplace;
 };
 
-interface IUpdateProfileEducationParameters {
-  educationId: number;
-  degree: string;
-  university: string;
+interface IUpdateProfileWorkplaceParameters {
+  workplaceId: number;
+  role: string;
+  name: string;
+  description: string;
   startDate: string;
   endDate: string;
 }
 
-const useUpdateProfileEducation = () => {
+const useUpdateProfileWorkplace = () => {
   const dispatch = useDispatch();
 
-  const updateProfileEducation = ({
-    educationId,
-    degree,
-    university,
+  const updateProfileWorkplace = ({
+    workplaceId,
+    role,
+    name,
+    description,
     startDate,
     endDate,
-  }: IUpdateProfileEducationParameters) => {
+  }: IUpdateProfileWorkplaceParameters) => {
     const accessToken = getAccessToken();
 
     if (accessToken) {
@@ -122,14 +126,16 @@ const useUpdateProfileEducation = () => {
       (async () => {
         try {
           const payload = {
-            degree,
-            university,
+            workplaceId,
+            role,
+            name,
+            description,
             startDate,
             endDate,
           };
 
           const response = await fetch(
-            `${config.ApiBaseUrl}/profile/education/${educationId}`,
+            `${config.ApiBaseUrl}/profile/workplace/${workplaceId}`,
             {
               signal,
               method: 'PATCH',
@@ -142,13 +148,14 @@ const useUpdateProfileEducation = () => {
           );
           await handleApiErrors(response);
           dispatch(
-            updateProfileEducationAction(
-              educationId,
-              degree,
-              university,
+            updateProfileWorkplaceAction({
+              workplaceId,
+              role,
+              name,
+              description,
               startDate,
-              endDate
-            )
+              endDate,
+            })
           );
         } catch (err) {
           console.log(err);
@@ -158,11 +165,11 @@ const useUpdateProfileEducation = () => {
     }
   };
 
-  return updateProfileEducation;
+  return updateProfileWorkplace;
 };
 
 export {
-  useAddProfileEducation,
-  useRemoveProfileEducation,
-  useUpdateProfileEducation,
+  useAddProfileWorkplace,
+  useRemoveProfileWorkplace,
+  useUpdateProfileWorkplace,
 };

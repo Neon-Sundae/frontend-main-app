@@ -1,13 +1,17 @@
 import {
   ADD_PROFILE_EDUCATION,
   ADD_PROFILE_SKILL,
+  ADD_PROFILE_WORKPLACE,
   EDIT_PROFILE,
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_EDUCATION,
   REMOVE_PROFILE_SKILL,
+  REMOVE_PROFILE_WORKPLACE,
+  UPDATE_PROFILE_DETAILS,
   UPDATE_PROFILE_EDUCATION,
   UPDATE_PROFILE_SOCIALS,
   UPDATE_PROFILE_TIMEZONE,
+  UPDATE_PROFILE_WORKPLACE,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
 import {
@@ -72,6 +76,23 @@ type Action =
       university: string;
       startDate: string;
       endDate: string;
+    }
+  | {
+      type: typeof ADD_PROFILE_WORKPLACE;
+      workplace: IProfileWorkplace;
+    }
+  | {
+      type: typeof REMOVE_PROFILE_WORKPLACE;
+      workplaceId: number;
+    }
+  | {
+      type: typeof UPDATE_PROFILE_WORKPLACE;
+      workplace: IProfileWorkplace;
+    }
+  | {
+      type: typeof UPDATE_PROFILE_DETAILS;
+      title: string;
+      description: string;
     };
 
 const initialState: State = {
@@ -170,6 +191,39 @@ const profile = (state = initialState, action: Action): State => {
             : e
         ),
       };
+    case ADD_PROFILE_WORKPLACE:
+      return {
+        ...state,
+        workplaces: [...state.workplaces, action.workplace],
+      };
+    case REMOVE_PROFILE_WORKPLACE: {
+      const newWorkplaceData = state.workplaces.filter(
+        x => x.workplaceId !== action.workplaceId
+      );
+      return {
+        ...state,
+        workplaces: newWorkplaceData,
+      };
+    }
+    case UPDATE_PROFILE_WORKPLACE:
+      return {
+        ...state,
+        workplaces: state.workplaces.map(w =>
+          w.workplaceId === action.workplace.workplaceId ? action.workplace : w
+        ),
+      };
+    case UPDATE_PROFILE_DETAILS:
+      if (state.profile) {
+        return {
+          ...state,
+          profile: {
+            ...state.profile,
+            title: action.title,
+            description: action.description,
+          },
+        };
+      }
+      return { ...state };
     default:
       return { ...state };
   }
