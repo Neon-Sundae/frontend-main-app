@@ -36,9 +36,8 @@ export interface IProfileWorkplace {
   description: string;
   role: string;
   startDate: string;
-  endDate: string | null;
-  isWorking: boolean;
-  profileId: number;
+  endDate: string;
+  profileId?: number;
 }
 
 export interface IProfileSkills {
