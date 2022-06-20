@@ -1,0 +1,104 @@
+@import '../../styles/mixins/scrollbar.scss';
+
+.education-container {
+  margin-top: 50px;
+  height: 580px;
+  backdrop-filter: blur(40px);
+
+  @include customScrollbar;
+
+  .add-more-btn {
+    display: flex;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+
+    & > p {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 21px;
+      margin-right: 10px;
+      width: 130px;
+    }
+  }
+}
+
+.education-card {
+  width: 80%;
+  color: white;
+  margin-bottom: 45px;
+
+  .degree {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 22px;
+
+    &--edit {
+      outline: none;
+      border: none;
+      background: rgba(60, 60, 70, 0.5);
+      border: 0.7px solid #141414;
+      padding: 5px 15px;
+      border-radius: 8px;
+      color: white;
+    }
+  }
+
+  .university-date-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+
+    .text {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 14.7px;
+
+      &--edit {
+        outline: none;
+        border: none;
+        background: rgba(60, 60, 70, 0.5);
+        border: 0.7px solid #141414;
+        padding: 5px 15px;
+        border-radius: 8px;
+        color: white;
+      }
+    }
+
+    & > span {
+      margin: 0 15px;
+    }
+  }
+
+  .title-delete-container {
+    display: flex;
+    align-items: center;
+
+    & > svg {
+      margin-left: 15px;
+      cursor: pointer;
+    }
+  }
+
+  .input-date-container {
+    display: flex;
+
+    .input-select {
+      background: rgba(60, 60, 70, 0.5);
+      border: 0.7px solid #141414;
+      padding: 5px 15px;
+      border-radius: 8px;
+      color: white;
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 14.7px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    & > span {
+      margin-right: 10px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+.profile-socials-container {
+  display: flex;
+  // flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  // max-width: 350px;
+  // margin: 0 auto;
+
+  & > svg {
+    margin: 0 14px;
+  }
+}

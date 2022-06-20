@@ -1,0 +1,127 @@
+.profile-image {
+  display: flex;
+  justify-content: center;
+
+  .image-wrapper {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+
+    & > img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.edit-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.name-designation {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .name {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 600;
+    font-size: 35px;
+    color: white;
+    margin-top: 28px;
+  }
+
+  .designation {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 18px;
+    color: white;
+    margin-top: 8px;
+  }
+}
+
+.experience-points {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+
+  .value {
+    font-family: var(--font-family-roboto-slab-medium);
+    font-size: 30px;
+    color: white;
+
+    .label {
+      font-family: var(--font-family-roboto-bold);
+      font-size: 23px;
+      background: -webkit-linear-gradient(
+        298.19deg,
+        #ffbedf 27.52%,
+        #eac4ff 48.39%,
+        #ffc9af 69.27%,
+        #ffd9a0 94.32%
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+
+.profile-address-chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .address-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 15px;
+    width: 291px;
+    height: 52px;
+    margin: 0 auto;
+
+    .profile-address {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 17px;
+      color: white;
+    }
+
+    & > i {
+      color: white;
+    }
+  }
+
+  .sync-text {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 300;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 15px 0;
+
+    & > i {
+      color: white;
+      margin-left: 5px;
+    }
+  }
+}
+
+.profile-bio {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 400;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  max-width: 383px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}

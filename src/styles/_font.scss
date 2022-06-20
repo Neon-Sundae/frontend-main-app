@@ -1,32 +1,4 @@
-@font-face {
-  font-family: PoppinsLight;
-  src: url('./fonts/poppins/Poppins-Light.ttf') format('truetype');
-  font-weight: 300;
-}
-
-@font-face {
-  font-family: PoppinsRegular;
-  src: url('./fonts/poppins/Poppins-Regular.ttf') format('truetype');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: PoppinsMedium;
-  src: url('./fonts/poppins/Poppins-Medium.ttf') format('truetype');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: PoppinsSemiBold;
-  src: url('./fonts/poppins/Poppins-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: PoppinsBold;
-  src: url('./fonts/poppins/Poppins-Bold.ttf') format('truetype');
-  font-weight: 700;
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap');
 
 @font-face {
   font-family: RobotoLight;
@@ -52,6 +24,66 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: RobotoSlabLight;
+  src: url('./fonts/robotoslab/RobotoSlab-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: RobotoSlabRegular;
+  src: url('./fonts/robotoslab/RobotoSlab-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: RobotoSlabMedium;
+  src: url('./fonts/robotoslab/RobotoSlab-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: RobotoSlabSemiBold;
+  src: url('./fonts/robotoslab/RobotoSlab-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: RobotoSlabBold;
+  src: url('./fonts/robotoslab/RobotoSlab-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: interLight;
+  src: url('./fonts/inter/Inter-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: interRegular;
+  src: url('./fonts/inter/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: interMedium;
+  src: url('./fonts/inter/Inter-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: interSemiBold;
+  src: url('./fonts/inter/Inter-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: interBold;
+  src: url('./fonts/inter/Inter-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
 /*
   * Material icons font file
   * Refer here for getting icons - https://fonts.google.com/icons
@@ -61,6 +93,14 @@
   font-style: normal;
   font-weight: 400;
   src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v7/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOej.woff2)
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Material Symbols Outlined 200';
+  font-style: normal;
+  font-weight: 200;
+  src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v10/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1n-q_4MrImHCIJIZrDAvHOej.woff2)
     format('woff2');
 }
 
@@ -80,15 +120,39 @@
   -webkit-font-smoothing: antialiased;
 }
 
-:root {
-  --font-family-poppins-light: PoppinsLight, sans-serif;
-  --font-family-poppins-regular: PoppinsRegular, sans-serif;
-  --font-family-poppins-medium: PoppinsMedium, sans-serif;
-  --font-family-poppins-semi-bold: PoppinsSemiBold, sans-serif;
-  --font-family-poppins-bold: PoppinsBold, sans-serif;
+.material-icons-200 {
+  font-family: 'Material Symbols Outlined 200';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
 
+:root {
   --font-family-roboto-light: RobotoLight, sans-serif;
   --font-family-roboto-regular: RobotoRegular, sans-serif;
   --font-family-roboto-medium: RobotoMedium, sans-serif;
   --font-family-roboto-bold: RobotoBold, sans-serif;
+
+  --font-family-roboto-flex: 'Roboto Flex', sans-serif;
+
+  --font-family-roboto-slab-light: RobotoSlabLight, sans-serif;
+  --font-family-roboto-slab-regular: RobotoSlabRegular, sans-serif;
+  --font-family-roboto-slab-medium: RobotoSlabMedium, sans-serif;
+  --font-family-roboto-semi-bold: RobotoSlabSemiBold, sans-serif;
+  --font-family-roboto-slab-bold: RobotoSlabBold, sans-serif;
+
+  --font-family-inter-light: InterLight, sans-serif;
+  --font-family-inter-regular: InterRegular, sans-serif;
+  --font-family-inter-medium: InterMedium, sans-serif;
+  --font-family-inter-semi-bold: InterSemiBold, sans-serif;
+  --font-family-inter-bold: InterBold, sans-serif;
 }

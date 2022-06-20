@@ -1,0 +1,11 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 54px;
+
+  & .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+}
