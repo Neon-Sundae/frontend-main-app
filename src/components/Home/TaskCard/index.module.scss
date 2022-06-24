@@ -1,0 +1,50 @@
+.task-card {
+	height: 116px;
+	min-width: 408px;
+	padding: 22px 45px;
+
+	color: white;
+	display: flex;
+	justify-content: space-between;
+
+	& .content {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		& .stats {
+			font-size: 14px;
+			display: flex;
+			justify-content: space-between;
+			margin-top: 10px;
+
+			& .icon {
+				font-size: 16px;
+				margin-right: 5px;
+			}
+			& .circle {
+				display: inline-block;
+				height: 16px;
+				width: 16px;
+				background-color: pink;
+				border-radius: 8px;
+			}
+		}
+	}
+	& .text--primary {
+		font-family: var(--font-family-roboto-flex);
+		font-size: 16px;
+	}
+
+	& .text--secondary {
+		font-family: var(--font-family-roboto-flex);
+		font-size: 12px;
+	}
+
+	& .extra {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+	}
+}

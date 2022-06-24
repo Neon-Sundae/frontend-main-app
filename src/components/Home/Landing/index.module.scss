@@ -1,4 +1,31 @@
 .background {
   background: #242529;
-  height: 100vh;
+  height: 100%;
+}
+
+.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 30px;
+		padding: 0px 10px;
+
+		color: white;
+
+		& p {
+			font-family: var(--font-family-roboto-medium);
+			font-size: 25px;
+		}
+
+		& span {
+			font-size: 16px;
+			text-decoration: underline;
+		}
+	}
+
+.content {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 75px 0px 75px;
+	padding-bottom: 60px;
 }

@@ -1,0 +1,29 @@
+.org-list {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	cursor: pointer;
+	z-index: 2;
+
+	& p {
+		margin-top: 32px;
+		font-family: var(--font-family-roboto-flex);
+		font-size: 16px;
+		color: white;
+	}
+}
+
+.icon-cont {
+	width: 135px;
+	height: 135px;
+	background: rgba(39, 40, 51, 1);
+	border-radius: 68px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

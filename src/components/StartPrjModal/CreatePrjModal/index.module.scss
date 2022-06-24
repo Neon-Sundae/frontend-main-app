@@ -1,0 +1,42 @@
+.create-prj {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+		.input-unit {
+			width: 100%;
+			max-width: 500px;
+
+			& label {
+				font-family: var(--font-family-roboto-flex);
+				font-weight: 400;
+				font-size: 20px;
+				color: white;
+				display: flex;
+				flex-direction: column;
+
+				input, textarea {
+					margin-top: 15px;
+					border: 1px solid rgb(180,180,180);
+					background-color: transparent;
+					border-radius: 5px;
+					color: white;
+					font-family: var(--font-family-roboto-flex);
+					font-size: 18px;
+
+
+					&.name {
+						height: 50px;
+					}
+
+					&.desc {
+						height: 120px;
+					}
+				}
+			}
+
+			&:first-of-type{
+				margin-bottom: 32px;
+			}
+		}
+}
