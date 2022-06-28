@@ -12,9 +12,7 @@ const NavBar: FC = () => {
       <FoundersLabIcon
         width={227}
         height={29}
-        onClick={() => {
-          navigate('/dashboard');
-        }}
+        onClick={() => navigate('/dashboard')}
         className={styles.logo}
       />
       <div className={styles.actions}>
