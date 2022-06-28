@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { Landing } from 'components/Home';
 
-import { removeAccessToken } from 'utils/authFn';
 const Dashboard: FC = () => {
   const isFirstTimeUser = useSelector(
     (state: RootState) => state.auth.isFirstTimeUser
