@@ -237,7 +237,7 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
               className={styles['input-select']}
               onChange={handleStartYearChange}
             >
-              {numberRange(now.getFullYear() - 50, now.getFullYear()).map(
+              {numberRange(now.getFullYear() - 50, now.getFullYear() + 1).map(
                 year => (
                   <option
                     key={year}
@@ -272,7 +272,7 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
               className={styles['input-select']}
               onChange={handleEndYearChange}
             >
-              {numberRange(now.getFullYear() - 50, now.getFullYear()).map(
+              {numberRange(now.getFullYear() - 50, now.getFullYear() + 1).map(
                 year => (
                   <option
                     key={year}
