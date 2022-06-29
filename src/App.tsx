@@ -9,6 +9,7 @@ const Login = lazy(() => import('containers/login'));
 const Dashboard = lazy(() => import('containers/dashboard'));
 const Profile = lazy(() => import('containers/profile'));
 const Organisation = lazy(() => import('containers/organisation'));
+const Tasks = lazy(() => import('containers/tasks'));
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
@@ -41,6 +42,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Organisation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <PrivateRoute>
+                <Tasks />
               </PrivateRoute>
             }
           />

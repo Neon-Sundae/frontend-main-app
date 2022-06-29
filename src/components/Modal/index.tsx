@@ -4,14 +4,16 @@ import styles from './index.module.scss';
 
 interface ModalProps {
   children: ReactNode;
+  width?: string;
+  height?: string;
   onClose: () => void;
 }
 
-const Modal: FC<ModalProps> = ({ children, onClose }) => {
+const Modal: FC<ModalProps> = ({ children, width, height, onClose }) => {
   return (
     <>
       <div className={styles.backdrop} />
-      <div className={styles.overlay}>
+      <div className={styles.overlay} style={{ width, height }}>
         <button type="button" onClick={onClose} className={styles['icon-cont']}>
           <span className={`material-icons ${styles.icon}`}>close</span>
         </button>
@@ -20,6 +22,11 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
       </div>
     </>
   );
+};
+
+Modal.defaultProps = {
+  width: '617px',
+  height: '630px',
 };
 
 const ModalBlobs: FC = () => {
