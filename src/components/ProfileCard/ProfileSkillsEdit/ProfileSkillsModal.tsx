@@ -5,7 +5,7 @@ import Select, { Option } from 'components/Select';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import clsx from 'clsx';
-import gradientBtn from 'assets/illustrations/button/button-gradient.svg';
+import GradientBtn from 'components/GradientBtn';
 import {
   useAddProfileSkill,
   useFetchAppSkills,
@@ -74,13 +74,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
         ))}
       </div>
-      <div className={styles['gradient-save-btn']} onClick={handleClose}>
-        <div
-          className={styles['gradient-blur']}
-          style={{ backgroundImage: `url(${gradientBtn})` }}
-        />
-        <p>Save</p>
-      </div>
+      <GradientBtn label="Save" onClick={handleClose} />
     </Modal>
   );
 };
