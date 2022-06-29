@@ -10,7 +10,7 @@ const ProfileCardContainer: FC<IProfileCardContainer> = ({ children }) => {
   return (
     <div
       className={styles['profile-card-container']}
-      style={{ backgroundImage: `url(${gradient})` }}
+      style={{ backgroundImage: `url(${gradient})`, backgroundSize: 'cover' }}
     >
       {children}
     </div>

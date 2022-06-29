@@ -1,9 +1,13 @@
 .profile-content-container {
   width: 67%;
-  height: 783px;
+  height: 783px; // this control height of the container
   background: rgba(45, 45, 53, 0.7);
   border: 1px solid #414141;
   border-radius: 30px;
   margin-left: 60px;
   padding: 54px 52px 60px 90px;
+  @media (min-width: 900px) and (max-width: 1180px) {
+    width: 59%;
+    height: 900px;
+  }
 }

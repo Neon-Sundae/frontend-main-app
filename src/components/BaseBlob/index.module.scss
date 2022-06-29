@@ -4,6 +4,10 @@
   position: absolute;
   bottom: -50px;
   left: 550px;
+  @media (min-width: 900px) and (max-width: 1180px) {
+    bottom: -50px;
+    left: 220px;
+  }
 }
 
 // Medium Blob - Blue

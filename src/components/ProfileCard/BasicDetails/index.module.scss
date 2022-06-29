@@ -85,6 +85,9 @@
     width: 291px;
     height: 52px;
     margin: 0 auto;
+    @media (min-width: 900px) and (max-width: 1180px) {
+      width: 245px;
+    }
 
     .profile-address {
       font-family: var(--font-family-roboto-flex);

@@ -1,8 +1,11 @@
-@import '../../styles/mixins/scrollbar.scss';
+@import "../../styles/mixins/scrollbar.scss";
 
 .tasks-container {
   margin-top: 50px;
   height: 580px;
+  @media (min-width: 900px) and (max-width: 1180px) {
+    height: 700px;
+  }
 
   @include customScrollbar;
 }
@@ -30,6 +33,9 @@
   align-items: center;
   padding: 10px 30px;
   margin-bottom: 30px;
+  @media (min-width: 900px) and (max-width: 1180px) {
+    padding: 10px 22px;
+  }
 
   .card-content {
     display: flex;
@@ -43,6 +49,9 @@
       font-size: 21.5px;
       color: white;
       margin-bottom: 20px;
+      @media (min-width: 900px) and (max-width: 1180px) {
+        font-size: 16px;
+      }
     }
 
     .content-container {
@@ -51,7 +60,7 @@
       width: 100%;
 
       .rating-container {
-        width: 70%;
+        width: 66%;
 
         & > h5 {
           font-family: var(--font-family-roboto-flex);
@@ -69,6 +78,11 @@
       .price-container {
         display: flex;
         margin-right: 7%;
+        @media (min-width: 900px) and (max-width: 1180px) {
+          margin-right: 20%;
+          width: 130px;
+          padding-right: 5px;
+        }
 
         & > div {
           width: 20px;
@@ -76,6 +90,10 @@
           background-color: #ec81a6;
           border-radius: 50%;
           margin-right: 10px;
+          @media (min-width: 900px) and (max-width: 1180px) {
+            width: 14px;
+            height: 14px;
+          }
         }
 
         & > span {
@@ -83,6 +101,9 @@
           font-weight: 500;
           font-size: 15px;
           color: white;
+          @media (min-width: 900px) and (max-width: 1180px) {
+            font-size: 12px;
+          }
         }
       }
 
@@ -92,7 +113,10 @@
         position: absolute;
         right: 70px;
         top: 65px;
-
+        @media (min-width: 900px) and (max-width: 1180px) {
+          right: 8%;
+          top: 65px;
+        }
         & > img {
           width: 100%;
           height: 100%;
