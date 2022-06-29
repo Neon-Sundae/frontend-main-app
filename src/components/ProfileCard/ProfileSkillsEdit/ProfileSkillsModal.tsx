@@ -57,13 +57,15 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
         To add more skills, write it in field below and click ENTER to add a
         skill. You can add maximum 6 skills.
       </p>
-      <Select
-        options={appSkills}
-        placeholder="Select Skills"
-        value={selectedSkill}
-        name="ProfileSkills"
-        onSelectChange={handleSelectChange}
-      />
+      <div className={styles['skills-select-container']}>
+        <Select
+          options={appSkills}
+          placeholder="Select Skills"
+          value={selectedSkill}
+          name="ProfileSkills"
+          onSelectChange={handleSelectChange}
+        />
+      </div>
       <div className={styles['profile-skill-modal-tag-container']}>
         {profileSkills.map(profileSkill => (
           <SkillTag
