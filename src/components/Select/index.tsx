@@ -18,7 +18,6 @@ interface ComponentProps {
   value: SingleValue<Option>;
   borderColor?: string;
   borderRadius?: number;
-  backgroundColor?: string;
   height?: number;
 }
 
@@ -30,7 +29,6 @@ const SelectComponent: FC<ComponentProps> = ({
   value,
   borderColor,
   borderRadius,
-  backgroundColor,
   height,
 }) => {
   const getSharedSelectProps = () => {
@@ -47,14 +45,14 @@ const SelectComponent: FC<ComponentProps> = ({
       ...styles,
       display: 'flex',
       justifyContent: 'center',
+      zIndex: 2,
     }),
     control: styles => ({
       ...styles,
-      backgroundColor,
+      backgroundColor: '#2d2d35',
       borderWidth: 1.2,
       borderColor,
       borderRadius,
-      // width: '80%',
       width: '100%',
       height,
       margin: '0 auto',
@@ -72,14 +70,12 @@ const SelectComponent: FC<ComponentProps> = ({
     menu: styles => ({
       ...styles,
       backgroundColor: '#2d2d35',
-      // width: '80%',
       width: '100%',
       borderColor,
       overflow: 'auto',
-      zIndex: 2,
+      zIndex: 3,
     }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-      // const color = chroma(data.color);
       return {
         ...styles,
         backgroundColor: isSelected ? '#1d1d23' : '#2d2d35',
@@ -130,7 +126,6 @@ const SelectComponent: FC<ComponentProps> = ({
 
 SelectComponent.defaultProps = {
   borderColor: '#3c3c3c',
-  backgroundColor: '#2d2d35',
   height: 55,
   borderRadius: 20,
 };
