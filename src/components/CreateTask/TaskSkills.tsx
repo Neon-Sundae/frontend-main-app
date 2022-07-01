@@ -29,7 +29,7 @@ const TaskSkills: FC = () => {
   };
 
   return (
-    <div>
+    <div className={styles['task-skills-container']}>
       <h4 className={styles['difficulty-price-label']}>Skills Needed</h4>
       <Select
         options={appSkills}

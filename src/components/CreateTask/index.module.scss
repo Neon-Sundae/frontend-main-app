@@ -1,7 +1,7 @@
 .create-task-title {
   font-family: var(--font-family-roboto-flex);
   font-weight: 600;
-  font-size: clamp(1.5rem, 4vw, 2.125rem);
+  font-size: clamp(1.75rem, 2.5vw, 2.125rem);
   color: white;
   margin-bottom: 60px;
 }
@@ -13,12 +13,13 @@
 
 .create-task-form-row {
   display: flex;
-  gap: 2vw;
+  gap: max(2vw, 1.5rem);
   flex-wrap: wrap;
+  margin-bottom: min(3vh, 1.5rem);
 }
 
 .task-name-field {
-  background: transparent;
+  background: #2d2d35;
   color: white;
   border: 1px solid white;
   outline: none;
@@ -30,7 +31,7 @@
   font-size: 21px;
   height: 55px;
 
-  z-index: 1;
+  // z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 
@@ -42,7 +43,7 @@
 
 .task-description-field {
   resize: none;
-  background: transparent;
+  background: #2d2d35;
   color: white;
   border: 1px solid white;
   outline: none;
@@ -54,6 +55,9 @@
   font-weight: 400;
   font-size: 21px;
 
+  margin-bottom: min(3vh, 1.5rem);
+  z-index: 1;
+
   &::placeholder {
     color: white;
     font-size: 18px;
@@ -63,8 +67,9 @@
 .difficulty-price-label {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  font-size: 22px;
+  font-size: clamp(1.25rem, 1.6vw, 1.4rem);
   color: white;
+  margin-bottom: min(1vh, 1rem);
 }
 
 .task-price-field {
@@ -73,7 +78,7 @@
 }
 
 .select-category-field {
-  z-index: 1;
+  // z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 }
@@ -87,9 +92,14 @@
   width: min(100%, 15rem);
 }
 
+.task-skills-container {
+  margin-bottom: min(3vh, 1.5rem);
+}
+
 .profile-skill-modal-tag-container {
   display: flex;
   flex-wrap: wrap;
+  margin-top: min(2.5vh, 1rem);
   // width: 80%;
   // margin: 40px auto 60px;
 }
@@ -104,7 +114,7 @@
   border-radius: 30.5px;
   margin: 0 10px;
   margin-bottom: 20px;
-  z-index: 1;
+  // z-index: 1;
 
   & > span {
     font-family: var(--font-family-roboto-regular);
@@ -120,7 +130,7 @@
 }
 
 .task-checklist-container {
-  z-index: 1;
+  // z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 }
@@ -128,7 +138,7 @@
 .add-more-btn {
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: 17px;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
   color: white;
   display: flex;
   border: 1px solid white;
@@ -136,7 +146,7 @@
   border-radius: 3px;
   padding: 0 10px;
   cursor: pointer;
-  z-index: 1;
+  // z-index: 1;
 
   & > i {
     margin-left: 5px;
@@ -177,7 +187,7 @@
 }
 
 .task-attachments-container {
-  z-index: 1;
+  // z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 }
