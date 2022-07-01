@@ -40,8 +40,8 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
   return (
     <Modal
       onClose={handleClose}
-      width="clamp(20rem, 55vw, 55rem)"
-      height="min(90%, 50rem)"
+      width="clamp(20rem, 45vw, 45rem)"
+      height="min(90%, 45rem)"
       overflowY="auto"
     >
       <h1 className={styles['create-task-title']}>Create a Task</h1>
@@ -61,6 +61,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               onSelectChange={handleSelectChange}
               borderColor="white"
               borderRadius={10}
+              height={50}
             />
           </div>
         </div>
@@ -81,6 +82,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               onSelectChange={handleSelectChange}
               borderColor="white"
               borderRadius={10}
+              height={50}
             />
           </div>
           <div className={styles['difficulty-price-container']}>

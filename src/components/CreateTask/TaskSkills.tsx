@@ -39,6 +39,7 @@ const TaskSkills: FC = () => {
         onSelectChange={handleSelectChange}
         borderColor="white"
         borderRadius={10}
+        height={50}
       />
       <div className={styles['profile-skill-modal-tag-container']}>
         {taskSkills.map(taskSkill => (

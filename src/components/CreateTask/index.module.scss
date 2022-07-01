@@ -1,14 +1,17 @@
 .create-task-title {
   font-family: var(--font-family-roboto-flex);
   font-weight: 600;
-  font-size: clamp(1.75rem, 2.5vw, 2.125rem);
+  // font-size: clamp(1.75rem, 2.5vw, 2.125rem);
+  font-size: clamp(1.5rem, 2vw, 1.75rem);
   color: white;
-  margin-bottom: 60px;
+  // margin-bottom: 60px;
+  margin-bottom: max(30px, 8%);
 }
 
 .create-task-content {
   display: flex;
   flex-direction: column;
+  margin-bottom: min(2vh, 1rem);
 }
 
 .create-task-form-row {
@@ -28,16 +31,18 @@
 
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: 21px;
-  height: 55px;
+  // font-size: 21px;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  height: 50px;
 
-  // z-index: 1;
+  z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 
   &::placeholder {
     color: white;
-    font-size: 18px;
+    // font-size: 18px;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
   }
 }
 
@@ -53,32 +58,35 @@
 
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: 21px;
+  // font-size: 21px;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
 
   margin-bottom: min(3vh, 1.5rem);
-  z-index: 1;
+  // z-index: 1;
 
   &::placeholder {
     color: white;
-    font-size: 18px;
+    // font-size: 18px;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
   }
 }
 
 .difficulty-price-label {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  font-size: clamp(1.25rem, 1.6vw, 1.4rem);
+  // font-size: clamp(1.25rem, 1.6vw, 1.4rem);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
   color: white;
-  margin-bottom: min(1vh, 1rem);
+  margin-bottom: min(2vh, 1rem);
 }
 
 .task-price-field {
   width: 100%;
-  height: 55px;
+  height: 50px;
 }
 
 .select-category-field {
-  // z-index: 1;
+  z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 }
@@ -130,7 +138,7 @@
 }
 
 .task-checklist-container {
-  // z-index: 1;
+  z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 }
