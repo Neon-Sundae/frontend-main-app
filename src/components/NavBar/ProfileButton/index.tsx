@@ -2,9 +2,14 @@ import { FC } from 'react';
 import clsx from 'clsx';
 import ProfileImage from 'assets/images/profile/user-image.png';
 import styles from './index.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 
 import { useNavigate } from 'react-router-dom';
 const ProfileButton: FC = () => {
+const userWalletId = useSelector((state: RootState) => state.user.user?.walletId);
+
+  
   const navigate = useNavigate();
   return (
     <div className={styles.container}>
@@ -27,14 +32,13 @@ const ProfileButton: FC = () => {
           )}
         >
           <div
-          //	TODO - Implement center ellipsis for text overflow
           >
-            <span>8D4322...DFDFSD</span>
+            <span>{userWalletId?.substring(0,6)+ '...'+ userWalletId?.substring(userWalletId.length-4,userWalletId.length)}</span>
           </div>
           <span className="material-icons">keyboard_arrow_down</span>
         </div>
         <div className={clsx(styles['text--secondary'], styles['text--align'])}>
-          <span>On-Chain Wallet</span>
+          <span>Your Wallet</span>
           <WalletConnIndicator />
         </div>
       </div>
