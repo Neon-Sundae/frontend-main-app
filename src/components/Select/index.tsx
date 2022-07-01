@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Select, { ActionMeta, SingleValue, StylesConfig } from 'react-select';
 
 export interface Option {
-  value: number;
+  value: number | string;
   label: string;
 }
 
@@ -16,6 +16,9 @@ interface ComponentProps {
     actionMeta: ActionMeta<Option>
   ) => void;
   value: SingleValue<Option>;
+  borderColor?: string;
+  borderRadius?: number;
+  height?: number;
 }
 
 const SelectComponent: FC<ComponentProps> = ({
@@ -24,6 +27,9 @@ const SelectComponent: FC<ComponentProps> = ({
   name,
   onSelectChange,
   value,
+  borderColor,
+  borderRadius,
+  height,
 }) => {
   const getSharedSelectProps = () => {
     return {
@@ -39,37 +45,37 @@ const SelectComponent: FC<ComponentProps> = ({
       ...styles,
       display: 'flex',
       justifyContent: 'center',
+      zIndex: 2,
     }),
     control: styles => ({
       ...styles,
       backgroundColor: '#2d2d35',
       borderWidth: 1.2,
-      borderColor: '#3c3c3c',
-      borderRadius: 20,
-      width: '80%',
-      height: 55,
+      borderColor,
+      borderRadius,
+      width: '100%',
+      height,
       margin: '0 auto',
       padding: '0 20px',
       cursor: 'pointer',
       ':hover': {
         ...styles[':hover'],
-        borderColor: '#3c3c3c',
+        borderColor,
       },
       ':active': {
         ...styles[':active'],
-        borderColor: '#3c3c3c',
+        borderColor,
       },
     }),
     menu: styles => ({
       ...styles,
       backgroundColor: '#2d2d35',
-      width: '80%',
-      borderColor: '#3c3c3c',
+      width: '100%',
+      borderColor,
       overflow: 'auto',
-      zIndex: 2,
+      zIndex: 3,
     }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-      // const color = chroma(data.color);
       return {
         ...styles,
         backgroundColor: isSelected ? '#1d1d23' : '#2d2d35',
@@ -116,6 +122,12 @@ const SelectComponent: FC<ComponentProps> = ({
       isMulti={false}
     />
   );
+};
+
+SelectComponent.defaultProps = {
+  borderColor: '#3c3c3c',
+  height: 55,
+  borderRadius: 20,
 };
 
 export default SelectComponent;
