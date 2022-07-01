@@ -1,6 +1,8 @@
 .gradient-save-btn {
-  height: 76px;
-  width: 270px;
+  // height: 76px;
+  // width: 270px;
+  height: min(7vh, 12rem);
+  width: min(100%, 16rem);
   background-color: transparent;
   overflow: hidden;
   border-radius: 30px;
@@ -26,7 +28,8 @@
     transform: translate(-50%, -50%);
     font-family: var(--font-family-roboto-flex);
     font-weight: 500;
-    font-size: 22px;
+    // font-size: 22px;
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
     text-transform: uppercase;
     cursor: pointer;
   }
