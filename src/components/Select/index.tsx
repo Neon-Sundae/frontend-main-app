@@ -53,6 +53,8 @@ const SelectComponent: FC<ComponentProps> = ({
     }),
     control: styles => ({
       ...styles,
+      fontFamily: 'Roboto Flex',
+      fontWeight: 400,
       backgroundColor: '#2d2d35',
       borderWidth: 1.2,
       borderColor,
@@ -82,6 +84,8 @@ const SelectComponent: FC<ComponentProps> = ({
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       return {
         ...styles,
+        fontFamily: 'Roboto Flex',
+        fontWeight: 400,
         backgroundColor: isSelected ? '#1d1d23' : '#2d2d35',
         color: 'white',
         cursor: isDisabled ? 'not-allowed' : 'default',
