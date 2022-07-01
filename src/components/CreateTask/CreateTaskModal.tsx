@@ -40,7 +40,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
   return (
     <Modal
       onClose={handleClose}
-      width="clamp(20rem, 50vw, 50rem)"
+      width="clamp(20rem, 55vw, 55rem)"
       height="min(80%, 50rem)"
       overflowY="auto"
     >

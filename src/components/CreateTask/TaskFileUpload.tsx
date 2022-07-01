@@ -1,4 +1,12 @@
-import { ChangeEvent, DragEvent, FC, useRef, useState } from 'react';
+import clsx from 'clsx';
+import {
+  ChangeEvent,
+  DragEvent,
+  FC,
+  MouseEvent,
+  useRef,
+  useState,
+} from 'react';
 import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
@@ -6,6 +14,7 @@ export interface IFile {
   id: string;
   file: File;
   fileName: string;
+  baseFileName: string;
   fileExtension: string;
 }
 
@@ -27,6 +36,7 @@ const TaskFileUpload: FC = () => {
           id: getRandomString(5),
           file: files[i],
           fileName: `${fileName}-${getRandomString(10)}.${fileExtension}`,
+          baseFileName: `${fileName}.${fileExtension}`,
           fileExtension,
         });
       }
@@ -55,6 +65,11 @@ const TaskFileUpload: FC = () => {
     e.preventDefault();
   };
 
+  const handleRemove = (id: string) => {
+    const newData = filesArray?.filter(file => file.id !== id);
+    if (newData) setFilesArray(newData);
+  };
+
   return (
     <div className={styles['task-attachments-container']}>
       <h4 className={styles['difficulty-price-label']}>Attachments</h4>
@@ -65,7 +80,16 @@ const TaskFileUpload: FC = () => {
         onDragOver={handleDragEvent}
       >
         {filesArray ? (
-          filesArray.map(file => <p>File</p>)
+          filesArray.map(file => (
+            <div>
+              <FileAttachmentCard
+                key={file.id}
+                id={file.id}
+                label={file.baseFileName}
+                onClick={handleRemove}
+              />
+            </div>
+          ))
         ) : (
           <span className={styles['file-upload-text']}>Drag &#38; Drop</span>
         )}
@@ -81,6 +105,38 @@ const TaskFileUpload: FC = () => {
         onChange={handleFileChange}
         onDragOver={handleDragEvent}
       />
+    </div>
+  );
+};
+
+interface IFileAttachmentCard {
+  label: string;
+  id: string;
+  onClick: (id: string) => void;
+}
+
+const FileAttachmentCard: FC<IFileAttachmentCard> = ({
+  id,
+  label,
+  onClick,
+}) => {
+  const handleClick = (e: MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+    onClick(id);
+  };
+
+  return (
+    <div className={styles['file-attachment-card']}>
+      <i className={clsx('material-icons', styles['attachment-icon'])}>
+        attachment
+      </i>
+      <span>{label}</span>
+      <i
+        className={clsx('material-icons', styles['close-icon'])}
+        onClick={handleClick}
+      >
+        close
+      </i>
     </div>
   );
 };

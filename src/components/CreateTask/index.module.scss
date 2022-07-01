@@ -121,6 +121,8 @@
 
 .task-checklist-container {
   z-index: 1;
+  flex-grow: 1;
+  width: min(100%, 15rem);
 }
 
 .add-more-btn {
@@ -146,6 +148,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+  width: 100%;
 
   & > span {
     width: 14px;
@@ -163,6 +166,7 @@
     font-size: 16px;
     color: white;
     border-bottom: 1px solid;
+    width: min(100%, 20rem);
   }
 
   & > i {
@@ -174,11 +178,14 @@
 
 .task-attachments-container {
   z-index: 1;
+  flex-grow: 1;
+  width: min(100%, 15rem);
 }
 
 .file-input-container {
   min-height: 120px;
   // width: 604px;
+  width: min(30rem, 100%);
   border: 1px dashed white;
   border-radius: 4px;
   display: flex;
@@ -197,4 +204,24 @@
 
 .attachments {
   display: none;
+}
+
+.file-attachment-card {
+  color: white;
+  display: flex;
+  align-items: center;
+  border: 0.6px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 5px 10px;
+
+  & > i {
+    font-size: 20px;
+  }
+
+  & > span {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+    font-size: 14px;
+    margin-inline: 5px;
+  }
 }
