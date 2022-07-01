@@ -2,10 +2,15 @@
 import { FC } from 'react';
 import Select, { ActionMeta, SingleValue, StylesConfig } from 'react-select';
 
-export interface Option {
-  value: number | string;
-  label: string;
-}
+export type Option =
+  | {
+      value: number;
+      label: string;
+    }
+  | {
+      value: string;
+      label: string;
+    };
 
 interface ComponentProps {
   options: Option[];
