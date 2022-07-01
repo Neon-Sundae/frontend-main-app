@@ -37,7 +37,7 @@ const Banner: FC = () => {
         </div>
       </div>
       {showOrgModal && <StartOrgModal onClose={handleOrgModalClose} />}
-      {/* {showPrjModal && <StartPrjModal onClose={handlePrjModalClose} />} */}
+      {showPrjModal && <StartPrjModal onClose={handlePrjModalClose} />}
     </>
   );
 };

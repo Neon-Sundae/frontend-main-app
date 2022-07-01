@@ -1,9 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-dummy-1.svg';
 import { ReactComponent as Edit } from 'assets/illustrations/icons/stroke.svg';
 import BaseModal from 'components/Home/BaseModal';
 import StartOrgModal from 'components/StartOrgModal';
 import styles from './index.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const data = [
   {
@@ -16,8 +17,9 @@ const data = [
 interface IStartPrjProps {
   onClose: () => void;
 }
-
+let organizationId: number = 0;
 const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
+  const navigate = useNavigate();
   const [showOrgModal, setShowOrgModal] = useState(false);
 
   const handleOrgModalShow = () => {
@@ -32,7 +34,13 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
     return <StartOrgModal onClose={handleOrgModalClose} />;
   }
 
-  const handleNext = () => {};
+  const handleNext = () => {
+    if (!organizationId) {
+      alert('Please select an organisation');
+    } else {
+      navigate(`/project/create`);
+    }
+  };
 
   return (
     <BaseModal
@@ -41,8 +49,9 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
       onNext={handleNext}
     >
       <section className={styles['org-list']}>
-        {data.map(org => (
+        {data.map((org) => (
           <Organisation
+            id={org.orgId}
             organisation={org.organisation}
             organisationImage={org.organisationImage}
             key={org.orgId}
@@ -60,15 +69,37 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
 };
 
 interface IOrgProps {
+  id: number;
   organisation: string;
   organisationImage: JSX.Element;
 }
 
-const Organisation: FC<IOrgProps> = ({ organisation, organisationImage }) => {
+const Organisation: FC<IOrgProps> = ({
+  id,
+  organisation,
+  organisationImage,
+}) => {
+  const [orgId, setOrgId] = useState(0);
+  const [resetSelect, setResetSelect] = useState(false);
+  console.log(resetSelect);
   return (
-    <section className={styles.container}>
+    <section
+      className={styles.container}
+      onClick={() => {
+        setResetSelect((v) => !v);
+        if (resetSelect) setOrgId(0);
+        else setOrgId(id);
+        organizationId = id;
+      }}
+    >
       {organisationImage}
-      <p>{organisation}</p>
+      {orgId != 0 ? (
+        <p>
+          <strong>{organisation}</strong>
+        </p>
+      ) : (
+        <p>{organisation}</p>
+      )}
     </section>
   );
 };
