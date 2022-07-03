@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import Modal from 'components/Modal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import gradientBtn from 'assets/illustrations/button/button-gradient.svg';
+import GradientBtn from 'components/GradientBtn';
 import styles from './index.module.scss';
 import useUpdateProfileSocial from './hooks';
 
@@ -64,13 +64,7 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
         value={portfolio}
         handleChange={e => setPortfolio(e.target.value)}
       />
-      <div className={styles['gradient-save-btn']} onClick={handleSave}>
-        <div
-          className={styles['gradient-blur']}
-          style={{ backgroundImage: `url(${gradientBtn})` }}
-        />
-        <p>Save</p>
-      </div>
+      <GradientBtn label="Save" onClick={handleSave} />
     </Modal>
   );
 };

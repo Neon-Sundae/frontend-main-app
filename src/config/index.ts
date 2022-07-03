@@ -15,9 +15,8 @@ const configs: Environment = {
     chainId: '0x13881',
   },
   dev: {
-    ApiBaseUrl: 'http://ec2-52-15-235-7.us-east-2.compute.amazonaws.com',
-    AppDomain:
-      'http://founderslab-dev-deployment.s3-website.us-east-2.amazonaws.com',
+    ApiBaseUrl: 'https://api.develop.founderslab.xyz',
+    AppDomain: 'https://develop.founderslab.xyz',
     chainId: '0x13881',
   },
   prod: {

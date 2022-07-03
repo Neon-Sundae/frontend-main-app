@@ -74,13 +74,19 @@ const useAddProfileSkill = () => {
           });
           await handleApiErrors(response);
 
-          dispatch(addProfileNormalizeSkill(selectedValue));
-          dispatch(
-            addProfileSkillAction({
-              skillsId: selectedValue.value,
-              name: selectedValue.label,
-            })
-          );
+          if (
+            typeof selectedValue.value === 'number' &&
+            typeof selectedValue.label === 'string'
+          ) {
+            const { label, value } = selectedValue;
+            dispatch(addProfileNormalizeSkill({ label, value }));
+            dispatch(
+              addProfileSkillAction({
+                skillsId: selectedValue.value,
+                name: selectedValue.label,
+              })
+            );
+          }
         } catch (err: any) {
           console.log(err);
           handleUnAuthorization(err);
