@@ -18,13 +18,13 @@ interface IProfileSkills {
 }
 
 const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
-  useFetchAppSkills();
+  const { appSkills } = useFetchAppSkills();
   const addProfileSkill = useAddProfileSkill();
   const removeProfileSkill = useRemoveProfileSkill();
 
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
 
-  const appSkills = useSelector((state: RootState) => state.skills.appSkills);
+  // const appSkills = useSelector((state: RootState) => state.skills.appSkills);
   const profileSkills = useSelector(
     (state: RootState) => state.skills.profileSkills
   );
@@ -59,7 +59,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
       </p>
       <div className={styles['skills-select-container']}>
         <Select
-          options={appSkills}
+          options={appSkills ?? []}
           placeholder="Select Skills"
           value={selectedSkill}
           name="ProfileSkills"
