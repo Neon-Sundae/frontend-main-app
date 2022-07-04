@@ -1,17 +1,14 @@
 import clsx from 'clsx';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ActionMeta, SingleValue } from 'react-select';
 import Select, { Option } from 'components/Select';
-import { RootState } from 'reducers';
 import { useFetchAppSkills } from 'components/ProfileCard/ProfileSkillsEdit/hooks';
 import styles from './index.module.scss';
 
 const TaskSkills: FC = () => {
-  useFetchAppSkills();
+  const { appSkills } = useFetchAppSkills();
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
   const [taskSkills, setTaskSkills] = useState<Option[]>([]);
-  const appSkills = useSelector((state: RootState) => state.skills.appSkills);
 
   const handleSelectChange = (
     newValue: SingleValue<Option>,
@@ -32,7 +29,7 @@ const TaskSkills: FC = () => {
     <div className={styles['task-skills-container']}>
       <h4 className={styles['difficulty-price-label']}>Skills Needed</h4>
       <Select
-        options={appSkills}
+        options={appSkills ?? []}
         placeholder="Select Skills"
         value={selectedSkill}
         name="ProfileSkills"
