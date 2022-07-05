@@ -5,6 +5,7 @@ import BaseModal from 'components/Home/BaseModal';
 import StartOrgModal from 'components/StartOrgModal';
 import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
+import CreatePrjModal from './CreatePrjModal';
 
 const data = [
   {
@@ -21,6 +22,7 @@ let organizationId: number = 0;
 const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const [showOrgModal, setShowOrgModal] = useState(false);
+  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
 
   const handleOrgModalShow = () => {
     setShowOrgModal(true);
@@ -35,36 +37,64 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   }
 
   const handleNext = () => {
-    if (!organizationId) {
-      alert('Please select an organisation');
-    } else {
-      navigate(`/project/create`);
+    {
+      !organizationId
+        ? alert('Please select an organization')
+        : setShowCreateProjectModal(true);
     }
   };
 
   return (
-    <BaseModal
-      onClose={onClose}
-      header="Choose an organisation to start a project"
-      onNext={handleNext}
-    >
-      <section className={styles['org-list']}>
-        {data.map((org) => (
-          <Organisation
-            id={org.orgId}
-            organisation={org.organisation}
-            organisationImage={org.organisationImage}
-            key={org.orgId}
-          />
-        ))}
-        <section className={styles.container} onClick={handleOrgModalShow}>
-          <div className={styles['icon-cont']}>
-            <Edit width={30} height={30} />
-          </div>
-          <p>Add an organisation</p>
-        </section>
-      </section>
-    </BaseModal>
+    <>
+      {!showCreateProjectModal ? (
+        <>
+          <BaseModal
+            onClose={onClose}
+            header="Choose an organisation to start a project"
+            onNext={handleNext}
+          >
+            <section className={styles['org-list']}>
+              {data.map((org) => (
+                <Organisation
+                  id={org.orgId}
+                  organisation={org.organisation}
+                  organisationImage={org.organisationImage}
+                  key={org.orgId}
+                />
+              ))}
+              <section
+                className={styles.container}
+                onClick={handleOrgModalShow}
+              >
+                <div className={styles['icon-cont']}>
+                  <Edit width={30} height={30} />
+                </div>
+                <p>Add an organisation</p>
+              </section>
+              <footer
+                className={styles.btnCont}
+                style={{ position: 'absolute', bottom: '8%', left: '25%' }}
+              >
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className={styles.btn}
+                >
+                  Next
+                </button>
+              </footer>
+            </section>
+          </BaseModal>
+        </>
+      ) : (
+        <CreatePrjModal
+          onClose={onClose}
+          onNext={() => {
+            console.log('next!');
+          }}
+        />
+      )}
+    </>
   );
 };
 
@@ -81,7 +111,9 @@ const Organisation: FC<IOrgProps> = ({
 }) => {
   const [orgId, setOrgId] = useState(0);
   const [resetSelect, setResetSelect] = useState(false);
-  console.log(resetSelect);
+  useEffect(() => {
+    if (!resetSelect) organizationId = 0;
+  }, [resetSelect]);
   return (
     <section
       className={styles.container}
