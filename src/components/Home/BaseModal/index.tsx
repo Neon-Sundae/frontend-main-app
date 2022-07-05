@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 
 interface ComponentProps {
   header: string;
-  children: ReactElement;
+  children?: JSX.Element | JSX.Element[];
   onNext: () => void;
   onClose: () => void;
 }
@@ -28,9 +28,9 @@ const BaseModal: FC<ComponentProps> = ({
         </header>
         <section>{children}</section>
         <footer className={styles.btnCont}>
-          <button type="button" onClick={onNext} className={styles.btn}>
+          {/* <button type="button" onClick={onNext} className={styles.btn}>
             Next
-          </button>
+          </button> */}
         </footer>
         <ModalBlobs />
       </div>
