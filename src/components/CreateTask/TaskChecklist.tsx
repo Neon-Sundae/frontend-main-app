@@ -1,21 +1,21 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
-interface IChecklistItem {
+export interface IChecklistItem {
   id: string;
   value: string;
 }
 
-const initialData = [
-  { id: getRandomString(5), value: 'Information Architecture' },
-  { id: getRandomString(5), value: 'Wireframes' },
-];
+interface ITaskChecklist {
+  checklistItems: IChecklistItem[];
+  setChecklistItems: Dispatch<SetStateAction<IChecklistItem[]>>;
+}
 
-const TaskChecklist: FC = () => {
-  const [checklistItems, setChecklistItems] =
-    useState<IChecklistItem[]>(initialData);
-
+const TaskChecklist: FC<ITaskChecklist> = ({
+  checklistItems,
+  setChecklistItems,
+}) => {
   const addMore = () => {
     setChecklistItems([
       ...checklistItems,

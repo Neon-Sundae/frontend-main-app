@@ -1,26 +1,27 @@
 import clsx from 'clsx';
 import {
   ChangeEvent,
+  Dispatch,
   DragEvent,
   FC,
   MouseEvent,
+  SetStateAction,
   useRef,
-  useState,
 } from 'react';
-import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
 export interface IFile {
   id: string;
   file: File;
-  fileName: string;
-  baseFileName: string;
-  fileExtension: string;
 }
 
-const TaskFileUpload: FC = () => {
+interface ITaskFileUpload {
+  filesArray: IFile[] | null;
+  setFilesArray: Dispatch<SetStateAction<IFile[] | null>>;
+}
+
+const TaskFileUpload: FC<ITaskFileUpload> = ({ filesArray, setFilesArray }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [filesArray, setFilesArray] = useState<IFile[] | null>(null);
 
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -28,16 +29,12 @@ const TaskFileUpload: FC = () => {
   };
 
   const setFileState = (files: FileList | null) => {
-    const fileArray = [];
+    const fileArray: IFile[] = [];
     if (files) {
       for (let i = 0; i < files?.length; i += 1) {
-        const [fileName, fileExtension] = files[i].name.split('.');
         fileArray.push({
-          id: getRandomString(5),
+          id: `${files[i].name}-${files[i].size}`,
           file: files[i],
-          fileName: `${fileName}-${getRandomString(10)}.${fileExtension}`,
-          baseFileName: `${fileName}.${fileExtension}`,
-          fileExtension,
         });
       }
 
@@ -80,12 +77,15 @@ const TaskFileUpload: FC = () => {
         onDragOver={handleDragEvent}
       >
         {filesArray ? (
-          filesArray.map(file => (
+          filesArray.map(fileItem => (
             <div>
               <FileAttachmentCard
-                key={file.id}
-                id={file.id}
-                label={file.baseFileName}
+                key={fileItem.id}
+                id={fileItem.id}
+                label={`${fileItem.file.name.slice(
+                  0,
+                  8
+                )}..${fileItem.file.name.slice(-4)}`}
                 onClick={handleRemove}
               />
             </div>

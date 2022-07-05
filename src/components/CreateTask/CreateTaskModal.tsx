@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { ActionMeta, SingleValue } from 'react-select';
 import Modal from 'components/Modal';
 import Select, { Option } from 'components/Select';
@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import clsx from 'clsx';
 import GradientBtn from 'components/GradientBtn';
+import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 import TaskSkills from './TaskSkills';
-import TaskChecklist from './TaskChecklist';
-import TaskFileUpload from './TaskFileUpload';
+import TaskChecklist, { IChecklistItem } from './TaskChecklist';
+import TaskFileUpload, { IFile } from './TaskFileUpload';
+import useCreateTask from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -21,21 +23,69 @@ const categories = [
   { label: 'Developer', value: 'Developer' },
 ];
 
+const initialData = [
+  { id: getRandomString(5), value: 'Information Architecture' },
+  { id: getRandomString(5), value: 'Wireframes' },
+];
+
 const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
+  const createTask = useCreateTask();
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskPrice, setTaskPrice] = useState('');
+  const [checklistItems, setChecklistItems] =
+    useState<IChecklistItem[]>(initialData);
+  const [filesArray, setFilesArray] = useState<IFile[] | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Option | null>(
+    null
+  );
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
+  const [taskSkills, setTaskSkills] = useState<Option[]>([]);
 
   const handleClose = () => {
-    setOpen(false);
+    const formData = new FormData();
+
+    formData.append('name', taskName);
+    formData.set('description', taskDescription);
+    formData.append('price', taskPrice);
+    formData.append('category', selectedCategory?.label ?? '');
+    formData.append('difficulty', selectedDifficulty?.value.toString() ?? '');
+
+    checklistItems.forEach(item =>
+      formData.append('checklist[]', JSON.stringify(item))
+    );
+    filesArray?.forEach(fileItem => formData.append('files[]', fileItem.file));
+    taskSkills.forEach(skill => formData.append('skills[]', skill.label));
+
+    console.log(formData.getAll('files[]'));
+    createTask.mutate(formData);
   };
 
-  const handleSelectChange = (
+  const handleCategoryChange = (
     newValue: SingleValue<Option>,
     action: ActionMeta<Option>
   ) => {
     if (newValue) {
-      setSelectedSkill(newValue);
+      setSelectedCategory(newValue);
     }
   };
+
+  const handleDifficultyChange = (
+    newValue: SingleValue<Option>,
+    action: ActionMeta<Option>
+  ) => {
+    if (newValue) {
+      setSelectedDifficulty(newValue);
+    }
+  };
+
+  const handleInputChange =
+    (setState: Dispatch<SetStateAction<string>>) =>
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { value } = e.target;
+      setState(value);
+    };
 
   return (
     <Modal
@@ -51,14 +101,16 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
             type="text"
             placeholder="Task Name"
             className={styles['task-name-field']}
+            value={taskName}
+            onChange={handleInputChange(setTaskName)}
           />
           <div className={styles['select-category-field']}>
             <Select
               options={categories}
               placeholder="Select Category"
-              value={selectedSkill}
+              value={selectedCategory}
               name="TaskCategory"
-              onSelectChange={handleSelectChange}
+              onSelectChange={handleCategoryChange}
               borderColor="white"
               borderRadius={10}
               height={50}
@@ -68,6 +120,8 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
         <textarea
           placeholder="Task Description"
           className={styles['task-description-field']}
+          value={taskDescription}
+          onChange={handleInputChange(setTaskDescription)}
         />
         <div className={styles['create-task-form-row']}>
           <div className={styles['difficulty-price-container']}>
@@ -77,9 +131,9 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
             <Select
               options={categories}
               placeholder="Select Difficulty"
-              value={selectedSkill}
+              value={selectedDifficulty}
               name="TaskDifficulty"
-              onSelectChange={handleSelectChange}
+              onSelectChange={handleDifficultyChange}
               borderColor="white"
               borderRadius={10}
               height={50}
@@ -100,13 +154,26 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
                 styles['task-name-field'],
                 styles['task-price-field']
               )}
+              value={taskPrice}
+              onChange={handleInputChange(setTaskPrice)}
             />
           </div>
         </div>
-        <TaskSkills />
+        <TaskSkills
+          selectedSkill={selectedSkill}
+          setSelectedSkill={setSelectedSkill}
+          taskSkills={taskSkills}
+          setTaskSkills={setTaskSkills}
+        />
         <div className={styles['create-task-form-row']}>
-          <TaskChecklist />
-          <TaskFileUpload />
+          <TaskChecklist
+            checklistItems={checklistItems}
+            setChecklistItems={setChecklistItems}
+          />
+          <TaskFileUpload
+            filesArray={filesArray}
+            setFilesArray={setFilesArray}
+          />
         </div>
       </div>
       <GradientBtn label="Save" onClick={handleClose} />
