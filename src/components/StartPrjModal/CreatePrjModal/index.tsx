@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import Modal from 'components/Modal';
 import styles from './index.module.scss';
-import Select, { StylesConfig } from 'react-select';
+import Select from 'react-select';
 import timezoneData from 'assets/data/timezones.json';
 import { customStyles } from './selectStyles';
+import getRandomString from 'utils/getRandomString';
 interface ICreatePrjProps {
   onNext: () => void;
   onClose: () => void;
@@ -27,28 +28,16 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
     projectDue: '',
     projectTimezones: [],
     projectOrganisation: '',
-    projectResource: '',
     projectAddResources: [],
-    projectCategoryAndBudget: { category: '', budget: '' },
     projectCategoriesAndBudget: [{ category: '', budget: '' }],
   });
 
   const [options, setOptions] = useState<any>(null);
-  const [selectedOptions, setSelectedOptions] = useState<any>(null); // timezones array is here
+  const [selectedOptions, setSelectedOptions] = useState<any>(null);
   const [addMoreResources, setAddMoreResources] = useState<any>({ counter: 0 });
   const [addMoreCategories, setAddMoreCategories] = useState<any>({
     counter: 0,
   });
-
-  const handleSingleResourceChange = (e: any) => {
-    setFormData((prevState: any) => {
-      const target = e.target as HTMLInputElement;
-      prevState.projectResource = target.value;
-      return {
-        ...prevState,
-      };
-    });
-  };
 
   const handleAddResource = () =>
     setAddMoreResources((prevState: any) => ({
@@ -68,21 +57,24 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
       if (target.value !== '')
         prevState.projectAddResources.indexOf(target.value) === -1
           ? prevState.projectAddResources.push(target.value)
-          : console.log('This item already exists');
+          : alert('Resource with same name already exist');
       return {
         ...prevState,
       };
     });
   };
 
-  const handleRemoveResource = (index: number) => {
+  const handleRemoveResource = (uId: string) => {
+    const input = document
+      .getElementById(`${uId}`)
+      ?.querySelector('input')?.value;
     // @ts-ignore: Object is possibly 'null'.
-    document.getElementById(`resource-name-${index}`).remove();
+    document.getElementById(`${uId}`).remove();
     setFormData((prevState: any) => {
-      if (prevState.projectAddResources.length === 1) {
-        prevState.projectAddResources = [];
-      }
-      prevState.projectAddResources.splice(index, 1);
+      prevState.projectAddResources.splice(
+        prevState.projectAddResources.indexOf(input),
+        1
+      );
       return {
         ...prevState,
       };
@@ -94,16 +86,17 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
       counter: prevState.counter + 1,
     }));
 
-  const tempFunc = () => {};
-
-  const handleRemoveCategory = (index: number) => {
+  const handleRemoveCategory = (uId: string) => {
+    const input = document
+      .getElementById(`resource-category-${uId}`)
+      ?.querySelector('input')?.value;
     // @ts-ignore: Object is possibly 'null'.
-    document.getElementById(`resource-category-${index}`).remove();
+    document.getElementById(`resource-category-${uId}`).remove();
     setFormData((prevState: any) => {
-      if (prevState.projectCategoriesAndBudget.length === 1) {
-        prevState.projectCategoriesAndBudget = [];
-      }
-      prevState.projectCategoriesAndBudget.splice(index, 1);
+      const index = prevState.projectCategoriesAndBudget.findIndex(
+        (x: any) => x.category === input
+      );
+      if (index > -1) prevState.projectCategoriesAndBudget.splice(index, 1);
       return {
         ...prevState,
       };
@@ -193,6 +186,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
             </div>
             <div>
               <br />
+
               <h4>Resources needed</h4>
               <br />
               <div>
@@ -203,14 +197,15 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                   className={styles.input}
                   style={{ width: '100%' }}
                   onBlur={(e) => {
-                    handleSingleResourceChange(e);
+                    handleResourceChange(e);
                   }}
                 />
                 {Array.from(Array(addMoreResources.counter)).map((c, index) => {
+                  const uId = getRandomString(5);
                   return (
                     <>
-                      <div id={`resource-name-${index}`}>
-                        <div className={styles.addHeight} key={index}></div>
+                      <div id={`${uId}`} key={index}>
+                        <div className={styles.addHeight}></div>
                         <input
                           type="text"
                           placeholder="Add a resource"
@@ -224,7 +219,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                           id={`resource-cancel-${index}`}
                           className={styles.inputIcon}
                           onClick={() => {
-                            handleRemoveResource(index);
+                            handleRemoveResource(uId);
                           }}
                         >
                           ❌
@@ -256,7 +251,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                 className={styles.input}
                 onChange={(e) =>
                   setFormData((prevState: any) => {
-                    prevState.projectCategoryAndBudget.category =
+                    prevState.projectCategoriesAndBudget[0].category =
                       e.target.value;
                     return {
                       ...prevState,
@@ -278,7 +273,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                   style={{ width: '48%' }}
                   onChange={(e) =>
                     setFormData((prevState: any) => {
-                      prevState.projectCategoryAndBudget.budget =
+                      prevState.projectCategoriesAndBudget[0].budget =
                         e.target.value;
                       return {
                         ...prevState,
@@ -288,8 +283,9 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                 />
               </span>
               {Array.from(Array(addMoreCategories.counter)).map((c, index) => {
+                const uId: string = getRandomString(5);
                 return (
-                  <div key={index} id={`resource-category-${index}`}>
+                  <div key={index} id={`resource-category-${uId}`}>
                     <div className={styles.addHeight}></div>
                     <input
                       type="text"
@@ -299,9 +295,9 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                       style={{ width: '48%' }}
                       onBlur={(e) =>
                         setFormData((prevState: any) => {
-                          prevState.projectCategoriesAndBudget[index] = {};
-                          prevState.projectCategoriesAndBudget[index].category =
-                            e.target.value;
+                          prevState.projectCategoriesAndBudget.push({
+                            category: e.target.value,
+                          });
                           return {
                             ...prevState,
                           };
@@ -318,8 +314,9 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                         style={{ width: '48%' }}
                         onBlur={(e) =>
                           setFormData((prevState: any) => {
-                            prevState.projectCategoriesAndBudget[index].budget =
-                              e.target.value;
+                            prevState.projectCategoriesAndBudget[
+                              prevState.projectCategoriesAndBudget.length - 1
+                            ].budget = e.target.value;
                             return {
                               ...prevState,
                             };
@@ -327,13 +324,13 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext }) => {
                         }
                       />
                       <span
-                        id={`resource-cancel-${index}`}
+                        id={`resource-cancel-${uId}`}
                         className={styles.inputIcon}
                         onClick={() => {
-                          handleRemoveCategory(index);
+                          handleRemoveCategory(uId);
                         }}
                       >
-                        ❌
+                        X
                       </span>
                     </span>
                   </div>
