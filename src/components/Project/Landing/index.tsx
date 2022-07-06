@@ -1,20 +1,19 @@
 import { FC } from 'react';
 import styles from './index.module.scss';
-import { useParams } from 'react-router-dom';
-import ProjectCreateForm from '../ProjectForm';
-import InfoSidebar from '../InfoSidebar';
+import NavBar from 'components/NavBar';
+import BlurBlobs from 'components/BlurBlobs';
+import Header from '../Header';
+import Description from '../Description';
 
 const Landing: FC = () => {
-  const { create } = useParams();
-  if (create) {
-    return (
-      <div className={styles.container}>
-        <InfoSidebar />
-        <ProjectCreateForm />
-      </div>
-    );
-  }
-  return <p>Project Landing</p>;
+  return (
+    <div className={styles.container}>
+      <BlurBlobs />
+      <NavBar />
+      <Header />
+      <Description />
+    </div>
+  );
 };
 
 export default Landing;
