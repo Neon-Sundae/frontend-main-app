@@ -4,26 +4,30 @@ import { ReactComponent as Edit } from 'assets/illustrations/icons/stroke.svg';
 import BaseModal from 'components/Home/BaseModal';
 import StartOrgModal from 'components/StartOrgModal';
 import styles from './index.module.scss';
-import { useNavigate } from 'react-router-dom';
+
 import CreatePrjModal from './CreatePrjModal';
-
-const data = [
-  {
-    orgId: 1,
-    organisation: 'Axie Infinity',
-    organisationImage: <DummyImage1 width={135} height={135} />,
-  },
-];
-
+import toast, { Toaster } from 'react-hot-toast';
+import { useQuery } from 'react-query';
+import getRandomString from 'utils/getRandomString';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import config from 'config';
 interface IStartPrjProps {
   onClose: () => void;
 }
+
 let organizationId: number = 0;
 const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
-  const navigate = useNavigate();
+  const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
-
+  const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
+    fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
+      method: 'GET',
+    }).then((response) => response.json())
+  );
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error...</div>;
   const handleOrgModalShow = () => {
     setShowOrgModal(true);
   };
@@ -39,7 +43,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const handleNext = () => {
     {
       !organizationId
-        ? alert('Please select an organization')
+        ? toast.error('Please select an organization')
         : setShowCreateProjectModal(true);
     }
   };
@@ -48,18 +52,26 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
     <>
       {!showCreateProjectModal ? (
         <>
+          <Toaster />
           <BaseModal
             onClose={onClose}
             header="Choose an organisation to start a project"
             onNext={handleNext}
+            showBtn={true}
           >
             <section className={styles['org-list']}>
-              {data.map((org) => (
+              {data.map((org: any) => (
                 <Organisation
-                  id={org.orgId}
-                  organisation={org.organisation}
-                  organisationImage={org.organisationImage}
-                  key={org.orgId}
+                  key={getRandomString(5)}
+                  id={org.organisationId}
+                  organisation={org.name}
+                  organisationImage={
+                    org.bannerImage ? (
+                      org.bannerImage
+                    ) : (
+                      <DummyImage1 width={135} height={135} />
+                    )
+                  }
                 />
               ))}
               <section
@@ -73,16 +85,8 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
               </section>
               <footer
                 className={styles.btnCont}
-                style={{ position: 'absolute', bottom: '8%', left: '25%' }}
-              >
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className={styles.btn}
-                >
-                  Next
-                </button>
-              </footer>
+                style={{ position: 'absolute', bottom: '8%', left: '27vw' }}
+              ></footer>
             </section>
           </BaseModal>
         </>
@@ -92,6 +96,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
           onNext={() => {
             console.log('next!');
           }}
+          orgId={organizationId}
         />
       )}
     </>
@@ -102,6 +107,7 @@ interface IOrgProps {
   id: number;
   organisation: string;
   organisationImage: JSX.Element;
+  style?: React.CSSProperties;
 }
 
 const Organisation: FC<IOrgProps> = ({
@@ -116,6 +122,7 @@ const Organisation: FC<IOrgProps> = ({
   }, [resetSelect]);
   return (
     <section
+      style={{ padding: '12px' }}
       className={styles.container}
       onClick={() => {
         setResetSelect((v) => !v);
