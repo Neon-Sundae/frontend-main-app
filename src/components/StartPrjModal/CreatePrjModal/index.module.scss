@@ -47,6 +47,7 @@
   justify-content: center;
   color: #fff;
   padding: 25px;
+  line-height: 1.2;
 }
 
 .space {
@@ -124,8 +125,9 @@ span {
 .inputIcon {
   font-size: 14px;
   float: right;
-  margin-right: 10px;
-  margin-top: -32px;
+  margin-right: 15px;
+  margin-top: -30px;
   position: relative;
   cursor: pointer;
+  opacity: 0.5;
 }
