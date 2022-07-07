@@ -79,9 +79,13 @@ const StepModal: FC<IStepProps> = ({
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputChange(event.target.value);
   };
-
   return (
-    <BaseModal header="Start an Organization" onClose={onClose} onNext={onNext}>
+    <BaseModal
+      header="Start an Organization"
+      onClose={onClose}
+      onNext={onNext}
+      showBtn={true}
+    >
       <section className={styles.content}>
         <div className={styles.uploadPicture}>
           <Stroke height={30} width={30} />

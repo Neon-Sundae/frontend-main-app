@@ -5,9 +5,10 @@ import styles from './index.module.scss';
 
 interface ComponentProps {
   header: string;
-  children: ReactElement;
+  children?: JSX.Element | JSX.Element[];
   onNext: () => void;
   onClose: () => void;
+  showBtn?: boolean;
 }
 
 const BaseModal: FC<ComponentProps> = ({
@@ -15,6 +16,7 @@ const BaseModal: FC<ComponentProps> = ({
   children,
   onNext,
   onClose,
+  showBtn,
 }) => {
   return (
     <>
@@ -26,11 +28,17 @@ const BaseModal: FC<ComponentProps> = ({
         <header className={styles.header}>
           <h3>{header}</h3>
         </header>
-        <section>{children}</section>
+        <section>
+          <div className={styles.wrapOrg}>{children}</div>
+        </section>
         <footer className={styles.btnCont}>
-          <button type="button" onClick={onNext} className={styles.btn}>
-            Next
-          </button>
+          {showBtn ? (
+            <button type="button" onClick={onNext} className={styles.btn}>
+              Next
+            </button>
+          ) : (
+            ''
+          )}
         </footer>
         <ModalBlobs />
       </div>
