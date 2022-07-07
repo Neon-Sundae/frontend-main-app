@@ -1,5 +1,5 @@
 import config from 'config';
-import { useMutation, useQuery } from 'react-query';
+import { Query, useMutation, useQuery, useQueryClient } from 'react-query';
 import formatTasksData from 'utils/formatTasksData';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
@@ -43,6 +43,8 @@ interface IUpdateTaskStatus {
 }
 
 const useUpdateTaskStatus = () => {
+  const queryClient = useQueryClient();
+
   const updateTask = useMutation(
     ({ taskId, status }: IUpdateTaskStatus) => {
       const payload = {
@@ -61,6 +63,9 @@ const useUpdateTaskStatus = () => {
       retry: 1,
       onError: (error: any) => {
         handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries('projectTasks');
       },
     }
   );
