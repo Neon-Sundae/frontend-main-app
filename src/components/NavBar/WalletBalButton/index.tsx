@@ -7,7 +7,12 @@ import clsx from 'clsx';
 import styles from './index.module.scss';
 import useWithdrawFund from './hooks';
 
-const WalletBalButton: FC = (props: any) => {
+interface WalletButtonProps {
+  usdcBalance: number,
+  profileAddress: string
+}
+
+const WalletBalButton: FC<WalletButtonProps> = (props) => {
 
   const [openWithdraw, setOpenWithdraw] = useState(false);
 

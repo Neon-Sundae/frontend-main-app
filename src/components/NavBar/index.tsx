@@ -7,9 +7,10 @@ import styles from './index.module.scss';
 
 interface NavBarProps {
   usdcBalance: number,
+  profileAddress: string
 }
 
-const NavBar: FC<NavBarProps> = (props: any) => {
+const NavBar: FC<NavBarProps> = (props) => {
 
   const navigate = useNavigate();
 

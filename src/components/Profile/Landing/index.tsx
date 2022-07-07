@@ -40,7 +40,7 @@ const Landing: FC = () => {
   return (
     <div className={styles.container}>
       <BlurBlobs />
-      <NavBar usdcBalance={usdcBalance} />
+      <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
       <div className={styles['profile-card-content-container']}>
         <ProfileCard xp={xp} profileAddress={profileContractAddress} />
         <ProfileContent />

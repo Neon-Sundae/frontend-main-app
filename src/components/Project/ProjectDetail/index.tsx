@@ -24,7 +24,7 @@ const ProjectDetail = () => {
     const [open, setOpen] = useState(false);
 
     const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
-    const { usdcBalance } = useSelector((state: RootState) => state.profile);
+    const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
     const accessToken = getAccessToken();
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const ProjectDetail = () => {
     return (
         <div className={styles.container}>
             <BlurBlobs />
-            <NavBar usdcBalance={usdcBalance} />
+            <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
             <div className={styles['project-content-container']}>
                 <div className={styles.title}>
                     <h1>NFT Website</h1>

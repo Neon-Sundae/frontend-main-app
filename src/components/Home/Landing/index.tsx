@@ -9,11 +9,11 @@ import { RootState } from 'reducers';
 
 const Landing: FC = () => {
 
-  const { usdcBalance } = useSelector((state: RootState) => state.profile);
+  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
 
   return (
     <div className={styles.background}>
-      <NavBar usdcBalance={usdcBalance} />
+      <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
       <Banner />
       <section className={styles.content}>
         <Projects />

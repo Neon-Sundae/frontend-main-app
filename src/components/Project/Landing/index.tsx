@@ -9,12 +9,12 @@ import { RootState } from 'reducers';
 
 const Landing: FC = () => {
 
-  const { usdcBalance } = useSelector((state: RootState) => state.profile);
+  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
 
   return (
     <div className={styles.container}>
       <BlurBlobs />
-      <NavBar usdcBalance={usdcBalance} />
+      <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
       <Header />
       <Description />
     </div>
