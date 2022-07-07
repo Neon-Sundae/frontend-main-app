@@ -1,44 +1,47 @@
 .header {
-	h3 {
-		font-family: var(--font-family-roboto-flex);
-		font-weight: 500;
-		font-size: 25px;
-		line-height: 32px;
-		color: white;
-		text-align: center;
-	}
+  h3 {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 32px;
+    color: white;
+    text-align: center;
+  }
 }
 
 .btnCont {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-	.btn {
-		min-width: 280px;
-		padding: 18px 20px;
-		color: white;
-		position: relative;
-		cursor: pointer;
-		z-index: 2;
-	
-		$border: 1px;
-		border: solid $border rgb(255, 255, 255); /* !importanté */
-		border-radius: 23px;
-	
-		font-family: var(--font-family-roboto-regular);
-		font-size: 24px;
-		text-align: center;
-	
-		background: rgba(255,255,255, 0.3);
-		background: linear-gradient(126.59deg, rgba(255,255,255,0.12) 12.11%, rgba(255,255,255,0.03) 73.08%);
-		backdrop-filter: blur(40px);
-		-webkit-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.66);
-		-moz-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.66);
-		box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.66);
-	}
+  .btn {
+    min-width: 280px;
+    padding: 18px 20px;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+
+    $border: 1px;
+    border: solid $border rgb(255, 255, 255); /* !importanté */
+    border-radius: 23px;
+
+    font-family: var(--font-family-roboto-regular);
+    font-size: 24px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.3);
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
+    backdrop-filter: blur(40px);
+    -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+  }
 }
-
 
 .backdrop {
   position: fixed;
@@ -53,7 +56,7 @@
 
 .overlay {
   position: fixed;
-  width: 617px;
+  min-width: 800px;
   height: 510px;
   padding: 33px;
   background: #272833;
@@ -65,9 +68,9 @@
   overflow: hidden;
   z-index: 3;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   & .icon-cont {
     border: none;
