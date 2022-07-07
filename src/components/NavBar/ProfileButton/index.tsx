@@ -1,18 +1,26 @@
 import { FC } from 'react';
-import clsx from 'clsx';
-import ProfileImage from 'assets/images/metadata/walletProfile.png';
-import styles from './index.module.scss';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import clsx from 'clsx';
+import ProfileImage from 'assets/images/profile/user-image.png';
+import styles from './index.module.scss';
 import { RootState } from 'reducers';
+
 
 const ProfileButton: FC = () => {
 
   const { user } = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
       <div className={styles['image-cont']}>
-        <div className={styles.image}>
+        <div
+          className={styles.image}
+          onClick={() => {
+            navigate('/profile');
+          }}
+        >
           <img src={ProfileImage} alt="your profile" />
         </div>
       </div>

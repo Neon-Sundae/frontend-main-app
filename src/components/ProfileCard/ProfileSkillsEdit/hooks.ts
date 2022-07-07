@@ -5,44 +5,45 @@ import {
 import {
   addProfileNormalizeSkill,
   fillProfileSkillsData,
-  fillSkillsData,
   INormalizeSkills,
 } from 'actions/skills';
 import { Option } from 'components/Select';
 import config from 'config';
-import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleUnAuthorization } from 'utils/handleUnAuthorization';
+import {
+  handleError,
+  handleUnAuthorization,
+} from 'utils/handleUnAuthorization';
 import { deNormalizeSkills, normalizeSkills } from 'utils/normalizeSkills';
 
 const useFetchAppSkills = () => {
-  const dispatch = useDispatch();
+  const { data } = useQuery(
+    'appSkills',
+    async ({ signal }) => {
+      const response = await fetch(`${config.ApiBaseUrl}/skills`, {
+        signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const json = await handleApiErrors(response);
+      const normalizedSkillsData = normalizeSkills(json);
+      return normalizedSkillsData;
+    },
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        handleError({ error, explicitMessage: 'Unable to fetch skills' });
+      },
+    }
+  );
 
-  useEffect(() => {
-    (async () => {
-      const ac = new AbortController();
-      const { signal } = ac;
-
-      try {
-        const response = await fetch(`${config.ApiBaseUrl}/skills`, {
-          signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const json = await handleApiErrors(response);
-        const data = normalizeSkills(json);
-        dispatch(fillSkillsData(data));
-      } catch (err: any) {
-        console.log(err);
-        handleUnAuthorization(err);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  return { appSkills: data };
 };
 
 const useAddProfileSkill = () => {
@@ -74,13 +75,19 @@ const useAddProfileSkill = () => {
           });
           await handleApiErrors(response);
 
-          dispatch(addProfileNormalizeSkill(selectedValue));
-          dispatch(
-            addProfileSkillAction({
-              skillsId: selectedValue.value,
-              name: selectedValue.label,
-            })
-          );
+          if (
+            typeof selectedValue.value === 'number' &&
+            typeof selectedValue.label === 'string'
+          ) {
+            const { label, value } = selectedValue;
+            dispatch(addProfileNormalizeSkill({ label, value }));
+            dispatch(
+              addProfileSkillAction({
+                skillsId: selectedValue.value,
+                name: selectedValue.label,
+              })
+            );
+          }
         } catch (err: any) {
           console.log(err);
           handleUnAuthorization(err);

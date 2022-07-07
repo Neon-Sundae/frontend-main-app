@@ -4,12 +4,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RootPage from 'containers/root';
 import PrivateRoute from 'components/PrivateRoute';
 import useSetAppMetadata from 'hooks/useSetAppMetadata';
-import ProjectDetail from 'components/Project/ProjectDetail/index';
 
 const Login = lazy(() => import('containers/login'));
 const Dashboard = lazy(() => import('containers/dashboard'));
 const Profile = lazy(() => import('containers/profile'));
-const Home = lazy(() => import('containers/home'));
+const Organisation = lazy(() => import('containers/organisation'));
+const Project = lazy(() => import('containers/project'));
+const Tasks = lazy(() => import('containers/tasks'));
+const Logout = lazy(() => import('containers/logout'));
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
@@ -38,10 +40,10 @@ const App = () => {
             }
           />
           <Route
-            path="/home"
+            path="/organisation/:orgId"
             element={
               <PrivateRoute>
-                <Home />
+                <Organisation />
               </PrivateRoute>
             }
           />
@@ -49,10 +51,27 @@ const App = () => {
             path="/project"
             element={
               <PrivateRoute>
-                <ProjectDetail />
+                <Project />
               </PrivateRoute>
             }
           />
+          <Route
+            path="/project/:create"
+            element={
+              <PrivateRoute>
+                <Project />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              // <PrivateRoute>
+              <Tasks />
+              // </PrivateRoute>
+            }
+          />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </Suspense>
     </Router>

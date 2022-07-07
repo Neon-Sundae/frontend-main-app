@@ -10,8 +10,7 @@
     justify-content: space-between;
   }
 
-  &>svg {
-    display: block;
-    margin: auto 0;
+  & .logo {
+    cursor: pointer;
   }
 }

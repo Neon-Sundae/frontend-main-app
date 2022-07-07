@@ -2,10 +2,15 @@
 import { FC } from 'react';
 import Select, { ActionMeta, SingleValue, StylesConfig } from 'react-select';
 
-export interface Option {
-  value: number;
-  label: string;
-}
+export type Option =
+  | {
+      value: number;
+      label: string;
+    }
+  | {
+      value: string;
+      label: string;
+    };
 
 interface ComponentProps {
   options: Option[];
@@ -16,6 +21,9 @@ interface ComponentProps {
     actionMeta: ActionMeta<Option>
   ) => void;
   value: SingleValue<Option>;
+  borderColor?: string;
+  borderRadius?: number;
+  height?: number;
 }
 
 const SelectComponent: FC<ComponentProps> = ({
@@ -24,6 +32,9 @@ const SelectComponent: FC<ComponentProps> = ({
   name,
   onSelectChange,
   value,
+  borderColor,
+  borderRadius,
+  height,
 }) => {
   const getSharedSelectProps = () => {
     return {
@@ -42,36 +53,39 @@ const SelectComponent: FC<ComponentProps> = ({
     }),
     control: styles => ({
       ...styles,
+      fontFamily: 'Roboto Flex',
+      fontWeight: 400,
       backgroundColor: '#2d2d35',
       borderWidth: 1.2,
-      borderColor: '#3c3c3c',
-      borderRadius: 20,
-      width: '80%',
-      height: 55,
+      borderColor,
+      borderRadius,
+      width: '100%',
+      height,
       margin: '0 auto',
       padding: '0 20px',
       cursor: 'pointer',
       ':hover': {
         ...styles[':hover'],
-        borderColor: '#3c3c3c',
+        borderColor,
       },
       ':active': {
         ...styles[':active'],
-        borderColor: '#3c3c3c',
+        borderColor,
       },
     }),
     menu: styles => ({
       ...styles,
       backgroundColor: '#2d2d35',
-      width: '80%',
-      borderColor: '#3c3c3c',
+      width: '100%',
+      borderColor,
       overflow: 'auto',
       zIndex: 2,
     }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-      // const color = chroma(data.color);
       return {
         ...styles,
+        fontFamily: 'Roboto Flex',
+        fontWeight: 400,
         backgroundColor: isSelected ? '#1d1d23' : '#2d2d35',
         color: 'white',
         cursor: isDisabled ? 'not-allowed' : 'default',
@@ -114,8 +128,15 @@ const SelectComponent: FC<ComponentProps> = ({
       isSearchable={false}
       styles={customStyles}
       isMulti={false}
+      // menuIsOpen
     />
   );
+};
+
+SelectComponent.defaultProps = {
+  borderColor: '#3c3c3c',
+  height: 55,
+  borderRadius: 20,
 };
 
 export default SelectComponent;

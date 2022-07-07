@@ -14,6 +14,11 @@
   cursor: pointer;
 }
 
+.skills-select-container {
+  width: 80%;
+  margin-inline: auto;
+}
+
 .profile-skill-tag {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
@@ -76,6 +81,7 @@
     cursor: pointer;
   }
 }
+<<<<<<< HEAD
 
 // .gradient-save-btn {
 //   // background-image: linear-gradient(
@@ -158,3 +164,5 @@
     cursor: pointer;
   }
 }
+=======
+>>>>>>> 5023ba74ffebff8934f6414180b3adbfdd5bd9a1

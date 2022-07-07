@@ -1,0 +1,53 @@
+.project-card {
+	// max-width: 228px;
+	min-height: 290px;
+	margin-right: 45px;
+
+	padding: 25px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	color: white;
+
+	& header {
+
+		& .text--primary {
+			margin-top: 10px;
+			font-family: var(--font-family-roboto-flex);
+			font-size: 22px;
+		}
+
+		& .text--secondary {
+			font-family: var(--font-family-roboto-regular);
+			font-size: 12px;
+		}
+	}
+
+	& .text-content {
+		font-family: var(--font-family-roboto-flex);
+		font-weight: 300;
+		font-size: 10px;
+		line-height: 12px;
+	}
+
+	& footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		& .text-extra {
+			font-family: var(--font-family-roboto-medium);
+			font-size: 14px;
+		}
+
+		& .icon {
+			font-size: 22px;
+		}
+	}
+}
+
+.project-card:last-of-type {
+	margin-right: 0;
+}

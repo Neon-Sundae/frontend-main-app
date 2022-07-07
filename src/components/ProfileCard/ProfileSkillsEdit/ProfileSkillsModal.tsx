@@ -5,7 +5,7 @@ import Select, { Option } from 'components/Select';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import clsx from 'clsx';
-import gradientBtn from 'assets/illustrations/button/button-gradient.svg';
+import GradientBtn from 'components/GradientBtn';
 import {
   useAddProfileSkill,
   useFetchAppSkills,
@@ -18,13 +18,13 @@ interface IProfileSkills {
 }
 
 const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
-  useFetchAppSkills();
+  const { appSkills } = useFetchAppSkills();
   const addProfileSkill = useAddProfileSkill();
   const removeProfileSkill = useRemoveProfileSkill();
 
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
 
-  const appSkills = useSelector((state: RootState) => state.skills.appSkills);
+  // const appSkills = useSelector((state: RootState) => state.skills.appSkills);
   const profileSkills = useSelector(
     (state: RootState) => state.skills.profileSkills
   );
@@ -57,13 +57,15 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
         To add more skills, write it in field below and click ENTER to add a
         skill. You can add maximum 6 skills.
       </p>
-      <Select
-        options={appSkills}
-        placeholder="Select Skills"
-        value={selectedSkill}
-        name="ProfileSkills"
-        onSelectChange={handleSelectChange}
-      />
+      <div className={styles['skills-select-container']}>
+        <Select
+          options={appSkills ?? []}
+          placeholder="Select Skills"
+          value={selectedSkill}
+          name="ProfileSkills"
+          onSelectChange={handleSelectChange}
+        />
+      </div>
       <div className={styles['profile-skill-modal-tag-container']}>
         {profileSkills.map(profileSkill => (
           <SkillTag
@@ -74,13 +76,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
         ))}
       </div>
-      <div className={styles['gradient-save-btn']} onClick={handleClose}>
-        <div
-          className={styles['gradient-blur']}
-          style={{ backgroundImage: `url(${gradientBtn})` }}
-        />
-        <p>Save</p>
-      </div>
+      <GradientBtn label="Save" onClick={handleClose} />
     </Modal>
   );
 };

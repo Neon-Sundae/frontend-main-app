@@ -1,0 +1,133 @@
+.create-prj {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .input-unit {
+    width: 100%;
+    max-width: 500px;
+
+    & label {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+
+      input,
+      textarea {
+        margin-top: 15px;
+        border: 1px solid rgb(180, 180, 180);
+        background-color: transparent;
+        border-radius: 5px;
+        color: white;
+        font-family: var(--font-family-roboto-flex);
+        font-size: 18px;
+
+        &.name {
+          height: 50px;
+        }
+
+        &.desc {
+          height: 120px;
+        }
+      }
+    }
+
+    &:first-of-type {
+      margin-bottom: 32px;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  padding: 25px;
+  line-height: 1.2;
+}
+
+.space {
+  height: 40px;
+}
+
+.input {
+  padding: 12px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+
+  font-size: 14px;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-family-roboto-regular);
+}
+.input[type='date'] {
+  color: #fff;
+  font-family: var(--font-family-roboto-regular);
+  opacity: 1;
+  cursor: pointer;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  height: 39px;
+}
+input[type='date']::-webkit-calendar-picker-indicator {
+  background-color: #fff;
+}
+
+.input::placeholder {
+  color: #fff;
+  position: absolute;
+}
+.pointer {
+  cursor: pointer;
+  font-size: 14px;
+  padding-top: 2%;
+}
+.select {
+  background: transparent;
+  // color: #fff;
+  width: 400px;
+  padding: 12px;
+  font-size: 14px;
+  // border: 1px solid #fff;
+  border-radius: 10px;
+}
+
+.saveBtn {
+  background: url(https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1e52e224-be6f-4b66-9cdd-f05beca9a757/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220705%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220705T050306Z&X-Amz-Expires=86400&X-Amz-Signature=dcd2b637d5cd89bdb5b4f47ff33a319b5913dfe97c8e3e6b1128cd56db4352a7&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject);
+  width: 200px;
+  height: 45px;
+  backdrop-filter: blur(43.3229px);
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  border-radius: 26.8312px;
+  border: 0.62px solid;
+  color: #fff;
+  cursor: pointer;
+}
+.plus {
+  // font-weight: 600;
+}
+span {
+  & .input {
+    width: 100px;
+  }
+}
+.selectComponent {
+  width: 300px;
+}
+.addHeight {
+  height: 10px;
+}
+.inputIcon {
+  font-size: 14px;
+  float: right;
+  margin-right: 15px;
+  margin-top: -30px;
+  position: relative;
+  cursor: pointer;
+  opacity: 0.5;
+}
