@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RootPage from 'containers/root';
 import PrivateRoute from 'components/PrivateRoute';
 import useSetAppMetadata from 'hooks/useSetAppMetadata';
+import ProjectDetail from 'components/Project/ProjectDetail/index';
 
 const Login = lazy(() => import('containers/login'));
 const Dashboard = lazy(() => import('containers/dashboard'));
@@ -41,6 +42,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/project"
+            element={
+              <PrivateRoute>
+                <ProjectDetail />
               </PrivateRoute>
             }
           />

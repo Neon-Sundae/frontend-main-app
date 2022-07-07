@@ -11,14 +11,18 @@ import ProfileSkillsEdit from './ProfileSkillsEdit';
 import ProfileSocialsEdit from './ProfileSocialsEdit';
 import TimezoneEdit from './TimezoneEdit';
 
-const ProfileCard: FC = () => {
+interface ProfileCardProps {
+  xp: number,
+  profileAddress: string
+}
+const ProfileCard: FC<ProfileCardProps> = (props: any) => {
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
 
   return (
     <ProfileCardContainer>
-      {isEditable ? <BasicDetailsEdit /> : <BasicDetails />}
+      {isEditable ? <BasicDetailsEdit /> : <BasicDetails {...props} />}
       {isEditable ? <ProfileSkillsEdit /> : <ProfileSkills />}
       {isEditable ? <ProfileSocialsEdit /> : <ProfileSocials />}
       {isEditable ? <TimezoneEdit /> : <Timezone />}

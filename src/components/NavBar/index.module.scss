@@ -1,11 +1,17 @@
 .nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  // align-items: center;
   padding: 54px;
+  max-height: 191px;
 
   & .actions {
     display: flex;
     justify-content: space-between;
+  }
+
+  &>svg {
+    display: block;
+    margin: auto 0;
   }
 }

@@ -10,7 +10,7 @@
   text-align: center;
   outline: none;
   width: 85%;
-  padding-top: 10px;
+  padding: 10px 16px;
   cursor: pointer;
 }
 
@@ -48,6 +48,10 @@
   margin-bottom: 40px;
 }
 
+.white {
+  color: white;
+}
+
 .profile-skill-modal-tag {
   display: flex;
   color: white;
@@ -60,14 +64,14 @@
   margin-bottom: 20px;
   z-index: 1;
 
-  & > span {
+  &>span {
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
     font-size: 14px;
     margin-right: 15px;
   }
 
-  & > i {
+  &>i {
     font-size: 20px;
     cursor: pointer;
   }
@@ -132,7 +136,7 @@
   cursor: pointer;
   z-index: 1;
 
-  & > .gradient-blur {
+  &>.gradient-blur {
     width: 99.9%;
     height: 100%;
     filter: blur(26px);
@@ -141,7 +145,7 @@
     cursor: pointer;
   }
 
-  & > p {
+  &>p {
     color: white;
     position: absolute;
     top: 50%;

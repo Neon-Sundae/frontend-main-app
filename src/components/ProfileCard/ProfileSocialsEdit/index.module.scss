@@ -10,9 +10,10 @@
   width: 85%;
   margin: 0 auto;
   margin-top: 10px;
+  padding: 10px 16px;
   cursor: pointer;
 
-  & > svg {
+  &>svg {
     margin: 0 14px;
   }
 }
@@ -23,6 +24,10 @@
   font-size: 32px;
   color: white;
   margin-bottom: 60px;
+}
+
+.white {
+  color: white;
 }
 
 .gradient-save-btn {
@@ -37,7 +42,7 @@
   cursor: pointer;
   z-index: 1;
 
-  & > .gradient-blur {
+  &>.gradient-blur {
     width: 99.9%;
     height: 100%;
     filter: blur(26px);
@@ -46,7 +51,7 @@
     cursor: pointer;
   }
 
-  & > p {
+  &>p {
     color: white;
     position: absolute;
     top: 50%;

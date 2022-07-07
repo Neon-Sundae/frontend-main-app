@@ -11,6 +11,8 @@ const ProfileSocialsEdit: FC = () => {
   const [open, setOpen] = useState(false);
   const profile = useSelector((state: RootState) => state.profile.profile);
 
+  console.log(profile)
+
   const handleOpenModal = () => setOpen(true);
 
   return (
@@ -24,6 +26,7 @@ const ProfileSocialsEdit: FC = () => {
         {profile?.instagram && <InstagramIcon width={40} height={40} />}
         {profile?.github && <LinkedinIcon width={40} height={40} />}
         {profile?.portfolio && <LinkedinIcon width={40} height={40} />}
+        {!profile && <div className={styles.white}>Add Links</div>}
       </div>
       {open && <ProfileSocialsModal setOpen={setOpen} />}
     </>

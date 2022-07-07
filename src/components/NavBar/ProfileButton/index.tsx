@@ -2,8 +2,13 @@ import { FC } from 'react';
 import clsx from 'clsx';
 import ProfileImage from 'assets/images/metadata/walletProfile.png';
 import styles from './index.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 
 const ProfileButton: FC = () => {
+
+  const { user } = useSelector((state: RootState) => state.user);
+
   return (
     <div className={styles.container}>
       <div className={styles['image-cont']}>
@@ -22,7 +27,7 @@ const ProfileButton: FC = () => {
           <div
           //	TODO - Implement center ellipsis for text overflow
           >
-            <span>8D4322...DFDFSD</span>
+            <span>{user?.walletId?.slice(0, 6)}...{user?.walletId?.slice(user?.walletId.length - 6, user?.walletId.length)}</span>
           </div>
           <span className="material-icons">keyboard_arrow_down</span>
         </div>

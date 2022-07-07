@@ -18,7 +18,19 @@ import {
   UPDATE_PROFILE_SOCIALS,
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
+  GET_USER_XP,
+  GET_USDC_BALANCE
 } from './types';
+
+export const getXP = (xp: number) => ({
+  type: GET_USER_XP,
+  payload: xp
+});
+
+export const getUSDCBalance = (usdc: number) => ({
+  type: GET_USDC_BALANCE,
+  payload: usdc
+});
 
 export const fillProfileData = (profile: IProfileApiResponse) => ({
   type: FILL_PROFILE_DATA,

@@ -32,8 +32,8 @@ const useSetAppMetadata = () => {
         });
         console.log(chainId);
 
-        if (chainId !== '0x89') {
-          handleSwitchChange(window.ethereum, '0x89');
+        if (chainId !== '0x61') {
+          handleSwitchChange(window.ethereum, '0x61');
         }
       })();
     }
