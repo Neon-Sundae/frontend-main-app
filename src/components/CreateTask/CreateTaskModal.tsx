@@ -3,8 +3,6 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { ActionMeta, SingleValue } from 'react-select';
 import Modal from 'components/Modal';
 import Select, { Option } from 'components/Select';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import clsx from 'clsx';
 import GradientBtn from 'components/GradientBtn';
 import getRandomString from 'utils/getRandomString';
@@ -12,24 +10,29 @@ import styles from './index.module.scss';
 import TaskSkills from './TaskSkills';
 import TaskChecklist, { IChecklistItem } from './TaskChecklist';
 import TaskFileUpload, { IFile } from './TaskFileUpload';
-import useCreateTask from './hooks';
+import { useCreateTask, useFetchProjectCategories } from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
-
-const categories = [
-  { label: 'Designer', value: 'Designer' },
-  { label: 'Developer', value: 'Developer' },
-];
 
 const initialData = [
   { id: getRandomString(5), value: 'Information Architecture' },
   { id: getRandomString(5), value: 'Wireframes' },
 ];
 
+const difficultyData = [
+  { label: 'Difficulty 1', value: 1 },
+  { label: 'Difficulty 2', value: 2 },
+  { label: 'Difficulty 3', value: 3 },
+  { label: 'Difficulty 4', value: 4 },
+  { label: 'Difficulty 5', value: 5 },
+];
+
 const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
   const createTask = useCreateTask();
+  const { categories } = useFetchProjectCategories();
+
   const [taskName, setTaskName] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskPrice, setTaskPrice] = useState('');
@@ -43,20 +46,30 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
   const [taskSkills, setTaskSkills] = useState<Option[]>([]);
 
-  const handleClose = () => {
+  const handleClose = () => setOpen(false);
+
+  const handleSave = () => {
     const formData = new FormData();
 
     formData.append('name', taskName);
     formData.set('description', taskDescription);
     formData.append('price', taskPrice);
-    formData.append('category', selectedCategory?.label ?? '');
-    formData.append('difficulty', selectedDifficulty?.value.toString() ?? '');
+    formData.append('categoryId', selectedCategory?.value.toString() ?? '');
+    formData.append(
+      'estimatedDifficulty',
+      selectedDifficulty?.value.toString() ?? ''
+    );
 
     checklistItems.forEach(item =>
       formData.append('checklist[]', JSON.stringify(item))
     );
     filesArray?.forEach(fileItem => formData.append('files[]', fileItem.file));
-    taskSkills.forEach(skill => formData.append('skills[]', skill.label));
+    taskSkills.forEach(skill =>
+      formData.append(
+        'skills[]',
+        JSON.stringify({ skillsId: skill.value, name: skill.label })
+      )
+    );
 
     console.log(formData.getAll('files[]'));
     createTask.mutate(formData);
@@ -106,7 +119,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
           <div className={styles['select-category-field']}>
             <Select
-              options={categories}
+              options={categories ?? []}
               placeholder="Select Category"
               value={selectedCategory}
               name="TaskCategory"
@@ -129,7 +142,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               Difficulty
             </label>
             <Select
-              options={categories}
+              options={difficultyData}
               placeholder="Select Difficulty"
               value={selectedDifficulty}
               name="TaskDifficulty"
@@ -176,7 +189,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
         </div>
       </div>
-      <GradientBtn label="Save" onClick={handleClose} />
+      <GradientBtn label="Save" onClick={handleSave} />
     </Modal>
   );
 };

@@ -28,6 +28,13 @@ const TaskChecklist: FC<ITaskChecklist> = ({
     setChecklistItems(newData);
   };
 
+  const handleNewChecklist = (id: string, value: string) => {
+    const newChecklistData = checklistItems.map(x =>
+      x.id === id ? { id: x.id, value } : x
+    );
+    setChecklistItems(newChecklistData);
+  };
+
   return (
     <div className={styles['task-checklist-container']}>
       <h4 className={styles['difficulty-price-label']}>Checklist</h4>
@@ -37,6 +44,7 @@ const TaskChecklist: FC<ITaskChecklist> = ({
           id={item.id}
           value={item.value}
           removeItem={removeItem}
+          handleDebounceFn={handleNewChecklist}
         />
       ))}
       <span className={styles['add-more-btn']} onClick={addMore}>
@@ -51,17 +59,20 @@ interface IChecklistItemInput {
   id: string;
   value: string;
   removeItem: (id: string) => void;
+  handleDebounceFn: (id: string, value: string) => void;
 }
 
 const ChecklistItemInput: FC<IChecklistItemInput> = ({
   id,
   value,
   removeItem,
+  handleDebounceFn,
 }) => {
   const [textValue, setTextValue] = useState(value ?? '');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTextValue(e.target.value);
+    handleDebounceFn(id, e.target.value);
   };
 
   return (
