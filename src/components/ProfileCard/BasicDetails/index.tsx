@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import toast from 'react-hot-toast';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
@@ -83,7 +84,7 @@ const ProfileAddressChain: FC = (props: any) => {
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profileContractAddress);
-    alert("Copied");
+    toast.success("Copied!");
   }
 
   return (

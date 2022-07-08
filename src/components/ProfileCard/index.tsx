@@ -10,6 +10,7 @@ import BasicDetailsEdit from './BasicDetailsEdit';
 import ProfileSkillsEdit from './ProfileSkillsEdit';
 import ProfileSocialsEdit from './ProfileSocialsEdit';
 import TimezoneEdit from './TimezoneEdit';
+import { Toaster } from 'react-hot-toast';
 
 interface ProfileCardProps {
   xp: number,
@@ -21,12 +22,15 @@ const ProfileCard: FC<ProfileCardProps> = (props: any) => {
   );
 
   return (
-    <ProfileCardContainer>
-      {isEditable ? <BasicDetailsEdit /> : <BasicDetails {...props} />}
-      {isEditable ? <ProfileSkillsEdit /> : <ProfileSkills />}
-      {isEditable ? <ProfileSocialsEdit /> : <ProfileSocials />}
-      {isEditable ? <TimezoneEdit /> : <Timezone />}
-    </ProfileCardContainer>
+    <>
+      <ProfileCardContainer>
+        {isEditable ? <BasicDetailsEdit /> : <BasicDetails {...props} />}
+        {isEditable ? <ProfileSkillsEdit /> : <ProfileSkills />}
+        {isEditable ? <ProfileSocialsEdit /> : <ProfileSocials />}
+        {isEditable ? <TimezoneEdit /> : <Timezone />}
+      </ProfileCardContainer>
+      <Toaster />
+    </>
   );
 };
 

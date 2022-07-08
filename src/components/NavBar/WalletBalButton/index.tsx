@@ -1,9 +1,10 @@
 import { FC, useState } from 'react';
 import Web3 from 'web3';
+import toast, { Toaster } from 'react-hot-toast';
+import clsx from 'clsx';
 import { ReactComponent as WalletIcon } from 'assets/illustrations/icons/wallet.svg';
 import { ReactComponent as VisibilityIcon } from 'assets/illustrations/icons/visibility.svg';
 import { ReactComponent as WithdrawIcon } from 'assets/illustrations/icons/withdraw.svg';
-import clsx from 'clsx';
 import styles from './index.module.scss';
 import useWithdrawFund from './hooks';
 
@@ -20,7 +21,7 @@ const WalletBalButton: FC<WalletButtonProps> = (props) => {
 
   const handleWithdraw = () => {
     if (props.usdcBalance === 0) {
-      alert("Zero Balance");
+      toast.error("Zero Balance");
     } else {
       withdrawFund(props.profileAddress);
     }
@@ -64,6 +65,7 @@ const WalletBalButton: FC<WalletButtonProps> = (props) => {
           </div>
         )
       }
+      <Toaster />
     </div>
   );
 };

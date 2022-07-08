@@ -1,0 +1,118 @@
+.container {
+    background-color: #242529;
+    padding-bottom: 55px;
+    min-height: 100vh;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.white {
+    color: white;
+}
+
+.publish-title {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 600;
+    font-size: 32px;
+    color: white;
+}
+
+.publish-content-wrapper {
+    margin: 64px 0;
+
+    &>div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
+        margin-top: 16px;
+
+        .font-size--small {
+            font-size: 14px;
+            color: #CECECE !important;
+        }
+    }
+
+    .publish-go-live {
+        display: block;
+        margin: 40px auto;
+        cursor: pointer;
+        background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+        box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(40px);
+        border: 1px solid rgba(255, 155, 251, 0.2);
+        border-radius: 23px;
+        padding: 12px 32px;
+        min-width: 150px;
+        font-size: 20px;
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+    .publish-content {
+        padding: 32px;
+        background: #2D2D35;
+        border-radius: 30px;
+        display: block !important;
+
+        &>div {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        &>div:nth-child(2) {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.deposit-title {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 600;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
+.deposit-content-wrapper {
+    margin: 64px 0;
+
+    .wallet-item {
+        background: #2D2D35;
+        border-radius: 10px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 32px;
+        margin: 20px 0;
+    }
+
+    .deposit-top-up {
+        display: block;
+        margin: 40px auto;
+        cursor: pointer;
+        background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+        box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(40px);
+        border: 1px solid rgba(255, 155, 251, 0.2);
+        border-radius: 23px;
+        padding: 12px 32px;
+        min-width: 150px;
+        font-size: 20px;
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+    .deposit-bottom-text {
+        color: #9f9f9f !important;
+        text-align: center;
+    }
+}
