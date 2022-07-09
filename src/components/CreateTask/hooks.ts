@@ -3,6 +3,7 @@ import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 import normalizeCategories from 'utils/normalizeCategories';
@@ -34,6 +35,7 @@ const useCreateTask = (setOpen: Dispatch<SetStateAction<boolean>>) => {
 
 const useFetchProjectCategories = () => {
   const dispatch = useDispatch();
+  const { create } = useParams();
 
   const getFormattedCategories = (categories: any[]) => {
     return categories?.reduce((acc, c) => ({ ...acc, [c.label]: false }), {});
@@ -43,7 +45,7 @@ const useFetchProjectCategories = () => {
     'projectCategory',
     async ({ signal }) => {
       const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/category/${1}`,
+        `${config.ApiBaseUrl}/fl-project/category/${create}`,
         {
           signal,
           headers: {

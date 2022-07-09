@@ -1,6 +1,7 @@
 import config from 'config';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
 import formatTasksData from 'utils/formatTasksData';
 import { handleApiErrors } from 'utils/handleApiErrors';
@@ -10,6 +11,7 @@ const useFetchProjectTasks = () => {
   const categories = useSelector(
     (state: RootState) => state.flProject.categoryFilter
   );
+  const { create } = useParams();
 
   const { data } = useQuery(
     ['projectTasks', categories],
@@ -24,7 +26,7 @@ const useFetchProjectTasks = () => {
       };
 
       const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/${1}/tasks${getCategoryQuery()}`,
+        `${config.ApiBaseUrl}/fl-project/${create}/tasks${getCategoryQuery()}`,
         {
           signal,
           headers: {
