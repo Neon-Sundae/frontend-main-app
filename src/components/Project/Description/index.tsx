@@ -37,8 +37,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
             <p>Budget: {budget} USDC</p>
             <p>Timeline: {days} days</p>
             <p>Preferred TimeZones: {timeZones}</p>
-
-            <p>{flResourcesStringJoined}</p>
+            <p>Looking For: {flResourcesStringJoined}</p>
           </div>
         </section>
       </div>
