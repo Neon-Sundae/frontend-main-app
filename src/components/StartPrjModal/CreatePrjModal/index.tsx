@@ -10,7 +10,8 @@ import { useMutation } from 'react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
-import { json } from 'stream/consumers';
+import { parse } from 'path';
+
 interface ICreatePrjProps {
   onNext: () => void;
   onClose: () => void;
@@ -48,7 +49,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   const [addMoreCategories, setAddMoreCategories] = useState<any>({
     counter: 0,
   });
-
   const [submit, setSubmit] = useState<boolean>(false);
 
   const { isLoading: isLoading, mutate: createProject } = useMutation(
@@ -65,12 +65,11 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
     {
       onSuccess: async (res) => {
         const body = await res.json();
-
         navigate(`/project/${body.flProjectId}`);
       },
       onError: (err) => {
         console.log('err', err);
-        console.log(setFormData({}));
+        setFormData({});
       },
     }
   );
@@ -80,7 +79,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       const selectedOptionsLabel = selectedOptions?.map((option: any) => {
         return option.label;
       });
-      // if selectedOptionslabel has length of 1 or more
       if (selectedOptionsLabel?.length === 1)
         prevState.preferredTimeZones = selectedOptionsLabel[0];
       prevState.preferredTimeZones = selectedOptionsLabel?.join(', ');
@@ -94,7 +92,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
     if (submit) {
       createProject();
     }
-
     if (!formData.organisationId) {
       setFormData((prevState: any) => {
         prevState.organisationId = orgId;
@@ -134,7 +131,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       }));
       return;
     } else if (
-      formData.flResources.length !== 0 ||
+      formData?.flResources.length !== 0 ||
       formData.flProjectCategory.length !== 0
     ) {
       setError((prevState: any) => ({
@@ -225,12 +222,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       prevState.flResources = temp;
       const isoDate = new Date(prevState.timeOfCompletion);
       prevState.timeOfCompletion = isoDate.toISOString();
-      // get sum of project category percentage allocation
-      const sum = prevState.flProjectCategory.reduce(
-        (acc: number, curr: any) => acc + curr.percentageAllocation,
-        0
-      );
-      prevState.budget = sum;
       return {
         ...prevState,
       };
@@ -322,7 +313,30 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                 </div>
                 <br />
               </div>
+
               <div>
+                <br />
+                <h4>Project Budget</h4>
+                <br />
+                <input
+                  type="text"
+                  id="resource-name"
+                  placeholder="Add project budget"
+                  className={styles.input}
+                  style={{ width: '100%' }}
+                  onBlur={(e) => {
+                    setFormData((prevState: any) => {
+                      const target = e.target as HTMLInputElement;
+                      prevState.budget = parseInt(target.value);
+                      return {
+                        ...prevState,
+                      };
+                    });
+                  }}
+                />
+              </div>
+              <div>
+                <br />
                 <br />
                 <h4>Resources needed</h4>
                 <br />
@@ -372,7 +386,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                       );
                     }
                   )}
-                  {formData.flResources?.map((element: any, index: any) => {
+                  {formData?.flResources?.map((element: any, index: any) => {
                     <h5 key={index}>{element}</h5>;
                   })}
                 </div>

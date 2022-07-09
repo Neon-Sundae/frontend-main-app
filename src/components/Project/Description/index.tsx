@@ -16,11 +16,10 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     preferredTimeZones,
     flResources,
   } = props;
-  const timeZones = preferredTimeZones;
   const dateToday = new Date();
-  const date2 = new Date(timeOfCompletion);
+  const end = new Date(timeOfCompletion);
   const days = Math.floor(
-    (date2.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24)
+    (end.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24)
   );
   const flResourcesStringJoined = flResources
     ?.map((resource) => resource.title)
@@ -36,7 +35,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
           <div className={styles.card}>
             <p>Budget: {budget} USDC</p>
             <p>Timeline: {days} days</p>
-            <p>Preferred TimeZones: {timeZones}</p>
+            <p>Preferred TimeZones: {preferredTimeZones}</p>
             <p>Looking For: {flResourcesStringJoined}</p>
           </div>
         </section>
