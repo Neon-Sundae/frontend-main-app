@@ -1,3 +1,5 @@
+$error-color: #c0392b;
+
 .page-container {
   background-color: #242529;
 }
@@ -5,10 +7,8 @@
 .create-task-title {
   font-family: var(--font-family-roboto-flex);
   font-weight: 600;
-  // font-size: clamp(1.75rem, 2.5vw, 2.125rem);
   font-size: clamp(1.5rem, 2vw, 1.75rem);
   color: white;
-  // margin-bottom: 60px;
   margin-bottom: max(30px, 8%);
 }
 
@@ -35,18 +35,25 @@
 
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  // font-size: 21px;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
   height: 50px;
 
-  z-index: 1;
+  // z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 
   &::placeholder {
     color: white;
-    // font-size: 18px;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    background-color: white;
+    cursor: pointer;
+  }
+
+  &--error {
+    border-color: $error-color;
   }
 }
 
@@ -62,7 +69,6 @@
 
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  // font-size: 21px;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
 
   margin-bottom: min(3vh, 1.5rem);
@@ -70,7 +76,6 @@
 
   &::placeholder {
     color: white;
-    // font-size: 18px;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
   }
 }
@@ -78,7 +83,6 @@
 .difficulty-price-label {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  // font-size: clamp(1.25rem, 1.6vw, 1.4rem);
   font-size: clamp(1.2rem, 1.5vw, 1.3rem);
   color: white;
   margin-bottom: min(2vh, 1rem);
@@ -104,6 +108,14 @@
   width: min(100%, 15rem);
 }
 
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
 .task-skills-container {
   margin-bottom: min(3vh, 1.5rem);
 }
@@ -112,8 +124,6 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: min(2.5vh, 1rem);
-  // width: 80%;
-  // margin: 40px auto 60px;
 }
 
 .profile-skill-modal-tag {
@@ -142,7 +152,7 @@
 }
 
 .task-checklist-container {
-  z-index: 1;
+  // z-index: 1;
   flex-grow: 1;
   width: min(100%, 15rem);
 }
@@ -206,7 +216,6 @@
 
 .file-input-container {
   min-height: 120px;
-  // width: 604px;
   width: min(30rem, 100%);
   border: 1px dashed white;
   border-radius: 4px;

@@ -5,6 +5,7 @@ import appReducer from './app';
 import skillsReducer from './skills';
 import profileReducer from './profile';
 import orgReducer from './organisation';
+import flProjectReducer from './flProject';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   skills: skillsReducer,
   profile: profileReducer,
   org: orgReducer,
+  flProject: flProjectReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

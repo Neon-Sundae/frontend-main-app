@@ -1,24 +1,23 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/self-closing-comp */
 // @ts-nocheck
-import { FC, useEffect, useState, useMemo } from 'react';
+
+import { FC, useEffect, useState, useMemo, useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import clsx from 'clsx';
 import userImage from 'assets/images/profile/user-image.png';
+import { useFetchProjectCategories } from 'components/CreateTask/hooks';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'reducers';
+import { updateProjectCategory } from 'actions/flProject';
+import { useQueryClient } from 'react-query';
+import CreateTaskModal from 'components/CreateTask/CreateTaskModal';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
-
-// fake data generator
-const getItems = (count: number, prefix: string) =>
-  Array.from({ length: count }, (v, k) => k).map(k => {
-    const randomId = Math.floor(Math.random() * 100000);
-    return {
-      id: `item-${randomId}`,
-      prefix,
-      content: `item ${randomId}`,
-    };
-  });
 
 const removeFromList = (list: string, index: number) => {
   const result = Array.from(list);
@@ -42,10 +41,91 @@ const lists = [
   'cancelled',
 ];
 
-const generateInitialData = () =>
-  lists.reduce((acc, listKey) => ({ ...acc, [listKey]: [] }), {});
-
 const TaskManagement: FC = () => {
+  useFetchProjectCategories();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleOpenModal = () => setOpen(true);
+
+  const toggleFilterMenu = () => setFilterOpen(p => !p);
+
+  return (
+    <div className={styles['task-management']}>
+      <div className={styles['task-management-header']}>
+        <h1 className={styles['task-header']}>Tasks</h1>
+        <div className={styles['task-header-action']}>
+          <button
+            className={clsx(styles['add-task-btn'], styles['filter-btn'])}
+            onClick={toggleFilterMenu}
+          >
+            Filter
+          </button>
+          {filterOpen && <FilterMenu />}
+          {open && <CreateTaskModal setOpen={setOpen} />}
+          <button className={styles['add-task-btn']} onClick={handleOpenModal}>
+            Add Task
+          </button>
+        </div>
+      </div>
+      <hr />
+      <TaskManagementBoard />
+    </div>
+  );
+};
+
+const FilterMenu: FC = () => {
+  const queryClient = useQueryClient();
+  const mounted = useRef(false);
+  const dispatch = useDispatch();
+  const filterState = useSelector(
+    (state: RootState) => state.flProject.categoryFilter
+  );
+
+  useEffect(() => {
+    if (mounted.current) {
+      queryClient.invalidateQueries('projectTasks');
+    } else {
+      mounted.current = true;
+    }
+  }, [filterState]);
+
+  const toggleFilterState = (listItem: string) => {
+    dispatch(
+      updateProjectCategory({
+        ...filterState,
+        [listItem]: !filterState[listItem],
+      })
+    );
+  };
+
+  return (
+    <div className={styles['filter-menu']}>
+      <h3>Filter</h3>
+      {Object.keys(filterState).map((listItem, idx) => {
+        return (
+          <label
+            key={idx}
+            className={styles['filter-label']}
+            name={listItem}
+            onClick={() => toggleFilterState(listItem)}
+          >
+            {filterState[listItem] ? (
+              <div className={styles['filter-checked']}>
+                <i className="material-icons">check</i>
+              </div>
+            ) : (
+              <div className={styles['filter-unchecked']} />
+            )}
+            {listItem}
+          </label>
+        );
+      })}
+    </div>
+  );
+};
+
+const TaskManagementBoard: FC = () => {
   const updateTask = useUpdateTaskStatus();
   const { projectTasks } = useFetchProjectTasks();
   const [elements, setElements] = useState(projectTasks);
@@ -55,7 +135,6 @@ const TaskManagement: FC = () => {
   }, [projectTasks]);
 
   const onDragEnd = async (result: any) => {
-    // console.log(result);
     if (!result.destination) {
       return;
     }
@@ -73,10 +152,6 @@ const TaskManagement: FC = () => {
       result.destination.index,
       removedElement
     );
-
-    // console.log(destinationList);
-    // console.log(result);
-    // console.log(removedElement);
 
     if (result.source.droppableId !== result.destination.droppableId) {
       setElements(listCopy);
@@ -120,7 +195,7 @@ const Column: FC<IColumn> = ({ elements, prefix }) => {
         <Droppable droppableId={`${prefix}`}>
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {elements.map((item, index) => (
+              {elements.map((item: any, index: number) => (
                 <Card key={item.taskId} item={item} index={index} />
               ))}
               {provided.placeholder}

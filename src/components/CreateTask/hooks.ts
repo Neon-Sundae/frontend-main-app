@@ -1,10 +1,15 @@
+import { updateProjectCategory } from 'actions/flProject';
 import config from 'config';
-import { useMutation, useQuery } from 'react-query';
+import { Dispatch, SetStateAction } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useDispatch } from 'react-redux';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 import normalizeCategories from 'utils/normalizeCategories';
 
-const useCreateTask = () => {
+const useCreateTask = (setOpen: Dispatch<SetStateAction<boolean>>) => {
+  const queryClient = useQueryClient();
+
   const createTask = useMutation(
     (formData: FormData) =>
       fetch(`${config.ApiBaseUrl}/task`, {
@@ -15,6 +20,11 @@ const useCreateTask = () => {
       retry: 1,
       onError: (error: any) => {
         handleError({ error });
+        setOpen(false);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries('projectTasks');
+        setOpen(false);
       },
     }
   );
@@ -23,6 +33,12 @@ const useCreateTask = () => {
 };
 
 const useFetchProjectCategories = () => {
+  const dispatch = useDispatch();
+
+  const getFormattedCategories = (categories: any[]) => {
+    return categories?.reduce((acc, c) => ({ ...acc, [c.label]: false }), {});
+  };
+
   const { data } = useQuery(
     'projectCategory',
     async ({ signal }) => {
@@ -37,6 +53,9 @@ const useFetchProjectCategories = () => {
       );
       const json = await handleApiErrors(response);
       const normalizedCategories = normalizeCategories(json);
+      dispatch(
+        updateProjectCategory(getFormattedCategories(normalizedCategories))
+      );
       return normalizedCategories;
     },
     {

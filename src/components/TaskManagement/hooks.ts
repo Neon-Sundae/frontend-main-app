@@ -1,15 +1,30 @@
 import config from 'config';
-import { Query, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import formatTasksData from 'utils/formatTasksData';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useFetchProjectTasks = () => {
+  const categories = useSelector(
+    (state: RootState) => state.flProject.categoryFilter
+  );
+
   const { data } = useQuery(
-    'projectTasks',
+    ['projectTasks', categories],
     async ({ signal }) => {
+      const getCategoryQuery = () => {
+        if (!categories) return '';
+
+        const filters = Object.keys(categories).filter(k => categories[k]);
+
+        if (filters.length > 0) return `?category=${filters.join(',')}`;
+        return '';
+      };
+
       const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/${1}/tasks`,
+        `${config.ApiBaseUrl}/fl-project/${1}/tasks${getCategoryQuery()}`,
         {
           signal,
           headers: {
