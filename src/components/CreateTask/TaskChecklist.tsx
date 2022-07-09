@@ -1,21 +1,21 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
-interface IChecklistItem {
+export interface IChecklistItem {
   id: string;
   value: string;
 }
 
-const initialData = [
-  { id: getRandomString(5), value: 'Information Architecture' },
-  { id: getRandomString(5), value: 'Wireframes' },
-];
+interface ITaskChecklist {
+  checklistItems: IChecklistItem[];
+  setChecklistItems: Dispatch<SetStateAction<IChecklistItem[]>>;
+}
 
-const TaskChecklist: FC = () => {
-  const [checklistItems, setChecklistItems] =
-    useState<IChecklistItem[]>(initialData);
-
+const TaskChecklist: FC<ITaskChecklist> = ({
+  checklistItems,
+  setChecklistItems,
+}) => {
   const addMore = () => {
     setChecklistItems([
       ...checklistItems,
@@ -28,6 +28,13 @@ const TaskChecklist: FC = () => {
     setChecklistItems(newData);
   };
 
+  const handleNewChecklist = (id: string, value: string) => {
+    const newChecklistData = checklistItems.map(x =>
+      x.id === id ? { id: x.id, value } : x
+    );
+    setChecklistItems(newChecklistData);
+  };
+
   return (
     <div className={styles['task-checklist-container']}>
       <h4 className={styles['difficulty-price-label']}>Checklist</h4>
@@ -37,6 +44,7 @@ const TaskChecklist: FC = () => {
           id={item.id}
           value={item.value}
           removeItem={removeItem}
+          handleDebounceFn={handleNewChecklist}
         />
       ))}
       <span className={styles['add-more-btn']} onClick={addMore}>
@@ -51,17 +59,20 @@ interface IChecklistItemInput {
   id: string;
   value: string;
   removeItem: (id: string) => void;
+  handleDebounceFn: (id: string, value: string) => void;
 }
 
 const ChecklistItemInput: FC<IChecklistItemInput> = ({
   id,
   value,
   removeItem,
+  handleDebounceFn,
 }) => {
   const [textValue, setTextValue] = useState(value ?? '');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTextValue(e.target.value);
+    handleDebounceFn(id, e.target.value);
   };
 
   return (
