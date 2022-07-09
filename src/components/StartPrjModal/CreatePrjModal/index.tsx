@@ -9,6 +9,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
+import { getAccessToken } from 'utils/authFn';
+import { parse } from 'path';
+
 interface ICreatePrjProps {
   onNext: () => void;
   onClose: () => void;
@@ -31,6 +34,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
     name: '',
     description: '',
     timeOfCompletion: '',
+    budget: '',
     preferredTimeZones: [],
     organisationId: '',
     flResources: [],
@@ -46,17 +50,35 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
     counter: 0,
   });
   const [submit, setSubmit] = useState<boolean>(false);
-  const mutation = useMutation('addProject', () =>
-    fetch(`${config.ApiBaseUrl}/fl-project`, {
-      method: 'POST',
-    }).then((response) => response.json())
+
+  const { isLoading: isLoading, mutate: createProject } = useMutation(
+    async () => {
+      return await fetch(`${config.ApiBaseUrl}/fl-project`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+    },
+    {
+      onSuccess: async (res) => {
+        const body = await res.json();
+        navigate(`/project/${body.flProjectId}`);
+      },
+      onError: (err) => {
+        console.log('err', err);
+        setFormData({});
+      },
+    }
   );
+
   useEffect(() => {
     setFormData((prevState: any) => {
       const selectedOptionsLabel = selectedOptions?.map((option: any) => {
         return option.label;
       });
-      // if selectedOptionslabel has length of 1 or more
       if (selectedOptionsLabel?.length === 1)
         prevState.preferredTimeZones = selectedOptionsLabel[0];
       prevState.preferredTimeZones = selectedOptionsLabel?.join(', ');
@@ -68,13 +90,8 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
 
   useEffect(() => {
     if (submit) {
-      console.log(formData);
-      const json: any = JSON.stringify(formData);
-      console.log(json);
-      // mutation.mutate(json);
-      navigate('/project');
+      createProject();
     }
-
     if (!formData.organisationId) {
       setFormData((prevState: any) => {
         prevState.organisationId = orgId;
@@ -114,7 +131,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       }));
       return;
     } else if (
-      formData.flResources.length !== 0 ||
+      formData?.flResources.length !== 0 ||
       formData.flProjectCategory.length !== 0
     ) {
       setError((prevState: any) => ({
@@ -196,7 +213,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
     }
     const temp: any = [];
     setFormData((prevState: any) => {
-      prevState.flResources.map((resource: any) => {
+      prevState.flResources?.map((resource: any) => {
         // find resource in temp array and if its not there add it
         if (temp.indexOf({ title: resource }) === -1) {
           temp.push({ title: resource });
@@ -296,7 +313,30 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                 </div>
                 <br />
               </div>
+
               <div>
+                <br />
+                <h4>Project Budget</h4>
+                <br />
+                <input
+                  type="text"
+                  id="resource-name"
+                  placeholder="Add project budget"
+                  className={styles.input}
+                  style={{ width: '100%' }}
+                  onBlur={(e) => {
+                    setFormData((prevState: any) => {
+                      const target = e.target as HTMLInputElement;
+                      prevState.budget = parseInt(target.value);
+                      return {
+                        ...prevState,
+                      };
+                    });
+                  }}
+                />
+              </div>
+              <div>
+                <br />
                 <br />
                 <h4>Resources needed</h4>
                 <br />
@@ -311,7 +351,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                       handleResourceChange(e);
                     }}
                   />
-                  {Array.from(Array(addMoreResources.counter)).map(
+                  {Array.from(Array(addMoreResources.counter))?.map(
                     (c, index) => {
                       const uId = getRandomString(5);
                       return (
@@ -346,7 +386,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                       );
                     }
                   )}
-                  {formData.flResources.map((element: any, index: any) => {
+                  {formData?.flResources?.map((element: any, index: any) => {
                     <h5 key={index}>{element}</h5>;
                   })}
                 </div>
@@ -391,7 +431,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     onChange={(e) =>
                       setFormData((prevState: any) => {
                         prevState.flProjectCategory[0].percentageAllocation =
-                          e.target.value;
+                          parseFloat(e.target.value);
                         return {
                           ...prevState,
                         };
@@ -399,7 +439,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     }
                   />
                 </span>
-                {Array.from(Array(addMoreCategories.counter)).map(
+                {Array.from(Array(addMoreCategories.counter))?.map(
                   (c, index) => {
                     const uId: string = getRandomString(5);
                     return (
@@ -434,7 +474,9 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                               setFormData((prevState: any) => {
                                 prevState.flProjectCategory[
                                   prevState.flProjectCategory.length - 1
-                                ].percentageAllocation = e.target.value;
+                                ].percentageAllocation = parseFloat(
+                                  e.target.value
+                                );
                                 return {
                                   ...prevState,
                                 };

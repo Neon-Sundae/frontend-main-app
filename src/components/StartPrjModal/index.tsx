@@ -12,6 +12,7 @@ import getRandomString from 'utils/getRandomString';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import config from 'config';
+import { getAccessToken } from 'utils/authFn';
 interface IStartPrjProps {
   onClose: () => void;
 }
@@ -24,8 +25,10 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
     fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
       method: 'GET',
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
     }).then((response) => response.json())
   );
+  if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
   const handleOrgModalShow = () => {
@@ -60,7 +63,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
             showBtn={true}
           >
             <section className={styles['org-list']}>
-              {data.map((org: any) => (
+              {data?.map((org: any) => (
                 <Organisation
                   key={getRandomString(5)}
                   id={org.organisationId}
