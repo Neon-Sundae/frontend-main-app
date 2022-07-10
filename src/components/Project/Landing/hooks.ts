@@ -99,7 +99,6 @@ const useProject = () => {
                 setDeploying('deploying');
             })
             .on('receipt', (receipt: any) => {
-                toast.success("Project published successfully");
                 setDeploying('deploy_success');
                 setDeployedAddress(receipt.events.DeployedNewProject.returnValues[1]);
                 setBudget(1000);

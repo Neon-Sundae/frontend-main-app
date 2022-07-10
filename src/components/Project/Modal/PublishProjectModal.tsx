@@ -52,7 +52,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
                                             </div>
                                             <div>
                                                 <span>Deposit</span>
-                                                <span>$401 USDC</span>
+                                                <span>$1000 USDC</span>
                                             </div>
                                         </div>
                                         <div className={styles['publish-info']}>
@@ -86,7 +86,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
                                             </div>
                                             <div>
                                                 <span>Deposit</span>
-                                                <span>$401 USDC</span>
+                                                <span>$1000 USDC</span>
                                             </div>
                                         </div>
                                         <div className={styles['publish-info']}>
