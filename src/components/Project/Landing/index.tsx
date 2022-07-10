@@ -13,7 +13,7 @@ import { Toaster } from 'react-hot-toast';
 
 const Landing: FC = () => {
 
-  const { getUSDCBalance, getOnChainProject } = useProject();
+  const { getUSDCBalance, getOnChainProject, deployedAddress, budget } = useProject();
 
   const [open, setOpen] = useState(false);
 
@@ -21,10 +21,12 @@ const Landing: FC = () => {
   const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
   const accessToken = getAccessToken();
 
+  const projectId = 1;
+
   useEffect(() => {
     if (user?.userId && accessToken) {
       getUSDCBalance();
-      getOnChainProject();
+      getOnChainProject(projectId);
     }
   }, [user])
 
@@ -32,7 +34,7 @@ const Landing: FC = () => {
     <div className={styles.container}>
       <BlurBlobs />
       <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
-      <Header setOpen={(val) => setOpen(val)} />
+      <Header setOpen={(val) => setOpen(val)} projectAddress={deployedAddress} budget={budget} />
       <Description />
       {
         open && <PublishProjectModal setOpen={(val) => setOpen(val)} usdcBalance={wallet_usdc_balance} />

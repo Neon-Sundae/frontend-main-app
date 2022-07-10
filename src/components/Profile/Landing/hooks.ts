@@ -19,7 +19,7 @@ const useProfile = () => {
   const dispatch = useDispatch();
 
   const userId = useSelector((state: RootState) => state.user.user?.userId);
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  // const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
   const accessToken = getAccessToken();
 
@@ -76,7 +76,11 @@ const useProfile = () => {
     }
   }
 
-  return { fetchOffChainProfileData, fetchOnChainProfileData, getProfileContractAddress }
+  return {
+    fetchOffChainProfileData,
+    fetchOnChainProfileData,
+    getProfileContractAddress
+  }
 };
 
 export default useProfile;

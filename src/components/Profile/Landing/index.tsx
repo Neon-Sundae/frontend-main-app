@@ -15,7 +15,11 @@ const Landing: FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
-  const { fetchOnChainProfileData, fetchOffChainProfileData, getProfileContractAddress } = useProfile();
+  const {
+    fetchOnChainProfileData,
+    fetchOffChainProfileData,
+    getProfileContractAddress,
+  } = useProfile();
 
   const accessToken = getAccessToken();
 
