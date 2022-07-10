@@ -1,23 +1,23 @@
 import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { editProfile } from 'actions/profile';
+import { RootState } from 'reducers';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
-import { useDispatch, useSelector } from 'react-redux';
-import { editProfile } from 'actions/profile';
-import { RootState } from 'reducers';
 import styles from './index.module.scss';
 import useProfileManage from './hooks';
 
-const BasicDetails: FC = (props: any) => {
+const BasicDetails: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
 
   return (
     <>
       <ProfileImage />
       <NameDesignation title={profile?.title} />
-      <ExperiencePoints {...props} />
-      <ProfileAddressChain {...props} />
+      <ExperiencePoints />
+      <ProfileAddressChain />
       <ProfileBio description={profile?.description} />
       <EditIconContainer />
     </>
@@ -64,17 +64,20 @@ const NameDesignation: FC<INameDesignation> = ({ title }) => {
   );
 };
 
-const ExperiencePoints: FC = (props: any) => {
+const ExperiencePoints = () => {
+
+  const { xp } = useSelector((state: RootState) => state.profile);
+
   return (
     <div className={styles['experience-points']}>
       <span className={styles.value}>
-        {Number(props.xp).toLocaleString()} <span className={styles.label}>XP</span>
+        {Number(xp).toLocaleString()} <span className={styles.label}>XP</span>
       </span>
     </div>
   );
 };
 
-const ProfileAddressChain: FC = (props: any) => {
+const ProfileAddressChain = () => {
 
   const { profileContractAddress, profile } = useSelector((state: RootState) => state.profile);
   const name = useSelector((state: RootState) => state.user.user?.name);
@@ -90,7 +93,7 @@ const ProfileAddressChain: FC = (props: any) => {
   return (
     <div className={styles['profile-address-chain']}>
       {
-        props.profileAddress === "0x0000000000000000000000000000000000000000" ? (
+        profileContractAddress === "0x0000000000000000000000000000000000000000" ? (
           <div className={styles['address-container']} style={{ cursor: 'pointer' }} onClick={() => createProfile(name, profile?.title, walletId)}>
             <span className="material-icons" style={{ color: '#FAA5B9' }}>close</span>
             <p className={styles['profile-address']}>
@@ -102,7 +105,7 @@ const ProfileAddressChain: FC = (props: any) => {
           <div className={styles['address-container']}>
             <FoundersLabIcon width={28} height={28} />
             <p className={styles['profile-address']}>
-              {props.profileAddress?.slice(0, 6)}...{props.profileAddress?.slice(props.profileAddress.length - 6, props.profileAddress.length)}
+              {profileContractAddress?.slice(0, 6)}...{profileContractAddress?.slice(profileContractAddress.length - 6, profileContractAddress.length)}
             </p>
             <i className="material-icons-200" onClick={handleCopyAddress}>content_copy</i>
           </div>

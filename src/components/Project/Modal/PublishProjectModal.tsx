@@ -6,22 +6,29 @@ import styles from './index.module.scss';
 import Spinner from "./Spinner";
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as SugarIcon } from 'assets/illustrations/icons/sugar.svg';
+import { useSelector } from "react-redux";
+import { RootState } from "reducers";
 
 interface IPublishProject {
     setOpen: Dispatch<SetStateAction<boolean>>;
-    usdcBalance: number
+    usdcBalance: number,
+    projectId: number,
+    budget: number,
+    projectName: string,
+    projectDescription: string
 }
 
-const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
+const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance, projectId, budget, projectName, projectDescription }) => {
 
     const {
         getGasFeeToPublish,
         publishProject,
         depositFunds,
         deploying,
-        deployedAddress,
         gasFee
     } = useProject();
+
+    const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
 
     useEffect(() => {
         getGasFeeToPublish();
@@ -34,7 +41,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
     return (
         <Modal onClose={handleClose}>
             {
-                usdcBalance !== 0 ? (
+                usdcBalance >= budget ? (
                     <>
                         <h1 className={styles['publish-title']}>Publish your project</h1>
                         <div className={styles['publish-content-wrapper']}>
@@ -52,14 +59,17 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
                                             </div>
                                             <div>
                                                 <span>Deposit</span>
-                                                <span>$1000 USDC</span>
+                                                <span>${budget} USDC</span>
                                             </div>
                                         </div>
                                         <div className={styles['publish-info']}>
                                             <span className={styles['font-size--small']}>*You can always withdraw</span>
                                             <span>Top Up Wallet +</span>
                                         </div>
-                                        <button className={styles['publish-go-live']} onClick={publishProject}>Go Live</button>
+                                        <button
+                                            className={styles['publish-go-live']}
+                                            onClick={() => publishProject(projectId, budget, projectName, projectDescription)}
+                                        >Go Live</button>
                                     </>
                                 ) : deploying === 'deploying' ? (
                                     <div className={styles['publish-deploying-content']}>
@@ -71,7 +81,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
                                     <div className={styles['publish-deploying-content']}>
                                         <CheckIcon width={100} height={100} />
                                         <p>This Transaction has been confirmed on mainnet</p>
-                                        <p>Your contract id: {deployedAddress.slice(0, 10)}...{deployedAddress.slice(deployedAddress.length - 8, deployedAddress.length)}</p>
+                                        <p>Your contract id: {selectedProjectAddress.slice(0, 10)}...{selectedProjectAddress.slice(selectedProjectAddress.length - 8, selectedProjectAddress.length)}</p>
                                     </div>
                                 ) : deploying === 'deposit' ? (
                                     <>
@@ -86,14 +96,14 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance }) => {
                                             </div>
                                             <div>
                                                 <span>Deposit</span>
-                                                <span>$1000 USDC</span>
+                                                <span>${budget * 1.1} USDC</span>
                                             </div>
                                         </div>
                                         <div className={styles['publish-info']}>
                                             <span className={styles['font-size--small']}>*You can always withdraw</span>
                                             <span>Top Up Wallet +</span>
                                         </div>
-                                        <button className={styles['publish-go-live']} onClick={depositFunds}>Deposit</button>
+                                        <button className={styles['publish-go-live']} onClick={() => depositFunds(budget)}>Deposit</button>
                                     </>
                                 ) : deploying === 'depositing' ? (
                                     <div className={styles['publish-deploying-content']}>

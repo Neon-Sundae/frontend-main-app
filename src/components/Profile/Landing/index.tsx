@@ -11,23 +11,13 @@ import { RootState } from 'reducers';
 
 const Landing: FC = () => {
 
-  const { xp, usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
   const { user } = useSelector((state: RootState) => state.user);
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
   const {
-    fetchOnChainProfileData,
     fetchOffChainProfileData,
-    getProfileContractAddress,
   } = useProfile();
 
   const accessToken = getAccessToken();
-
-  useEffect(() => {
-    if (walletId !== undefined) {
-      getProfileContractAddress(walletId);
-    }
-  }, [walletId]);
 
   useEffect(() => {
     if (user?.userId && accessToken) {
@@ -35,18 +25,12 @@ const Landing: FC = () => {
     }
   }, [user])
 
-  useEffect(() => {
-    if (profileContractAddress !== "0x0000000000000000000000000000000000000000" && profileContractAddress !== "") {
-      fetchOnChainProfileData(profileContractAddress);
-    }
-  }, []);
-
   return (
     <div className={styles.container}>
       <BlurBlobs />
-      <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
+      <NavBar />
       <div className={styles['profile-card-content-container']}>
-        <ProfileCard xp={xp} profileAddress={profileContractAddress} />
+        <ProfileCard />
         <ProfileContent />
       </div>
     </div>

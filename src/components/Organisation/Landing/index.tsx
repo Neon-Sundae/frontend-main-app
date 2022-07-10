@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import BlurBlobs from 'components/BlurBlobs';
 import NavBar from 'components/NavBar';
 import { FC } from 'react';
@@ -7,17 +6,14 @@ import Card from 'components/Card';
 import Banner from '../Banner';
 import CreatedBy from '../CreatedBy';
 import styles from './index.module.scss';
-import { RootState } from 'reducers';
 
 const Landing: FC = () => {
   const { orgId } = useParams();
 
-  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
-
   return (
     <div className={styles.container}>
       <BlurBlobs />
-      <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
+      <NavBar />
       <Banner />
       <div className={styles.content}>
         <section className={styles.section}>

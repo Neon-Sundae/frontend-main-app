@@ -1,29 +1,28 @@
 import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Web3 from 'web3';
 import toast, { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
+import { RootState } from 'reducers';
 import { ReactComponent as WalletIcon } from 'assets/illustrations/icons/wallet.svg';
 import { ReactComponent as VisibilityIcon } from 'assets/illustrations/icons/visibility.svg';
 import { ReactComponent as WithdrawIcon } from 'assets/illustrations/icons/withdraw.svg';
 import styles from './index.module.scss';
 import useWithdrawFund from './hooks';
 
-interface WalletButtonProps {
-  usdcBalance: number,
-  profileAddress: string
-}
-
-const WalletBalButton: FC<WalletButtonProps> = (props) => {
+const WalletBalButton = () => {
 
   const [openWithdraw, setOpenWithdraw] = useState(false);
+
+  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
 
   const { withdrawFund } = useWithdrawFund()
 
   const handleWithdraw = () => {
-    if (props.usdcBalance === 0) {
+    if (usdcBalance === 0) {
       toast.error("Zero Balance");
     } else {
-      withdrawFund(props.profileAddress);
+      withdrawFund(profileContractAddress);
     }
     setOpenWithdraw(false);
   }
@@ -42,7 +41,7 @@ const WalletBalButton: FC<WalletButtonProps> = (props) => {
               styles['text--clickable']
             )}
           >
-            <span>{Number(Web3.utils.fromWei(props.usdcBalance.toString(), 'ether')).toLocaleString()} usdc</span>
+            <span>{Number(Web3.utils.fromWei(usdcBalance.toString(), 'ether')).toLocaleString()} usdc</span>
             <span className="material-icons">keyboard_arrow_down</span>
           </div>
           <span

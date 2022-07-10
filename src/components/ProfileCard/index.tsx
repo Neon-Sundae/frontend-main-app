@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import ProfileCardContainer from 'components/ProfileCardContainer';
@@ -12,11 +11,7 @@ import ProfileSocialsEdit from './ProfileSocialsEdit';
 import TimezoneEdit from './TimezoneEdit';
 import { Toaster } from 'react-hot-toast';
 
-interface ProfileCardProps {
-  xp: number,
-  profileAddress: string
-}
-const ProfileCard: FC<ProfileCardProps> = (props: any) => {
+const ProfileCard = () => {
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
@@ -24,7 +19,7 @@ const ProfileCard: FC<ProfileCardProps> = (props: any) => {
   return (
     <>
       <ProfileCardContainer>
-        {isEditable ? <BasicDetailsEdit /> : <BasicDetails {...props} />}
+        {isEditable ? <BasicDetailsEdit /> : <BasicDetails />}
         {isEditable ? <ProfileSkillsEdit /> : <ProfileSkills />}
         {isEditable ? <ProfileSocialsEdit /> : <ProfileSocials />}
         {isEditable ? <TimezoneEdit /> : <Timezone />}

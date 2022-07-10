@@ -1,31 +1,60 @@
 import { Dispatch, FC, SetStateAction } from 'react';
+import { getWeb3Instance } from 'utils/web3EventFn';
+import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
 import styles from './index.module.scss';
+import { AbiItem } from 'web3-utils';
+import { profileManageContractAddress } from 'contracts/contracts';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
-  projectAddress: string,
   budget: number,
   projectName: string;
   founderName: string;
 }
 
 const Header: FC<IHeaderProps> = (props) => {
+
+  const navigator = useNavigate();
+
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
+
+  const handleOpen = async () => {
+    try {
+      const web3 = getWeb3Instance();
+      const profileManageContract = new web3.eth.Contract(ProfileManageAbi.abi as AbiItem[], profileManageContractAddress);
+      const address = await profileManageContract.methods.getProfileContractAddress(walletId).call();
+
+      if (address !== "0x0000000000000000000000000000000000000000") {
+        props.setOpen(true);
+      } else {
+        toast.error('Please mint your profile on chain');
+        navigator('/profile');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <>
       <div className={styles.container}>
-        <h1>{props.projectName}</h1>
-        <h3>{props.founderName}</h3>
+        <span className={styles['project-name']}>{props.projectName}</span>
+        <span className={styles['founder-name']}>{props.founderName}</span>
         {
-          props.projectAddress === '' && (
-            <button onClick={() => props.setOpen(true)}>Publish a Project</button>
+          selectedProjectAddress !== '' && (
+            <button onClick={handleOpen}>Publish a Project</button>
           )
         }
         {
-          props.projectAddress !== '' && props.budget !== 0 && <h3>{props.budget} USDC</h3>
+          selectedProjectAddress !== '' && props.budget !== 0 && <span className={styles['deposit-funds']}>Deposit Funds: {props.budget} USDC</span>
         }
         {
-          props.projectAddress !== '' && (
-            <h5>&emsp;Smart Contract Id: {props.projectAddress.slice(0, 6)}...{props.projectAddress.slice(props.projectAddress.length - 5, props.projectAddress.length)}</h5>
+          selectedProjectAddress !== '' && (
+            <div className={styles['contract-address']}>Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...{selectedProjectAddress.slice(selectedProjectAddress.length - 5, selectedProjectAddress.length)}</div>
           )
         }
       </div>

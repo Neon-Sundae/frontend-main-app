@@ -25,6 +25,7 @@ const useProfileManage = () => {
                 .send({ from: address });
 
             const contractAddress = await profileManageContract.methods.getProfileContractAddress(address).call();
+            console.log("Deployed profile contract address: ", contractAddress)
             dispatch({
                 type: GET_PROFILE_CONTRACT_ADDRESS,
                 payload: contractAddress

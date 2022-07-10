@@ -17,25 +17,23 @@ import PublishProjectModal from '../Modal/PublishProjectModal';
 
 const Landing: FC = () => {
 
-  const { getUSDCBalance, getOnChainProject, deployedAddress } = useProject();
+  const accessToken = getAccessToken();
+
+  const { create } = useParams();
+  const { getUSDCBalance, getOnChainProject } = useProject();
 
   const [open, setOpen] = useState(false);
 
   const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
-  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
-  const accessToken = getAccessToken();
-
-  const projectId = 1;
+  const userName = useSelector((state: RootState) => state.user.user?.name);
 
   useEffect(() => {
     if (user?.userId && accessToken) {
       getUSDCBalance();
-      getOnChainProject(projectId);
+      getOnChainProject(Number(create));
     }
-  }, [user])
+  }, [user]);
 
-  const { create } = useParams();
-  const userName = useSelector((state: RootState) => state.user.user?.name);
   const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
     fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
       method: 'GET',
@@ -54,12 +52,11 @@ const Landing: FC = () => {
     flResources,
   } = data;
 
-
   return (
     <div className={styles.container}>
       <BlurBlobs />
-      <NavBar usdcBalance={usdcBalance} profileAddress={profileContractAddress} />
-      <Header projectName={name} founderName={userName || ''} setOpen={(val) => setOpen(val)} projectAddress={deployedAddress} budget={budget} />
+      <NavBar />
+      <Header projectName={name} founderName={userName || ''} setOpen={(val) => setOpen(val)} budget={budget} />
       <Description
         description={description}
         budget={budget}
@@ -69,7 +66,14 @@ const Landing: FC = () => {
       />
       <TaskManagement />
       {
-        open && <PublishProjectModal setOpen={(val: any) => setOpen(val)} usdcBalance={wallet_usdc_balance} />
+        open && <PublishProjectModal
+          setOpen={(val: any) => setOpen(val)}
+          usdcBalance={wallet_usdc_balance}
+          projectId={Number(create)}
+          budget={budget}
+          projectName={name}
+          projectDescription={description}
+        />
       }
       <Toaster />
     </div>

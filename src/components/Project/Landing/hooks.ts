@@ -13,20 +13,19 @@ import ProjectManageAbi from 'contracts/abi/ProjectManage.sol/ProjectManage.json
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
+import { GET_SELECTED_PROJECT_ADDRESS } from 'actions/flProject/types';
 
 const useProject = () => {
 
     const [deploying, setDeploying] = useState('go_live');
-    const [deployedAddress, setDeployedAddress] = useState('');
     const [gasFee, setGasFee] = useState(0);
-    const [budget, setBudget] = useState(0);
 
     const accessToken = getAccessToken();
 
     const dispatch = useDispatch();
 
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-    const userId = useSelector((state: RootState) => state.user.user?.userId);
+    const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
 
     const getUSDCBalance = async () => {
         try {
@@ -48,14 +47,14 @@ const useProject = () => {
             const web3 = getWeb3Instance();
             const ProjectManageContract = new web3.eth.Contract(ProjectManageAbi.abi as AbiItem[], projectManageContractAddress);
             let result = await ProjectManageContract.methods.getProjectContractAddresses(walletId).call();
-
             const address = result.filter((project: any) => String(project.projectId) === String(id)).length > 0 ?
                 result.filter((project: any) => String(project.projectId) === String(id))[0].contractAddress : ''
-            setDeployedAddress(address);
+
             if (address !== '') {
-                const projectContract = new web3.eth.Contract(ProjectAbi.abi as AbiItem[], address);
-                result = await projectContract.methods.budget().call();
-                setBudget(result)
+                dispatch({
+                    type: GET_SELECTED_PROJECT_ADDRESS,
+                    payload: address
+                });
             }
         } catch (err) {
             console.log(err);
@@ -85,43 +84,46 @@ const useProject = () => {
         }
     }
 
-    const publishProject = async () => {
+    const publishProject = async (projectId: number, budget: number, name: string, description: string) => {
         const web3 = getWeb3Instance();
         const projectManageContract = new web3.eth.Contract(ProjectManageAbi.abi as AbiItem[], projectManageContractAddress);
-        const result = await projectManageContract.methods.checkProjectExist(walletId, 1).call()
+        const result = await projectManageContract.methods.checkProjectExist(walletId, projectId).call()
         if (result) {
             toast.error("Project already exist");
             return;
         }
-        projectManageContract.methods.createProject(1, USDCAddress, 'test', 'testtest', 1000)
+        projectManageContract.methods.createProject(projectId, USDCAddress, name, description, budget)
             .send({ from: walletId })
             .on('transactionHash', (hash: any) => {
                 setDeploying('deploying');
             })
             .on('receipt', (receipt: any) => {
+                console.log("Deployed project contract address: ", receipt.events.DeployedNewProject.returnValues[1]);
                 setDeploying('deploy_success');
-                setDeployedAddress(receipt.events.DeployedNewProject.returnValues[1]);
-                setBudget(1000);
-                saveProjectContractAddress(receipt.events.DeployedNewProject.returnValues[1], 1);
+                dispatch({
+                    type: GET_SELECTED_PROJECT_ADDRESS,
+                    payload: receipt.events.DeployedNewProject.returnValues[1]
+                })
+                saveProjectContractAddress(receipt.events.DeployedNewProject.returnValues[1], projectId);
                 setTimeout(() => {
                     setDeploying('deposit');
                 }, 2000);
             })
             .on('error', (err: any) => {
                 toast.error('Error happens while deploying contract');
-                setDeploying('deploy_failed');
+                setDeploying('go_live');
             })
     }
 
-    const depositFunds = async () => {
+    const depositFunds = async (budget: number) => {
         try {
             const web3 = getWeb3Instance();
-
             const USDCContract = new web3.eth.Contract(USDCAbi.abi as AbiItem[], USDCAddress);
-            await USDCContract.methods.approve(deployedAddress, web3.utils.toWei(String(1100))).send({ from: walletId })
+            await USDCContract.methods.approve(selectedProjectAddress, web3.utils.toWei(String(budget * 1.1)))
+                .send({ from: walletId });
 
-            const projectContract = new web3.eth.Contract(ProjectAbi.abi as AbiItem[], deployedAddress);
-            projectContract.methods.depositFunds(1100)
+            const projectContract = new web3.eth.Contract(ProjectAbi.abi as AbiItem[], selectedProjectAddress);
+            projectContract.methods.depositFunds(budget * 1.1)
                 .send({ from: walletId })
                 .on('transactionHash', (hash: any) => {
                     setDeploying('depositing');
@@ -130,10 +132,8 @@ const useProject = () => {
                     setDeploying('deposit_success');
                 })
                 .on('error', (err: any) => {
-                    setDeploying('deposit_failed');
+                    setDeploying('deposit');
                 });
-            // TODO: change project id
-            getOnChainProject(1);
         } catch (err) {
             console.log(err);
         }
@@ -172,9 +172,7 @@ const useProject = () => {
         getOnChainProject,
         depositFunds,
         deploying,
-        deployedAddress,
         gasFee,
-        budget
     }
 }
 
