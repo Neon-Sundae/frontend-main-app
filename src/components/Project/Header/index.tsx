@@ -45,7 +45,7 @@ const Header: FC<IHeaderProps> = (props) => {
         <span className={styles['project-name']}>{props.projectName}</span>
         <span className={styles['founder-name']}>{props.founderName}</span>
         {
-          selectedProjectAddress !== '' && (
+          selectedProjectAddress === '' && (
             <button onClick={handleOpen}>Publish a Project</button>
           )
         }
