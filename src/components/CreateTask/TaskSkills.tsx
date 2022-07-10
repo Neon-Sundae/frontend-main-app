@@ -1,14 +1,24 @@
 import clsx from 'clsx';
-import { FC, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { ActionMeta, SingleValue } from 'react-select';
 import Select, { Option } from 'components/Select';
 import { useFetchAppSkills } from 'components/ProfileCard/ProfileSkillsEdit/hooks';
 import styles from './index.module.scss';
 
-const TaskSkills: FC = () => {
+interface ITaskSkills {
+  selectedSkill: Option | null;
+  setSelectedSkill: Dispatch<SetStateAction<Option | null>>;
+  taskSkills: Option[];
+  setTaskSkills: Dispatch<SetStateAction<Option[]>>;
+}
+
+const TaskSkills: FC<ITaskSkills> = ({
+  selectedSkill,
+  setSelectedSkill,
+  taskSkills,
+  setTaskSkills,
+}) => {
   const { appSkills } = useFetchAppSkills();
-  const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
-  const [taskSkills, setTaskSkills] = useState<Option[]>([]);
 
   const handleSelectChange = (
     newValue: SingleValue<Option>,

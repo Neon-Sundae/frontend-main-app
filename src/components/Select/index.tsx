@@ -79,7 +79,6 @@ const SelectComponent: FC<ComponentProps> = ({
       width: '100%',
       borderColor,
       overflow: 'auto',
-      zIndex: 2,
     }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       return {
@@ -128,7 +127,6 @@ const SelectComponent: FC<ComponentProps> = ({
       isSearchable={false}
       styles={customStyles}
       isMulti={false}
-      // menuIsOpen
     />
   );
 };

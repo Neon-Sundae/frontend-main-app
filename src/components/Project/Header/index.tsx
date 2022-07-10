@@ -4,15 +4,17 @@ import styles from './index.module.scss';
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   projectAddress: string,
-  budget: number
+  budget: number,
+  projectName: string;
+  founderName: string;
 }
 
 const Header: FC<IHeaderProps> = (props) => {
   return (
     <>
       <div className={styles.container}>
-        <h1>Project Name</h1>
-        <h3>Founder Name</h3>
+        <h1>{props.projectName}</h1>
+        <h3>{props.founderName}</h3>
         {
           props.projectAddress === '' && (
             <button onClick={() => props.setOpen(true)}>Publish a Project</button>
