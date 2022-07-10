@@ -18,7 +18,7 @@ interface IHeaderProps {
 
 const Header: FC<IHeaderProps> = (props) => {
 
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
@@ -33,12 +33,18 @@ const Header: FC<IHeaderProps> = (props) => {
         props.setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
-        navigator('/profile');
+        navigate('/profile');
       }
     } catch (err) {
       console.log(err);
     }
   }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(selectedProjectAddress)
+    toast.success('Copied!');
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -54,7 +60,10 @@ const Header: FC<IHeaderProps> = (props) => {
         }
         {
           selectedProjectAddress !== '' && (
-            <div className={styles['contract-address']}>Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...{selectedProjectAddress.slice(selectedProjectAddress.length - 5, selectedProjectAddress.length)}</div>
+            <div className={styles['contract-address']}>
+              Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...{selectedProjectAddress.slice(selectedProjectAddress.length - 5, selectedProjectAddress.length)}
+              <i className="material-icons-200" onClick={handleCopy}>content_copy</i>
+            </div>
           )
         }
       </div>
