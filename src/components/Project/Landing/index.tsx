@@ -1,4 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styles from './index.module.scss';
 import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
 import TaskManagement from 'components/TaskManagement';
@@ -7,16 +9,31 @@ import { useQuery } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
-import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Header from '../Header';
 import Description from '../Description';
-import styles from './index.module.scss';
+import useProject from './hooks';
+import PublishProjectModal from '../Modal/PublishProjectModal';
 
 const Landing: FC = () => {
+
+  const accessToken = getAccessToken();
+
   const { create } = useParams();
+  const { getUSDCBalance, getOnChainProject } = useProject();
+
+  const [open, setOpen] = useState(false);
+
+  const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
   const userName = useSelector((state: RootState) => state.user.user?.name);
-  console.log(userName);
+
+  useEffect(() => {
+    if (user?.userId && accessToken) {
+      getUSDCBalance();
+      getOnChainProject(Number(create));
+    }
+  }, [user]);
+
   const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
     fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
       method: 'GET',
@@ -25,6 +42,7 @@ const Landing: FC = () => {
   );
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error :|</p>;
+
   const {
     name,
     description,
@@ -33,11 +51,12 @@ const Landing: FC = () => {
     preferredTimeZones,
     flResources,
   } = data;
+
   return (
     <div className={styles.container}>
       <BlurBlobs />
       <NavBar />
-      <Header projectName={name} founderName={userName || ''} />
+      <Header projectName={name} founderName={userName || ''} setOpen={(val) => setOpen(val)} budget={budget} />
       <Description
         description={description}
         budget={budget}
@@ -46,6 +65,16 @@ const Landing: FC = () => {
         flResources={flResources}
       />
       <TaskManagement />
+      {
+        open && <PublishProjectModal
+          setOpen={(val: any) => setOpen(val)}
+          usdcBalance={wallet_usdc_balance}
+          projectId={Number(create)}
+          budget={budget}
+          projectName={name}
+          projectDescription={description}
+        />
+      }
       <Toaster />
     </div>
   );

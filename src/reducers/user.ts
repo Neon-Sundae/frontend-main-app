@@ -1,22 +1,34 @@
 import { IUser } from 'actions/user';
-import { UPDATE_USER, UPDATE_USER_NAME } from 'actions/user/types';
+import { UPDATE_USER, UPDATE_USER_NAME, GET_WALLET_ADDRESS, GET_WALLET_USDC_BALANCE } from 'actions/user/types';
 
 interface State {
   user: Partial<IUser> | undefined;
+  wallet_address: string,
+  wallet_usdc_balance: number
 }
 
 type Action =
   | {
-      type: typeof UPDATE_USER;
-      user: Partial<IUser>;
-    }
+    type: typeof UPDATE_USER;
+    user: Partial<IUser>;
+  }
   | {
-      type: typeof UPDATE_USER_NAME;
-      name: string;
-    };
+    type: typeof UPDATE_USER_NAME;
+    name: string;
+  }
+  | {
+    type: typeof GET_WALLET_ADDRESS;
+    payload: string;
+  }
+  | {
+    type: typeof GET_WALLET_USDC_BALANCE;
+    payload: string;
+  };
 
 const initialState: State = {
   user: undefined,
+  wallet_address: '',
+  wallet_usdc_balance: 0
 };
 
 const user = (state = initialState, action: Action): State => {
@@ -33,6 +45,16 @@ const user = (state = initialState, action: Action): State => {
           ...state.user,
           name: action.name,
         },
+      };
+    case GET_WALLET_ADDRESS:
+      return {
+        ...state,
+        wallet_address: action.payload,
+      };
+    case GET_WALLET_USDC_BALANCE:
+      return {
+        ...state,
+        wallet_usdc_balance: Number(action.payload),
       };
     default:
       return { ...state };

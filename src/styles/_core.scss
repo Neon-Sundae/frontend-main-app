@@ -62,11 +62,9 @@ strong {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    126.59deg,
-    rgba(255, 255, 255, 0.12) 12.11%,
-    rgba(255, 255, 255, 0.03) 73.08%
-  );
+  background: linear-gradient(126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%);
   box-shadow: none;
   -webkit-box-shadow: none;
   border-radius: 20px;
