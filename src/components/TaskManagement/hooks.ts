@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
+import { getAccessToken } from 'utils/authFn';
 import formatTasksData from 'utils/formatTasksData';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
@@ -61,6 +62,7 @@ interface IUpdateTaskStatus {
 
 const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
 
   const updateTask = useMutation(
     ({ taskId, status }: IUpdateTaskStatus) => {
@@ -72,6 +74,7 @@ const useUpdateTaskStatus = () => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(payload),
       });
