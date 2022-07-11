@@ -1,0 +1,49 @@
+.container {
+  color: #fff;
+  width: 90%;
+  margin: auto;
+  .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h4 {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 27px;
+    line-height: 32px;
+  }
+  .projectDescription {
+    width: 70vw;
+    height: 250px;
+    padding: 25px;
+    line-height: 2rem;
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
+    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(40px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 23px;
+  }
+  .card {
+    width: 25vw;
+    height: 250px;
+    padding: 25px;
+    line-height: 2rem;
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
+    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(40px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 23px;
+    margin-left: 25px;
+  }
+}

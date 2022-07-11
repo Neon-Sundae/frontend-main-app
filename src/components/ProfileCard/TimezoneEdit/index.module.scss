@@ -11,14 +11,14 @@
   text-align: center;
   outline: none;
   width: 85%;
-  padding: 5px 0;
+  padding: 10px 16px;
   cursor: pointer;
 
-  & > svg {
+  &>svg {
     margin-right: 12px;
   }
 
-  & > span {
+  &>span {
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
     font-size: 16px;
@@ -50,7 +50,7 @@
   z-index: 1;
   cursor: pointer;
 
-  & > p {
+  &>p {
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
     font-size: 16px;
@@ -58,7 +58,7 @@
     text-align: center;
   }
 
-  & > hr {
+  &>hr {
     border-right: none;
     border-width: 2px;
     border-bottom: none;
@@ -80,7 +80,7 @@
   cursor: pointer;
   z-index: 1;
 
-  & > .gradient-blur {
+  &>.gradient-blur {
     width: 99.9%;
     height: 100%;
     filter: blur(26px);
@@ -89,7 +89,7 @@
     cursor: pointer;
   }
 
-  & > p {
+  &>p {
     color: white;
     position: absolute;
     top: 50%;

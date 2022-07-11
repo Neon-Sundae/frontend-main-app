@@ -12,6 +12,20 @@ export interface IProfile {
   userId: number;
 }
 
+export interface IProfile {
+  profileId: number;
+  title: string | null;
+  description: string | null;
+  picture: string | null;
+  timezone: string | null;
+  portfolio: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  instagram: string | null;
+  github: string | null;
+  userId: number;
+}
+
 export interface IProfileCertifications {
   certificationId: number;
   title: string;
@@ -50,4 +64,8 @@ export interface IProfileApiResponse extends IProfile {
   education: IProfileEducation[];
   workplaces: IProfileWorkplace[];
   profileSkills: IProfileSkills[];
+}
+
+export interface IProfileSmartContractApiResponse extends IProfile {
+  profileSmartContractId: string;
 }

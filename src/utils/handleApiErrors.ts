@@ -4,8 +4,7 @@ const handleApiErrors = async (response: Response) => {
     if (response.status === 401) {
       throw new Error('Unauthorized');
     } else if (response.status === 500) {
-      const json = await response.json();
-      throw new Error(json.code);
+      throw new Error('Server error');
     }
   }
 

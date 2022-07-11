@@ -10,9 +10,10 @@
   width: 85%;
   margin: 0 auto;
   margin-top: 10px;
+  padding: 10px 16px;
   cursor: pointer;
 
-  & > svg {
+  &>svg {
     margin: 0 14px;
   }
 }
@@ -23,41 +24,6 @@
   font-size: 32px;
   color: white;
   margin-bottom: 60px;
-}
-
-.gradient-save-btn {
-  height: 76px;
-  width: 270px;
-  background-color: transparent;
-  overflow: hidden;
-  border-radius: 30px;
-  position: relative;
-  margin: 0 auto;
-  margin-top: 40px;
-  cursor: pointer;
-  z-index: 1;
-
-  & > .gradient-blur {
-    width: 99.9%;
-    height: 100%;
-    filter: blur(26px);
-    box-shadow: 0px -4px 5px rgba(255, 206, 239, 0.15),
-      inset 0px 4px 15px #d39bff;
-    cursor: pointer;
-  }
-
-  & > p {
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-family-roboto-flex);
-    font-weight: 500;
-    font-size: 22px;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
 }
 
 .social-input {

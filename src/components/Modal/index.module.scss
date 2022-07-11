@@ -11,8 +11,6 @@
 
 .overlay {
   position: fixed;
-  width: 617px;
-  height: 630px;
   padding: 33px;
   background: #272833;
   box-shadow: 0px 2px 52px rgba(0, 0, 0, 0.2);
@@ -21,7 +19,7 @@
   border-radius: 20px;
   transform: translateX(-50%) translateY(-50%);
   overflow: hidden;
-  z-index: 3;
+  z-index: 2;
 
   & .icon-cont {
     border: none;

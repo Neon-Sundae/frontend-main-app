@@ -9,7 +9,7 @@
     height: 110px;
     border-radius: 50%;
 
-    & > img {
+    &>img {
       width: 100%;
       height: 100%;
     }
@@ -87,13 +87,11 @@
     .label {
       font-family: var(--font-family-roboto-bold);
       font-size: 23px;
-      background: -webkit-linear-gradient(
-        298.19deg,
-        #ffbedf 27.52%,
-        #eac4ff 48.39%,
-        #ffc9af 69.27%,
-        #ffd9a0 94.32%
-      );
+      background: -webkit-linear-gradient(298.19deg,
+          #ffbedf 27.52%,
+          #eac4ff 48.39%,
+          #ffc9af 69.27%,
+          #ffd9a0 94.32%);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -123,7 +121,7 @@
       color: white;
     }
 
-    & > i {
+    &>i {
       color: white;
     }
   }
@@ -138,7 +136,7 @@
     cursor: pointer;
     margin: 15px 0;
 
-    & > i {
+    &>i {
       color: white;
       margin-left: 5px;
     }
