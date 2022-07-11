@@ -4,17 +4,22 @@ import { Dispatch, SetStateAction } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 import normalizeCategories from 'utils/normalizeCategories';
 
 const useCreateTask = (setOpen: Dispatch<SetStateAction<boolean>>) => {
   const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
 
   const createTask = useMutation(
     (formData: FormData) =>
       fetch(`${config.ApiBaseUrl}/task`, {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: formData,
       }),
     {
