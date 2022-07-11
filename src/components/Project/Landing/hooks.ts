@@ -13,7 +13,7 @@ import ProjectManageAbi from 'contracts/abi/ProjectManage.sol/ProjectManage.json
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { GET_SELECTED_PROJECT_ADDRESS } from 'actions/flProject/types';
+import { GET_SELECTED_PROJECT_ADDRESS, IS_DEPOSITED } from 'actions/flProject/types';
 
 const useProject = () => {
 
@@ -51,6 +51,13 @@ const useProject = () => {
                 result.filter((project: any) => String(project.projectId) === String(id))[0].contractAddress : ''
 
             if (address !== '') {
+                const ProjectContract = new web3.eth.Contract(ProjectAbi.abi as AbiItem[], address);
+                const isDeposited = await ProjectContract.methods.isDeposit().call();
+
+                dispatch({
+                    type: IS_DEPOSITED,
+                    payload: isDeposited
+                });
                 dispatch({
                     type: GET_SELECTED_PROJECT_ADDRESS,
                     payload: address
@@ -130,6 +137,10 @@ const useProject = () => {
                 })
                 .on('receipt', (receipt: any) => {
                     setDeploying('deposit_success');
+                    dispatch({
+                        type: IS_DEPOSITED,
+                        payload: true
+                    })
                 })
                 .on('error', (err: any) => {
                     setDeploying('deposit');
@@ -171,6 +182,7 @@ const useProject = () => {
         publishProject,
         getOnChainProject,
         depositFunds,
+        setDeploying,
         deploying,
         gasFee,
     }

@@ -24,14 +24,16 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance, projec
         getGasFeeToPublish,
         publishProject,
         depositFunds,
+        setDeploying,
         deploying,
         gasFee
     } = useProject();
 
-    const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
+    const { selectedProjectAddress, deploy_state } = useSelector((state: RootState) => state.flProject);
 
     useEffect(() => {
         getGasFeeToPublish();
+        setDeploying(deploy_state);
     }, []);
 
     const handleClose = () => {

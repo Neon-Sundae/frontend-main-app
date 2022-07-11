@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { GET_DEPLOY_STATE } from 'actions/flProject/types';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -19,17 +21,22 @@ interface IHeaderProps {
 const Header: FC<IHeaderProps> = (props) => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
+  const { selectedProjectAddress, isDeposit } = useSelector((state: RootState) => state.flProject);
 
   const handleOpen = async () => {
     try {
       const web3 = getWeb3Instance();
       const profileManageContract = new web3.eth.Contract(ProfileManageAbi.abi as AbiItem[], profileManageContractAddress);
-      const address = await profileManageContract.methods.getProfileContractAddress(walletId).call();
+      const profile_address = await profileManageContract.methods.getProfileContractAddress(walletId).call();
 
-      if (address !== "0x0000000000000000000000000000000000000000") {
+      if (profile_address !== "0x0000000000000000000000000000000000000000") {
+        dispatch({
+          type: GET_DEPLOY_STATE,
+          payload: selectedProjectAddress !== '' ? isDeposit ? 'deposit_success' : 'deposit' : 'go_live'
+        })
         props.setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
@@ -51,12 +58,11 @@ const Header: FC<IHeaderProps> = (props) => {
         <span className={styles['project-name']}>{props.projectName}</span>
         <span className={styles['founder-name']}>{props.founderName}</span>
         {
-          selectedProjectAddress === '' && (
+          selectedProjectAddress === '' ? (
             <button onClick={handleOpen}>Publish a Project</button>
-          )
-        }
-        {
-          selectedProjectAddress !== '' && props.budget !== 0 && <span className={styles['deposit-funds']}>Deposit Funds: {props.budget} USDC</span>
+          ) : !isDeposit ? (
+            <button onClick={handleOpen}>Deposit Funds</button>
+          ) : <span className={styles['deposit-funds']}>Deposit Funds: {Number(props.budget) * 1.1} USDC</span>
         }
         {
           selectedProjectAddress !== '' && (

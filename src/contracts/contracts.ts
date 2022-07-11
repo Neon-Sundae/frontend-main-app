@@ -1,5 +1,5 @@
-export const profileManageContractAddress = "0x1ca6C9cCCB99080A56517318E4C087C26ccE2005";
-export const projectManageContractAddress = "0x6Bc24E28C1d6179d4d812E7B259d0C9C54337363";
-export const taskContractAddress = "0xefEa5378843A359719A870218d99A29F44741eD5";
-export const USDCAddress = "0xe11a86849d99f524cac3e7a0ec1241828e332c62";
+export const profileManageContractAddress = "0xE6BE06a9B8e3a8DbfB970326963aBa589717E366";
+export const projectManageContractAddress = "0x9434465dFAC1ad037e0dBB379b9497e520147f40";
+export const taskContractAddress = "0x3AcF59A010e14c6A29bF9D830E93A35dDB52A81F";
+export const USDCAddress = "0xe11a86849d99f524cac3e7a0ec1241828e332c62"; // "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
 
