@@ -6,6 +6,7 @@ import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { useNavigate } from 'react-router-dom';
+import { updateUser } from 'actions/user';
 
 interface ICreateOrg {
   name: string;
@@ -14,7 +15,7 @@ interface ICreateOrg {
 
 const useCreateOrg = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const useCreateOrg = () => {
       (async () => {
         try {
           const payload = {
-            userId,
+            userId: user?.userId,
             name,
             description,
           };
@@ -46,6 +47,7 @@ const useCreateOrg = () => {
           const json: IOrgApiResponse = await handleApiErrors(response);
 
           dispatch(createOrg(json));
+          dispatch(updateUser({ ...user, isFounder: true }));
           navigate(`../organisation/${json.organisationId}`);
         } catch (err) {
           console.log(err);
