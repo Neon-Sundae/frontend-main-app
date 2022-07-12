@@ -14,6 +14,7 @@ import Header from '../Header';
 import Description from '../Description';
 import useProject from './hooks';
 import PublishProjectModal from '../Modal/PublishProjectModal';
+import AssignTaskModal from '../Modal/AssignTaskModal';
 
 const Landing: FC = () => {
 
@@ -23,6 +24,7 @@ const Landing: FC = () => {
   const { getUSDCBalance, getOnChainProject } = useProject();
 
   const [open, setOpen] = useState(false);
+  const [openTask, setOpenTask] = useState(false);
 
   const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
   const userName = useSelector((state: RootState) => state.user.user?.name);
@@ -64,6 +66,7 @@ const Landing: FC = () => {
         preferredTimeZones={preferredTimeZones}
         flResources={flResources}
       />
+      <button onClick={() => setOpenTask(true)}>Assign Task</button>
       <TaskManagement />
       {
         open && <PublishProjectModal
@@ -74,6 +77,11 @@ const Landing: FC = () => {
           projectName={name}
           projectDescription={description}
         />
+      }
+      {
+        openTask && (
+          <AssignTaskModal setOpen={setOpenTask} />
+        )
       }
       <Toaster />
     </div>

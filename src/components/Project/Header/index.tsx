@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
+import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -55,15 +56,17 @@ const Header: FC<IHeaderProps> = (props) => {
   return (
     <>
       <div className={styles.container}>
-        <span className={styles['project-name']}>{props.projectName}</span>
-        <span className={styles['founder-name']}>{props.founderName}</span>
-        {
-          selectedProjectAddress === '' ? (
-            <button onClick={handleOpen}>Publish a Project</button>
-          ) : !isDeposit ? (
-            <button onClick={handleOpen}>Deposit Funds</button>
-          ) : <span className={styles['deposit-funds']}>Deposit Funds: {Number(props.budget) * 1.1} USDC</span>
-        }
+        <div className={styles['project-info']}>
+          <span className={styles['project-name']}>{props.projectName}</span>
+          <span className={styles['founder-name']}>{props.founderName}</span>
+          {
+            selectedProjectAddress === '' ? (
+              <button onClick={handleOpen}>Publish a Project</button>
+            ) : !isDeposit ? (
+              <button onClick={handleOpen}>Deposit Funds</button>
+            ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(props.budget) * 1.1} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
+          }
+        </div>
         {
           selectedProjectAddress !== '' && (
             <div className={styles['contract-address']}>
