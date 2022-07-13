@@ -1,8 +1,15 @@
-import { UPDATE_PROJECT_CATEGORY, GET_SELECTED_PROJECT_ADDRESS } from 'actions/flProject/types';
+import {
+  UPDATE_PROJECT_CATEGORY,
+  GET_SELECTED_PROJECT_ADDRESS,
+  IS_DEPOSITED,
+  GET_DEPLOY_STATE
+} from 'actions/flProject/types';
 
 interface State {
   categoryFilter: any | undefined,
-  selectedProjectAddress: string
+  selectedProjectAddress: string,
+  isDeposit: boolean,
+  deploy_state: string
 }
 
 type Action =
@@ -13,11 +20,21 @@ type Action =
   | {
     type: typeof GET_SELECTED_PROJECT_ADDRESS;
     payload: string;
+  }
+  | {
+    type: typeof IS_DEPOSITED;
+    payload: boolean;
+  }
+  | {
+    type: typeof GET_DEPLOY_STATE;
+    payload: string;
   };
 
 const initialState: State = {
   categoryFilter: undefined,
-  selectedProjectAddress: ''
+  selectedProjectAddress: '',
+  isDeposit: false,
+  deploy_state: 'go_live'
 };
 
 const flProject = (state = initialState, action: Action): State => {
@@ -31,6 +48,16 @@ const flProject = (state = initialState, action: Action): State => {
       return {
         ...state,
         selectedProjectAddress: action.payload
+      }
+    case IS_DEPOSITED:
+      return {
+        ...state,
+        isDeposit: action.payload
+      }
+    case GET_DEPLOY_STATE:
+      return {
+        ...state,
+        deploy_state: action.payload
       }
     default:
       return { ...state };
