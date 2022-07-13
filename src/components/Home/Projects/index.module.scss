@@ -1,27 +1,27 @@
 .header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 30px;
-	padding: 0px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0px 10px;
 
-	color: white;
+  color: white;
 
-	& p {
-		font-family: var(--font-family-roboto-medium);
-		font-size: 25px;
-	}
+  & p {
+    font-family: var(--font-family-roboto-medium);
+    font-size: 25px;
+  }
 
-	& span {
-		font-size: 16px;
-		text-decoration: underline;
-	}
+  & span {
+    font-size: 16px;
+    text-decoration: underline;
+  }
 }
 
 .projects-cont {
-	max-width: 892px;
-	padding: 65px;
+  max-width: 892px;
+  padding: 65px;
 
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
