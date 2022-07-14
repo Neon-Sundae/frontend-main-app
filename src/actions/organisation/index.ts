@@ -1,7 +1,7 @@
-import { IOrganisation } from 'interfaces/organisation';
-import { CREATE_ORG } from './types';
+/* eslint-disable import/prefer-default-export */
+import { EDIT_ORGANISATION } from './types';
 
-export const createOrg = (org: Partial<IOrganisation>) => ({
-  type: CREATE_ORG,
-  org,
+export const editOrganisation = (isEditable: boolean) => ({
+  type: EDIT_ORGANISATION,
+  isEditable,
 });

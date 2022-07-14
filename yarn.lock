@@ -2520,7 +2520,7 @@ eslint-visitor-keys@^3.0.0, eslint-visitor-keys@^3.3.0:
 
 eslint-watch@^8.0.0:
   version "8.0.0"
-  resolved "https://registry.npmjs.org/eslint-watch/-/eslint-watch-8.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/eslint-watch/-/eslint-watch-8.0.0.tgz#349b708a07facc6069e9c295a496180999a8a13b"
   integrity sha512-piws/uE4gkZdz1pwkaEFx+kSWvoGnVX8IegFRrE1NUvlXjtU0rg7KhT1QDj/NzhAwbiLEfdRHWz5q738R4zDKA==
   dependencies:
     chokidar "^3.5.2"

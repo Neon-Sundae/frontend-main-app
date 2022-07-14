@@ -17,7 +17,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["*.svg", "*.ttf", "*.png", "*.json"],
+  "ignorePatterns": ["*.svg", "*.ttf", "*.png", "*.json", "*.scss", "*.d.ts", "*.mp4"],
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off",

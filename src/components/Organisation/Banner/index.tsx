@@ -6,6 +6,9 @@ import { ReactComponent as Twitter } from 'assets/illustrations/profile/twitter.
 import { ReactComponent as Apple } from 'assets/illustrations/organisation/apple.svg';
 import { IOrganisation } from 'interfaces/organisation';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { editOrganisation } from 'actions/organisation';
+import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
 interface IBanner {
@@ -13,6 +16,17 @@ interface IBanner {
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
+  const dispatch = useDispatch();
+  const isEditable = useSelector((state: RootState) => state.org.isEditable);
+
+  const handleEdit = () => {
+    if (isEditable) {
+      dispatch(editOrganisation(false));
+    } else {
+      dispatch(editOrganisation(true));
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div
@@ -26,7 +40,15 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           </div>
         </div>
         <div className={styles.center}>
-          <button className={styles.btn}>Edit Organisation</button>
+          {isEditable ? (
+            <button className={styles.btn} onClick={handleEdit}>
+              Save
+            </button>
+          ) : (
+            <button className={styles.btn} onClick={handleEdit}>
+              Edit Organisation
+            </button>
+          )}
         </div>
         <div className={clsx(styles.center, styles['org-socials'])}>
           <div className={styles['socials-row']}>
