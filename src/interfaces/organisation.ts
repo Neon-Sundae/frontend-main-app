@@ -1,6 +1,7 @@
 interface OrganisationUser {
   name: string;
   profile: {
+    profileId: number;
     title: string | null;
     createdAt: string;
   };

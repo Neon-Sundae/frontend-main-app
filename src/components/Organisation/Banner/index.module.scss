@@ -24,6 +24,26 @@
   margin-inline: auto;
 }
 
+.organisation-name {
+  font-family: var(--font-family-roboto-semibold);
+  font-size: 34px;
+  color: white;
+  margin-bottom: 30px;
+
+  &--edit {
+    background: rgba(60, 60, 70, 0.5);
+    border: 0.7px solid #141414;
+    border-radius: 10.4px;
+    outline: none;
+
+    font-family: var(--font-family-roboto-semibold);
+    color: white;
+    font-size: 24px;
+    padding: 15px 10px;
+    margin-bottom: 30px;
+  }
+}
+
 .org-socials {
   align-items: flex-start !important;
 }
@@ -42,16 +62,41 @@
     font-size: 24px;
   }
 
-  & > a {
+  & > .organisation-website {
     font-family: var(--font-family-roboto-regular);
     font-size: 24px;
     color: white;
+
+    &--edit {
+      background: rgba(60, 60, 70, 0.5);
+      border: 0.7px solid #141414;
+      border-radius: 10.4px;
+      outline: none;
+
+      font-family: var(--font-family-roboto-semibold);
+      color: white;
+      font-size: 20px;
+      padding: 10px;
+    }
   }
 
   & > .social-icon-container {
     width: 150px;
     display: flex;
     justify-content: space-between;
+
+    &--edit {
+      background: rgba(60, 60, 70, 0.5);
+      border: 0.7px solid #141414;
+      border-radius: 10.4px;
+      cursor: pointer;
+
+      font-family: var(--font-family-roboto-semibold);
+      color: white;
+      font-size: 20px;
+      padding: 8px;
+      width: 250px;
+    }
   }
 }
 
@@ -99,4 +144,44 @@
   -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
   -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
   box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+}
+
+.social-title {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 600;
+  font-size: 32px;
+  color: white;
+  margin-bottom: 60px;
+}
+
+.social-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 25px;
+
+  .social-input-title {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+    font-size: 21px;
+  }
+
+  .social-input-field {
+    background-color: #2d2d35;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: white;
+    width: 300px;
+    height: 48px;
+    padding: 0 20px;
+    z-index: 1;
+
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+    font-size: 19px;
+  }
 }
