@@ -1,0 +1,104 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ITaskInterface",
+  "sourceName": "contracts/interfaces/ITaskInterface.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkTaskId",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "completeTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTaskById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "enum ITaskInterface.State",
+              "name": "currentState",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "founderAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "builderAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "usdc_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "fndr_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "xp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isBuilderAgreed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ITaskInterface.TaskInfo",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

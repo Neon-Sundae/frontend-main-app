@@ -1,11 +1,13 @@
 import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { editProfile } from 'actions/profile';
+import { RootState } from 'reducers';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
-import { useDispatch, useSelector } from 'react-redux';
-import { editProfile } from 'actions/profile';
-import { RootState } from 'reducers';
 import styles from './index.module.scss';
+import useProfileManage from './hooks';
 
 const BasicDetails: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
@@ -62,24 +64,53 @@ const NameDesignation: FC<INameDesignation> = ({ title }) => {
   );
 };
 
-const ExperiencePoints: FC = () => {
+const ExperiencePoints = () => {
+
+  const { xp } = useSelector((state: RootState) => state.profile);
+
   return (
     <div className={styles['experience-points']}>
       <span className={styles.value}>
-        1230 <span className={styles.label}>XP</span>
+        {Number(xp).toLocaleString()} <span className={styles.label}>XP</span>
       </span>
     </div>
   );
 };
 
-const ProfileAddressChain: FC = () => {
+const ProfileAddressChain = () => {
+
+  const { profileContractAddress, profile } = useSelector((state: RootState) => state.profile);
+  const name = useSelector((state: RootState) => state.user.user?.name);
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+
+  const { createProfile } = useProfileManage();
+
+  const handleCopyAddress = () => {
+    navigator.clipboard.writeText(profileContractAddress);
+    toast.success("Copied!");
+  }
+
   return (
     <div className={styles['profile-address-chain']}>
-      <div className={styles['address-container']}>
-        <FoundersLabIcon width={28} height={28} />
-        <p className={styles['profile-address']}>6j6p2W....TzLSHWQfFc</p>
-        <i className="material-icons-200">content_copy</i>
-      </div>
+      {
+        profileContractAddress === "0x0000000000000000000000000000000000000000" ? (
+          <div className={styles['address-container']} style={{ cursor: 'pointer' }} onClick={() => createProfile(name, profile?.title, walletId)}>
+            <span className="material-icons" style={{ color: '#FAA5B9' }}>close</span>
+            <p className={styles['profile-address']}>
+              Mint on Chain
+            </p>
+            <div></div>
+          </div>
+        ) : (
+          <div className={styles['address-container']}>
+            <FoundersLabIcon width={28} height={28} />
+            <p className={styles['profile-address']}>
+              {profileContractAddress?.slice(0, 6)}...{profileContractAddress?.slice(profileContractAddress.length - 6, profileContractAddress.length)}
+            </p>
+            <i className="material-icons-200" onClick={handleCopyAddress}>content_copy</i>
+          </div>
+        )
+      }
       <p className={styles['sync-text']}>
         Sync On Chain <i className="material-icons-200">sync</i>
       </p>

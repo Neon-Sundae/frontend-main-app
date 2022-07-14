@@ -1,28 +1,36 @@
 .container {
   color: #fff;
-  display: flex;
+  // display: flex;
   align-items: baseline;
   width: 90%;
   margin: auto;
   z-index: 999;
-  h1 {
+
+  .project-name {
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
     line-height: 42px;
   }
-  h3 {
+
+  .founder-name,
+  .deposit-funds,
+  .contract-address {
     margin-left: 25px;
     font-size: 16px;
     line-height: 28px;
   }
+
+  .contract-address {
+    margin-left: 0 !important;
+    display: flex;
+  }
+
   button {
     margin-left: 25px;
-    background: linear-gradient(
-      126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%
-    );
+    background: linear-gradient(126.59deg,
+        rgba(255, 255, 255, 0.12) 12.11%,
+        rgba(255, 255, 255, 0.03) 73.08%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     /* Note: backdrop-filter has minimal browser support */

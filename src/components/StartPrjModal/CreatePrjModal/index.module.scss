@@ -97,7 +97,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .saveBtn {
-  background: url(https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1e52e224-be6f-4b66-9cdd-f05beca9a757/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220705%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220705T050306Z&X-Amz-Expires=86400&X-Amz-Signature=dcd2b637d5cd89bdb5b4f47ff33a319b5913dfe97c8e3e6b1128cd56db4352a7&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject);
+  background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
   width: 200px;
   height: 45px;
   backdrop-filter: blur(43.3229px);

@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import config from 'config';
 import { getAccessToken } from './authFn';
 import decodeToken from './decodeToken';
@@ -93,3 +94,8 @@ export const handleAccountsChanged = (accounts: any[]) => {
 
   return accounts[0];
 };
+
+export const getWeb3Instance = () => {
+  const web3Instance = new Web3(Web3.givenProvider || 'http://localhost:8545');
+  return web3Instance;
+}

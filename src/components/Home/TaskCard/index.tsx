@@ -3,33 +3,40 @@ import clsx from 'clsx';
 import Card from 'components/Card';
 import styles from './index.module.scss';
 
-const TaskCard = () => {
+const TaskCard = (props: any) => {
+  const { width, height, data } = props;
+
   return (
-    <Card className={styles['task-card']}>
-      <>
-        <section className={styles.content}>
-          <p className={styles['text--primary']}>
-            UI Design_Moodboard Creation
-          </p>
-          <p className={styles['text--secondary']}>Axie Infinity</p>
-          <section className={styles.stats}>
-            <span>
-              <span className={clsx('material-icons', styles.icon)}>
-                schedule
-              </span>
-              2hrs
-            </span>
-            <span>
-              <span className={clsx(styles.icon, styles.circle)} />
-              10
-            </span>
-          </section>
-        </section>
-        <section className={styles.extra}>
-          <BrandImage width={45} height={45} />
-          <p className={styles['text--secondary']}>Apply to task</p>
-        </section>
-      </>
+    <Card
+      className={styles['task-card']}
+      showTransparentBg={true}
+      width={width}
+      height={height}
+    >
+      <div className={styles.wrapper}>
+        <div className={styles.content} style={{ width: '100px' }}>
+          <BrandImage width={95} height={95} />
+        </div>
+        <div className={styles.content} style={{ lineHeight: '2rem' }}>
+          <h4>{data.name}</h4>
+          <p>{data.flProjectCategory.flProject.name}</p>
+          {Array.from({ length: data.estimatedDifficulty }).map((_, index) => (
+            <i
+              key={index}
+              className={clsx('material-icons', styles['rating-star'])}
+            >
+              star
+            </i>
+          ))}
+        </div>
+        <div className={styles.content} style={{ width: '200px' }}>
+          <div className={styles.dot}> </div>
+          <p>{data.price} USDC </p>
+        </div>
+        <div className={styles.content} style={{ width: '200px' }}>
+          Apply to task
+        </div>
+      </div>
     </Card>
   );
 };

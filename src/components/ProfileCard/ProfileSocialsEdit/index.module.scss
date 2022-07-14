@@ -10,9 +10,10 @@
   width: 85%;
   margin: 0 auto;
   margin-top: 10px;
+  padding: 10px 16px;
   cursor: pointer;
 
-  & > svg {
+  &>svg {
     margin: 0 14px;
   }
 }

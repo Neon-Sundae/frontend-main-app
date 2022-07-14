@@ -2,8 +2,13 @@
 .window-blob-blue-1 {
   filter: blur(150px);
   position: absolute;
-  bottom: -50px;
-  left: 550px;
+  // bottom: -50px;
+  @media (min-width: 1440px) {
+    left: 550px;
+  }
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    left: 214px;
+  }
 }
 
 // Medium Blob - Blue

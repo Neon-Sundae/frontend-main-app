@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import ProfileCardContainer from 'components/ProfileCardContainer';
@@ -10,19 +9,23 @@ import BasicDetailsEdit from './BasicDetailsEdit';
 import ProfileSkillsEdit from './ProfileSkillsEdit';
 import ProfileSocialsEdit from './ProfileSocialsEdit';
 import TimezoneEdit from './TimezoneEdit';
+import { Toaster } from 'react-hot-toast';
 
-const ProfileCard: FC = () => {
+const ProfileCard = () => {
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
 
   return (
-    <ProfileCardContainer>
-      {isEditable ? <BasicDetailsEdit /> : <BasicDetails />}
-      {isEditable ? <ProfileSkillsEdit /> : <ProfileSkills />}
-      {isEditable ? <ProfileSocialsEdit /> : <ProfileSocials />}
-      {isEditable ? <TimezoneEdit /> : <Timezone />}
-    </ProfileCardContainer>
+    <>
+      <ProfileCardContainer>
+        {isEditable ? <BasicDetailsEdit /> : <BasicDetails />}
+        {isEditable ? <ProfileSkillsEdit /> : <ProfileSkills />}
+        {isEditable ? <ProfileSocialsEdit /> : <ProfileSocials />}
+        {isEditable ? <TimezoneEdit /> : <Timezone />}
+      </ProfileCardContainer>
+      <Toaster />
+    </>
   );
 };
 
