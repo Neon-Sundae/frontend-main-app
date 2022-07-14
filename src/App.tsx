@@ -23,7 +23,9 @@ const App = () => {
   const { getProfileContractAddress, fetchOnChainProfileData } = useProfile();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const profileContractAddress = useSelector((state: RootState) => state.profile.profileContractAddress);
+  const profileContractAddress = useSelector(
+    (state: RootState) => state.profile.profileContractAddress
+  );
 
   useEffect(() => {
     if (walletId !== undefined) {
@@ -32,7 +34,10 @@ const App = () => {
   }, [walletId]);
 
   useEffect(() => {
-    if (profileContractAddress !== "0x0000000000000000000000000000000000000000" && profileContractAddress !== "") {
+    if (
+      profileContractAddress !== '0x0000000000000000000000000000000000000000' &&
+      profileContractAddress !== ''
+    ) {
       fetchOnChainProfileData(profileContractAddress);
     }
   }, [profileContractAddress]);
@@ -89,6 +94,14 @@ const App = () => {
               // <PrivateRoute>
               <Tasks />
               // </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tasks/all"
+            element={
+              <PrivateRoute>
+                <Tasks />
+              </PrivateRoute>
             }
           />
           <Route path="/logout" element={<Logout />} />

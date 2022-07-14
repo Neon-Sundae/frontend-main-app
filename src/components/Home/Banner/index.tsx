@@ -3,8 +3,11 @@ import clsx from 'clsx';
 import StartOrgModal from 'components/StartOrgModal';
 import StartPrjModal from 'components/StartPrjModal';
 import styles from './index.module.scss';
-
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 const Banner: FC = () => {
+  const userName = useSelector((state: RootState) => state.user.user?.name);
+
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showPrjModal, setShowPrjModal] = useState(false);
 
@@ -29,7 +32,7 @@ const Banner: FC = () => {
       <div className={clsx(styles.banner, styles.glass)}>
         <div className={styles.content}>
           <span className={styles['text--secondary']}>Welcome back</span>
-          <span className={styles['text--primary']}>Rachel!</span>
+          <span className={styles['text--primary']}>{userName}!</span>
         </div>
         <div>
           <BannerBtn title="Start a Project" onClick={handlePrjModalShow} />

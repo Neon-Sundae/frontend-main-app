@@ -45,7 +45,7 @@ const Landing: FC = () => {
 
 const CompanyDesc = () => {
   return (
-    <Card className={styles.description}>
+    <Card className={styles.description} showTransparentBg={true}>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem
