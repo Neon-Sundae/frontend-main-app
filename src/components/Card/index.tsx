@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import styles from './index.module.scss';
 
 interface ComponentProps {
-  children: ReactElement;
+  children: JSX.Element[] | JSX.Element | ReactElement;
   className?: string;
   showTransparentBg?: boolean;
   width?: string;

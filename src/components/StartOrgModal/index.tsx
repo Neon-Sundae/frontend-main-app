@@ -1,24 +1,29 @@
 import { FC, SetStateAction, Dispatch, useState, ChangeEvent } from 'react';
+import { RootState } from 'reducers';
+import { useSelector } from 'react-redux';
 import BaseModal from 'components/Home/BaseModal';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
 import styles from './index.module.scss';
-import useCreateOrg from './hook';
+import useCreateOrganisation from './hook';
 
 interface ComponentProps {
   onClose: () => void;
 }
 
 const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
+  const user = useSelector((state: RootState) => state.user.user);
   const [orgName, setOrgName] = useState('');
   const [orgDesc, setOrgDesc] = useState('');
 
   const [showStepTwo, setShowStepTwo] = useState(false);
 
-  const { createOrganisation } = useCreateOrg();
+  // const { createOrganisation } = useCreateOrg();
+  const createOrganisation = useCreateOrganisation();
 
   const handleCreateOrganisation = () => {
     if (orgName && orgDesc) {
-      createOrganisation({
+      createOrganisation.mutate({
+        userId: user?.userId,
         name: orgName,
         description: orgDesc,
       });
@@ -42,7 +47,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       setInputChange={setOrgName}
       onClose={onClose}
       onNext={handleStepOne}
-      placeholder="enter organisation name"
+      placeholder="Enter organisation name"
     />
   );
 
@@ -51,7 +56,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       setInputChange={setOrgDesc}
       onClose={onClose}
       onNext={handleStepTwo}
-      placeholder="enter short description"
+      placeholder="Enter short description"
     />
   );
 
@@ -81,23 +86,22 @@ const StepModal: FC<IStepProps> = ({
   };
   return (
     <BaseModal
+      showBtn
       header="Start an Organization"
       onClose={onClose}
       onNext={onNext}
-      showBtn={true}
     >
       <section className={styles.content}>
         <div className={styles.uploadPicture}>
           <Stroke height={30} width={30} />
         </div>
-        <div className={styles['input-container']}>
-          <input
-            type="text"
-            placeholder={placeholder}
-            required
-            onChange={handleInputChange}
-          />
-        </div>
+        <input
+          type="text"
+          className={styles['create-organisation-modal']}
+          placeholder={placeholder}
+          required
+          onChange={handleInputChange}
+        />
       </section>
     </BaseModal>
   );
