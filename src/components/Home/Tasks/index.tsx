@@ -8,18 +8,24 @@ const Tasks: FC<any> = (props: any) => {
   return (
     <section className={styles.tasks}>
       <div className={styles.header}>
-        <p>All Tasks</p>
+        <p style={{ zIndex: '1' }}>New Tasks</p>
 
         <span
           onClick={() => navigate('/tasks/all')}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', zIndex: '1' }}
         >
           View all
         </span>
       </div>
       <section className={styles['tasks-cont']}>
         {props.data.map((task: any) => (
-          <TaskCard key={task.id} data={task} width={'30vw'} />
+          <TaskCard
+            key={task.id}
+            data={task}
+            width={'380px'}
+            height={'160px'}
+            location="home"
+          />
         ))}
       </section>
     </section>
