@@ -1,5 +1,6 @@
 interface OrganisationUser {
   name: string;
+  userId: number;
   profile: {
     profileId: number;
     title: string | null;
