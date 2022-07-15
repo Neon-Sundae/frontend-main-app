@@ -56,9 +56,19 @@
   width: max-content;
 }
 
+.organisation-whitepaper-edit {
+  background: rgba(60, 60, 70, 0.5);
+  border: 0.7px solid #141414;
+  border-radius: 10.4px;
+  color: white;
+  font-size: 16px;
+  padding: 15px 10px;
+  width: 30%;
+  outline: none;
+}
+
 .description {
   padding: 41px 43px;
-  // margin-right: 63px;
   z-index: 2;
 
   border-radius: 20px;
@@ -80,6 +90,28 @@
     font-weight: 400;
     line-height: 1.8;
     font-size: 18px;
+  }
+
+  &--edit {
+    background: rgba(60, 60, 70, 0.5);
+    border: 0.7px solid #141414;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  &--textarea {
+    width: 100%;
+    height: inherit;
+    resize: none;
+    background: inherit;
+    border: none;
+    outline: none;
+    border-radius: inherit;
+    padding: 10px;
+    color: white;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 400;
+    font-size: 16px;
   }
 }
 

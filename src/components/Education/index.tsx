@@ -111,9 +111,6 @@ const EducationCardEdit: FC<IEducation> = ({
   const updateProfileEducation = useUpdateProfileEducation();
 
   const handleDebounceFn = (name: string, value: string) => {
-    console.log(name);
-    console.log(value);
-
     updateProfileEducation({
       ...payload,
       [name]: value,

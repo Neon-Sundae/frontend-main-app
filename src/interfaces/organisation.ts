@@ -1,9 +1,17 @@
 interface OrganisationUser {
   name: string;
   profile: {
+    profileId: number;
     title: string | null;
     createdAt: string;
   };
+}
+
+interface OrganisationProjects {
+  flProjectId: number;
+  flProjectName: string;
+  flProjectDescription: string;
+  taskCount: number;
 }
 
 export interface IOrganisation {
@@ -20,4 +28,5 @@ export interface IOrganisation {
   profileImage: string | null;
   bannerImage: string | null;
   organisationUser: OrganisationUser[];
+  flProjects: OrganisationProjects[];
 }
