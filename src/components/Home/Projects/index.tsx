@@ -26,23 +26,26 @@ const Projects: FC = () => {
         <p>New Projects</p>
         <span
           onClick={() => navigate('/project/all')}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', zIndex: '1' }}
         >
           View all
         </span>
       </div>
-      <Card className={styles['projects-cont']} showTransparentBg={true}>
-        {data.map((project: any) => (
-          <ProjectCard
-            key={getRandomString(5)}
-            projectId={project.flProjectId}
-            projectName={project.flProjectName}
-            org={project.organisationName}
-            description={project.flProjectDescription}
-            numTasks={project.taskCount}
-          />
-        ))}
-      </Card>
+      <div className={styles.border}>
+        <Card className={styles['projects-cont']} showTransparentBg={true}>
+          {data.map((project: any) => (
+            <ProjectCard
+              key={getRandomString(5)}
+              projectId={project.flProjectId}
+              projectName={project.flProjectName}
+              org={project.organisationName}
+              description={project.flProjectDescription}
+              numTasks={project.taskCount}
+              location="home"
+            />
+          ))}
+        </Card>
+      </div>
     </section>
   );
 };
