@@ -5,6 +5,7 @@ import Banner from '../Banner';
 import styles from './index.module.scss';
 import useFetchOrganisation from './hooks';
 import BasicDetails from '../BasicDetails';
+import OrganisationProjects from '../OrganisationProjects';
 
 const Landing: FC = () => {
   const { organisation, isLoading } = useFetchOrganisation();
@@ -21,6 +22,7 @@ const Landing: FC = () => {
       <NavBar />
       <Banner organisation={organisation} />
       <BasicDetails organisation={organisation} />
+      <OrganisationProjects organisation={organisation} />
     </div>
   );
 };
