@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/extensions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, FC, useCallback, useState } from 'react';
@@ -23,6 +24,7 @@ interface IBanner {
 const Banner: FC<IBanner> = ({ organisation }) => {
   const dispatch = useDispatch();
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const [nameLocal, setNameLocal] = useState(organisation.name ?? 'Polkadot');
   const [website, setWebsite] = useState(organisation.website ?? 'apple.com');
@@ -66,6 +68,11 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     debounceFn(name, value);
   };
 
+  const isFounder = () => {
+    if (user?.userId === organisation.organisationUser[0].userId) return true;
+    return false;
+  };
+
   return (
     <div className={styles.container}>
       <div
@@ -90,15 +97,17 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           ) : (
             <h2 className={styles['organisation-name']}>{organisation.name}</h2>
           )}
-          {isEditable ? (
-            <button className={styles.btn} onClick={handleEdit}>
-              Save
-            </button>
-          ) : (
-            <button className={styles.btn} onClick={handleEdit}>
-              Edit Organisation
-            </button>
-          )}
+          {isFounder() ? (
+            isEditable ? (
+              <button className={styles.btn} onClick={handleEdit}>
+                Save
+              </button>
+            ) : (
+              <button className={styles.btn} onClick={handleEdit}>
+                Edit Organisation
+              </button>
+            )
+          ) : null}
         </div>
         <div className={clsx(styles.center, styles['org-socials'])}>
           <div className={styles['socials-row']}>
@@ -134,13 +143,31 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             ) : (
               <span className={styles['social-icon-container']}>
                 {organisation.linkedin ? (
-                  <Linkedin width={37} height={37} />
+                  <a
+                    href={`https://${organisation.linkedin}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Linkedin width={37} height={37} />
+                  </a>
                 ) : null}
                 {organisation.twitter ? (
-                  <Twitter width={37} height={37} />
+                  <a
+                    href={`https://${organisation.twitter}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Twitter width={37} height={37} />
+                  </a>
                 ) : null}
                 {organisation.instagram ? (
-                  <Instagram width={37} height={37} />
+                  <a
+                    href={`https://${organisation.twitter}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Instagram width={37} height={37} />
+                  </a>
                 ) : null}
               </span>
             )}
