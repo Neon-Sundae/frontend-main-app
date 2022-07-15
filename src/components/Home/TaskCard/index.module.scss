@@ -17,8 +17,6 @@
 }
 .dot {
   position: absolute;
-  top: 1px;
-  left: -25px;
   width: 19px;
   height: 19px;
   border-radius: 50%;
@@ -27,4 +25,29 @@
 .heading {
   margin-left: 20%;
   margin-bottom: 60px;
+}
+.catWrap {
+  border: 0.7px solid #e0b9ff;
+  border-radius: 20px;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  .cat {
+    color: #e0b9ff;
+  }
+}
+.wrapContent {
+  padding: 5px;
+  margin-top: 10px;
+}
+.col {
+  margin-right: 10px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 120px;
 }
