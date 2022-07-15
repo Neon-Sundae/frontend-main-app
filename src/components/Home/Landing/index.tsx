@@ -7,7 +7,7 @@ import Projects from '../Projects';
 import { useQuery } from 'react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
-
+import BlurBlobs from 'components/BlurBlobs';
 const Landing: FC = () => {
   const { isLoading, error, data, isFetching } = useQuery('newTasks', () =>
     fetch(`${config.ApiBaseUrl}/task/new`, {
@@ -21,6 +21,7 @@ const Landing: FC = () => {
   return (
     <div className={styles.background}>
       <NavBar />
+      <BlurBlobs />
       <Banner />
       <section className={styles.content}>
         <Projects />

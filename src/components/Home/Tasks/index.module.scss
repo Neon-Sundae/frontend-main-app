@@ -1,31 +1,31 @@
 .tasks {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  margin-top: 75px;
+  .tasks-cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex: 1;
+  }
 
-	.tasks-cont {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		flex: 1;
-	}
-	
-	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 30px;
-		padding: 0px 10px;
-	
-		color: white;
-	
-		& p {
-			font-family: var(--font-family-roboto-medium);
-			font-size: 25px;
-		}
-	
-		& span {
-			font-size: 16px;
-			text-decoration: underline;
-		}
-	}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    // padding: 0px 10px;
+
+    color: white;
+
+    & p {
+      font-family: var(--font-family-roboto-medium);
+      font-size: 25px;
+    }
+
+    & span {
+      font-size: 16px;
+      text-decoration: underline;
+    }
+  }
 }

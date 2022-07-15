@@ -8,6 +8,8 @@ interface ComponentProps {
   showTransparentBg?: boolean;
   width?: string;
   height?: string;
+  marginRight?: string;
+  borderType?: string;
 }
 
 const Card: FC<ComponentProps> = ({
@@ -16,12 +18,19 @@ const Card: FC<ComponentProps> = ({
   showTransparentBg,
   width,
   height,
+  marginRight,
+  borderType,
 }) => {
   if (showTransparentBg) {
     return (
       <div
         className={clsx(styles.glass, styles.card, className)}
-        style={{ width: width, height: height }}
+        style={{
+          width: width,
+          height: height,
+          marginRight: marginRight,
+          border: borderType,
+        }}
       >
         {children}
       </div>
