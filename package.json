@@ -9,6 +9,9 @@
     "prepare": "husky install",
     "tsc-check": "tsc",
     "tsc-watch": "tsc -w",
+    "eslint": "esw src/**",
+    "eslint-watch": "esw -w --changed src/**",
+    "eslint-watch-quiet": "esw -w --quiet --changed src/**",
     "lint": "eslint src --ext .ts,.tsx",
     "lint-fix": "eslint src --ext .ts,.tsx --fix"
   },
