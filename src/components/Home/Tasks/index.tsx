@@ -23,7 +23,7 @@ const Tasks: FC<any> = (props: any) => {
             key={task.id}
             data={task}
             width={'380px'}
-            height={'160px'}
+            height={'155px'}
             location="home"
           />
         ))}

@@ -48,12 +48,13 @@ const TaskCard = (props: any) => {
                 >
                   Apply to task
                 </div>
+                
                 <div
                   className={styles.dot}
                   style={{
                     background: '#FFB9C2',
                     top: '90px',
-                    left: '32px',
+                    left: '25px',
                   }}
                 ></div>
                 <p>{data.price} USDC </p>

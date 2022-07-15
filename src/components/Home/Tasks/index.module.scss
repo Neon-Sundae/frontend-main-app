@@ -1,7 +1,7 @@
 .tasks {
   display: flex;
   flex-direction: column;
-
+  margin-top: 75px;
   .tasks-cont {
     display: flex;
     flex-direction: column;
@@ -14,7 +14,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    padding: 0px 10px;
+    // padding: 0px 10px;
 
     color: white;
 
