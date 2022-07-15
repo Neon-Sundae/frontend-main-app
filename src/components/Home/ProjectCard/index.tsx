@@ -3,17 +3,33 @@ import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image
 import clsx from 'clsx';
 import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+interface ProjectCardProps {
+  projectName: string;
+  description: string;
+  org: string;
+  numTasks: number;
+  projectId: string;
+  location: string;
+  width: string;
+}
 
-const ProjectCard = (props: any) => {
+const ProjectCard: FC<ProjectCardProps> = ({
+  projectName,
+  description,
+  org,
+  numTasks,
+  projectId,
+  location,
+  width,
+}) => {
   const navigate = useNavigate();
-  const { projectName, description, org, numTasks, projectId, location } =
-    props;
   if (location === 'home') {
     return (
       <Card
         className={styles['project-card']}
         showTransparentBg={true}
-        width={props.width}
+        width={width}
         marginRight={'50px'}
       >
         <>
@@ -40,7 +56,7 @@ const ProjectCard = (props: any) => {
     <Card
       className={styles['project-card']}
       showTransparentBg={true}
-      width={props.width}
+      width={width}
     >
       <>
         <header>
