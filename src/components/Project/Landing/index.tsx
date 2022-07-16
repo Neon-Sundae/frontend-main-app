@@ -14,20 +14,19 @@ import Header from '../Header';
 import Description from '../Description';
 import useProject from './hooks';
 import PublishProjectModal from '../Modal/PublishProjectModal';
-import AssignTaskModal from '../Modal/AssignTaskModal';
 
 const Landing: FC = () => {
 
   const accessToken = getAccessToken();
 
   const { create } = useParams();
-  const { getUSDCBalance, getOnChainProject } = useProject();
+  const { getUSDCBalance, getOnChainProject, fetchFounder } = useProject();
 
   const [open, setOpen] = useState(false);
-  const [openTask, setOpenTask] = useState(false);
 
   const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
   const userName = useSelector((state: RootState) => state.user.user?.name);
+  const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
 
   useEffect(() => {
     if (user?.userId && accessToken) {
@@ -35,6 +34,12 @@ const Landing: FC = () => {
       getOnChainProject(Number(create));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (selectedProjectAddress) {
+      fetchFounder(selectedProjectAddress);
+    }
+  }, [selectedProjectAddress]);
 
   const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
     fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
@@ -66,8 +71,7 @@ const Landing: FC = () => {
         preferredTimeZones={preferredTimeZones}
         flResources={flResources}
       />
-      <button onClick={() => setOpenTask(true)}>Assign Task</button>
-      <TaskManagement />
+      <TaskManagement project_budget={budget} project_name={name} />
       {
         open && <PublishProjectModal
           setOpen={(val: any) => setOpen(val)}
@@ -77,11 +81,6 @@ const Landing: FC = () => {
           projectName={name}
           projectDescription={description}
         />
-      }
-      {
-        openTask && (
-          <AssignTaskModal setOpen={setOpenTask} />
-        )
       }
       <Toaster />
     </div>

@@ -43,7 +43,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance, projec
     return (
         <Modal onClose={handleClose}>
             {
-                usdcBalance >= budget ? (
+                usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
                     <>
                         <h1 className={styles['publish-title']}>Publish your project</h1>
                         <div className={styles['publish-content-wrapper']}>
@@ -61,7 +61,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance, projec
                                             </div>
                                             <div>
                                                 <span>Deposit</span>
-                                                <span>${budget} USDC</span>
+                                                <span>${Number(Number(budget * 1.1).toFixed(2))} USDC</span>
                                             </div>
                                         </div>
                                         <div className={styles['publish-info']}>
@@ -98,7 +98,7 @@ const PublishProjectModal: FC<IPublishProject> = ({ setOpen, usdcBalance, projec
                                             </div>
                                             <div>
                                                 <span>Deposit</span>
-                                                <span>${budget * 1.1} USDC</span>
+                                                <span>${Number(Number(budget * 1.1).toFixed(2))} USDC</span>
                                             </div>
                                         </div>
                                         <div className={styles['publish-info']}>

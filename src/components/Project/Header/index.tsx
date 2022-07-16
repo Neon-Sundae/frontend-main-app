@@ -64,7 +64,7 @@ const Header: FC<IHeaderProps> = (props) => {
               <button onClick={handleOpen}>Publish a Project</button>
             ) : !isDeposit ? (
               <button onClick={handleOpen}>Deposit Funds</button>
-            ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(props.budget) * 1.1} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
+            ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
           }
         </div>
         {

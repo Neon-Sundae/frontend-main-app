@@ -17,7 +17,7 @@ const CreateTask: FC = () => {
       <h1 style={{ margin: '80px 0' }}>Project content</h1>
       {open && <CreateTaskModal setOpen={setOpen} />}
       <Toaster />
-      <TaskManagement />
+      <TaskManagement project_budget={0} project_name="" />
     </div>
   );
 };

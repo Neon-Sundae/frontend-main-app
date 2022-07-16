@@ -2,14 +2,16 @@ import {
   UPDATE_PROJECT_CATEGORY,
   GET_SELECTED_PROJECT_ADDRESS,
   IS_DEPOSITED,
-  GET_DEPLOY_STATE
+  GET_DEPLOY_STATE,
+  GET_PROJECT_FOUNDER
 } from 'actions/flProject/types';
 
 interface State {
   categoryFilter: any | undefined,
   selectedProjectAddress: string,
   isDeposit: boolean,
-  deploy_state: string
+  deploy_state: string;
+  founder: string;
 }
 
 type Action =
@@ -28,13 +30,18 @@ type Action =
   | {
     type: typeof GET_DEPLOY_STATE;
     payload: string;
+  }
+  | {
+    type: typeof GET_PROJECT_FOUNDER;
+    payload: string;
   };
 
 const initialState: State = {
   categoryFilter: undefined,
   selectedProjectAddress: '',
   isDeposit: false,
-  deploy_state: 'go_live'
+  deploy_state: 'go_live',
+  founder: ''
 };
 
 const flProject = (state = initialState, action: Action): State => {
@@ -58,6 +65,11 @@ const flProject = (state = initialState, action: Action): State => {
       return {
         ...state,
         deploy_state: action.payload
+      }
+    case GET_PROJECT_FOUNDER:
+      return {
+        ...state,
+        founder: action.payload
       }
     default:
       return { ...state };
