@@ -23,6 +23,8 @@ const AllProjects: FC<AllProjectsProps> = ({ projectData }) => {
                 org={project.organisationName}
                 description={project.flProjectDescription}
                 numTasks={project.taskCount}
+                location="Project"
+                width=''
               />
             );
           })}

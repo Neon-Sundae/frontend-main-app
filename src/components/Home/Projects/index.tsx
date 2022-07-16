@@ -42,6 +42,7 @@ const Projects: FC = () => {
               description={project.flProjectDescription}
               numTasks={project.taskCount}
               location="home"
+              width=''
             />
           ))}
         </Card>
