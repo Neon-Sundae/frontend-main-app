@@ -3,11 +3,17 @@ import { FC, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import CreateTaskModal from './CreateTaskModal';
 import styles from './index.module.scss';
+import { default as AllTasks } from 'components/Tasks/Landing';
+
+import { useLocation } from 'react-router-dom';
 
 const CreateTask: FC = () => {
+  const location = useLocation();
   const [open, setOpen] = useState(false);
-
   const handleOpenModal = () => setOpen(true);
+  if (location.pathname === '/tasks/all') {
+    return <AllTasks />;
+  }
 
   return (
     <div className={styles['page-container']}>

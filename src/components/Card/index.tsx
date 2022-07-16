@@ -3,14 +3,41 @@ import clsx from 'clsx';
 import styles from './index.module.scss';
 
 interface ComponentProps {
-  children: ReactElement;
+  children: JSX.Element[] | JSX.Element | ReactElement;
   className?: string;
+  showTransparentBg?: boolean;
+  width?: string;
+  height?: string;
+  marginRight?: string;
+  borderType?: string;
 }
 
-const Card: FC<ComponentProps> = ({ children, className }) => {
-  return (
-    <div className={clsx(styles.glass, styles.card, className)}>{children}</div>
-  );
+const Card: FC<ComponentProps> = ({
+  children,
+  className,
+  showTransparentBg,
+  width,
+  height,
+  marginRight,
+  borderType,
+}) => {
+  if (showTransparentBg) {
+    return (
+      <div
+        className={clsx(styles.glass, styles.card, className)}
+        style={{
+          width: width,
+          height: height,
+          marginRight: marginRight,
+          border: borderType,
+        }}
+      >
+        {children}
+      </div>
+    );
+  } else {
+    return <div className={clsx(styles.card, className)}>{children}</div>;
+  }
 };
 
 Card.defaultProps = {

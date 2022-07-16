@@ -1,43 +1,53 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
-import styles from './index.module.scss';
 import { AbiItem } from 'web3-utils';
 import { profileManageContractAddress } from 'contracts/contracts';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
+import styles from './index.module.scss';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
-  budget: number,
+  budget: number;
   projectName: string;
   founderName: string;
 }
 
-const Header: FC<IHeaderProps> = (props) => {
-
+const Header: FC<IHeaderProps> = props => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { selectedProjectAddress, isDeposit } = useSelector((state: RootState) => state.flProject);
+  const { selectedProjectAddress, isDeposit } = useSelector(
+    (state: RootState) => state.flProject
+  );
 
   const handleOpen = async () => {
     try {
       const web3 = getWeb3Instance();
-      const profileManageContract = new web3.eth.Contract(ProfileManageAbi.abi as AbiItem[], profileManageContractAddress);
-      const profile_address = await profileManageContract.methods.getProfileContractAddress(walletId).call();
+      const profileManageContract = new web3.eth.Contract(
+        ProfileManageAbi.abi as AbiItem[],
+        profileManageContractAddress
+      );
+      const profile_address = await profileManageContract.methods
+        .getProfileContractAddress(walletId)
+        .call();
 
-      if (profile_address !== "0x0000000000000000000000000000000000000000") {
+      if (profile_address !== '0x0000000000000000000000000000000000000000') {
         dispatch({
           type: GET_DEPLOY_STATE,
-          payload: selectedProjectAddress !== '' ? isDeposit ? 'deposit_success' : 'deposit' : 'go_live'
-        })
+          payload:
+            selectedProjectAddress !== ''
+              ? isDeposit
+                ? 'deposit_success'
+                : 'deposit'
+              : 'go_live',
+        });
         props.setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
@@ -46,12 +56,12 @@ const Header: FC<IHeaderProps> = (props) => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(selectedProjectAddress)
+    navigator.clipboard.writeText(selectedProjectAddress);
     toast.success('Copied!');
-  }
+  };
 
   return (
     <>

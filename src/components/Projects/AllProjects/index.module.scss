@@ -1,0 +1,34 @@
+.container {
+  color: #fff;
+  width: 85vw;
+  height: 75vh;
+  margin: auto;
+  overflow: hidden;
+  .heading {
+    font-size: 40px;
+    margin-left: 4%;
+    margin-bottom: 2rem;
+  }
+}
+.cardsContainer {
+  height: 90%;
+  padding: 65px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 265px);
+  justify-content: space-between;
+  grid-gap: 20px;
+  align-items: flex-start;
+  overflow-y: auto;
+  margin: auto;
+  & > div {
+    margin-bottom: 25px;
+  }
+  @media (min-width: 1440px) {
+    width: 79vw;
+    flex-basis: 35%;
+  }
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    width: 80vw;
+    flex-basis: 30%;
+  }
+}
