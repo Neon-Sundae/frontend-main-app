@@ -11,6 +11,9 @@ import { taskContractAddress } from "contracts/contracts";
 import { RootState } from "reducers";
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
+import { getAccessToken } from "utils/authFn";
+import { useDispatch } from "react-redux";
+import { SET_ACCEPTED_BUILDER, SET_REJECTED_BUILDER } from "actions/flProject/types";
 
 const useFetchTaskData = (taskId: number | undefined) => {
     if (taskId) {
@@ -46,31 +49,91 @@ const useFetchTaskData = (taskId: number | undefined) => {
 
 const useSelectBuilder = () => {
 
+    const dispatch = useDispatch();
+
     const [pending, setPending] = useState('initial');
+    const accessToken = getAccessToken();
 
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
-    const selectBuilder = async (projectAddress: string, builderAddress: string, taskName: string, price: number, xp: number) => {
+    const selectBuilder = async (projectAddress: string, builderInfo: any, taskName: string, price: number, xp: number) => {
         try {
             setPending('waiting');
             const web3 = getWeb3Instance();
 
             const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
-            const result = await taskContract.methods.createTask(projectAddress, builderAddress, taskName, web3.utils.toWei(String(price), 'ether'), xp)
+            const result = await taskContract.methods.createTask(projectAddress, builderInfo?.Profile?.user?.walletId, taskName, web3.utils.toWei(String(price), 'ether'), xp)
                 .send({ from: walletId });
             const taskId = result.events.TaskCreated.returnValues.taskId;
 
             const projectContract = new web3.eth.Contract(ProjectAbi.abi as AbiItem[], projectAddress);
             await projectContract.methods.addTask(taskId, taskContractAddress).send({ from: walletId });
+
+            saveAcceptedBuilder(taskId, builderInfo?.profileId);
             setPending('confirmed');
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
             setPending('failed');
-            toast.error('Error happens while confirming transaction');
+            toast.error(err?.code === 4001 ? 'MetaMask Tx Signature: User denied transaction signature.' : 'Error happens while confirming transaction');
         }
     }
 
-    return { selectBuilder, pending }
+    const saveAcceptedBuilder = async (taskId: number, profileId: number) => {
+        try {
+            const ac = new AbortController();
+            const { signal } = ac;
+
+            const payload = { profileId: Number(profileId), taskId: Number(taskId) }
+            const response = await fetch(
+                `${config.ApiBaseUrl}/task/acceptBuilder`,
+                {
+                    signal,
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+            await handleApiErrors(response);
+            dispatch({
+                type: SET_ACCEPTED_BUILDER,
+                payload: profileId
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const saveRejectedBuilder = async (data: any, taskId: number) => {
+        try {
+            const ac = new AbortController();
+            const { signal } = ac;
+
+            const payload = { profileId: data?.profileId, taskId: taskId }
+            const response = await fetch(
+                `${config.ApiBaseUrl}/task/rejectBuilder`,
+                {
+                    signal,
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+            await handleApiErrors(response);
+            dispatch({
+                type: SET_REJECTED_BUILDER,
+                payload: data?.profileId
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    return { selectBuilder, pending, saveRejectedBuilder }
 }
 
 export { useFetchTaskData, useSelectBuilder };

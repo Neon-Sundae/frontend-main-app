@@ -1,23 +1,19 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "reducers";
+import { useSelectBuilder } from "./hooks";
 import styles from './index.module.scss';
 
 interface ITalentListItem {
     handleApprove: any;
-    selected: boolean;
-    data: IData;
+    task_status: string;
+    taskId: number;
+    data: any;
 }
 
-interface IData {
-    talentId: number;
-    name: string,
-    position: string;
-    walletId: string;
-}
+const TalentListItem: FC<ITalentListItem> = ({ handleApprove, task_status, taskId, data }) => {
 
-const TalentListItem: FC<ITalentListItem> = ({ handleApprove, selected, data }) => {
-
+    const { saveRejectedBuilder } = useSelectBuilder();
     const { founder } = useSelector((state: RootState) => state.flProject);
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
@@ -25,15 +21,15 @@ const TalentListItem: FC<ITalentListItem> = ({ handleApprove, selected, data }) 
         <div className={styles['talent-list-item-container']}>
             <div className={styles['builder']}>
                 <div className={styles['builder-avatar']}></div>
-                <div className={styles['builder-name']}>{data?.name}</div>
+                <div className={styles['builder-name']}>{data?.Profile.user.name}</div>
             </div>
-            <div className={styles['builder-position']}>{data?.position}</div>
+            <div className={styles['builder-position']}>{data?.Profile.title}</div>
             <div className={styles['action']}>
                 {
-                    !selected && walletId?.toLowerCase() === founder.toLowerCase() && (
+                    task_status === 'open' && data?.applicationStatus === 'applied' && walletId?.toLowerCase() === founder.toLowerCase() && (
                         <>
                             <span className={styles['btn-approve']} onClick={() => handleApprove(data)}>Approve</span>
-                            <span className={styles['btn-reject']}>Reject</span>
+                            <span className={styles['btn-reject']} onClick={() => saveRejectedBuilder(data, taskId)}>Reject</span>
                         </>
                     )
                 }

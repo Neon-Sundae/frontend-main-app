@@ -13,14 +13,13 @@ interface ISelectBuilder {
     handleSuccess: any;
     project_budget: number;
     selectedBuilder: any;
-    data: any;
 }
 
-const SelectBuilder: FC<ISelectBuilder> = ({ setOpen, handleSuccess, project_budget, selectedBuilder, data }) => {
+const SelectBuilder: FC<ISelectBuilder> = ({ setOpen, handleSuccess, project_budget, selectedBuilder }) => {
 
     const { selectBuilder, pending } = useSelectBuilder();
 
-    const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
+    const { selectedProjectAddress, selectedTask } = useSelector((state: RootState) => state.flProject);
 
     useEffect(() => {
         if (pending === 'confirmed') {
@@ -34,7 +33,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({ setOpen, handleSuccess, project_bud
 
     const handleSelect = () => {
         // TODO: will change xp value with db data
-        selectBuilder(selectedProjectAddress, selectedBuilder.walletId, data.name, data.price, 180);
+        selectBuilder(selectedProjectAddress, selectedBuilder, selectedTask?.name, selectedTask?.price, 180);
     }
 
     return (
@@ -49,11 +48,11 @@ const SelectBuilder: FC<ISelectBuilder> = ({ setOpen, handleSuccess, project_bud
                             <div>
                                 <div>
                                     <span>Project Amount</span>
-                                    <span>{project_budget} USDC</span>
+                                    <span>{Number(Number(project_budget * 1.1).toFixed(4))} USDC</span>
                                 </div>
                                 <div>
                                     <span>Amount Required</span>
-                                    <span>{data?.price} USDC</span>
+                                    <span>{selectedTask?.price} USDC</span>
                                 </div>
                             </div>
                             <p>

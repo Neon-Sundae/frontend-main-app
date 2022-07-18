@@ -10,52 +10,39 @@ import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg'
 import styles from './index.module.scss';
 
 interface ITaskDetail {
-    data: any,
     setViewTalentList: Dispatch<SetStateAction<boolean>>;
-    selected: boolean;
-    selectedBuilder: any;
     project_name: string;
 }
 
-const TaskDetail: FC<ITaskDetail> = ({ data, setViewTalentList, selected, selectedBuilder, project_name }) => {
+const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name }) => {
 
-    const { founder } = useSelector((state: RootState) => state.flProject);
+    const { founder, selectedTask } = useSelector((state: RootState) => state.flProject);
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-
+    // console.log("<<<<<<<<<<", selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted'))
     return (
         <div>
             <div className={styles['avatar-container']}>
-                <button>{selected ? 'Interviewing' : 'Open'}</button>
+                <button>{selectedTask?.status}</button>
                 {
-                    founder.toLowerCase() === walletId?.toLowerCase() ? (
-                        <div onClick={() => setViewTalentList(true)}>
-                            {
-                                selected ? (
-                                    <div className={styles['builder-avatar']}></div>
+                    selectedTask?.profileTask.length > 0 && <div onClick={() => setViewTalentList(true)}>
+                        {
+                            selectedTask?.status !== 'open' && selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted').length > 0 ?
+                                selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted').map((item: any, index: number) =>
+                                    item.Profile.picture !== null ?
+                                        <img src="" alt="" key={index} /> :
+                                        <div className={styles['builder-avatar']} key={index}></div>
                                 ) : (
                                     <>
-                                        <div className={styles['builder-avatar']}></div>
-                                        <div className={styles['builder-avatar']}></div>
-                                        <div className={styles['builder-avatar']}></div>
+                                        {
+                                            selectedTask?.profileTask.map((item: any, index: number) => item.Profile.picture !== null ?
+                                                <img src="" alt="" key={index} /> :
+                                                <div className={styles['builder-avatar']} key={index}></div>
+                                            )
+                                        }
                                     </>
                                 )
-                            }
-                        </div>
-                    ) : (
-                        <div>
-                            {
-                                selected ? (
-                                    <div className={styles['builder-avatar']}></div>
-                                ) : (
-                                    <>
-                                        <div className={styles['builder-avatar']}></div>
-                                        <div className={styles['builder-avatar']}></div>
-                                        <div className={styles['builder-avatar']}></div>
-                                    </>
-                                )
-                            }
-                        </div>
-                    )
+                        }
+                    </div>
                 }
             </div>
             <div className={styles['project-details']}>
@@ -68,12 +55,12 @@ const TaskDetail: FC<ITaskDetail> = ({ data, setViewTalentList, selected, select
                         <i className='material-icons'>star</i>
                         <div><span>Difficulty:</span>&nbsp;
                             {
-                                [0, 1, 2, 3, 4].slice(0, data?.estimatedDifficulty).map((item: number, index: number) => (
+                                [0, 1, 2, 3, 4].slice(0, selectedTask?.estimatedDifficulty).map((item: number, index: number) => (
                                     <i className={clsx('material-icons', styles['rating-star'])} key={index}>star</i>
                                 ))
                             }
                             {
-                                [0, 1, 2, 3, 4].slice(0, 5 - data?.estimatedDifficulty).map((item: number, index: number) => (
+                                [0, 1, 2, 3, 4].slice(0, 5 - selectedTask?.estimatedDifficulty).map((item: number, index: number) => (
                                     <i className='material-icons' key={index}>star</i>
                                 ))
                             }
@@ -83,11 +70,11 @@ const TaskDetail: FC<ITaskDetail> = ({ data, setViewTalentList, selected, select
                 <div>
                     <div className={styles['project-detail-item']}>
                         <CategoryIcon width={24} height={24} />
-                        <div>Category: {data?.flProjectCategory?.categoryName}</div>
+                        <div>Category: {selectedTask?.flProjectCategory?.categoryName}</div>
                     </div>
                     <div className={styles['project-detail-item']}>
                         <i className='material-icons'>attach_money</i>
-                        <div>Value: {data?.price} USDC</div>
+                        <div>Value: {selectedTask?.price} USDC</div>
                     </div>
                 </div>
                 <div>
@@ -103,18 +90,18 @@ const TaskDetail: FC<ITaskDetail> = ({ data, setViewTalentList, selected, select
             </div>
             <div className={styles['project-description']}>
                 <p>
-                    {data?.description}
+                    {selectedTask?.description}
                 </p>
-                <div className={styles['project-attachments']}>
-                    <FileAttachmentCard label="Wireframes v1.0" />
-                    <FileAttachmentCard label="Wireframes v1.0" />
-                    <FileAttachmentCard label="Wireframes v1.0" />
-                </div>
+                {selectedTask?.taskAttachment.length > 0 && <div className={styles['project-attachments']}>
+                    {
+                        selectedTask?.taskAttachment.map((file: any, index: number) => <FileAttachmentCard key={index} label="Wireframes v1.0" />)
+                    }
+                </div>}
             </div>
             <div className={styles['project-check-list']}>
                 <p>Checklist: </p>
                 {
-                    data?.taskChecklist.map((item: any, index: number) => (
+                    selectedTask?.taskChecklist.map((item: any, index: number) => (
                         <p key={index}>
                             <span></span>
                             <div>{item.title}</div>

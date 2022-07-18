@@ -4,10 +4,14 @@ import styles from './index.module.scss';
 import TaskDetail from "./TaskDetail";
 import TalentList from "./TalentList";
 import { useFetchTaskData } from "./hooks";
+import { useDispatch } from "react-redux";
+import { GET_SELECTED_TASK } from "actions/flProject/types";
+import { useSelector } from "react-redux";
+import { RootState } from "reducers";
 
 interface IAcceptTask {
     setOpen: Dispatch<SetStateAction<boolean>>;
-    data: any,
+    taskId: number,
     handleApprove: any;
     selected: boolean;
     selectedBuilder: any;
@@ -15,16 +19,22 @@ interface IAcceptTask {
     project_name: string;
 }
 
-const AcceptTask: FC<IAcceptTask> = ({ setOpen, data, handleApprove, selected, selectedBuilder, project_budget, project_name }) => {
+const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_name }) => {
 
-    const { taskData } = useFetchTaskData(data?.taskId);
+    const dispatch = useDispatch();
+
+    const { taskData } = useFetchTaskData(taskId);
     const [viewTalentList, setViewTalentList] = useState(false);
-    const [task, setTask] = useState<any>(null);
+
+    const { selectedTask } = useSelector((state: RootState) => state.flProject);
 
     useEffect(() => {
         if (taskData) {
             console.log(">>>>>>>>>>>", taskData);
-            setTask(taskData);
+            dispatch({
+                type: GET_SELECTED_TASK,
+                payload: taskData
+            })
         }
     }, [taskData]);
 
@@ -37,21 +47,15 @@ const AcceptTask: FC<IAcceptTask> = ({ setOpen, data, handleApprove, selected, s
             maxHeight="min(90%, 45rem)"
             overflowY="auto">
             <div className={styles['assign-task-container']}>
-                <h2 className={styles['project-name']}>{task?.name}</h2>
-                <h5 className={styles['founder-name']}>{task?.organisation?.name}</h5>
+                <h2 className={styles['project-name']}>{selectedTask?.name}</h2>
+                <h5 className={styles['founder-name']}>{selectedTask?.organisation?.name}</h5>
                 {
                     viewTalentList ?
                         <TalentList
                             setViewTalentList={setViewTalentList}
                             handleApprove={handleApprove}
-                            selected={selected}
-                            acceptedBuilder={selectedBuilder}
-                            project_budget={project_budget}
                         /> : <TaskDetail
-                            data={task}
                             setViewTalentList={setViewTalentList}
-                            selected={selected}
-                            selectedBuilder={selectedBuilder}
                             project_name={project_name}
                         />
                 }

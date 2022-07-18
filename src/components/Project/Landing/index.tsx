@@ -57,13 +57,20 @@ const Landing: FC = () => {
     timeOfCompletion,
     preferredTimeZones,
     flResources,
+    organisation
   } = data;
 
   return (
     <div className={styles.container}>
       <BlurBlobs />
       <NavBar />
-      <Header projectName={name} founderName={userName || ''} setOpen={(val) => setOpen(val)} budget={budget} />
+      <Header
+        projectName={name}
+        founderName={userName || ''}
+        setOpen={(val) => setOpen(val)}
+        budget={budget}
+        founderAddress={organisation?.organisationUser[0]?.walletId}
+      />
       <Description
         description={description}
         budget={budget}

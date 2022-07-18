@@ -16,6 +16,7 @@ interface IHeaderProps {
   budget: number;
   projectName: string;
   founderName: string;
+  founderAddress: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -70,12 +71,35 @@ const Header: FC<IHeaderProps> = props => {
           <span className={styles['project-name']}>{props.projectName}</span>
           <span className={styles['founder-name']}>{props.founderName}</span>
           {
-            selectedProjectAddress === '' ? (
+            props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
+              selectedProjectAddress === '' ? (
+                <button onClick={handleOpen}>Publish a Project</button>
+              ) : (
+                !isDeposit ? (
+                  <button onClick={handleOpen}>Deposit Funds</button>
+                ) : (
+                  <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
+                )
+              )
+            ) : (
+              selectedProjectAddress === '' ? (
+                <button>Not Published</button>
+              ) : (
+                !isDeposit ? (
+                  <button>Not Deposited</button>
+                ) : (
+                  <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
+                )
+              )
+            )
+          }
+          {/* {
+            founder.toLowerCase() === walletId?.toLowerCase() && selectedProjectAddress === '' ? (
               <button onClick={handleOpen}>Publish a Project</button>
-            ) : !isDeposit ? (
+            ) : founder.toLowerCase() === walletId?.toLowerCase() && !isDeposit ? (
               <button onClick={handleOpen}>Deposit Funds</button>
             ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
-          }
+          } */}
         </div>
         {
           selectedProjectAddress !== '' && (

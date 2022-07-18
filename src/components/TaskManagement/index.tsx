@@ -140,7 +140,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
   const [success, setSuccess] = useState(false);
   const [selectedBuilder, setSelectedBuilder] = useState<any>(null);
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   useEffect(() => {
     setElements(projectTasks);
@@ -176,8 +176,9 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
   };
 
   const handleOpenTask = (data: any) => {
-    setSelectedTask(data);
+    setSelectedTaskId(data?.taskId);
     setOpenTask(true);
+
   }
 
   const handleApprove = (item: any) => {
@@ -213,11 +214,8 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
         {
           openTask && <AcceptTask
             setOpen={setOpenTask}
-            data={selectedTask}
+            taskId={selectedTaskId}
             handleApprove={handleApprove}
-            selected={success}
-            selectedBuilder={selectedBuilder}
-            project_budget={project_budget}
             project_name={project_name}
           />
         }
@@ -227,7 +225,6 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
             handleSuccess={handleSuccess}
             project_budget={project_budget}
             selectedBuilder={selectedBuilder}
-            data={selectedTask}
           />
         }
       </DragDropContext>

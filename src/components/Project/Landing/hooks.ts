@@ -47,6 +47,7 @@ const useProject = () => {
             const web3 = getWeb3Instance();
             const ProjectManageContract = new web3.eth.Contract(ProjectManageAbi.abi as AbiItem[], projectManageContractAddress);
             let result = await ProjectManageContract.methods.getProjectContractAddresses(walletId).call();
+
             const address = result.filter((project: any) => String(project.projectId) === String(id)).length > 0 ?
                 result.filter((project: any) => String(project.projectId) === String(id))[0].contractAddress : ''
 

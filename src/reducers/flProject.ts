@@ -3,7 +3,10 @@ import {
   GET_SELECTED_PROJECT_ADDRESS,
   IS_DEPOSITED,
   GET_DEPLOY_STATE,
-  GET_PROJECT_FOUNDER
+  GET_PROJECT_FOUNDER,
+  GET_SELECTED_TASK,
+  SET_REJECTED_BUILDER,
+  SET_ACCEPTED_BUILDER
 } from 'actions/flProject/types';
 
 interface State {
@@ -12,6 +15,7 @@ interface State {
   isDeposit: boolean,
   deploy_state: string;
   founder: string;
+  selectedTask: any
 }
 
 type Action =
@@ -34,6 +38,18 @@ type Action =
   | {
     type: typeof GET_PROJECT_FOUNDER;
     payload: string;
+  }
+  | {
+    type: typeof GET_SELECTED_TASK;
+    payload: any;
+  }
+  | {
+    type: typeof SET_REJECTED_BUILDER;
+    payload: any;
+  }
+  | {
+    type: typeof SET_ACCEPTED_BUILDER;
+    payload: any;
   };
 
 const initialState: State = {
@@ -41,7 +57,8 @@ const initialState: State = {
   selectedProjectAddress: '',
   isDeposit: false,
   deploy_state: 'go_live',
-  founder: ''
+  founder: '',
+  selectedTask: null,
 };
 
 const flProject = (state = initialState, action: Action): State => {
@@ -70,6 +87,34 @@ const flProject = (state = initialState, action: Action): State => {
       return {
         ...state,
         founder: action.payload
+      }
+    case GET_SELECTED_TASK:
+      return {
+        ...state,
+        selectedTask: action.payload
+      }
+    case SET_REJECTED_BUILDER:
+      return {
+        ...state,
+        selectedTask: {
+          ...state.selectedTask, profileTask: state.selectedTask?.profileTask.map((item: any) =>
+            item?.profileId === action.payload ?
+              { ...item, applicationStatus: 'rejected' } :
+              item
+          )
+        }
+      }
+    case SET_ACCEPTED_BUILDER:
+      return {
+        ...state,
+        selectedTask: {
+          ...state.selectedTask, profileTask: state.selectedTask?.profileTask.map((item: any) =>
+            item?.profileId === action.payload ?
+              { ...item, applicationStatus: 'accepted' } :
+              { ...item, applicationStatus: 'rejected' }
+          ),
+          status: 'interviewing'
+        }
       }
     default:
       return { ...state };
