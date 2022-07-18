@@ -1,10 +1,7 @@
-// import { ReactComponent as MoonPayIcon } from 'assets/illustrations/icons/moonpay.svg';
-// import { ReactComponent as FtxIcon } from 'assets/illustrations/icons/ftx.svg';
-// import { ReactComponent as WyreIcon } from 'assets/illustrations/icons/wyre.svg';
 import { ReactComponent as MoonPayIcon } from 'assets/illustrations/icons/moonpay.svg';
 import { ReactComponent as FtxIcon } from 'assets/illustrations/icons/ftx.svg';
 import { ReactComponent as WyreIcon } from 'assets/illustrations/icons/wyre.svg';
-import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
+import { ReactComponent as TransakIcon } from 'assets/illustrations/icons/transak.svg';
 import styles from './index.module.scss';
 
 const DepositFundsToWallet = () => {
@@ -25,8 +22,8 @@ const DepositFundsToWallet = () => {
                     <span>Wyre</span>
                 </a>
                 <div className={styles['wallet-item']}>
-                    <MetamaskIcon width={43} height={40} />
-                    <span>Metamask</span>
+                    <TransakIcon width={43} height={40} />
+                    <span>Transak</span>
                 </div>
                 <button className={styles['deposit-top-up']}>Top Up</button>
                 <p className={styles['deposit-bottom-text']}>On clicking one service you will be redicted to partner website</p>

@@ -26,19 +26,6 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_taskId",
-          "type": "uint256"
-        }
-      ],
-      "name": "completeTask",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
           "name": "_tokenId",
           "type": "uint256"
         }
@@ -56,6 +43,11 @@
               "internalType": "enum ITaskInterface.State",
               "name": "currentState",
               "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "projectAddress",
+              "type": "address"
             },
             {
               "internalType": "address",

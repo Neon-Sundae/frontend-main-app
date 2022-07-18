@@ -20,12 +20,13 @@ const Landing: FC = () => {
   const accessToken = getAccessToken();
 
   const { create } = useParams();
-  const { getUSDCBalance, getOnChainProject } = useProject();
+  const { getUSDCBalance, getOnChainProject, fetchFounder } = useProject();
 
   const [open, setOpen] = useState(false);
 
   const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
   const userName = useSelector((state: RootState) => state.user.user?.name);
+  const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
 
   useEffect(() => {
     if (user?.userId && accessToken) {
@@ -33,6 +34,12 @@ const Landing: FC = () => {
       getOnChainProject(Number(create));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (selectedProjectAddress) {
+      fetchFounder(selectedProjectAddress);
+    }
+  }, [selectedProjectAddress]);
 
   const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
     fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
@@ -50,13 +57,20 @@ const Landing: FC = () => {
     timeOfCompletion,
     preferredTimeZones,
     flResources,
+    organisation
   } = data;
 
   return (
     <div className={styles.container}>
       <BlurBlobs />
       <NavBar />
-      <Header projectName={name} founderName={userName || ''} setOpen={(val) => setOpen(val)} budget={budget} />
+      <Header
+        projectName={name}
+        founderName={userName || ''}
+        setOpen={(val) => setOpen(val)}
+        budget={budget}
+        founderAddress={organisation?.organisationUser[0]?.walletId}
+      />
       <Description
         description={description}
         budget={budget}
@@ -64,7 +78,7 @@ const Landing: FC = () => {
         preferredTimeZones={preferredTimeZones}
         flResources={flResources}
       />
-      <TaskManagement />
+      <TaskManagement project_budget={budget} project_name={name} />
       {
         open && <PublishProjectModal
           setOpen={(val: any) => setOpen(val)}

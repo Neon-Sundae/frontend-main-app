@@ -18,6 +18,8 @@ import { useQueryClient } from 'react-query';
 import CreateTaskModal from 'components/CreateTask/CreateTaskModal';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
+import AcceptTask from 'components/AcceptTask';
+import SelectBuilder from 'components/AcceptTask/SelectBuilder';
 
 const removeFromList = (list: string, index: number) => {
   const result = Array.from(list);
@@ -41,7 +43,12 @@ const lists = [
   'cancelled',
 ];
 
-const TaskManagement: FC = () => {
+interface ITaskManagement {
+  project_budget: number;
+  project_name: string;
+}
+
+const TaskManagement: FC<ITaskManagement> = ({ project_budget, project_name }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -69,7 +76,7 @@ const TaskManagement: FC = () => {
         </div>
       </div>
       <hr />
-      <TaskManagementBoard />
+      <TaskManagementBoard project_budget={project_budget} project_name={project_name} />
     </div>
   );
 };
@@ -125,10 +132,15 @@ const FilterMenu: FC = () => {
   );
 };
 
-const TaskManagementBoard: FC = () => {
+const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name }) => {
   const updateTask = useUpdateTaskStatus();
   const { projectTasks } = useFetchProjectTasks();
   const [elements, setElements] = useState(projectTasks);
+  const [openTask, setOpenTask] = useState(false);
+  const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [selectedBuilder, setSelectedBuilder] = useState<any>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   useEffect(() => {
     setElements(projectTasks);
@@ -163,6 +175,29 @@ const TaskManagementBoard: FC = () => {
     }
   };
 
+  const handleOpenTask = (data: any) => {
+    setSelectedTaskId(data?.taskId);
+    setOpenTask(true);
+
+  }
+
+  const handleApprove = (item: any) => {
+    setOpenTask(false);
+    setOpenSelectBuilder(true);
+    setSelectedBuilder(item)
+  }
+
+  const handleCloseSelectBuilder = () => {
+    setOpenTask(true);
+    setOpenSelectBuilder(false);
+  }
+
+  const handleSuccess = () => {
+    setOpenTask(true);
+    setOpenSelectBuilder(false);
+    setSuccess(true);
+  }
+
   if (elements) {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
@@ -172,9 +207,26 @@ const TaskManagementBoard: FC = () => {
               elements={elements[listKey]}
               key={listKey}
               prefix={listKey}
+              setOpenTask={handleOpenTask}
             />
           ))}
         </div>
+        {
+          openTask && <AcceptTask
+            setOpen={setOpenTask}
+            taskId={selectedTaskId}
+            handleApprove={handleApprove}
+            project_name={project_name}
+          />
+        }
+        {
+          openSelectBuilder && <SelectBuilder
+            setOpen={handleCloseSelectBuilder}
+            handleSuccess={handleSuccess}
+            project_budget={project_budget}
+            selectedBuilder={selectedBuilder}
+          />
+        }
       </DragDropContext>
     );
   }
@@ -185,9 +237,10 @@ const TaskManagementBoard: FC = () => {
 interface IColumn {
   elements: any;
   prefix: string;
+  setOpenTask: any;
 }
 
-const Column: FC<IColumn> = ({ elements, prefix }) => {
+const Column: FC<IColumn> = ({ elements, prefix, setOpenTask }) => {
   return (
     <div className={styles['column-container']}>
       <h1 className={styles['column-title']}>{prefix}</h1>
@@ -196,7 +249,7 @@ const Column: FC<IColumn> = ({ elements, prefix }) => {
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {elements.map((item: any, index: number) => (
-                <Card key={item.taskId} item={item} index={index} />
+                <Card key={item.taskId} item={item} index={index} setOpenTask={setOpenTask} />
               ))}
               {provided.placeholder}
             </div>
@@ -210,9 +263,11 @@ const Column: FC<IColumn> = ({ elements, prefix }) => {
 interface ICard {
   item: any;
   index: any;
+  setOpenTask: any;
 }
 
-const Card: FC<ICard> = ({ item, index }) => {
+const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
+
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
     () => [...Array(item.estimatedDifficulty).keys()],
@@ -244,6 +299,7 @@ const Card: FC<ICard> = ({ item, index }) => {
             snapshot={snapshot}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            onClick={() => setOpenTask(item)}
           >
             <div className={styles['category-action-container']}>
               <span className={styles['task-category']}>
