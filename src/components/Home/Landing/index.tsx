@@ -9,11 +9,16 @@ import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
 const Landing: FC = () => {
-  const { isLoading, error, data, isFetching } = useQuery('newTasks', () =>
-    fetch(`${config.ApiBaseUrl}/task/new`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then((response) => response.json())
+  const { isLoading, error, data, isFetching } = useQuery(
+    'newTasks',
+    () =>
+      fetch(`${config.ApiBaseUrl}/task/new`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }).then(response => response.json()),
+    {
+      refetchOnWindowFocus: false,
+    }
   );
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;

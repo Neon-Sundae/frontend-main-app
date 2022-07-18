@@ -10,8 +10,8 @@ interface ProjectCardProps {
   org: string;
   numTasks: number;
   projectId: string;
-  location: string;
-  width: string;
+  location?: string;
+  width?: string;
 }
 
 const ProjectCard: FC<ProjectCardProps> = ({
@@ -77,6 +77,11 @@ const ProjectCard: FC<ProjectCardProps> = ({
       </>
     </Card>
   );
+};
+
+ProjectCard.defaultProps = {
+  width: '215px',
+  location: 'home',
 };
 
 export default ProjectCard;

@@ -10,11 +10,16 @@ import getRandomString from 'utils/getRandomString';
 
 const Projects: FC = () => {
   const navigate = useNavigate();
-  const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
-    fetch(`${config.ApiBaseUrl}/fl-project/new`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then((response) => response.json())
+  const { isLoading, error, data, isFetching } = useQuery(
+    'userOrgs',
+    () =>
+      fetch(`${config.ApiBaseUrl}/fl-project/new`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }).then(response => response.json()),
+    {
+      refetchOnWindowFocus: false,
+    }
   );
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;
