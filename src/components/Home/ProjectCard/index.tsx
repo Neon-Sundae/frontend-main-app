@@ -10,8 +10,8 @@ interface ProjectCardProps {
   org: string;
   numTasks: number;
   projectId: string;
-  location: string;
-  width: string;
+  location?: string;
+  width?: string;
 }
 
 const ProjectCard: FC<ProjectCardProps> = ({
@@ -28,9 +28,9 @@ const ProjectCard: FC<ProjectCardProps> = ({
     return (
       <Card
         className={styles['project-card']}
-        showTransparentBg={true}
+        showTransparentBg
         width={width}
-        marginRight={'50px'}
+        marginRight="50px"
       >
         <>
           <header>
@@ -53,11 +53,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
     );
   }
   return (
-    <Card
-      className={styles['project-card']}
-      showTransparentBg={true}
-      width={width}
-    >
+    <Card className={styles['project-card']} showTransparentBg width={width}>
       <>
         <header>
           <BrandImage width={70} height={70} />
@@ -77,6 +73,11 @@ const ProjectCard: FC<ProjectCardProps> = ({
       </>
     </Card>
   );
+};
+
+ProjectCard.defaultProps = {
+  location: '',
+  width: '',
 };
 
 export default ProjectCard;
