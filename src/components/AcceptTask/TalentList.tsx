@@ -12,7 +12,7 @@ interface ITalentList {
 const TalentList: FC<ITalentList> = ({ setViewTalentList, handleApprove }) => {
 
     const { selectedTask } = useSelector((state: RootState) => state.flProject);
-    console.log(selectedTask?.status !== 'open' && selectedTask?.profileTask.filter((profile: any) => profile?.applicationStatus === 'accepted').length)
+
     return (
         <div className={styles['talent-list-container']}>
             {
