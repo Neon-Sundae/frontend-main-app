@@ -82,7 +82,11 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       <div className={styles.content}>
         <div className={styles.center}>
           <div className={styles.logo}>
-            <Apple width={95} height={117} className={styles['logo-svg']} />
+            {organisation.profileImage ? (
+              <img src={organisation.profileImage} alt="logo" />
+            ) : (
+              <Apple width={95} height={117} className={styles['logo-svg']} />
+            )}
           </div>
         </div>
         <div className={styles.center}>

@@ -7,12 +7,6 @@ import { updateUser } from 'actions/user';
 import { useMutation } from 'react-query';
 import { handleError } from 'utils/handleUnAuthorization';
 
-interface ICreateOrganisation {
-  userId: number | undefined;
-  name: string;
-  description: string;
-}
-
 const useCreateOrganisation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,14 +15,13 @@ const useCreateOrganisation = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const createOrganisation = useMutation(
-    (payload: ICreateOrganisation) =>
+    (formData: FormData) =>
       fetch(`${config.ApiBaseUrl}/organisation`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(payload),
+        body: formData,
       }),
     {
       retry: 1,
