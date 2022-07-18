@@ -133,6 +133,7 @@ const FilterMenu: FC = () => {
 };
 
 const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name }) => {
+
   const updateTask = useUpdateTaskStatus();
   const { projectTasks } = useFetchProjectTasks();
   const [elements, setElements] = useState(projectTasks);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import toast from "react-hot-toast";
 import { AbiItem } from "web3-utils";
 import config from "config";
@@ -50,6 +50,7 @@ const useFetchTaskData = (taskId: number | undefined) => {
 const useSelectBuilder = () => {
 
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
 
     const [pending, setPending] = useState('initial');
     const accessToken = getAccessToken();
@@ -69,7 +70,7 @@ const useSelectBuilder = () => {
             const projectContract = new web3.eth.Contract(ProjectAbi.abi as AbiItem[], projectAddress);
             await projectContract.methods.addTask(taskId, taskContractAddress).send({ from: walletId });
 
-            saveAcceptedBuilder(taskId, builderInfo?.profileId);
+            saveAcceptedBuilder(taskId, builderInfo?.profileId, queryClient);
             setPending('confirmed');
         } catch (err: any) {
             setPending('failed');
@@ -77,7 +78,7 @@ const useSelectBuilder = () => {
         }
     }
 
-    const saveAcceptedBuilder = async (taskId: number, profileId: number) => {
+    const saveAcceptedBuilder = async (taskId: number, profileId: number, queryClient: QueryClient) => {
         try {
             const ac = new AbortController();
             const { signal } = ac;
@@ -100,6 +101,7 @@ const useSelectBuilder = () => {
                 type: SET_ACCEPTED_BUILDER,
                 payload: profileId
             });
+            queryClient.invalidateQueries('projectTasks');
         } catch (err) {
             console.log(err);
         }
