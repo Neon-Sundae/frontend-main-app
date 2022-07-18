@@ -17,7 +17,12 @@ interface IHeaderProps {
   founderName: string;
 }
 
-const Header: FC<IHeaderProps> = props => {
+const Header: FC<IHeaderProps> = ({
+  setOpen,
+  budget,
+  projectName,
+  founderName,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,21 +38,20 @@ const Header: FC<IHeaderProps> = props => {
         ProfileManageAbi.abi as AbiItem[],
         profileManageContractAddress
       );
-      const profile_address = await profileManageContract.methods
+      const profileAddress = await profileManageContract.methods
         .getProfileContractAddress(walletId)
         .call();
 
-      if (profile_address !== '0x0000000000000000000000000000000000000000') {
+      if (profileAddress !== '0x0000000000000000000000000000000000000000') {
         dispatch({
           type: GET_DEPLOY_STATE,
-          payload:
-            selectedProjectAddress !== ''
-              ? isDeposit
-                ? 'deposit_success'
-                : 'deposit'
-              : 'go_live',
+          payload: (() => {
+            if (selectedProjectAddress !== '' && isDeposit && 'deposit_success')
+              return 'deposit';
+            return 'go_live';
+          })(),
         });
-        props.setOpen(true);
+        setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
         navigate('/profile');
@@ -63,33 +67,34 @@ const Header: FC<IHeaderProps> = props => {
   };
 
   return (
-    <>
-      <div className={styles.container}>
-        <span className={styles['project-name']}>{props.projectName}</span>
-        <span className={styles['founder-name']}>{props.founderName}</span>
-        {selectedProjectAddress === '' ? (
-          <button onClick={handleOpen}>Publish a Project</button>
-        ) : !isDeposit ? (
-          <button onClick={handleOpen}>Deposit Funds</button>
-        ) : (
+    <div className={styles.container}>
+      <span className={styles['project-name']}>{projectName}</span>
+      <span className={styles['founder-name']}>{founderName}</span>
+      {(() => {
+        if (selectedProjectAddress === '')
+          return <button onClick={handleOpen}>Publish a Project</button>;
+        if (!isDeposit)
+          return <button onClick={handleOpen}>Deposit Funds</button>;
+        return (
           <span className={styles['deposit-funds']}>
-            Deposit Funds: {Number(props.budget) * 1.1} USDC
+            Deposit Funds: {Number(budget) * 1.1} USDC
           </span>
-        )}
-        {selectedProjectAddress !== '' && (
-          <div className={styles['contract-address']}>
-            Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...
-            {selectedProjectAddress.slice(
-              selectedProjectAddress.length - 5,
-              selectedProjectAddress.length
-            )}
-            <i className="material-icons-200" onClick={handleCopy}>
-              content_copy
-            </i>
-          </div>
-        )}
-      </div>
-    </>
+        );
+      })()}
+
+      {selectedProjectAddress !== '' && (
+        <div className={styles['contract-address']}>
+          Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...
+          {selectedProjectAddress.slice(
+            selectedProjectAddress.length - 5,
+            selectedProjectAddress.length
+          )}
+          <i className="material-icons-200" onClick={handleCopy}>
+            content_copy
+          </i>
+        </div>
+      )}
+    </div>
   );
 };
 
