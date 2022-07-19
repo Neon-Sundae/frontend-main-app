@@ -40,4 +40,27 @@
     font-size: 16px;
     color: #fff;
   }
+  input {
+    font-family: var(--font-family-roboto-flex);
+    font-size: 16px;
+    color: white;
+    background: rgba(60, 60, 70, 0.5);
+    border: 0.7px solid #141414;
+    border-radius: 20px;
+    padding-left: 15px;
+    outline: none;
+    width: 250px;
+    height: 50px;
+  }
+  .editBtn{
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: auto;
+    height: auto;
+  }
 }

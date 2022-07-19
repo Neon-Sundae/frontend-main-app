@@ -10,7 +10,7 @@ import { useMutation } from 'react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
-import { parse } from 'path';
+
 
 interface ICreatePrjProps {
   onNext: () => void;
@@ -162,9 +162,9 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
         prevState.flResources.indexOf(target.value) === -1
           ? prevState.flResources.push(target.value)
           : setError((prevState: any) => ({
-              ...prevState,
-              message: 'Duplicate resources not allowed',
-            }));
+            ...prevState,
+            message: 'Duplicate resources not allowed',
+          }));
       return {
         ...prevState,
       };
@@ -284,7 +284,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     alignItems: 'center',
                   }}
                 >
-                  {/* FIXME: move input to seperate comp */}
                   <input
                     className={styles.input}
                     type="date"

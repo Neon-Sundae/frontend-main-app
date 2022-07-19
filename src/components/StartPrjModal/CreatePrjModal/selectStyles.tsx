@@ -1,13 +1,13 @@
 import Select, { StylesConfig } from 'react-select';
 export type Option =
   | {
-      value: number;
-      label: string;
-    }
+    value: number;
+    label: string;
+  }
   | {
-      value: string;
-      label: string;
-    };
+    value: string;
+    label: string;
+  };
 
 export const customStyles: StylesConfig<Option> = {
   container: (styles) => ({
@@ -20,7 +20,7 @@ export const customStyles: StylesConfig<Option> = {
     borderWidth: 1.2,
     borderColor: '#fff',
     borderRadius: '10px',
-    width: '300px',
+    width: '250px',
     padding: '0 20px',
     cursor: 'pointer',
     ':hover': {

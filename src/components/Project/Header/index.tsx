@@ -9,12 +9,16 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
 import styles from './index.module.scss';
+import { useState } from 'react';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   budget: number;
   projectName: string;
   founderName: string;
+  editable: () => void;
+  edit: boolean;
+  input: (e: any) => void;
 }
 
 const Header: FC<IHeaderProps> = ({
@@ -22,10 +26,12 @@ const Header: FC<IHeaderProps> = ({
   budget,
   projectName,
   founderName,
+  editable,
+  edit,
+  input,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const { selectedProjectAddress, isDeposit } = useSelector(
     (state: RootState) => state.flProject
@@ -60,7 +66,6 @@ const Header: FC<IHeaderProps> = ({
       console.log(err);
     }
   };
-
   const handleCopy = () => {
     navigator.clipboard.writeText(selectedProjectAddress);
     toast.success('Copied!');
@@ -68,11 +73,18 @@ const Header: FC<IHeaderProps> = ({
 
   return (
     <div className={styles.container}>
-      <span className={styles['project-name']}>{projectName}</span>
-      <span className={styles['founder-name']}>{founderName}</span>
+      {
+        edit ? <> <input defaultValue={projectName} name="name" onChange={(e) => input(e)} placeholder='Project Name' />  <span className={styles['founder-name']}>{founderName}</span></> : (<><span className={styles['project-name']}>{projectName}</span>
+          <span className={styles['founder-name']}>{founderName}</span></>)
+      }
       {(() => {
         if (selectedProjectAddress === '')
-          return <button onClick={handleOpen}>Publish a Project</button>;
+          return (
+            <>
+              <button onClick={handleOpen}>Publish a Project</button>
+              <button onClick={() => editable()} className={styles.editBtn} >{edit ? 'save' : 'edit'}</button>
+            </>
+          );
         if (!isDeposit)
           return <button onClick={handleOpen}>Deposit Funds</button>;
         return (
@@ -81,7 +93,6 @@ const Header: FC<IHeaderProps> = ({
           </span>
         );
       })()}
-
       {selectedProjectAddress !== '' && (
         <div className={styles['contract-address']}>
           Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...
