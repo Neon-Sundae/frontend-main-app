@@ -12,12 +12,12 @@ const configs: Environment = {
   local: {
     ApiBaseUrl: 'http://localhost:3001',
     AppDomain: 'http://localhost:3000',
-    chainId: '0x13881',
+    chainId: '0x61',
   },
   dev: {
     ApiBaseUrl: 'https://api.develop.founderslab.xyz',
     AppDomain: 'https://develop.founderslab.xyz',
-    chainId: '0x13881',
+    chainId: '0x61',
   },
   prod: {
     ApiBaseUrl: '',

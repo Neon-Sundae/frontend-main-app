@@ -3,7 +3,12 @@
   filter: blur(150px);
   position: absolute;
   // bottom: -50px;
-  left: 550px;
+  @media (min-width: 1440px) {
+    left: 550px;
+  }
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    left: 214px;
+  }
 }
 
 // Medium Blob - Blue
@@ -43,7 +48,7 @@
 .modal-blob-purple-1 {
   position: absolute;
   left: -80px;
-  bottom: -90px;
+  bottom: 0px;
   filter: blur(70px);
   z-index: -1;
 }

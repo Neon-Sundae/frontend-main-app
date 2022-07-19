@@ -33,9 +33,9 @@ interface State {
   workplaces: IProfileWorkplace[];
   profileSkills: IProfileSkills[];
   isEditable: boolean;
-  xp: number,
-  usdcBalance: number,
-  profileContractAddress: string
+  xp: number;
+  usdcBalance: number;
+  profileContractAddress: string;
 }
 
 type Action =

@@ -1,0 +1,20 @@
+.container {
+  color: #fff;
+  height: 75vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  .heading {
+    font-size: 40px;
+    margin-left: 4%;
+    margin-bottom: 2rem;
+  }
+}
+.taskCardWrapper {
+  margin: auto;
+  margin-top: 0;
+  overflow-y: auto;
+  & > div {
+    margin-bottom: 25px;
+  }
+}
