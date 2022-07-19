@@ -5,9 +5,7 @@ import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
 import TaskManagement from 'components/TaskManagement';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
 import { Toaster } from 'react-hot-toast';
-import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { RootState } from 'reducers';
 import Header from '../Header';
@@ -16,11 +14,10 @@ import useProject from './hooks';
 import PublishProjectModal from '../Modal/PublishProjectModal';
 
 const Landing: FC = () => {
-
   const accessToken = getAccessToken();
 
   const { create } = useParams();
-  const { getUSDCBalance, getOnChainProject } = useProject();
+  const { getUSDCBalance, getOnChainProject, useFetchProjects } = useProject();
 
   const [open, setOpen] = useState(false);
 
@@ -34,15 +31,7 @@ const Landing: FC = () => {
     }
   }, [user]);
 
-  const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
-    fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then(response => response.json())
-  );
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error :|</p>;
-
+  const { projectData } = useFetchProjects(create);
   const {
     name,
     description,
@@ -50,7 +39,7 @@ const Landing: FC = () => {
     timeOfCompletion,
     preferredTimeZones,
     flResources,
-  } = data;
+  } = projectData;
 
   return (
     <div className={styles.container}>

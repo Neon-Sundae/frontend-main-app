@@ -14,6 +14,9 @@ import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { GET_SELECTED_PROJECT_ADDRESS } from 'actions/flProject/types';
+import { handleError } from 'utils/handleUnAuthorization';
+import { useQuery } from "react-query";
+
 
 const useProject = () => {
 
@@ -164,6 +167,29 @@ const useProject = () => {
             console.log(err);
         }
     }
+    const useFetchProjects = (create: any) => {
+        const { data } = useQuery('projectData', async ({ signal }) => {
+            const res = await fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
+                signal,
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${getAccessToken()}`
+                },
+            })
+            const json = await handleApiErrors(res);
+            return json;
+        },
+            {
+                retry: 1,
+                refetchOnWindowFocus: false,
+                onError: (error: any) => {
+                    handleError({ error, explicitMessage: 'Unable to fetch categories' });
+                },
+            }
+        );
+        return { projectData: data };
+    };
+
 
     return {
         getGasFeeToPublish,
@@ -171,6 +197,7 @@ const useProject = () => {
         publishProject,
         getOnChainProject,
         depositFunds,
+        useFetchProjects,
         deploying,
         gasFee,
     }
