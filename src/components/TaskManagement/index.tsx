@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -8,6 +9,7 @@
 
 import { FC, useEffect, useState, useMemo, useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import userImage from 'assets/images/profile/user-image.png';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
@@ -16,24 +18,13 @@ import { RootState } from 'reducers';
 import { updateProjectCategory } from 'actions/flProject';
 import { useQueryClient } from 'react-query';
 import CreateTaskModal from 'components/CreateTask/CreateTaskModal';
-import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
-import styles from './index.module.scss';
 import AcceptTask from 'components/AcceptTask';
 import SelectBuilder from 'components/AcceptTask/SelectBuilder';
 import CommitTask from 'components/AcceptTask/CommitTask';
-
-const removeFromList = (list: string, index: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(index, 1);
-
-  return [removed, result];
-};
-
-const addToList = (list: string, index: number, element: string) => {
-  const result = Array.from(list);
-  result.splice(index, 0, element);
-  return result;
-};
+import { useFetchProjects } from 'components/Project/Landing/hooks';
+import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
+import styles from './index.module.scss';
+import { onDragEnd } from './dndMethods';
 
 const lists = [
   'open',
@@ -49,7 +40,10 @@ interface ITaskManagement {
   project_name: string;
 }
 
-const TaskManagement: FC<ITaskManagement> = ({ project_budget, project_name }) => {
+const TaskManagement: FC<ITaskManagement> = ({
+  project_budget,
+  project_name,
+}) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -77,7 +71,10 @@ const TaskManagement: FC<ITaskManagement> = ({ project_budget, project_name }) =
         </div>
       </div>
       <hr />
-      <TaskManagementBoard project_budget={project_budget} project_name={project_name} />
+      <TaskManagementBoard
+        project_budget={project_budget}
+        project_name={project_name}
+      />
     </div>
   );
 };
@@ -133,10 +130,16 @@ const FilterMenu: FC = () => {
   );
 };
 
-const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name }) => {
-
+const TaskManagementBoard: FC<ITaskManagement> = ({
+  project_budget,
+  project_name,
+}) => {
+  const { create } = useParams();
   const updateTask = useUpdateTaskStatus();
+  const { projectData } = useFetchProjects(create);
   const { projectTasks } = useFetchProjectTasks();
+  const user = useSelector((state: RootState) => state.user.user);
+
   const [elements, setElements] = useState(projectTasks);
   const [openTask, setOpenTask] = useState(false);
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
@@ -149,57 +152,38 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
     setElements(projectTasks);
   }, [projectTasks]);
 
-  const onDragEnd = async (result: any) => {
-    if (!result.destination) {
-      return;
-    }
-    const listCopy = { ...elements };
-
-    const sourceList = listCopy[result.source.droppableId];
-    const [removedElement, newSourceList] = removeFromList(
-      sourceList,
-      result.source.index
-    );
-    listCopy[result.source.droppableId] = newSourceList;
-    const destinationList = listCopy[result.destination.droppableId];
-    listCopy[result.destination.droppableId] = addToList(
-      destinationList,
-      result.destination.index,
-      removedElement
-    );
-
-    if (result.source.droppableId !== result.destination.droppableId) {
-      setElements(listCopy);
-
-      await updateTask.mutateAsync({
-        taskId: removedElement.taskId,
-        status: result.destination.droppableId,
-      });
-    }
-  };
-
   const handleOpenTask = (data: any) => {
     setSelectedTaskId(data?.taskId);
     setOpenTask(true);
-
-  }
+  };
 
   const handleApprove = (item: any) => {
     setOpenTask(false);
     setOpenSelectBuilder(true);
-    setSelectedBuilder(item)
-  }
+    setSelectedBuilder(item);
+  };
 
   const handleCloseSelectBuilder = () => {
     setOpenTask(true);
     setOpenSelectBuilder(false);
-  }
+  };
 
   const handleSuccess = () => {
     setOpenTask(true);
     setOpenSelectBuilder(false);
     setSuccess(true);
-  }
+  };
+
+  const handleDragEnd = (result: any) => {
+    onDragEnd({
+      elements,
+      result,
+      setElements,
+      updateTask,
+      projectData,
+      userId: user?.userId,
+    });
+  };
 
   const handleCommit = () => {
     setOpenCommitTask(true);
@@ -215,7 +199,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
 
   if (elements) {
     return (
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <div className={styles['container']}>
           {lists.map(listKey => (
             <Column
@@ -226,23 +210,23 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
             />
           ))}
         </div>
-        {
-          openTask && <AcceptTask
+        {openTask && (
+          <AcceptTask
             setOpen={setOpenTask}
             taskId={selectedTaskId}
             handleApprove={handleApprove}
             project_name={project_name}
             handleCommit={handleCommit}
           />
-        }
-        {
-          openSelectBuilder && <SelectBuilder
+        )}
+        {openSelectBuilder && (
+          <SelectBuilder
             setOpen={handleCloseSelectBuilder}
             handleSuccess={handleSuccess}
             project_budget={project_budget}
             selectedBuilder={selectedBuilder}
           />
-        }
+        )}
         {
           openCommitTask && <CommitTask
             handleClose={handleCloseCommitTask}
@@ -270,7 +254,12 @@ const Column: FC<IColumn> = ({ elements, prefix, setOpenTask }) => {
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {elements.map((item: any, index: number) => (
-                <Card key={item.taskId} item={item} index={index} setOpenTask={setOpenTask} />
+                <Card
+                  key={item.taskId}
+                  item={item}
+                  index={index}
+                  setOpenTask={setOpenTask}
+                />
               ))}
               {provided.placeholder}
             </div>
@@ -288,7 +277,6 @@ interface ICard {
 }
 
 const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
-
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
     () => [...Array(item.estimatedDifficulty).keys()],

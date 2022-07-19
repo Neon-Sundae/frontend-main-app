@@ -1,61 +1,59 @@
+/* eslint-disable camelcase */
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './index.module.scss';
 import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
 import TaskManagement from 'components/TaskManagement';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
 import { Toaster } from 'react-hot-toast';
-import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { RootState } from 'reducers';
 import Header from '../Header';
 import Description from '../Description';
-import useProject from './hooks';
+import { useProject, useFetchProjects } from './hooks';
 import PublishProjectModal from '../Modal/PublishProjectModal';
+import styles from './index.module.scss';
 
 const Landing: FC = () => {
-
   const accessToken = getAccessToken();
 
   const { create } = useParams();
   const { getUSDCBalance, getOnChainProject, fetchFounder } = useProject();
+  const { projectData = {} } = useFetchProjects(create);
 
   const [open, setOpen] = useState(false);
 
-  const { user, wallet_usdc_balance } = useSelector((state: RootState) => state.user);
+  const { user, wallet_usdc_balance } = useSelector(
+    (state: RootState) => state.user
+  );
   const userName = useSelector((state: RootState) => state.user.user?.name);
-  const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
+  const { selectedProjectAddress } = useSelector(
+    (state: RootState) => state.flProject
+  );
 
   useEffect(() => {
     if (user?.userId && accessToken) {
       getUSDCBalance();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
     if (selectedProjectAddress) {
       fetchFounder(selectedProjectAddress);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProjectAddress]);
 
-  const { isLoading, error, data = {}, isFetching } = useQuery('userOrgs', () =>
-    fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then(response => response.json())
-  );
-
   const {
-    name,
+    name = '',
     description,
     budget,
     timeOfCompletion,
     preferredTimeZones,
     flResources,
-    organisation
-  } = data;
+    organisation,
+  } = projectData;
 
   useEffect(() => {
     if (organisation?.organisationUser[0]?.walletId) {
@@ -63,17 +61,14 @@ const Landing: FC = () => {
     }
   }, [organisation])
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error :|</p>;
-
-  return (
+  return projectData ? (
     <div className={styles.container}>
       <BlurBlobs />
       <NavBar />
       <Header
         projectName={name}
         founderName={userName || ''}
-        setOpen={(val) => setOpen(val)}
+        setOpen={val => setOpen(val)}
         budget={budget}
         founderAddress={organisation?.organisationUser[0]?.walletId}
       />
@@ -85,8 +80,8 @@ const Landing: FC = () => {
         flResources={flResources}
       />
       <TaskManagement project_budget={budget} project_name={name} />
-      {
-        open && <PublishProjectModal
+      {open && (
+        <PublishProjectModal
           setOpen={(val: any) => setOpen(val)}
           usdcBalance={wallet_usdc_balance}
           projectId={Number(create)}
@@ -94,10 +89,10 @@ const Landing: FC = () => {
           projectName={name}
           projectDescription={description}
         />
-      }
+      )}
       <Toaster />
     </div>
-  );
+  ) : <div className={styles.container} />;
 };
 
 export default Landing;
