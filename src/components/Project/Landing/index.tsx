@@ -31,7 +31,6 @@ const Landing: FC = () => {
   useEffect(() => {
     if (user?.userId && accessToken) {
       getUSDCBalance();
-      getOnChainProject(Number(create));
     }
   }, [user]);
 
@@ -41,14 +40,12 @@ const Landing: FC = () => {
     }
   }, [selectedProjectAddress]);
 
-  const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
+  const { isLoading, error, data = {}, isFetching } = useQuery('userOrgs', () =>
     fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${getAccessToken()}` },
     }).then(response => response.json())
   );
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error :|</p>;
 
   const {
     name,
@@ -59,6 +56,15 @@ const Landing: FC = () => {
     flResources,
     organisation
   } = data;
+
+  useEffect(() => {
+    if (organisation?.organisationUser[0]?.walletId) {
+      getOnChainProject(Number(create), organisation?.organisationUser[0]?.walletId);
+    }
+  }, [organisation])
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error :|</p>;
 
   return (
     <div className={styles.container}>

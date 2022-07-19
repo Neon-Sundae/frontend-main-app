@@ -12,13 +12,14 @@ import styles from './index.module.scss';
 interface ITaskDetail {
     setViewTalentList: Dispatch<SetStateAction<boolean>>;
     project_name: string;
+    handleCommit: any
 }
 
-const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name }) => {
+const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name, handleCommit }) => {
 
     const { founder, selectedTask } = useSelector((state: RootState) => state.flProject);
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-    // console.log("<<<<<<<<<<", selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted'))
+    console.log(selectedTask)
     return (
         <div>
             <div className={styles['avatar-container']}>
@@ -117,9 +118,12 @@ const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name }) => {
                             <i className='material-icons'>delete</i>
                             <span>Delete Task</span>
                         </span>
-                    ) : (
+                    ) : selectedTask?.status === 'open' ? (
                         <button>Apply for task</button>
-                    )
+                    ) : (selectedTask?.status === 'interviewing' &&
+                        selectedTask?.profileTask.filter((item: any) => item?.Profile?.user?.walletId.toLowerCase() === walletId?.toLowerCase() && item?.applicationStatus === 'accepted').length > 0) ? (
+                        <button onClick={handleCommit}>Commit to task</button>
+                    ) : <></>
                 }
             </div>
         </div>

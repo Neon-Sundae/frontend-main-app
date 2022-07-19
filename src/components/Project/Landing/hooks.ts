@@ -14,6 +14,8 @@ import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { GET_PROJECT_FOUNDER, GET_SELECTED_PROJECT_ADDRESS, IS_DEPOSITED } from 'actions/flProject/types';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 const useProject = () => {
 
@@ -21,7 +23,7 @@ const useProject = () => {
     const [gasFee, setGasFee] = useState(0);
 
     const accessToken = getAccessToken();
-
+    const { create } = useParams();
     const dispatch = useDispatch();
 
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
@@ -42,11 +44,11 @@ const useProject = () => {
         }
     }
 
-    const getOnChainProject = async (id: number) => {
+    const getOnChainProject = async (id: number, founder: string) => {
         try {
             const web3 = getWeb3Instance();
             const ProjectManageContract = new web3.eth.Contract(ProjectManageAbi.abi as AbiItem[], projectManageContractAddress);
-            let result = await ProjectManageContract.methods.getProjectContractAddresses(walletId).call();
+            let result = await ProjectManageContract.methods.getProjectContractAddresses(founder).call();
 
             const address = result.filter((project: any) => String(project.projectId) === String(id)).length > 0 ?
                 result.filter((project: any) => String(project.projectId) === String(id))[0].contractAddress : ''

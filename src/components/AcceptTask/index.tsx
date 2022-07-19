@@ -17,9 +17,10 @@ interface IAcceptTask {
     selectedBuilder: any;
     project_budget: number;
     project_name: string;
+    handleCommit: any
 }
 
-const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_name }) => {
+const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_name, handleCommit }) => {
 
     const dispatch = useDispatch();
 
@@ -57,6 +58,7 @@ const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_n
                         /> : <TaskDetail
                             setViewTalentList={setViewTalentList}
                             project_name={project_name}
+                            handleCommit={handleCommit}
                         />
                 }
             </div>

@@ -20,6 +20,7 @@ import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import AcceptTask from 'components/AcceptTask';
 import SelectBuilder from 'components/AcceptTask/SelectBuilder';
+import CommitTask from 'components/AcceptTask/CommitTask';
 
 const removeFromList = (list: string, index: number) => {
   const result = Array.from(list);
@@ -139,6 +140,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
   const [elements, setElements] = useState(projectTasks);
   const [openTask, setOpenTask] = useState(false);
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
+  const [openCommitTask, setOpenCommitTask] = useState(false);
   const [success, setSuccess] = useState(false);
   const [selectedBuilder, setSelectedBuilder] = useState<any>(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -199,6 +201,18 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
     setSuccess(true);
   }
 
+  const handleCommit = () => {
+    setOpenCommitTask(true);
+    setOpenSelectBuilder(false);
+    setOpenTask(false);
+  }
+
+  const handleCloseCommitTask = () => {
+    setOpenCommitTask(false);
+    setOpenSelectBuilder(false);
+    setOpenTask(true);
+  }
+
   if (elements) {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
@@ -218,6 +232,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
             taskId={selectedTaskId}
             handleApprove={handleApprove}
             project_name={project_name}
+            handleCommit={handleCommit}
           />
         }
         {
@@ -226,6 +241,11 @@ const TaskManagementBoard: FC<ITaskManagement> = ({ project_budget, project_name
             handleSuccess={handleSuccess}
             project_budget={project_budget}
             selectedBuilder={selectedBuilder}
+          />
+        }
+        {
+          openCommitTask && <CommitTask
+            handleClose={handleCloseCommitTask}
           />
         }
       </DragDropContext>
