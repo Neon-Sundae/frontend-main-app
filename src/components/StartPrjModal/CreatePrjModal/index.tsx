@@ -10,8 +10,6 @@ import { useMutation } from 'react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
-import { parse } from 'path';
-
 interface ICreatePrjProps {
   onNext: () => void;
   onClose: () => void;
@@ -23,7 +21,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   const temp: any = [];
   useEffect(() => {
     if (!temp.length) {
-      timezoneData.forEach((element) => {
+      timezoneData.forEach(element => {
         temp.push({ value: element.value, label: element.text });
       });
       setOptions(temp);
@@ -63,11 +61,11 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       });
     },
     {
-      onSuccess: async (res) => {
+      onSuccess: async res => {
         const body = await res.json();
-        navigate(`/project/${body.flProjectId}`);
+        navigate(`/project/${body.flProjectId_uuid}`);
       },
-      onError: (err) => {
+      onError: err => {
         console.log('err', err);
         setFormData({});
       },
@@ -251,7 +249,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                   id="name"
                   placeholder="Project Name"
                   style={{ width: '100%' }}
-                  onChange={(e) =>
+                  onChange={e =>
                     setFormData({
                       ...formData,
                       name: e.target.value,
@@ -266,7 +264,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                   placeholder="Description"
                   className={styles.input}
                   style={{ width: '100%', height: '100px' }}
-                  onChange={(e) =>
+                  onChange={e =>
                     setFormData({
                       ...formData,
                       description: e.target.value,
@@ -291,7 +289,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     id="dueDate"
                     placeholder="Project Due Date"
                     style={{ width: '300px' }}
-                    onChange={(e) =>
+                    onChange={e =>
                       setFormData({
                         ...formData,
                         timeOfCompletion: e.target.value,
@@ -307,7 +305,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                       options={options}
                       styles={customStyles}
                       isMulti
-                      onChange={(options) => setSelectedOptions(options)}
+                      onChange={options => setSelectedOptions(options)}
                     />
                   </span>
                 </div>
@@ -324,7 +322,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                   placeholder="Add project budget"
                   className={styles.input}
                   style={{ width: '100%' }}
-                  onBlur={(e) => {
+                  onBlur={e => {
                     setFormData((prevState: any) => {
                       const target = e.target as HTMLInputElement;
                       prevState.budget = parseInt(target.value);
@@ -347,7 +345,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     placeholder="Add a resource"
                     className={styles.input}
                     style={{ width: '100%' }}
-                    onBlur={(e) => {
+                    onBlur={e => {
                       handleResourceChange(e);
                     }}
                   />
@@ -362,7 +360,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                             placeholder="Add a resource"
                             style={{ width: '100%' }}
                             className={styles.input}
-                            onBlur={(e) => {
+                            onBlur={e => {
                               handleResourceChange(e);
                             }}
                           />
@@ -406,7 +404,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                   id="name"
                   placeholder="Write a category"
                   className={styles.input}
-                  onChange={(e) =>
+                  onChange={e =>
                     setFormData((prevState: any) => {
                       prevState.flProjectCategory[0].categoryName =
                         e.target.value;
@@ -428,7 +426,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     className={styles.input}
                     placeholder=""
                     style={{ width: '48%' }}
-                    onChange={(e) =>
+                    onChange={e =>
                       setFormData((prevState: any) => {
                         prevState.flProjectCategory[0].percentageAllocation =
                           parseFloat(e.target.value);
@@ -451,7 +449,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                           placeholder="Write a category"
                           className={styles.input}
                           style={{ width: '48%' }}
-                          onBlur={(e) =>
+                          onBlur={e =>
                             setFormData((prevState: any) => {
                               prevState.flProjectCategory.push({
                                 categoryName: e.target.value,
@@ -470,7 +468,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                             className={styles.input}
                             placeholder=""
                             style={{ width: '48%' }}
-                            onBlur={(e) =>
+                            onBlur={e =>
                               setFormData((prevState: any) => {
                                 prevState.flProjectCategory[
                                   prevState.flProjectCategory.length - 1
@@ -512,11 +510,11 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
               <br />
               <footer
                 style={{ textAlign: 'center' }}
-                onClick={(e) => e.preventDefault()}
+                onClick={e => e.preventDefault()}
               >
                 <button
                   className={styles.saveBtn}
-                  onClick={(e) => handleAddProject(e)}
+                  onClick={e => handleAddProject(e)}
                 >
                   SAVE
                 </button>

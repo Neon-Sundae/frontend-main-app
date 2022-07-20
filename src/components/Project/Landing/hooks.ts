@@ -229,7 +229,7 @@ const useProject = () => {
         smartContractId: address,
       };
       const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/${projectId}`,
+        `${config.ApiBaseUrl}/fl-project/${projectId}`, // TODO - Need to update projectId here
         {
           signal,
           method: 'PATCH',
@@ -284,14 +284,19 @@ const useFetchProjects = (create: any) => {
   const { data } = useQuery(
     'projectData',
     async ({ signal }) => {
-      const res = await fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
-        signal,
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      });
-      const json = await handleApiErrors(res);
-      return json;
+      if (create) {
+        const res = await fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
+          signal,
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        });
+        const json = await handleApiErrors(res);
+        return json;
+      }
+
+      // create is falsy so throw error
+      throw new Error('Error');
     },
     {
       retry: 1,

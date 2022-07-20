@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import Card from 'components/Card';
-import ProjectCard from '../ProjectCard';
-import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
+import ProjectCard from '../ProjectCard';
+import styles from './index.module.scss';
 
 const Projects: FC = () => {
   const navigate = useNavigate();
@@ -37,17 +37,17 @@ const Projects: FC = () => {
         </span>
       </div>
       <div className={styles.border}>
-        <Card className={styles['projects-cont']} showTransparentBg={true}>
+        <Card className={styles['projects-cont']} showTransparentBg>
           {data.map((project: any) => (
             <ProjectCard
               key={getRandomString(5)}
-              projectId={project.flProjectId}
+              projectId={project.flProjectId_uuid}
               projectName={project.flProjectName}
               org={project.organisationName}
               description={project.flProjectDescription}
               numTasks={project.taskCount}
               location="home"
-              width=''
+              width=""
             />
           ))}
         </Card>

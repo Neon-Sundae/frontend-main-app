@@ -1,9 +1,10 @@
 import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
-import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+import { FC } from 'react';
+import styles from './index.module.scss';
+
 interface ProjectCardProps {
   projectName: string;
   description: string;
@@ -24,11 +25,12 @@ const ProjectCard: FC<ProjectCardProps> = ({
   width,
 }) => {
   const navigate = useNavigate();
+
   if (location === 'home') {
     return (
       <Card
         className={styles['project-card']}
-        showTransparentBg={true}
+        showTransparentBg
         width={width}
         marginRight={'50px'}
       >
@@ -53,11 +55,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
     );
   }
   return (
-    <Card
-      className={styles['project-card']}
-      showTransparentBg={true}
-      width={width}
-    >
+    <Card className={styles['project-card']} showTransparentBg width={width}>
       <>
         <header>
           <BrandImage width={70} height={70} />
