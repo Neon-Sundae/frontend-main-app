@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
@@ -68,17 +68,14 @@ const ChecklistItemInput: FC<IChecklistItemInput> = ({
   removeItem,
   handleDebounceFn,
 }) => {
-  const [textValue, setTextValue] = useState(value ?? '');
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTextValue(e.target.value);
     handleDebounceFn(id, e.target.value);
   };
 
   return (
     <div className={styles['checklist-item-input-container']}>
       <span />
-      <input type="text" value={textValue} onChange={handleChange} />
+      <input type="text" value={value} onChange={handleChange} />
       <i className="material-icons" onClick={() => removeItem(id)}>
         close
       </i>
