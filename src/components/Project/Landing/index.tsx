@@ -73,7 +73,6 @@ const Landing: FC = () => {
     {
       onSuccess: async (res) => {
         queryClient.invalidateQueries(['projectData'])
-        console.log('project updated', res);
       },
       onError: (err) => {
         console.log('err', err);

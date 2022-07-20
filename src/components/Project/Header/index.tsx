@@ -84,8 +84,11 @@ const Header: FC<IHeaderProps> = ({
           return (
             <>
               <button onClick={handleOpen}>Publish a Project</button>
-              <button onClick={() => editable()} className={styles.editBtn} >{edit ? <button onClick={() => save()}>save</button> : 'edit'}</button>
-              <button onClick={() => editable()} className={styles.editBtn} >{edit ? 'cancel' : ''}</button>
+              <button onClick={() => editable()} className={styles.editBtn} >{edit ? <a onClick={() => save()}>💾</a> : '📝'}</button>
+              <button onClick={() => editable()} className={styles.editBtn} style={{
+                color: 'transparent',
+                textShadow: '0 0 0 white',
+              }} >{edit ? '❌' : ''}</button>
             </>
           );
         if (!isDeposit)

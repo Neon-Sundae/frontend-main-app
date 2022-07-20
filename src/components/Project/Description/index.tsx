@@ -31,7 +31,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     input,
     selectedTimeZones
   } = props;
-  console.log('flResources', flResources);
+
   useEffect(() => {
     if (!temp.length || !tempDefaultOptions.length) {
       timezoneData.forEach((element) => {

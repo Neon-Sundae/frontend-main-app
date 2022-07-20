@@ -61,6 +61,20 @@
     margin-bottom: 5px;
   }
 
+  input[type='date'] {
+    color: #fff;
+    font-family: var(--font-family-roboto-regular);
+    opacity: 1;
+    cursor: pointer;
+    border-radius: 10px;
+    height: 39px;
+  }
+
+  ::-webkit-calendar-picker-indicator {
+    padding-right: 10px;
+    filter: invert(1);
+  }
+
   .multipleInputs {
     display: flex;
     flex-direction: column;
