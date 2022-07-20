@@ -49,21 +49,26 @@ const useFetchProjectCategories = () => {
   const { data } = useQuery(
     'projectCategory',
     async ({ signal }) => {
-      const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/category/${create}`,
-        {
-          signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const json = await handleApiErrors(response);
-      const normalizedCategories = normalizeCategories(json);
-      dispatch(
-        updateProjectCategory(getFormattedCategories(normalizedCategories))
-      );
-      return normalizedCategories;
+      if (create) {
+        const response = await fetch(
+          `${config.ApiBaseUrl}/fl-project/category/${create}`,
+          {
+            signal,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const json = await handleApiErrors(response);
+        const normalizedCategories = normalizeCategories(json);
+        dispatch(
+          updateProjectCategory(getFormattedCategories(normalizedCategories))
+        );
+        return normalizedCategories;
+      }
+
+      // create is falsy so throw error
+      throw new Error('Error');
     },
     {
       retry: 1,

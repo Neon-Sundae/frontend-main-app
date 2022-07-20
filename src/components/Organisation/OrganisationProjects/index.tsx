@@ -20,8 +20,8 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({ organisation }) => {
         {flProjects.length > 0
           ? flProjects.map(flProject => (
               <OrganisationProjectCard
-                key={flProject.flProjectId}
-                projectId={flProject.flProjectId}
+                key={flProject.flProjectId_uuid}
+                projectId={flProject.flProjectId_uuid}
                 description={flProject.flProjectDescription}
                 numTasks={flProject.taskCount}
                 projectName={flProject.flProjectName}
@@ -39,7 +39,7 @@ interface IOrganisationProjectCard {
   org: string;
   description: string;
   numTasks: number;
-  projectId: number;
+  projectId: string;
 }
 
 const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({

@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import styles from './index.module.scss';
 import Card from 'components/Card';
 import ProjectCard from 'components/Home/ProjectCard';
 import getRandomString from 'utils/getRandomString';
+import styles from './index.module.scss';
 
 interface AllProjectsProps {
   projectData: any;
@@ -18,13 +18,13 @@ const AllProjects: FC<AllProjectsProps> = ({ projectData }) => {
             return (
               <ProjectCard
                 key={getRandomString(5)}
-                projectId={project.flProjectId}
+                projectId={project.flProjectId_uuid}
                 projectName={project.flProjectName}
                 org={project.organisationName}
                 description={project.flProjectDescription}
                 numTasks={project.taskCount}
                 location="Project"
-                width=''
+                width=""
               />
             );
           })}
