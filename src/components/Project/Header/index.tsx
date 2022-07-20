@@ -19,6 +19,7 @@ interface IHeaderProps {
   editable: () => void;
   edit: boolean;
   input: (e: any) => void;
+  save: () => void;
 }
 
 const Header: FC<IHeaderProps> = ({
@@ -29,6 +30,7 @@ const Header: FC<IHeaderProps> = ({
   editable,
   edit,
   input,
+  save,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -82,7 +84,8 @@ const Header: FC<IHeaderProps> = ({
           return (
             <>
               <button onClick={handleOpen}>Publish a Project</button>
-              <button onClick={() => editable()} className={styles.editBtn} >{edit ? 'save' : 'edit'}</button>
+              <button onClick={() => editable()} className={styles.editBtn} >{edit ? <button onClick={() => save()}>save</button> : 'edit'}</button>
+              <button onClick={() => editable()} className={styles.editBtn} >{edit ? 'cancel' : ''}</button>
             </>
           );
         if (!isDeposit)

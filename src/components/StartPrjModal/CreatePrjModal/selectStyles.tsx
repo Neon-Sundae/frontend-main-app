@@ -20,7 +20,7 @@ export const customStyles: StylesConfig<Option> = {
     borderWidth: 1.2,
     borderColor: '#fff',
     borderRadius: '10px',
-    width: '250px',
+    width: '280px',
     padding: '0 20px',
     cursor: 'pointer',
     ':hover': {

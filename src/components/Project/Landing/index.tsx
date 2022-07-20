@@ -4,7 +4,7 @@ import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
 import TaskManagement from 'components/TaskManagement';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
@@ -15,7 +15,11 @@ import Description from '../Description';
 import useProject from './hooks';
 import PublishProjectModal from '../Modal/PublishProjectModal';
 
+
 const Landing: FC = () => {
+  const queryClient = useQueryClient()
+
+  let updatedData: any;
   const [edit, setEdit] = useState(false);
   const [selectedTimeZones, setSelectedTimeZones] = useState<any>([]);
   const [input, setInput] = useState<any>({
@@ -28,6 +32,8 @@ const Landing: FC = () => {
     flResources: [],
     flProjectCategory: [{ categoryName: '', percentageAllocation: '' }],
   });
+
+
   const accessToken = getAccessToken();
 
   const { create } = useParams();
@@ -45,12 +51,36 @@ const Landing: FC = () => {
     }
   }, [user]);
 
-  const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
+
+  const { isLoading, error, data, isFetching } = useQuery('projectData', () =>
     fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${getAccessToken()}` },
     }).then(response => response.json())
   );
+
+  const { mutate: updateProject } = useMutation(
+    async () => {
+      return await fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      });
+    },
+    {
+      onSuccess: async (res) => {
+        queryClient.invalidateQueries(['projectData'])
+        console.log('project updated', res);
+      },
+      onError: (err) => {
+        console.log('err', err);
+      },
+    }
+  );
+
 
   if (isFetching) return <p>fetching</p>
   if (isLoading) return <p>loading</p>
@@ -65,19 +95,48 @@ const Landing: FC = () => {
     flProjectCategory,
     flResources,
   } = data;
+
   const setEditableFunc = () => {
     setEdit(s => !s);
   }
+
   const setInputFunc = (e: any) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    if (e.target.name === 'budget') {
+      setInput({ ...input, budget: parseInt(e.target.value) });
+    }
+    if (e.target.name === 'timeOfCompletion') {
+      const IsDate = new Date(e.target.value).toISOString();
+      setInput({ ...input, timeOfCompletion: IsDate });
+    }
+    if (e.target.name === 'name') {
+      setInput({ ...input, name: e.target.value });
+    }
+    if (e.target.name === 'description') {
+      setInput({ ...input, description: e.target.value });
+    }
   }
+
   const setTimeZoneFunc = (options: any) => {
     setSelectedTimeZones(options);
     setInput((prevState: any) => {
       return { ...prevState, preferredTimeZones: options };
     })
   }
-  console.log('input is HERE', input);
+
+  const normalizeData = (data: any) => {
+    for (let key in data) {
+      if (data[key] === "" || data[key] === null || data[key].length === 0) {
+        delete data[key]
+      }
+    }
+    // remove this to update preferred timezones and fl project category
+    delete data.preferredTimeZones
+    delete data.flProjectCategory
+    updatedData = data;
+  }
+
+  console.log('updatedData', updatedData);
+  console.log(input);
   return (
     <div className={styles.container}>
       <BlurBlobs />
@@ -90,6 +149,7 @@ const Landing: FC = () => {
         editable={() => setEditableFunc()}
         input={(e) => setInputFunc(e)}
         edit={edit}
+        save={() => { normalizeData(input); updateProject() }}
       />
       <Description
         description={description}
