@@ -26,19 +26,26 @@ const useFetchProjectTasks = () => {
         return '';
       };
 
-      const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/${create}/tasks${getCategoryQuery()}`,
-        {
-          signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const json = await handleApiErrors(response);
-      const formattedData = formatTasksData(json);
+      if (create) {
+        const response = await fetch(
+          `${
+            config.ApiBaseUrl
+          }/fl-project/${create}/tasks${getCategoryQuery()}`,
+          {
+            signal,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const json = await handleApiErrors(response);
+        const formattedData = formatTasksData(json);
 
-      return formattedData;
+        return formattedData;
+      }
+
+      // create is falsy throw error
+      throw new Error('error');
     },
     {
       retry: 1,

@@ -108,15 +108,6 @@ const notAllowedCases = (
     return false;
   }
 
-  if (
-    isProjectFounder(founderUserId, userId) &&
-    sourceInReview(result) &&
-    destinationInProgress(result)
-  ) {
-    toast.error('Only Builder can perform this operation');
-    return false;
-  }
-
   if (!isProjectFounder(founderUserId, userId) && destinationCompletd(result)) {
     toast.error('Only Founder can perform this operation');
     return false;
