@@ -1,10 +1,12 @@
 .title {
   font-family: var(--font-family-roboto-light);
-  font-size: 40px;
-  color: #504b64;
+  font-size: 24px;
+  font-weight: 600;
+  color: #FFFF;
   text-align: center;
-  line-height: 50px;
-  margin: 78px 0;
+  line-height: 31px;
+  margin: 100px 0 20px 0;
+  // margin: 78px 0;
 }
 
 .error-text {
@@ -12,4 +14,15 @@
   font-size: 18px;
   color: #c0392b;
   margin-top: 20px;
+}
+
+.subtitle {
+  font-family: var(--font-family-roboto-light);
+  font-size: 18px;
+  font-weight: 400;
+  color: #FFFF;
+  text-align: center;
+  line-height: 23px;
+  // margin-top: 52px;
+  // margin: 78px 0;
 }

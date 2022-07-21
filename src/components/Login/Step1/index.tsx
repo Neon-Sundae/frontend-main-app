@@ -22,17 +22,18 @@ const Step1: FC = () => {
   return (
     <>
       <h1 className={styles.title}>
-        Welcome to Founders Lab, <br /> connect your wallet <br /> to get
-        started.
+        Welcome to Founders Lab!
       </h1>
+      <p className={styles.subtitle}>connect your wallet to get
+        started.</p>
       <IconButton
         handleClick={loginWithMetaMask}
-        icon={<MetamaskIcon width={39} height={35} />}
+        icon={<MetamaskIcon width={25.8} height={23.26} />}
         text="Metamask"
       />
       <IconButton
         handleClick={loginWithWalletConnect}
-        icon={<WalletConnectIcon width={39} height={35} />}
+        icon={<WalletConnectIcon width={38} height={24} />}
         text="WalletConnect"
       />
       {error && <p className={styles['error-text']}>{error}</p>}
