@@ -93,7 +93,7 @@ const fetchNFTs = (walletId: any, agree: boolean): IReturnType => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'X-API-Key': process.env.MORALIS_API_KEY || '',
+            'X-API-Key': import.meta.env.VITE_MORALIS_API_KEY || '',
           },
         }
       );

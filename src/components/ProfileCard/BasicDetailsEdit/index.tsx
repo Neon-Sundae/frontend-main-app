@@ -179,7 +179,7 @@ const ProfileImage: FC<IProfileImage> = ({ nfts, picture, setPicture, getNFTs })
       <div className={styles.nftsWrapper}>
         <h2>NFTs</h2>
         <div className={styles.nftsContainer} >
-          {nfts.result.map((token: any) => {
+          {nfts?.result.map((token: any) => {
             const metadata = getTokenMetadata(token);
             return (
               <><span className={styles.singleNft} key={getRandomString(5)} onClick={() => {
