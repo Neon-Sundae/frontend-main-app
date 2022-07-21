@@ -33,6 +33,9 @@ const TalentListItem: FC<ITalentListItem> = ({ handleApprove, task_status, taskI
                         </>
                     )
                 }
+                {
+                    task_status === 'interviewing' && data?.applicationStatus === 'accepted' && <span className={styles['selected-builder']}>selected</span>
+                }
             </div>
         </div>
     )

@@ -10,20 +10,20 @@ const DepositFundsToWallet = () => {
             <h1 className={styles['deposit-title']}>Deposit Funds to your wallet</h1>
             <div className={styles['deposit-content-wrapper']}>
                 <a href='https://www.moonpay.com/buy' target="_blank" className={styles['wallet-item']}>
-                    <MoonPayIcon width={43} height={40} />
-                    <span>MoonPay</span>
+                    <div><MoonPayIcon width={43} height={43} /></div>
+                    <div><span>MoonPay</span></div>
                 </a>
                 <a href='https://ftx.com' target="_blank" className={styles['wallet-item']}>
-                    <FtxIcon width={43} height={40} />
-                    <span>FTX</span>
+                    <div><FtxIcon width={43} height={43} /></div>
+                    <div><span>FTX</span></div>
                 </a>
                 <a href='https://www.sendwyre.com/' target="_blank" className={styles['wallet-item']}>
-                    <WyreIcon width={43} height={40} />
-                    <span>Wyre</span>
+                    <div><WyreIcon width={43} height={43} /></div>
+                    <div><span>Wyre</span></div>
                 </a>
                 <div className={styles['wallet-item']}>
-                    <TransakIcon width={43} height={40} />
-                    <span>Transak</span>
+                    <div><TransakIcon width={43} height={43} /></div>
+                    <div><span>Transak</span></div>
                 </div>
                 <button className={styles['deposit-top-up']}>Top Up</button>
                 <p className={styles['deposit-bottom-text']}>On clicking one service you will be redicted to partner website</p>
