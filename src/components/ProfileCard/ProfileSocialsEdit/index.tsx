@@ -10,9 +10,6 @@ import ProfileSocialsModal from './ProfileSocialsModal';
 const ProfileSocialsEdit: FC = () => {
   const [open, setOpen] = useState(false);
   const profile = useSelector((state: RootState) => state.profile.profile);
-
-  console.log(profile)
-
   const handleOpenModal = () => setOpen(true);
 
   return (
