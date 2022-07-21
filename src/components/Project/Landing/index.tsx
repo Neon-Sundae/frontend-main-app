@@ -19,6 +19,7 @@ const Landing: FC = () => {
 
   const { create } = useParams();
   const { getUSDCBalance, getOnChainProject, fetchFounder } = useProject();
+  const { projectData = {} } = useFetchProjects(create);
 
   const [open, setOpen] = useState(false);
 
@@ -33,7 +34,6 @@ const Landing: FC = () => {
   useEffect(() => {
     if (user?.userId && accessToken) {
       getUSDCBalance();
-      getOnChainProject(Number(create));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -45,54 +45,54 @@ const Landing: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProjectAddress]);
 
-  const { projectData } = useFetchProjects(create);
+  const {
+    name = '',
+    description,
+    budget,
+    timeOfCompletion,
+    preferredTimeZones,
+    flResources,
+    organisation,
+  } = projectData;
 
-  if (projectData) {
-    const {
-      name,
-      description,
-      budget,
-      timeOfCompletion,
-      preferredTimeZones,
-      flResources,
-      organisation,
-    } = projectData;
+  useEffect(() => {
+    if (organisation?.organisationUser[0]?.walletId) {
+      getOnChainProject(Number(create), organisation?.organisationUser[0]?.walletId);
+    }
+  }, [organisation])
 
-    return (
-      <div className={styles.container}>
-        <BlurBlobs />
-        <NavBar />
-        <Header
+  return projectData ? (
+    <div className={styles.container}>
+      <BlurBlobs />
+      <NavBar />
+      <Header
+        projectName={name}
+        founderName={userName || ''}
+        setOpen={val => setOpen(val)}
+        budget={budget}
+        founderAddress={organisation?.organisationUser[0]?.walletId}
+      />
+      <Description
+        description={description}
+        budget={budget}
+        timeOfCompletion={timeOfCompletion}
+        preferredTimeZones={preferredTimeZones}
+        flResources={flResources}
+      />
+      <TaskManagement project_budget={budget} project_name={name} />
+      {open && (
+        <PublishProjectModal
+          setOpen={(val: any) => setOpen(val)}
+          usdcBalance={wallet_usdc_balance}
+          projectId={Number(create)}
+          budget={budget}
           projectName={name}
-          founderName={userName || ''}
-          setOpen={val => setOpen(val)}
-          budget={budget}
-          founderAddress={organisation?.organisationUser[0]?.walletId}
+          projectDescription={description}
         />
-        <Description
-          description={description}
-          budget={budget}
-          timeOfCompletion={timeOfCompletion}
-          preferredTimeZones={preferredTimeZones}
-          flResources={flResources}
-        />
-        <TaskManagement project_budget={budget} project_name={name} />
-        {open && (
-          <PublishProjectModal
-            setOpen={(val: any) => setOpen(val)}
-            usdcBalance={wallet_usdc_balance}
-            projectId={Number(create)}
-            budget={budget}
-            projectName={name}
-            projectDescription={description}
-          />
-        )}
-        <Toaster />
-      </div>
-    );
-  }
-
-  return <div className={styles.container} />;
+      )}
+      <Toaster />
+    </div>
+  ) : <div className={styles.container} />;
 };
 
 export default Landing;

@@ -33,7 +33,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({ setOpen, handleSuccess, project_bud
 
     const handleSelect = () => {
         // TODO: will change xp value with db data
-        selectBuilder(selectedProjectAddress, selectedBuilder, selectedTask?.name, selectedTask?.price, 180);
+        selectBuilder(selectedProjectAddress, selectedBuilder, selectedTask?.taskId, selectedTask?.name, selectedTask?.price, 180);
     }
 
     return (

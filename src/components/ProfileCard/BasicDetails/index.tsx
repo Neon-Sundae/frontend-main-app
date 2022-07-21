@@ -63,7 +63,7 @@ const NameDesignation: FC<INameDesignation> = ({ title }) => {
   return (
     <div className={styles['name-designation']}>
       <h2 className={styles.name}>{user?.name ?? 'Rachel Green'}</h2>
-      <h5 className={styles.designation}>{title ?? 'Product Designer'}</h5>
+      <h5 className={styles.designation}>{title ?? 'Add title'}</h5>
     </div>
   );
 };
