@@ -1,18 +1,46 @@
 @import '../../../styles/mixins/scrollbar.scss';
 
+body {
+  color: #fff;
+}
+
 .profile-image {
-  display: flex;
-  justify-content: center;
+  width: 110px;
+  height: 110px;
+  margin: auto;
+
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+
 
   .image-wrapper {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-
-    &>img {
-      width: 100%;
-      height: 100%;
+    .userImage {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
     }
+
+    .bgImage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+  }
+
+  .editIcon {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
   }
 }
 
@@ -164,4 +192,164 @@
   padding: 10px 15px;
 
   @include customScrollbar;
+}
+
+.promptImg {
+  width: 600px;
+  height: 277px;
+
+}
+
+.nftsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  height: 500px;
+
+  .selectedNFT {
+    box-shadow: 0px 12px 22px 1px #333;
+  }
+
+  .singleNft:nth-child(3n) {
+    margin-right: 0;
+  }
+
+  .singleNft {
+    margin-right: 30px;
+
+    h3 {
+      font-size: 14px;
+      font-weight: 400;
+      color: #C4C4C4;
+    }
+
+    p {
+      font-size: 17px;
+      font-weight: 600;
+    }
+  }
+
+  img {
+    width: 146px;
+    height: 146px;
+    object-fit: cover;
+  }
+}
+
+
+.wrapper {
+  position: relative;
+
+  height: 100%;
+  width: auto;
+
+  .promptText {
+    position: absolute;
+    height: 500px;
+    bottom: -25%;
+    left: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    & h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    & p {
+      color: #CBCBCB;
+      font-size: 18px;
+    }
+
+    & div {
+      height: 20%;
+    }
+
+    & footer {
+      font-size: 18px;
+      color: #CBCBCB;
+      margin-bottom: 20px;
+
+      & a {
+        cursor: pointer;
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+
+    & button {
+      background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
+      width: 241px;
+      height: 59px;
+      backdrop-filter: blur(43.3229px);
+      box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+      background-size: cover;
+      border-radius: 26.8312px;
+      border: 0.62px solid;
+      color: #fff;
+      cursor: pointer;
+      font-size: 22.58px;
+      position: absolute;
+      left: 25%;
+    }
+  }
+
+  img {
+    position: absolute;
+    z-index: -1;
+    top: -6%;
+    left: -6%;
+  }
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & h2 {
+    margin-top: 5px;
+    font-size: 30px;
+  }
+
+  & p {
+    font-size: 25px;
+    font-weight: 300;
+    margin-top: 32.15px;
+  }
+
+  .empty {
+    height: 100px;
+  }
+}
+
+.nftsWrapper {
+  position: relative;
+
+  button {
+
+    position: absolute;
+    left: 30%;
+    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+    box-shadow: 0px 3.79667px 22.78px -0.949168px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(37.9667px);
+    /* Note: backdrop-filter has minimal browser support */
+
+    border-radius: 23px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 20px;
+    padding: 14.41px;
+    border: .7px solid #FF9BFB;
+    width: 208px;
+    height: 56.57px;
+  }
+
+  & h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 54px;
+  }
 }
