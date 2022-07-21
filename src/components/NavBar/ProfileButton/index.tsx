@@ -10,6 +10,7 @@ import { RootState } from 'reducers';
 const ProfileButton: FC = () => {
 
   const { user } = useSelector((state: RootState) => state.user);
+  const profile = useSelector((state: RootState) => state.profile.profile);
   const navigate = useNavigate();
 
   return (
@@ -21,7 +22,7 @@ const ProfileButton: FC = () => {
             navigate('/profile');
           }}
         >
-          <img src={ProfileImage} alt="your profile" />
+          <img src={profile?.picture ? profile?.picture : ProfileImage} alt="your profile" />
         </div>
       </div>
       <div className={styles.content}>
