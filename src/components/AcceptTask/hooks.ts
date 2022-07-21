@@ -7,7 +7,7 @@ import config from "config";
 import { handleApiErrors } from "utils/handleApiErrors";
 import { handleError } from "utils/handleUnAuthorization";
 import { getWeb3Instance } from "utils/web3EventFn";
-import { FNDRAddress, taskContractAddress } from "contracts/contracts";
+import { FNDRAddress, taskContractAddress, USDCAddress } from "contracts/contracts";
 import { RootState } from "reducers";
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
@@ -47,6 +47,17 @@ const useFetchTaskData = (taskId: number | undefined) => {
     return { taskData: null };
 };
 
+const useFetchTaskDataOnChain = async (tokenId: number | undefined) => {
+    try {
+        const web3 = getWeb3Instance();
+        const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
+        const result = await taskContract.methods.getTaskById(tokenId).call();
+        console.log(result);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 const useSelectBuilder = () => {
 
     const dispatch = useDispatch();
@@ -57,13 +68,13 @@ const useSelectBuilder = () => {
 
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
-    const selectBuilder = async (projectAddress: string, builderInfo: any, taskId: number, taskName: string, price: number, xp: number) => {
+    const selectBuilder = async (projectAddress: string, builderInfo: any, taskId: number, taskName: string, price: number, xp: number, difficulty: number) => {
         try {
             setPending('waiting');
             const web3 = getWeb3Instance();
 
             const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
-            const result = await taskContract.methods.createTask(projectAddress, builderInfo?.Profile?.user?.walletId, taskName, web3.utils.toWei(String(price), 'ether'), xp)
+            const result = await taskContract.methods.createTask(projectAddress, builderInfo?.Profile?.user?.walletId, taskName, web3.utils.toWei(String(price), 'ether'), xp, difficulty)
                 .send({ from: walletId });
             const tokenId = result.events.TaskCreated.returnValues.taskId;
 
@@ -135,13 +146,14 @@ const useSelectBuilder = () => {
         }
     }
 
-    return { selectBuilder, pending, saveRejectedBuilder }
+    return { selectBuilder, pending, setPending, saveRejectedBuilder }
 }
 
 const useCommitToTask = () => {
 
     const [pending, setPending] = useState('initial');
     const [hash, setHash] = useState('');
+    const [fndrBalance, setFNDRBalance] = useState<number>(0);
 
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
@@ -162,6 +174,7 @@ const useCommitToTask = () => {
                     .on('receipt', (receipt: any) => {
                         setPending('confirming');
                         const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
+                        // TODO: should use task token id not taskId of db.
                         taskContract.methods.commitToTask(taskId, web3.utils.toWei(String(amount), 'ether'))
                             .send({ from: walletId })
                             .on('transactionHash', (hash: any) => {
@@ -188,7 +201,18 @@ const useCommitToTask = () => {
             setPending('failed');
         }
     }
-    return { commitToTask, pending, hash }
+
+    const getFNDRBalance = async () => {
+        try {
+            const web3 = getWeb3Instance();
+            const FNDRContract = new web3.eth.Contract(USDCAbi.abi as AbiItem[], USDCAddress);
+            const balance = await FNDRContract.methods.balanceOf(walletId).call();
+            setFNDRBalance(Number(web3.utils.fromWei(String(balance), 'ether')))
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    return { commitToTask, pending, hash, fndrBalance, getFNDRBalance }
 }
 
-export { useFetchTaskData, useSelectBuilder, useCommitToTask };
+export { useFetchTaskData, useFetchTaskDataOnChain, useSelectBuilder, useCommitToTask };

@@ -63,8 +63,8 @@ const Landing: FC = () => {
 
   return projectData ? (
     <div className={styles.container}>
-      <BlurBlobs />
       <NavBar />
+      <BlurBlobs />
       <Header
         projectName={name}
         founderName={userName || ''}
@@ -79,7 +79,11 @@ const Landing: FC = () => {
         preferredTimeZones={preferredTimeZones}
         flResources={flResources}
       />
-      <TaskManagement project_budget={budget} project_name={name} />
+      <TaskManagement
+        project_budget={budget}
+        project_name={name}
+        project_founder={organisation?.organisationUser[0]?.walletId}
+      />
       {open && (
         <PublishProjectModal
           setOpen={(val: any) => setOpen(val)}

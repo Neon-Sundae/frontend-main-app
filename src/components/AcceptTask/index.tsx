@@ -3,11 +3,12 @@ import Modal from "components/Modal";
 import styles from './index.module.scss';
 import TaskDetail from "./TaskDetail";
 import TalentList from "./TalentList";
-import { useFetchTaskData } from "./hooks";
+import { useFetchTaskData, useFetchTaskDataOnChain } from "./hooks";
 import { useDispatch } from "react-redux";
 import { GET_SELECTED_TASK } from "actions/flProject/types";
 import { useSelector } from "react-redux";
 import { RootState } from "reducers";
+import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
 
 interface IAcceptTask {
     setOpen: Dispatch<SetStateAction<boolean>>;
@@ -15,12 +16,12 @@ interface IAcceptTask {
     handleApprove: any;
     selected: boolean;
     selectedBuilder: any;
-    project_budget: number;
+    project_founder: string;
     project_name: string;
     handleCommit: any
 }
 
-const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_name, handleCommit }) => {
+const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_name, project_founder, handleCommit }) => {
 
     const dispatch = useDispatch();
 
@@ -36,6 +37,9 @@ const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_n
                 type: GET_SELECTED_TASK,
                 payload: taskData
             })
+            if (taskData?.taskSmartContractId !== null) {
+                useFetchTaskDataOnChain(taskData.taskSmartContractId);
+            }
         }
     }, [taskData]);
 
@@ -48,8 +52,18 @@ const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_n
             maxHeight="min(90%, 45rem)"
             overflowY="auto">
             <div className={styles['assign-task-container']}>
-                <h2 className={styles['project-name']}>{selectedTask?.name}</h2>
+                <h2 className={styles['project-name']}>
+                    {selectedTask?.name}&emsp;
+                    {selectedTask?.taskSmartContractId &&
+                        <VerifiedIcon className={styles['project-verified']} width={20} height={20} />
+                    }
+                </h2>
                 <h5 className={styles['founder-name']}>{selectedTask?.organisation?.name}</h5>
+                {selectedTask?.taskSmartContractId &&
+                    <h5 className={styles['token-id']}>
+                        SmartContractId: #{selectedTask?.taskSmartContractId}
+                    </h5>
+                }
                 {
                     viewTalentList ?
                         <TalentList
@@ -59,6 +73,7 @@ const AcceptTask: FC<IAcceptTask> = ({ setOpen, taskId, handleApprove, project_n
                             setViewTalentList={setViewTalentList}
                             project_name={project_name}
                             handleCommit={handleCommit}
+                            project_founder={project_founder}
                         />
                 }
             </div>

@@ -38,11 +38,13 @@ const lists = [
 interface ITaskManagement {
   project_budget: number;
   project_name: string;
+  project_founder: string;
 }
 
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
+  project_founder
 }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -74,6 +76,7 @@ const TaskManagement: FC<ITaskManagement> = ({
       <TaskManagementBoard
         project_budget={project_budget}
         project_name={project_name}
+        project_founder={project_founder}
       />
     </div>
   );
@@ -133,6 +136,7 @@ const FilterMenu: FC = () => {
 const TaskManagementBoard: FC<ITaskManagement> = ({
   project_budget,
   project_name,
+  project_founder
 }) => {
   const { create } = useParams();
   const updateTask = useUpdateTaskStatus();
@@ -216,6 +220,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             taskId={selectedTaskId}
             handleApprove={handleApprove}
             project_name={project_name}
+            project_founder={project_founder}
             handleCommit={handleCommit}
           />
         )}

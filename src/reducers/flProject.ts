@@ -6,7 +6,8 @@ import {
   GET_PROJECT_FOUNDER,
   GET_SELECTED_TASK,
   SET_REJECTED_BUILDER,
-  SET_ACCEPTED_BUILDER
+  SET_ACCEPTED_BUILDER,
+  SET_TASK_XP
 } from 'actions/flProject/types';
 
 interface State {
@@ -15,7 +16,8 @@ interface State {
   isDeposit: boolean,
   deploy_state: string;
   founder: string;
-  selectedTask: any
+  selectedTask: any;
+  taskXP: number;
 }
 
 type Action =
@@ -50,6 +52,10 @@ type Action =
   | {
     type: typeof SET_ACCEPTED_BUILDER;
     payload: any;
+  }
+  | {
+    type: typeof SET_TASK_XP;
+    payload: any;
   };
 
 const initialState: State = {
@@ -59,6 +65,7 @@ const initialState: State = {
   deploy_state: 'go_live',
   founder: '',
   selectedTask: null,
+  taskXP: 0,
 };
 
 const flProject = (state = initialState, action: Action): State => {
@@ -115,6 +122,11 @@ const flProject = (state = initialState, action: Action): State => {
           ),
           status: 'interviewing'
         }
+      }
+    case SET_TASK_XP:
+      return {
+        ...state,
+        taskXP: action.payload
       }
     default:
       return { ...state };

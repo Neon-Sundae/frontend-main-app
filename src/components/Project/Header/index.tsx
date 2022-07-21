@@ -69,7 +69,7 @@ const Header: FC<IHeaderProps> = props => {
       <div className={styles.container}>
         <div className={styles['project-info']}>
           <span className={styles['project-name']}>{props.projectName}</span>
-          <span className={styles['founder-name']}>{props.founderName}</span>
+          <span className={styles['founder-name']}>by&nbsp;&nbsp;{props.founderName}</span>
           {
             props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
               selectedProjectAddress === '' ? (

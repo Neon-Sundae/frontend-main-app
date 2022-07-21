@@ -27,8 +27,8 @@ const Landing: FC = () => {
 
   return (
     <div className={styles.container}>
-      <BlurBlobs />
       <NavBar />
+      <BlurBlobs />
       <div className={styles['profile-card-content-container']}>
         <ProfileCard />
         <ProfileContent />
