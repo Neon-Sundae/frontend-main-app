@@ -4,12 +4,14 @@ import config from 'config';
 import { useDispatch } from 'react-redux';
 import { getAccessToken } from 'utils/authFn';
 
-import { handleUnAuthorization } from 'utils/handleUnAuthorization';
+import {
+  handleUnAuthorization,
+  handleError,
+} from 'utils/handleUnAuthorization';
 
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleError } from 'utils/handleUnAuthorization';
+
 interface IUpdateProfileDetailsParameters {
   userId: number | undefined;
   profileId: number | undefined;
@@ -20,7 +22,6 @@ interface IUpdateProfileDetailsParameters {
 }
 
 const useUpdateProfileDetails = () => {
-
   const dispatch = useDispatch();
   const updateProfileWorkplace = ({
     userId,
@@ -28,7 +29,7 @@ const useUpdateProfileDetails = () => {
     name,
     title,
     description,
-    picture
+    picture,
   }: IUpdateProfileDetailsParameters) => {
     const accessToken = getAccessToken();
 
@@ -44,9 +45,8 @@ const useUpdateProfileDetails = () => {
             name,
             title,
             description,
-            picture
+            picture,
           };
-
           const response = await fetch(
             `${config.ApiBaseUrl}/user/updateUserAndProfile`,
             {
@@ -60,7 +60,7 @@ const useUpdateProfileDetails = () => {
             }
           );
           await handleApiErrors(response);
-          dispatch(updateProfileDetailsAction(title, description));
+          dispatch(updateProfileDetailsAction(title, description, picture));
           dispatch(updateUserName(name));
           dispatch(editProfile(false));
         } catch (err) {
@@ -70,9 +70,6 @@ const useUpdateProfileDetails = () => {
       })();
     }
   };
-
-
-
   return updateProfileWorkplace;
 };
 
@@ -84,6 +81,7 @@ interface IReturnType {
 
 const fetchNFTs = (walletId: any, agree: boolean): IReturnType => {
   const chain = 'polygon';
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, isLoading, refetch } = useQuery(
     'fetchNFTs',
     async () => {
@@ -101,16 +99,16 @@ const fetchNFTs = (walletId: any, agree: boolean): IReturnType => {
       return res;
     },
     {
-      retry: false,
+      retry: 1,
       staleTime: Infinity,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
         handleError({ error, explicitMessage: 'Unable to fetch nfts' });
       },
-      enabled: false,
+      enabled: false, // to run query on click
     }
   );
-  return { data: data, isLoading: isLoading, refetch };
+  return { data, isLoading, refetch };
 };
 
 export { useUpdateProfileDetails, fetchNFTs };
