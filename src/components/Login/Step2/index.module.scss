@@ -1,20 +1,19 @@
 .title {
   font-family: var(--font-family-roboto-medium);
-  font-size: 40px;
-  color: #504b64;
+  font-size: 25px;
+  color: #FFFF;
   text-align: center;
-  line-height: 50px;
+  line-height: 27px;
+  font-weight: 500;
+  margin-top: 80px;
 }
 
-.SuccessIcon {
-  margin: 50px 0;
-}
 
 .connection-container {
-  border: 2px solid #504b64;
-  border-radius: 33px;
-  width: 500px;
-  height: 98px;
+  border: 1px solid #FFFF;
+  border-radius: 23px;
+  width: 338px;
+  height: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,21 +21,26 @@
   margin-bottom: 34px;
 
   & > svg {
-    margin-right: 20px;
+    margin-right: 10px;
     margin-bottom: 5px;
   }
 }
 
 .connection-text {
   font-family: var(--font-family-roboto-regular);
-  font-size: 24px;
-  color: #504b64;
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFF;
+  line-height: 16px;
 }
 
 .success-text {
+  padding: 0px 30px;
   font-family: var(--font-family-roboto-regular);
-  font-size: 24px;
-  color: #504b64;
+  font-size: 16px;
+  color: #FFFF;
   text-align: center;
   max-width: 507px;
+  line-height: 26px;
+  font-weight: 400;
 }

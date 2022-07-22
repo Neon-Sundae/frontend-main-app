@@ -53,7 +53,7 @@ const useProject = () => {
     }
   };
 
-  const getOnChainProject = async (id: number) => {
+  const getOnChainProject = async (id: number, founder: string) => {
     try {
       const web3 = getWeb3Instance();
       const ProjectManageContract = new web3.eth.Contract(
@@ -61,7 +61,7 @@ const useProject = () => {
         projectManageContractAddress
       );
       const result = await ProjectManageContract.methods
-        .getProjectContractAddresses(walletId)
+        .getProjectContractAddresses(founder)
         .call();
 
       const address =
@@ -69,8 +69,8 @@ const useProject = () => {
           (project: any) => String(project.projectId) === String(id)
         ).length > 0
           ? result.filter(
-              (project: any) => String(project.projectId) === String(id)
-            )[0].contractAddress
+            (project: any) => String(project.projectId) === String(id)
+          )[0].contractAddress
           : '';
 
       if (address !== '') {

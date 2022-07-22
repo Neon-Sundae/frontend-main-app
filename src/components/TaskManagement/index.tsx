@@ -20,6 +20,7 @@ import { useQueryClient } from 'react-query';
 import CreateTaskModal from 'components/CreateTask/CreateTaskModal';
 import AcceptTask from 'components/AcceptTask';
 import SelectBuilder from 'components/AcceptTask/SelectBuilder';
+import CommitTask from 'components/AcceptTask/CommitTask';
 import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
@@ -37,11 +38,13 @@ const lists = [
 interface ITaskManagement {
   project_budget: number;
   project_name: string;
+  project_founder: string;
 }
 
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
+  project_founder
 }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -73,6 +76,7 @@ const TaskManagement: FC<ITaskManagement> = ({
       <TaskManagementBoard
         project_budget={project_budget}
         project_name={project_name}
+        project_founder={project_founder}
       />
     </div>
   );
@@ -132,6 +136,7 @@ const FilterMenu: FC = () => {
 const TaskManagementBoard: FC<ITaskManagement> = ({
   project_budget,
   project_name,
+  project_founder
 }) => {
   const { create } = useParams();
   const updateTask = useUpdateTaskStatus();
@@ -142,6 +147,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   const [elements, setElements] = useState(projectTasks);
   const [openTask, setOpenTask] = useState(false);
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
+  const [openCommitTask, setOpenCommitTask] = useState(false);
   const [success, setSuccess] = useState(false);
   const [selectedBuilder, setSelectedBuilder] = useState<any>(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -183,6 +189,18 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
     });
   };
 
+  const handleCommit = () => {
+    setOpenCommitTask(true);
+    setOpenSelectBuilder(false);
+    setOpenTask(false);
+  }
+
+  const handleCloseCommitTask = () => {
+    setOpenCommitTask(false);
+    setOpenSelectBuilder(false);
+    setOpenTask(true);
+  }
+
   if (elements) {
     return (
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -202,6 +220,8 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             taskId={selectedTaskId}
             handleApprove={handleApprove}
             project_name={project_name}
+            project_founder={project_founder}
+            handleCommit={handleCommit}
           />
         )}
         {openSelectBuilder && (
@@ -212,6 +232,11 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             selectedBuilder={selectedBuilder}
           />
         )}
+        {
+          openCommitTask && <CommitTask
+            handleClose={handleCloseCommitTask}
+          />
+        }
       </DragDropContext>
     );
   }

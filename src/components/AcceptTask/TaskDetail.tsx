@@ -1,4 +1,4 @@
-import { FC, Dispatch, SetStateAction } from "react";
+import { FC, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
 import FileAttachmentCard from "./FileAttachmetCard";
@@ -8,17 +8,37 @@ import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/categ
 import { ReactComponent as LinkIcon } from 'assets/illustrations/icons/link.svg';
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import styles from './index.module.scss';
+import calculateTaskXP from "utils/calculateTaskXp";
+import { useDispatch } from "react-redux";
+import { SET_TASK_XP } from "actions/flProject/types";
 
 interface ITaskDetail {
     setViewTalentList: Dispatch<SetStateAction<boolean>>;
     project_name: string;
+    handleCommit: any;
+    project_founder: string;
 }
 
-const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name }) => {
+const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name, project_founder, handleCommit }) => {
 
-    const { founder, selectedTask } = useSelector((state: RootState) => state.flProject);
+    const dispatch = useDispatch();
+
+    const { selectedTask, taskXP } = useSelector((state: RootState) => state.flProject);
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-    // console.log("<<<<<<<<<<", selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted'))
+
+    useEffect(() => {
+        const getXP = async () => {
+            const _xp = await calculateTaskXP(walletId, selectedTask?.estimatedDifficulty);
+            dispatch({
+                type: SET_TASK_XP,
+                payload: Number(_xp)
+            });
+        }
+        if (selectedTask !== null) {
+            getXP();
+        }
+    }, [selectedTask]);
+
     return (
         <div>
             <div className={styles['avatar-container']}>
@@ -80,11 +100,11 @@ const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name }) => {
                 <div>
                     <div className={styles['project-detail-item']}>
                         <span>&nbsp;XP</span>
-                        <div>Point: 180XP</div>
+                        <div>Point: {taskXP}XP</div>
                     </div>
                     <div className={styles['project-detail-item']}>
                         <i className='material-icons'>local_fire_department</i>
-                        <div>Burned: 120 &emsp;<CoinIcon width={20} height={20} /></div>
+                        <div>Burned: 10 &emsp;<CoinIcon width={20} height={20} /></div>
                     </div>
                 </div>
             </div>
@@ -112,14 +132,17 @@ const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name }) => {
             </div>
             <div className={styles['project-action-delete']}>
                 {
-                    founder.toLowerCase() === walletId?.toLowerCase() ? (
+                    project_founder.toLowerCase() === walletId?.toLowerCase() ? (
                         <span>
                             <i className='material-icons'>delete</i>
                             <span>Delete Task</span>
                         </span>
-                    ) : (
+                    ) : selectedTask?.status === 'open' ? (
                         <button>Apply for task</button>
-                    )
+                    ) : (selectedTask?.status === 'interviewing' &&
+                        selectedTask?.profileTask.filter((item: any) => item?.Profile?.user?.walletId.toLowerCase() === walletId?.toLowerCase() && item?.applicationStatus === 'accepted').length > 0) ? (
+                        <button onClick={handleCommit}>Commit to task</button>
+                    ) : <></>
                 }
             </div>
         </div>
