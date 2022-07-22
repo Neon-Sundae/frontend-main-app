@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Card from 'components/Card';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
@@ -11,7 +11,7 @@ import styles from './index.module.scss';
 const Projects: FC = () => {
   const navigate = useNavigate();
   const { isLoading, error, data, isFetching } = useQuery(
-    'userOrgs',
+    ['userOrgs'],
     () =>
       fetch(`${config.ApiBaseUrl}/fl-project/new`, {
         method: 'GET',

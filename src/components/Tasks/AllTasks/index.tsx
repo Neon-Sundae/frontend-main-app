@@ -1,15 +1,16 @@
 import { FC } from 'react';
-import styles from './index.module.scss';
 import TaskCard from 'components/Home/TaskCard';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
+import styles from './index.module.scss';
+
 const AllTasks: FC = () => {
-  const { isLoading, error, data, isFetching } = useQuery('allTasks', () =>
+  const { isLoading, error, data, isFetching } = useQuery(['allTasks'], () =>
     fetch(`${config.ApiBaseUrl}/task/all`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then((response) => response.json())
+    }).then(response => response.json())
   );
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { toast } from 'react-hot-toast';
-import { UseMutationResult } from 'react-query';
+import { UseMutationResult } from '@tanstack/react-query';
 
 interface IOnDragEnd {
   result: any;

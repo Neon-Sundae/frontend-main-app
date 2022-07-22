@@ -9,7 +9,7 @@ import {
 } from 'actions/skills';
 import { Option } from 'components/Select';
 import config from 'config';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
@@ -22,7 +22,7 @@ import { deNormalizeSkills, normalizeSkills } from 'utils/normalizeSkills';
 
 const useFetchAppSkills = () => {
   const { data } = useQuery(
-    'appSkills',
+    ['appSkills'],
     async ({ signal }) => {
       const response = await fetch(`${config.ApiBaseUrl}/skills`, {
         signal,

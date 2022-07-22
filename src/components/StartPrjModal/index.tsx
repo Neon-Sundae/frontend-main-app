@@ -3,16 +3,16 @@ import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-du
 import { ReactComponent as Edit } from 'assets/illustrations/icons/stroke.svg';
 import BaseModal from 'components/Home/BaseModal';
 import StartOrgModal from 'components/StartOrgModal';
-import styles from './index.module.scss';
-
-import CreatePrjModal from './CreatePrjModal';
 import toast, { Toaster } from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import getRandomString from 'utils/getRandomString';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
+import CreatePrjModal from './CreatePrjModal';
+import styles from './index.module.scss';
+
 interface IStartPrjProps {
   onClose: () => void;
 }
@@ -22,11 +22,11 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
-  const { isLoading, error, data, isFetching } = useQuery('userOrgs', () =>
+  const { isLoading, error, data, isFetching } = useQuery(['userOrgs'], () =>
     fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then((response) => response.json())
+    }).then(response => response.json())
   );
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;
@@ -128,7 +128,7 @@ const Organisation: FC<IOrgProps> = ({
       style={{ padding: '12px' }}
       className={styles.container}
       onClick={() => {
-        setResetSelect((v) => !v);
+        setResetSelect(v => !v);
         if (resetSelect) setOrgId(0);
         else setOrgId(id);
         organizationId = id;

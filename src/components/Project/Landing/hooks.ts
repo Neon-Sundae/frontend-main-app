@@ -19,7 +19,7 @@ import {
   GET_SELECTED_PROJECT_ADDRESS,
   IS_DEPOSITED,
 } from 'actions/flProject/types';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useProject = () => {
@@ -69,8 +69,8 @@ const useProject = () => {
           (project: any) => String(project.projectId) === String(id)
         ).length > 0
           ? result.filter(
-            (project: any) => String(project.projectId) === String(id)
-          )[0].contractAddress
+              (project: any) => String(project.projectId) === String(id)
+            )[0].contractAddress
           : '';
 
       if (address !== '') {
@@ -282,7 +282,7 @@ const useProject = () => {
 
 const useFetchProjects = (create: any) => {
   const { data } = useQuery(
-    'projectData',
+    ['projectData'],
     async ({ signal }) => {
       if (create) {
         const res = await fetch(`${config.ApiBaseUrl}/fl-project/${create}`, {

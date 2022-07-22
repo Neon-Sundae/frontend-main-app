@@ -1,6 +1,6 @@
 import config from 'config';
 import { IOrganisation } from 'interfaces/organisation';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
@@ -14,7 +14,7 @@ const useFetchOrganisation = (): IReturnType => {
   const { orgId } = useParams();
 
   const { data, isLoading } = useQuery(
-    'organisation',
+    ['organisation'],
     async ({ signal }) => {
       const response = await fetch(
         `${config.ApiBaseUrl}/organisation/${orgId}`,
