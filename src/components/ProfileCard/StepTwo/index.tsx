@@ -20,7 +20,6 @@ const StepTwo: FC<StepTwoProps> = ({
   const [selectedNFTId, setSelectedNFTId] = useState('');
   useEffect(() => {
     const el = document.getElementById(selectedNFTId);
-    console.log('el', el);
     el?.classList.add(styles.selected);
   }, [selectedNFTId]);
 
@@ -28,6 +27,7 @@ const StepTwo: FC<StepTwoProps> = ({
   const extractSelectedImageUri = (data: any) => {
     if (!data.length) {
       toast.error("NFT doesn't have image! Select another");
+      setSelectedNFTId('');
     }
     setPicture(data);
   };
@@ -64,7 +64,6 @@ const StepTwo: FC<StepTwoProps> = ({
             const metadata = getTokenMetadata(token);
             let ipfsHash = null;
             if (metadata.image) ipfsHash = metadata.image.slice(7);
-            const truncate = metadata.description?.length > 17;
             return (
               <span
                 className={styles.singleNft}
@@ -102,6 +101,10 @@ const StepTwo: FC<StepTwoProps> = ({
         </div>
         <button
           onClick={() => {
+            if (!selectedNFTId) {
+              toast.error('Please select an NFT first');
+              return;
+            }
             setStepOne(false);
             setStepTwo(false);
             setProfilePictureModal(false);

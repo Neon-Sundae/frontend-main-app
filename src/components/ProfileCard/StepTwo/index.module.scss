@@ -5,13 +5,11 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: left;
+  justify-content: space-between;
   height: 500px;
-  width: 100%;
-  margin: auto;
-  padding: 5px;
+
   .selected {
-    border: 1px solid #FF9BFB;
+    // border: .7px solid #FF9BFB;
     height: 210px;
     padding: 10px;
     border: 2px solid #FFFFFF;
@@ -24,6 +22,7 @@
 
   .singleNft {
     margin-right: 30px;
+    cursor: pointer;
 
     h3 {
       font-size: 14px;
@@ -83,6 +82,7 @@
         text-decoration: underline;
       }
     }
+
     & button {
       background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
       width: 241px;
@@ -112,6 +112,7 @@
 
 .nftsWrapper {
   position: relative;
+
   button {
     position: absolute;
     left: 30%;
