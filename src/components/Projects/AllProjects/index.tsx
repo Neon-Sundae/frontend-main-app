@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import styles from './index.module.scss';
 import Card from 'components/Card';
 import ProjectCard from 'components/Home/ProjectCard';
 import getRandomString from 'utils/getRandomString';
+import styles from './index.module.scss';
 
 interface AllProjectsProps {
   projectData: any;

@@ -6,6 +6,9 @@ import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
+import config from 'config';
+import { getAccessToken } from 'utils/authFn';
+import { useMutation } from 'react-query';
 import useProfileManage from '../BasicDetails/hooks';
 import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
@@ -15,6 +18,7 @@ const BasicDetailsEdit: FC = () => {
   const { profile, profileContractAddress } = useSelector(
     (state: RootState) => state.profile
   );
+  const profileId = profile?.profileId ? profile.profileId : 0;
   const user = useSelector((state: RootState) => state.user.user);
   const [name, setName] = useState(user?.name ?? 'Rachel Green');
   const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
@@ -26,6 +30,27 @@ const BasicDetailsEdit: FC = () => {
   );
   const [picture, setPicture] = useState(profile?.picture ?? userImage);
   const updateProfileDetails = useUpdateProfileDetails();
+  const { mutate: updateProfilePicture } = useMutation(
+    async () => {
+      return fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ picture }),
+      });
+    },
+    {
+      onSuccess: (res: any) => {
+        console.log('success', res);
+      },
+      onError: (err: any) => {
+        console.log('err', err);
+      },
+    }
+  );
+
   const handleSave = () => {
     updateProfileDetails({
       userId: user?.userId,
@@ -35,6 +60,7 @@ const BasicDetailsEdit: FC = () => {
       description: bio,
       picture,
     });
+    updateProfilePicture();
   };
   return (
     <>
