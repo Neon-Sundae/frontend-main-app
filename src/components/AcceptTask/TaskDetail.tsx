@@ -35,7 +35,7 @@ const TaskDetail: FC<ITaskDetail> = ({
 
     const { selectedTask, taskXP } = useSelector((state: RootState) => state.flProject);
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-
+    
     useEffect(() => {
     const getXP = async () => {
       const _xp = await calculateTaskXP(
@@ -84,7 +84,8 @@ const TaskDetail: FC<ITaskDetail> = ({
                         <i className="material-icons">expand_more</i>
                     </button>
                 )
-            }
+              }
+              
             {
                 selectedTask?.profileTask.length > 0 && <div className={expanded ? styles['expanded'] : ''} onClick={() => setViewTalentList(true)}>
                     {
@@ -106,7 +107,8 @@ const TaskDetail: FC<ITaskDetail> = ({
                     }
                 </div>
             }
-        </div>
+          </div>
+          
         <div className={styles['project-details']}>
             <div>
                 <div className={styles['project-detail-item']}>
@@ -146,7 +148,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                 </div>
                 <div className={styles['project-detail-item']}>
                     <i className='material-icons'>local_fire_department</i>
-                    <div>Burned: 10 &emsp;<CoinIcon width={20} height={20} /></div>
+                    <div>Burned: {selectedTask?.fndrToken} &emsp;<CoinIcon width={20} height={20} /></div>
                 </div>
             </div>
         </div>
