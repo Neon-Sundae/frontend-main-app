@@ -99,6 +99,7 @@ type Action =
     type: typeof UPDATE_PROFILE_DETAILS;
     title: string;
     description: string;
+    picture: string;
   }
   | {
     type: typeof GET_USER_XP;
@@ -241,6 +242,7 @@ const profile = (state = initialState, action: Action): State => {
             ...state.profile,
             title: action.title,
             description: action.description,
+            picture: action.picture,
           },
         };
       }

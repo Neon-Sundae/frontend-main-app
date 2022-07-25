@@ -3,8 +3,14 @@ import { updateUserName } from 'actions/user';
 import config from 'config';
 import { useDispatch } from 'react-redux';
 import { getAccessToken } from 'utils/authFn';
+
+import {
+  handleUnAuthorization,
+  handleError,
+} from 'utils/handleUnAuthorization';
+
+import { useQuery } from 'react-query';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleUnAuthorization } from 'utils/handleUnAuthorization';
 
 interface IUpdateProfileDetailsParameters {
   userId: number | undefined;
@@ -12,17 +18,18 @@ interface IUpdateProfileDetailsParameters {
   name: string;
   title: string;
   description: string;
+  picture: string;
 }
 
 const useUpdateProfileDetails = () => {
   const dispatch = useDispatch();
-
   const updateProfileWorkplace = ({
     userId,
     profileId,
     name,
     title,
     description,
+    picture,
   }: IUpdateProfileDetailsParameters) => {
     const accessToken = getAccessToken();
 
@@ -38,8 +45,8 @@ const useUpdateProfileDetails = () => {
             name,
             title,
             description,
+            picture,
           };
-
           const response = await fetch(
             `${config.ApiBaseUrl}/user/updateUserAndProfile`,
             {
@@ -53,7 +60,7 @@ const useUpdateProfileDetails = () => {
             }
           );
           await handleApiErrors(response);
-          dispatch(updateProfileDetailsAction(title, description));
+          dispatch(updateProfileDetailsAction(title, description, picture));
           dispatch(updateUserName(name));
           dispatch(editProfile(false));
         } catch (err) {
@@ -63,8 +70,45 @@ const useUpdateProfileDetails = () => {
       })();
     }
   };
-
   return updateProfileWorkplace;
 };
 
-export default useUpdateProfileDetails;
+interface IReturnType {
+  data: any;
+  isLoading: boolean;
+  refetch: () => any;
+}
+
+const fetchNFTs = (walletId: any, agree: boolean): IReturnType => {
+  const chain = 'polygon';
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data, isLoading, refetch } = useQuery(
+    'fetchNFTs',
+    async () => {
+      const response = await fetch(
+        `https://deep-index.moralis.io/api/v2/${walletId}/nft?chain=${chain}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': import.meta.env.VITE_MORALIS_API_KEY || '',
+          },
+        }
+      );
+      const res = await response.json();
+      return res;
+    },
+    {
+      retry: 1,
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        handleError({ error, explicitMessage: 'Unable to fetch nfts' });
+      },
+      enabled: false, // to run query on click
+    }
+  );
+  return { data, isLoading, refetch };
+};
+
+export { useUpdateProfileDetails, fetchNFTs };
