@@ -223,6 +223,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             project_name={project_name}
             project_founder={project_founder}
             handleCommit={handleCommit}
+            setOpenTask={setOpenTask}
           />
         )}
         {openSelectBuilder && (

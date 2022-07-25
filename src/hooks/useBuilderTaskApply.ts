@@ -1,6 +1,6 @@
 import config from 'config';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
@@ -12,7 +12,6 @@ interface IBuilderTaskApply {
 }
 
 const useBuilderTaskApply = () => {
-  const queryClient = useQueryClient();
   const accessToken = getAccessToken();
 
   const profile = useSelector((state: RootState) => state.profile.profile);
@@ -39,7 +38,6 @@ const useBuilderTaskApply = () => {
         handleError({ error });
       },
       onSuccess: () => {
-        queryClient.invalidateQueries(['organisation']);
         toast.success('Successfully Applied');
       },
     }
