@@ -7,9 +7,9 @@
   flex-direction: row;
   justify-content: space-between;
   height: 500px;
-
+  
   .selected {
-    // border: .7px solid #FF9BFB;
+    box-sizing: border-box;
     height: 210px;
     padding: 10px;
     border: 2px solid #FFFFFF;

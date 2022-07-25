@@ -25,7 +25,6 @@ const BasicDetailsEdit: FC = () => {
   imsum.`
   );
   const [picture, setPicture] = useState(profile?.picture ?? userImage);
-  console.log('picture', picture);
   const updateProfileDetails = useUpdateProfileDetails();
   const handleSave = () => {
     updateProfileDetails({
@@ -83,6 +82,7 @@ const ProfileImage: FC<IProfileImage> = ({ picture, setPicture }) => {
       <ProfilePictureModal
         setPicture={setPicture}
         setProfilePictureModal={setProfilePictureModal}
+        picture={picture}
       />
     );
   }

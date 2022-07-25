@@ -12,18 +12,20 @@ import StepTwo from '../StepTwo';
 interface IProfilePictureModal {
   setPicture: (picture: string) => void;
   setProfilePictureModal: (profilePictureModal: boolean) => void;
+  picture: string;
 }
 
 const ProfilePictureModal: FC<IProfilePictureModal> = ({
   setPicture,
   setProfilePictureModal,
+  picture,
 }) => {
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const [stepOne, setStepOne] = useState(false);
   const [stepTwo, setStepTwo] = useState(false);
   const [nfts, setNfts] = useState<any>({});
   const [agree, setAgree] = useState(false);
-
+  setPicture(picture);
   const truncatedWalletId = `${walletId?.substring(
     0,
     5
@@ -60,7 +62,9 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
         setProfilePictureModal={setProfilePictureModal}
         setStepOne={setStepOne}
         setStepTwo={setStepTwo}
+        setPicture={setPicture}
         nfts={nfts}
+        picture={picture}
       />
     );
   }

@@ -9,12 +9,16 @@ interface StepTwoProps {
   setProfilePictureModal: (profilePictureModal: boolean) => void;
   setStepOne: (stepOne: boolean) => void;
   setStepTwo: (stepTwo: boolean) => void;
+  setPicture: (picture: string) => void;
   nfts: any;
+  picture: string;
 }
 const StepTwo: FC<StepTwoProps> = ({
   setProfilePictureModal,
   setStepOne,
   setStepTwo,
+  setPicture,
+  picture,
   nfts,
 }) => {
   const [selectedNFTId, setSelectedNFTId] = useState('');
@@ -23,12 +27,12 @@ const StepTwo: FC<StepTwoProps> = ({
     el?.classList.add(styles.selected);
   }, [selectedNFTId]);
 
-  const [picture, setPicture] = useState('');
   const extractSelectedImageUri = (data: any) => {
     if (!data.length) {
       toast.error("NFT doesn't have image! Select another");
       setSelectedNFTId('');
     }
+    console.log('data', data);
     setPicture(data);
   };
   const getTokenMetadata = (token: any) => {
