@@ -5,12 +5,17 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   height: 500px;
-
+  width: 100%;
+  margin: auto;
+  padding: 5px;
   .selected {
     border: 1px solid #FF9BFB;
-    transform: translateY(-2px);
+    height: 210px;
+    padding: 10px;
+    border: 2px solid #FFFFFF;
+    border-radius: 10px;
   }
 
   .singleNft:nth-child(3n) {

@@ -20,6 +20,7 @@ const StepTwo: FC<StepTwoProps> = ({
   const [selectedNFTId, setSelectedNFTId] = useState('');
   useEffect(() => {
     const el = document.getElementById(selectedNFTId);
+    console.log('el', el);
     el?.classList.add(styles.selected);
   }, [selectedNFTId]);
 
@@ -63,10 +64,12 @@ const StepTwo: FC<StepTwoProps> = ({
             const metadata = getTokenMetadata(token);
             let ipfsHash = null;
             if (metadata.image) ipfsHash = metadata.image.slice(7);
+            const truncate = metadata.description?.length > 17;
             return (
               <span
                 className={styles.singleNft}
                 key={getRandomString(5)}
+                id={token.token_id}
                 onClick={() => {
                   handleNFTClick(token.token_id);
                   extractSelectedImageUri(
@@ -80,7 +83,6 @@ const StepTwo: FC<StepTwoProps> = ({
                 }}
               >
                 <img
-                  id={token.token_id}
                   src={
                     ipfsHash
                       ? `https://gateway.ipfs.io/ipfs/${ipfsHash}`
@@ -89,7 +91,11 @@ const StepTwo: FC<StepTwoProps> = ({
                   alt="NFT"
                 />
                 <h3>{metadata.name ? metadata.name : 'no data'}</h3>
-                <p>{metadata.description ? metadata.description : 'no data'}</p>
+                <p>
+                  {metadata.description && metadata.description.length > 20
+                    ? `${metadata.description.substring(0, 18)}...`
+                    : metadata.description}
+                </p>
               </span>
             );
           })}
