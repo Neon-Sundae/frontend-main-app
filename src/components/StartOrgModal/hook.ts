@@ -4,7 +4,7 @@ import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { useNavigate } from 'react-router-dom';
 import { updateUser } from 'actions/user';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useCreateOrganisation = () => {

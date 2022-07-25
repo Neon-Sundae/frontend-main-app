@@ -1,5 +1,5 @@
 import config from 'config';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
@@ -91,7 +91,7 @@ const useUpdateTaskStatus = () => {
         handleError({ error });
       },
       onSuccess: () => {
-        queryClient.invalidateQueries('projectTasks');
+        queryClient.invalidateQueries(['projectTasks']);
       },
     }
   );

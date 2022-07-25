@@ -1,16 +1,20 @@
 import { FC } from 'react';
 import NavBar from 'components/NavBar';
-import Tasks from '../Tasks';
-import styles from './index.module.scss';
-import Banner from '../Banner';
-import Projects from '../Projects';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
+import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
+import Tasks from '../Tasks';
+import Banner from '../Banner';
+import Projects from '../Projects';
+import styles from './index.module.scss';
+
 const Landing: FC = () => {
-  const { isLoading, error, data, isFetching } = useQuery(
-    'newTasks',
+  // const { offChainProfile } = useFetchOffChainProfile();
+
+  const { data } = useQuery(
+    ['newTasks'],
     () =>
       fetch(`${config.ApiBaseUrl}/task/new`, {
         method: 'GET',
@@ -20,20 +24,22 @@ const Landing: FC = () => {
       refetchOnWindowFocus: false,
     }
   );
-  if (isFetching) return <p>Loading...</p>;
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error...</div>;
-  return (
-    <div className={styles.background}>
-      <NavBar />
-      <BlurBlobs />
-      <Banner />
-      <section className={styles.content}>
-        <Projects />
-        <Tasks data={data} />
-      </section>
-    </div>
-  );
+
+  if (data) {
+    return (
+      <div className={styles.background}>
+        <NavBar />
+        <BlurBlobs />
+        <Banner />
+        <section className={styles.content}>
+          <Projects />
+          <Tasks data={data} />
+        </section>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default Landing;
