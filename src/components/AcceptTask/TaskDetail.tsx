@@ -5,13 +5,13 @@ import FileAttachmentCard from './FileAttachmetCard';
 import { RootState } from 'reducers';
 import { ReactComponent as ProjectIcon } from 'assets/illustrations/icons/project.svg';
 import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/category.svg';
-import { ReactComponent as LinkIcon } from 'assets/illustrations/icons/link.svg';
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import styles from './index.module.scss';
 import calculateTaskXP from 'utils/calculateTaskXp';
 import { useDispatch } from 'react-redux';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
+import TaskChecklistEdit from './TaskChecklistEdit';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
@@ -159,16 +159,7 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
         )}
       </div>
-      <div className={styles['project-check-list']}>
-        <p>Checklist: </p>
-        {selectedTask?.taskChecklist.map((item: any, index: number) => (
-          <p key={index}>
-            <span></span>
-            <div>{item.title}</div>
-            <LinkIcon width={18} height={18} />
-          </p>
-        ))}
-      </div>
+      <TaskChecklistEdit selectedTask={selectedTask} />
       <div className={styles['project-action-delete']}>
         {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
           <span>

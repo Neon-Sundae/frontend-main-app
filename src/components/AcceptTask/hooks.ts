@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { AbiItem } from 'web3-utils';
 import config from 'config';
@@ -253,9 +253,44 @@ const useCommitToTask = () => {
   return { commitToTask, pending, hash, fndrBalance, getFNDRBalance };
 };
 
+interface IUpdateTaskChecklist {
+  isCompleted: boolean;
+  url: string;
+}
+
+const useUpdateTaskChecklist = (taskChecklistId: number) => {
+  const accessToken = getAccessToken();
+
+  const updateTaskChecklist = useMutation(
+    async (payload: IUpdateTaskChecklist) => {
+      const response = await fetch(
+        `${config.ApiBaseUrl}/task/checklist/${taskChecklistId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+    }
+  );
+
+  return updateTaskChecklist;
+};
+
 export {
   useFetchTaskData,
   useFetchTaskDataOnChain,
   useSelectBuilder,
   useCommitToTask,
+  useUpdateTaskChecklist,
 };
