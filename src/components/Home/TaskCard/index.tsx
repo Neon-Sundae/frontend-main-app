@@ -1,13 +1,20 @@
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
 import Card from 'components/Card';
+import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import styles from './index.module.scss';
 
 const TaskCard = (props: any) => {
   const { width, height, data, location } = props;
+
+  const builderTaskApply = useBuilderTaskApply();
+
   const applyToTask = () => {
-    alert('apply to task!');
+    builderTaskApply.mutate({
+      taskId: data.taskId,
+    });
   };
+
   if (location === 'home') {
     return (
       <>
@@ -42,13 +49,10 @@ const TaskCard = (props: any) => {
             </div>
             <div className={styles.content} style={{ width: '150px' }}>
               <div className={styles.col}>
-                <div
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => applyToTask()}
-                >
+                <div style={{ cursor: 'pointer' }} onClick={applyToTask}>
                   Apply to task
                 </div>
-                
+
                 <div
                   className={styles.dot}
                   style={{
@@ -101,7 +105,7 @@ const TaskCard = (props: any) => {
           <div
             className={styles.content}
             style={{ width: '200px', cursor: 'pointer' }}
-            onClick={() => applyToTask()}
+            onClick={applyToTask}
           >
             Apply to task
           </div>

@@ -1,30 +1,15 @@
-import { useSelector } from 'react-redux';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
 import ProfileCard from 'components/ProfileCard';
+import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import styles from './index.module.scss';
 import ProfileContent from '../ProfileContent';
-import useProfile from './hooks';
-import { getAccessToken } from 'utils/authFn';
-import { RootState } from 'reducers';
 
 const Landing: FC = () => {
+  // const { offChainProfile } = useFetchOffChainProfile();
 
-  const { user } = useSelector((state: RootState) => state.user);
-
-  const {
-    fetchOffChainProfileData,
-  } = useProfile();
-
-  const accessToken = getAccessToken();
-
-  useEffect(() => {
-    if (user?.userId && accessToken) {
-      fetchOffChainProfileData();
-    }
-  }, [user])
-
+  // if (offChainProfile) {
   return (
     <div className={styles.container}>
       <NavBar />
@@ -35,6 +20,9 @@ const Landing: FC = () => {
       </div>
     </div>
   );
+  // }
+
+  // return null;
 };
 
 export default Landing;

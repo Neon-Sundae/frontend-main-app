@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import Modal from 'components/Modal';
-import styles from './index.module.scss';
 import Select from 'react-select';
 import timezoneData from 'assets/data/timezones.json';
-import { customStyles } from './selectStyles';
 import getRandomString from 'utils/getRandomString';
 import toast, { Toaster } from 'react-hot-toast';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
+import { customStyles } from './selectStyles';
+import styles from './index.module.scss';
+
 interface ICreatePrjProps {
   onNext: () => void;
   onClose: () => void;

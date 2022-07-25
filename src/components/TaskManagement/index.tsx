@@ -7,7 +7,7 @@
 /* eslint-disable react/self-closing-comp */
 // @ts-nocheck
 
-import { FC, useEffect, useState, useMemo, useRef } from 'react';
+import { FC, useEffect, useState, useMemo, useRef, MouseEvent } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
@@ -16,7 +16,7 @@ import { useFetchProjectCategories } from 'components/CreateTask/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import { updateProjectCategory } from 'actions/flProject';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import CreateTaskModal from 'components/CreateTask/CreateTaskModal';
 import AcceptTask from 'components/AcceptTask';
 import SelectBuilder from 'components/AcceptTask/SelectBuilder';
@@ -25,6 +25,7 @@ import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { onDragEnd } from './dndMethods';
+import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 
 const lists = [
   'open',
@@ -44,7 +45,7 @@ interface ITaskManagement {
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
-  project_founder
+  project_founder,
 }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -92,7 +93,7 @@ const FilterMenu: FC = () => {
 
   useEffect(() => {
     if (mounted.current) {
-      queryClient.invalidateQueries('projectTasks');
+      queryClient.invalidateQueries(['projectTasks']);
     } else {
       mounted.current = true;
     }
@@ -136,7 +137,7 @@ const FilterMenu: FC = () => {
 const TaskManagementBoard: FC<ITaskManagement> = ({
   project_budget,
   project_name,
-  project_founder
+  project_founder,
 }) => {
   const { create } = useParams();
   const updateTask = useUpdateTaskStatus();
@@ -193,13 +194,13 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
     setOpenCommitTask(true);
     setOpenSelectBuilder(false);
     setOpenTask(false);
-  }
+  };
 
   const handleCloseCommitTask = () => {
     setOpenCommitTask(false);
     setOpenSelectBuilder(false);
     setOpenTask(true);
-  }
+  };
 
   if (elements) {
     return (
@@ -222,6 +223,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             project_name={project_name}
             project_founder={project_founder}
             handleCommit={handleCommit}
+            setOpenTask={setOpenTask}
           />
         )}
         {openSelectBuilder && (
@@ -232,11 +234,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             selectedBuilder={selectedBuilder}
           />
         )}
-        {
-          openCommitTask && <CommitTask
-            handleClose={handleCloseCommitTask}
-          />
-        }
+        {openCommitTask && <CommitTask handleClose={handleCloseCommitTask} />}
       </DragDropContext>
     );
   }
@@ -282,16 +280,29 @@ interface ICard {
 }
 
 const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
+  const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
     () => [...Array(item.estimatedDifficulty).keys()],
     []
   );
 
+  const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+
+    builderTaskApply.mutate({
+      taskId: item.taskId,
+    });
+  };
+
   const getTextOrAvatar = () => {
     switch (item.status) {
       case 'open':
-        return <span className={styles['apply-task-text']}>Apply to task</span>;
+        return (
+          <span className={styles['apply-task-text']} onClick={applyToTask}>
+            Apply to task
+          </span>
+        );
       case 'interviewing':
         return null;
       default:

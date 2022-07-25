@@ -26,6 +26,7 @@ export const handleError = ({ error, explicitMessage }: IHandleError) => {
     toast.error('Unauthorized');
     revokeAccess();
   } else if (error.message === 'Server error') {
+    console.log(error.message);
     if (explicitMessage) {
       toast.error(explicitMessage);
     } else {

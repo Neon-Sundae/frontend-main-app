@@ -1,20 +1,20 @@
 import { FC } from 'react';
-import styles from './index.module.scss';
 import BlurBlobs from 'components/BlurBlobs';
 import NavBar from 'components/NavBar';
-import AllProjects from '../AllProjects';
 import config from 'config';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
+import AllProjects from '../AllProjects';
+import styles from './index.module.scss';
 
 const Landing: FC = () => {
   const { isLoading, error, data, isFetching } = useQuery(
-    'allProjects',
+    ['allProjects'],
     () =>
       fetch(`${config.ApiBaseUrl}/fl-project/all`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then((response) => response.json()),
+      }).then(response => response.json()),
     {
       refetchOnWindowFocus: false,
     }

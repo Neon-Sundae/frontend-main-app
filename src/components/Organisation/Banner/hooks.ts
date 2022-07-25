@@ -1,6 +1,6 @@
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
 import { handleError } from 'utils/handleUnAuthorization';
 
@@ -34,7 +34,7 @@ const useUpdateOrgSocials = (
         setOpen(false);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries('organisation');
+        queryClient.invalidateQueries(['organisation']);
         setOpen(false);
       },
     }
@@ -70,7 +70,7 @@ const useUpdateOrganisation = (organisationId: number) => {
         handleError({ error });
       },
       onSuccess: () => {
-        queryClient.invalidateQueries('organisation');
+        queryClient.invalidateQueries(['organisation']);
       },
     }
   );
