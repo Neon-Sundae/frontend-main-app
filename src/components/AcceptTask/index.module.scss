@@ -51,22 +51,59 @@
     .avatar-container {
         display: flex;
         margin-top: 20px;
+        position: relative;
+        // width: 50%;
+        // justify-content: space-between;
 
-        button {
-            background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
-            box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(40px);
+        .task-status--expanded {
+            background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.4) 12.11%, rgba(255, 255, 255, 0.1) 73.08%);
+            box-shadow: 0px 4.57755px 27.4653px -1.14439px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(45.7755px);
             border: 1px solid #FFFFFF;
             border-radius: 12px;
-            padding: 10px 24px;
+            padding: 8px 16px;
             font-size: 16px;
-            text-align: center;
             color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 140px;
+        }
+
+        .task-status {
+            background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.4) 12.11%, rgba(255, 255, 255, 0.1) 73.08%);
+            box-shadow: 0px 4.57755px 27.4653px -1.14439px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(45.7755px);
+            border: 1px solid #FFFFFF;
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 16px;
+            color: #FFFFFF;
+            width: 140px;
+            position: absolute;
+
+            &>div:nth-child(1) {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            &>div:nth-child(2) {
+                &>p {
+                    text-align: left !important;
+                    margin: 5px 0;
+                    color: #cbcbcb;
+                }
+            }
         }
 
         &>div {
             display: flex;
             margin-left: 100px;
+        }
+
+        &>div.expanded {
+            margin-left: 240px;
         }
 
         .builder-avatar {

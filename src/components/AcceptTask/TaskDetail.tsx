@@ -14,14 +14,17 @@ import { SET_TASK_XP } from "actions/flProject/types";
 
 interface ITaskDetail {
     setViewTalentList: Dispatch<SetStateAction<boolean>>;
+    setViewComplete: Dispatch<SetStateAction<boolean>>;
     project_name: string;
     handleCommit: any;
     project_founder: string;
 }
 
-const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name, project_founder, handleCommit }) => {
+const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, setViewComplete, project_name, project_founder, handleCommit }) => {
 
     const dispatch = useDispatch();
+
+    const [expanded, setExpanded] = useState(false);
 
     const { selectedTask, taskXP } = useSelector((state: RootState) => state.flProject);
     const walletId = useSelector((state: RootState) => state.user.user?.walletId);
@@ -42,9 +45,30 @@ const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name, project_
     return (
         <div>
             <div className={styles['avatar-container']}>
-                <button>{selectedTask?.status}</button>
                 {
-                    selectedTask?.profileTask.length > 0 && <div onClick={() => setViewTalentList(true)}>
+                    expanded ? (
+                        <button className={styles['task-status']} onClick={() => setExpanded(!expanded)}>
+                            <div>
+                                <span>{selectedTask?.status}</span>
+                                <i className="material-icons">expand_less</i>
+                            </div>
+                            <div>
+                                <p>Open</p>
+                                <p>Interviewing</p>
+                                <p>In-Progress</p>
+                                <p>In-Review</p>
+                                <p>Completed</p>
+                            </div>
+                        </button>
+                    ) : (
+                        <button className={styles['task-status--expanded']} onClick={() => setExpanded(!expanded)}>
+                            <span>{selectedTask?.status}</span>
+                            <i className="material-icons">expand_more</i>
+                        </button>
+                    )
+                }
+                {
+                    selectedTask?.profileTask.length > 0 && <div className={expanded ? styles['expanded'] : ''} onClick={() => setViewTalentList(true)}>
                         {
                             selectedTask?.status !== 'open' && selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted').length > 0 ?
                                 selectedTask?.profileTask.filter((profile: any) => profile.applicationStatus === 'accepted').map((item: any, index: number) =>
@@ -54,7 +78,7 @@ const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name, project_
                                 ) : (
                                     <>
                                         {
-                                            selectedTask?.profileTask.map((item: any, index: number) => item.Profile.picture !== null ?
+                                            selectedTask?.profileTask.slice(0, 5).map((item: any, index: number) => item.Profile.picture !== null ?
                                                 <img src="" alt="" key={index} /> :
                                                 <div className={styles['builder-avatar']} key={index}></div>
                                             )
@@ -133,17 +157,42 @@ const TaskDetail: FC<ITaskDetail> = ({ setViewTalentList, project_name, project_
             <div className={styles['project-action-delete']}>
                 {
                     project_founder.toLowerCase() === walletId?.toLowerCase() ? (
+                        <>
+                            {
+                                selectedTask?.status !== 'completed' && (
+                                    <span>
+                                        <i className='material-icons'>delete</i>
+                                        <span>Delete Task</span>
+                                    </span>
+                                )
+                            }
+                        </>
+                    ) : (
+                        <>
+                            {
+                                selectedTask?.status === 'open' ? <button>Apply for task</button> :
+                                    (selectedTask?.status === 'interviewing' &&
+                                        selectedTask?.profileTask.filter((item: any) => item?.Profile?.user?.walletId.toLowerCase() === walletId?.toLowerCase() && item?.applicationStatus === 'accepted').length > 0) ?
+                                        <button onClick={handleCommit}>Commit to task</button> : <></>
+                            }
+                        </>
+                    )
+                }
+                {/* {
+                    project_founder.toLowerCase() === walletId?.toLowerCase() ? selectedTask?.status !== 'completed' ? (
                         <span>
                             <i className='material-icons'>delete</i>
                             <span>Delete Task</span>
                         </span>
+                    ) : (
+                        <button onClick={() => setViewComplete(true)}>Complete task</button>
                     ) : selectedTask?.status === 'open' ? (
                         <button>Apply for task</button>
                     ) : (selectedTask?.status === 'interviewing' &&
                         selectedTask?.profileTask.filter((item: any) => item?.Profile?.user?.walletId.toLowerCase() === walletId?.toLowerCase() && item?.applicationStatus === 'accepted').length > 0) ? (
                         <button onClick={handleCommit}>Commit to task</button>
                     ) : <></>
-                }
+                } */}
             </div>
         </div>
     )

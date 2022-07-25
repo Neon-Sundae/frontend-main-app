@@ -41,7 +41,7 @@ const WalletBalButton = () => {
               styles['text--clickable']
             )}
           >
-            <span>{Number(Web3.utils.fromWei(usdcBalance.toString(), 'ether')).toLocaleString()} usdc</span>
+            <span>{Number(Number(usdcBalance / Math.pow(10, 6)).toFixed(4)).toLocaleString()} usdc</span>
             <span className="material-icons">keyboard_arrow_down</span>
           </div>
           <span

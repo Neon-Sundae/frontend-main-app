@@ -78,7 +78,12 @@ const Header: FC<IHeaderProps> = props => {
                 !isDeposit ? (
                   <button onClick={handleOpen}>Deposit Funds</button>
                 ) : (
-                  <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
+                  <>
+                    <span className={styles['deposit-funds']}>
+                      Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC
+                    </span>
+                    <VerifiedIcon className={styles['project-verified']} width={20} height={20} />
+                  </>
                 )
               )
             ) : (
@@ -88,7 +93,12 @@ const Header: FC<IHeaderProps> = props => {
                 !isDeposit ? (
                   <button>Not Deposited</button>
                 ) : (
-                  <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
+                  <>
+                    <span className={styles['deposit-funds']}>
+                      Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))}
+                    </span>
+                    <VerifiedIcon className={styles['project-verified']} width={20} height={20} />
+                  </>
                 )
               )
             )

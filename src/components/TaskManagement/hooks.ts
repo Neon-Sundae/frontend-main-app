@@ -28,8 +28,7 @@ const useFetchProjectTasks = () => {
 
       if (create) {
         const response = await fetch(
-          `${
-            config.ApiBaseUrl
+          `${config.ApiBaseUrl
           }/fl-project/${create}/tasks${getCategoryQuery()}`,
           {
             signal,

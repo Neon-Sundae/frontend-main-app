@@ -57,7 +57,7 @@ const Landing: FC = () => {
 
   useEffect(() => {
     if (organisation?.organisationUser[0]?.walletId) {
-      getOnChainProject(Number(create), organisation?.organisationUser[0]?.walletId);
+      getOnChainProject(create, organisation?.organisationUser[0]?.walletId);
     }
   }, [organisation])
 
@@ -88,7 +88,7 @@ const Landing: FC = () => {
         <PublishProjectModal
           setOpen={(val: any) => setOpen(val)}
           usdcBalance={wallet_usdc_balance}
-          projectId={Number(create)}
+          projectId={String(create)}
           budget={budget}
           projectName={name}
           projectDescription={description}

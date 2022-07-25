@@ -1,6 +1,7 @@
 .background {
   background: #242529;
   height: 100%;
+  min-height: 100vh;
 }
 
 .header {
@@ -32,6 +33,7 @@
   @media (min-width: 1440px) {
     width: 70%;
   }
+
   @media (min-width: 1024px) and (max-width: 1440px) {
     width: 90%;
   }
