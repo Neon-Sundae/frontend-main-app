@@ -19,17 +19,17 @@ import {
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
   GET_USER_XP,
-  GET_USDC_BALANCE
+  GET_USDC_BALANCE,
 } from './types';
 
 export const getXP = (xp: number) => ({
   type: GET_USER_XP,
-  payload: xp
+  payload: xp,
 });
 
 export const getUSDCBalance = (usdc: number) => ({
   type: GET_USDC_BALANCE,
-  payload: usdc
+  payload: usdc,
 });
 
 export const fillProfileData = (profile: IProfileApiResponse) => ({
@@ -103,17 +103,13 @@ export const removeProfileEducationAction = (educationId: number) => ({
 
 export const updateProfileEducationAction = (
   educationId: number,
-  degree: string,
-  university: string,
-  startDate: string,
-  endDate: string
+  name: string,
+  value: string
 ) => ({
   type: UPDATE_PROFILE_EDUCATION,
   educationId,
-  degree,
-  university,
-  startDate,
-  endDate,
+  name,
+  value,
 });
 
 export const addProfileWorkplaceAction = (workplace: IProfileWorkplace) => ({
@@ -126,7 +122,13 @@ export const removeProfileWorkplaceAction = (workplaceId: number) => ({
   workplaceId,
 });
 
-export const updateProfileWorkplaceAction = (workplace: IProfileWorkplace) => ({
+export const updateProfileWorkplaceAction = (
+  workplaceId: number,
+  keyName: string,
+  value: string
+) => ({
   type: UPDATE_PROFILE_WORKPLACE,
-  workplace,
+  workplaceId,
+  keyName,
+  value,
 });

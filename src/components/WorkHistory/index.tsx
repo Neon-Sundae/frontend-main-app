@@ -1,10 +1,10 @@
 /* eslint-disable import/extensions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
-import _debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce';
 import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete.svg';
 import months from 'utils/getMonthsArray';
 import numberRange from 'utils/numberRange';
@@ -120,17 +120,19 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
   const removeProfileWorkplace = useRemoveProfileWorkplace();
   const updateProfileWorkplace = useUpdateProfileWorkplace();
 
-  const handleDebounceFn = (name: string, value: string) => {
-    console.log(name);
-    console.log(value);
-
+  const handleDebounceFn = (keyName: string, value: string) => {
     updateProfileWorkplace({
-      ...payload,
-      [name]: value,
+      workplaceId,
+      keyName,
+      value,
     });
   };
 
-  const debounceFn: any = useCallback(_debounce(handleDebounceFn, 1000), []);
+  const debounceFn: any = useRef(
+    debounce((name: string, value: string) => {
+      handleDebounceFn(name, value);
+    }, 500)
+  ).current;
 
   const handleRoleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
