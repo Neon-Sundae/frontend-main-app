@@ -34,7 +34,6 @@ const useBuilderTaskApply = () => {
     {
       retry: 1,
       onError: (error: any) => {
-        console.log(error);
         handleError({ error });
       },
       onSuccess: () => {

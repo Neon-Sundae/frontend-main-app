@@ -8,7 +8,7 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import useProfileManage from '../BasicDetails/hooks';
 import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';

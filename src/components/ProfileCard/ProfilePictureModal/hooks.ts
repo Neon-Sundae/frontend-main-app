@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { handleError } from 'utils/handleUnAuthorization';
 
 interface IReturnType {
@@ -11,7 +11,7 @@ const fetchNFTs = (walletId: any, agree: boolean): IReturnType => {
   const chain = 'polygon';
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, isLoading, refetch } = useQuery(
-    'fetchNFTs',
+    ['fetchNFTs'],
     async () => {
       const response = await fetch(
         `https://deep-index.moralis.io/api/v2/${walletId}/nft?chain=${chain}`,
