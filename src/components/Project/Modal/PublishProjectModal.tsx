@@ -14,7 +14,7 @@ import clsx from 'clsx';
 interface IPublishProject {
   setOpen: Dispatch<SetStateAction<boolean>>;
   usdcBalance: number;
-  projectId: number;
+  projectId: string;
   budget: number;
   projectName: string;
   projectDescription: string;
@@ -50,7 +50,8 @@ const PublishProjectModal: FC<IPublishProject> = ({
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log("USDC balance: ", usdcBalance)
+  console.log("Project Budget: ", budget);
   return (
     <Modal onClose={handleClose}>
       {usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
@@ -156,6 +157,12 @@ const PublishProjectModal: FC<IPublishProject> = ({
                   Deposit
                 </button>
               </>
+            ) : deploying === 'approving' ? (
+              <div className={styles['publish-deploying-content']}>
+                <Spinner />
+                <p>Waiting for approving</p>
+                <p>Confirm this transaction in your wallet</p>
+              </div>
             ) : deploying === 'depositing' ? (
               <div className={styles['publish-deploying-content']}>
                 <Spinner />
