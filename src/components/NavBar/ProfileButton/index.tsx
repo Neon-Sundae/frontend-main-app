@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import ProfileImage from 'assets/images/profile/user-image.png';
-import styles from './index.module.scss';
 import { RootState } from 'reducers';
-
+import styles from './index.module.scss';
 
 const ProfileButton: FC = () => {
-
   const { user } = useSelector((state: RootState) => state.user);
+  const profile = useSelector((state: RootState) => state.profile.profile);
   const navigate = useNavigate();
-
+  const pictureFunc = () => {
+    return profile?.picture ?? ProfileImage;
+  };
   return (
     <div className={styles.container}>
       <div className={styles['image-cont']}>
@@ -21,7 +22,7 @@ const ProfileButton: FC = () => {
             navigate('/profile');
           }}
         >
-          <img src={ProfileImage} alt="your profile" />
+          <img src={pictureFunc()} alt="your profile" />
         </div>
       </div>
       <div className={styles.content}>
@@ -35,7 +36,14 @@ const ProfileButton: FC = () => {
           <div
           //	TODO - Implement center ellipsis for text overflow
           >
-            <span>{user?.walletId?.slice(0, 6)}...{user?.walletId?.slice(user?.walletId.length - 6, user?.walletId.length)}</span>
+            <span>
+              {user?.walletId?.slice(0, 6)}...
+              {user?.walletId?.slice(
+                // eslint-disable-next-line no-unsafe-optional-chaining
+                user?.walletId.length - 6,
+                user?.walletId.length
+              )}
+            </span>
           </div>
           <span className="material-icons">keyboard_arrow_down</span>
         </div>

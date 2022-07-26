@@ -54,11 +54,13 @@ export const editProfile = (isEditable: boolean) => ({
 
 export const updateProfileDetailsAction = (
   title: string,
-  description: string
+  description: string,
+  picture: string
 ) => ({
   type: UPDATE_PROFILE_DETAILS,
   title,
   description,
+  picture,
 });
 
 export interface IUpdateProfileSocial {
