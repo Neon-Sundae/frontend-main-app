@@ -59,7 +59,7 @@ const Landing: FC = () => {
     if (organisation?.organisationUser[0]?.walletId) {
       getOnChainProject(create, organisation?.organisationUser[0]?.walletId);
     }
-  }, [organisation])
+  }, [organisation]);
 
   return projectData ? (
     <div className={styles.container}>
@@ -96,7 +96,9 @@ const Landing: FC = () => {
       )}
       <Toaster />
     </div>
-  ) : <div className={styles.container} />;
+  ) : (
+    <div className={styles.container} />
+  );
 };
 
 export default Landing;

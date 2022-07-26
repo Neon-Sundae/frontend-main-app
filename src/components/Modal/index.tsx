@@ -22,7 +22,10 @@ const Modal: FC<ModalProps> = ({
   return (
     <>
       <div className={styles.backdrop} />
-      <div className={styles.overlay} style={{ width, height, maxHeight, overflowY }}>
+      <div
+        className={styles.overlay}
+        style={{ width, height, maxHeight, overflowY }}
+      >
         <button type="button" onClick={onClose} className={styles['icon-cont']}>
           <span className={`material-icons ${styles.icon}`}>close</span>
         </button>

@@ -15,7 +15,7 @@ import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
-  const { profile, profileContractAddress } = useSelector(
+  const { profile, profileContractAddress, xp } = useSelector(
     (state: RootState) => state.profile
   );
   const profileId = profile?.profileId ? profile.profileId : 0;
@@ -71,7 +71,7 @@ const BasicDetailsEdit: FC = () => {
         name={name}
         setName={setName}
       />
-      <ExperiencePoints />
+      <ExperiencePoints xp={xp} />
       <ProfileAddressChain
         name={name}
         profileContractAddress={profileContractAddress}
@@ -168,11 +168,14 @@ const NameDesignation: FC<INameDesignation> = ({
   );
 };
 
-const ExperiencePoints: FC = () => {
+interface IExperiencePoints {
+  xp: number;
+}
+const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
   return (
     <div className={styles['experience-points']}>
       <span className={styles.value}>
-        1230 <span className={styles.label}>XP</span>
+        {xp} <span className={styles.label}>XP</span>
       </span>
     </div>
   );

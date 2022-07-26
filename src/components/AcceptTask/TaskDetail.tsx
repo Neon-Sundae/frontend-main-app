@@ -204,17 +204,23 @@ const TaskDetail: FC<ITaskDetail> = ({
               </span>
             )}
           </>
-        ) : selectedTask?.status === 'open' ? (
-          <button onClick={applyToTask}>Apply for task</button>
-        ) : selectedTask?.status === 'interviewing' &&
-          selectedTask?.profileTask.filter(
-            (item: any) =>
-              item?.Profile?.user?.walletId.toLowerCase() ===
-                walletId?.toLowerCase() &&
-              item?.applicationStatus === 'accepted'
-          ).length > 0 ? (
-          <button onClick={handleCommit}>Commit to task</button>
-        ) : null}
+        ) : (
+          <>
+            {selectedTask?.status === 'open' ? (
+              <button onClick={applyToTask}>Apply for task</button>
+            ) : selectedTask?.status === 'interviewing' &&
+              selectedTask?.profileTask.filter(
+                (item: any) =>
+                  item?.Profile?.user?.walletId.toLowerCase() ===
+                    walletId?.toLowerCase() &&
+                  item?.applicationStatus === 'accepted'
+              ).length > 0 ? (
+              <button onClick={handleCommit}>Commit to task</button>
+            ) : (
+              <></>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
