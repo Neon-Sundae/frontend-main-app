@@ -1,14 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/extensions */
 import clsx from 'clsx';
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-} from 'react';
+import { ChangeEvent, FC, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import debounce from 'lodash/debounce';
