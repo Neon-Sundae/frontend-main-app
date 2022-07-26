@@ -159,4 +159,4 @@ const onDragEnd = async ({
   return;
 };
 
-export { onDragEnd, addToList, removeFromList };
+export { onDragEnd, addToList, removeFromList, notAllowedCases };

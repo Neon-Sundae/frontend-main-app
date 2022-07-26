@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Modal from "components/Modal";
 import { RootState } from "reducers";
-import { useCommitToTask } from "./hooks";
+import useCommitToTask from "./hooks";
 import Spinner from "components/Project/Modal/Spinner";
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as CloseIcon } from 'assets/illustrations/icons/close-outlined.svg';
@@ -42,14 +42,14 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
                                         </div>
                                         <div>
                                             <span>FNDR Coin Required</span>
-                                            <span>10 FNDR</span>
+                                            <span>{selectedTask?.fndrToken} FNDR</span>
                                         </div>
                                     </div>
                                     <p>
                                         <span>*Your compensation  will be unlocked after task completion</span>
                                         <span>Top Up Wallet +</span>
                                     </p>
-                                    <button onClick={() => commitToTask(selectedTask?.taskSmartContractId, 10)}>Commit to task</button>
+                                    <button onClick={() => commitToTask(selectedTask?.taskSmartContractId, Number(selectedTask?.fndrToken))}>Commit to task</button>
                                 </>
                             ) : pending === 'approving' ? (
                                 <div className={styles['accept-task-content']}>

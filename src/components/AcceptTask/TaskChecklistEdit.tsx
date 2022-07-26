@@ -52,7 +52,12 @@ const TaskChecklistEdit: FC<ITaskChecklistEdit> = ({ selectedTask }) => {
                 </i>
               ) : null}
             </span>
-            <span onClick={() => openItemUrl(item.url)}>{item.title}</span>
+            <span
+              onClick={() => openItemUrl(item.url)}
+              className={styles['task-checklist-title']}
+            >
+              {item.title}
+            </span>
             <LinkIcon width={18} height={18} onClick={handleInputOpen} />
           </div>
           {openInput && (
@@ -81,7 +86,7 @@ const ChecklistUrl: FC<IChecklistUrl> = ({ taskChecklistId, url }) => {
     console.log(value);
     let isCompleted = true;
 
-    if (value === '') isCompleted = true;
+    if (value === '') isCompleted = false;
 
     updateTaskChecklist.mutate({
       url: value,

@@ -20,11 +20,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import CreateTaskModal from 'components/CreateTask/CreateTaskModal';
 import AcceptTask from 'components/AcceptTask';
 import SelectBuilder from 'components/AcceptTask/SelectBuilder';
-import CommitTask from 'components/AcceptTask/CommitTask';
+import CommitTask from 'components/CommitTask';
+import CompleteTask from 'components/CompleteTask';
 import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
-import { onDragEnd } from './dndMethods';
+import { notAllowedCases, onDragEnd } from './dndMethods';
+import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 
 const lists = [
@@ -139,6 +141,9 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   project_name,
   project_founder,
 }) => {
+
+  const dispatch = useDispatch();
+
   const { create } = useParams();
   const updateTask = useUpdateTaskStatus();
   const { projectData } = useFetchProjects(create);
@@ -149,6 +154,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   const [openTask, setOpenTask] = useState(false);
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
   const [openCommitTask, setOpenCommitTask] = useState(false);
+  const [openComplete, setOpenComplete] = useState(false);
   const [success, setSuccess] = useState(false);
   const [selectedBuilder, setSelectedBuilder] = useState<any>(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -180,14 +186,28 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   };
 
   const handleDragEnd = (result: any) => {
-    onDragEnd({
-      elements,
-      result,
-      setElements,
-      updateTask,
-      projectData,
-      userId: user?.userId,
-    });
+    if (result.destination.droppableId === 'completed') {
+      if (notAllowedCases(
+        result,
+        projectData.organisation.organisationUser[0].userId,
+        user?.userId
+      )) {
+        dispatch({
+          type: GET_SELECTED_TASK,
+          payload: elements[result.source.droppableId][result.source.index]
+        })
+        setOpenComplete(true);
+      }
+    } else {
+      onDragEnd({
+        elements,
+        result,
+        setElements,
+        updateTask,
+        projectData,
+        userId: user?.userId,
+      });
+    }
   };
 
   const handleCommit = () => {
@@ -201,6 +221,11 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
     setOpenSelectBuilder(false);
     setOpenTask(true);
   };
+
+  const handleOpenComplete = (val) => {
+    setOpenComplete(val);
+    setOpenTask(false);
+  }
 
   if (elements) {
     return (
@@ -218,6 +243,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
         {openTask && (
           <AcceptTask
             setOpen={setOpenTask}
+            setViewComplete={handleOpenComplete}
             taskId={selectedTaskId}
             handleApprove={handleApprove}
             project_name={project_name}
@@ -234,7 +260,16 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             selectedBuilder={selectedBuilder}
           />
         )}
-        {openCommitTask && <CommitTask handleClose={handleCloseCommitTask} />}
+        {
+          openCommitTask && <CommitTask
+            handleClose={handleCloseCommitTask}
+          />
+        }
+        {
+          openComplete && <CompleteTask
+            setOpen={(val) => setOpenComplete(val)}
+          />
+        }
       </DragDropContext>
     );
   }

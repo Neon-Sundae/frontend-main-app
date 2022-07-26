@@ -1,17 +1,17 @@
+/* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import FileAttachmentCard from './FileAttachmetCard';
 import { RootState } from 'reducers';
 import { ReactComponent as ProjectIcon } from 'assets/illustrations/icons/project.svg';
 import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/category.svg';
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
-import styles from './index.module.scss';
 import calculateTaskXP from 'utils/calculateTaskXp';
-import { useDispatch } from 'react-redux';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import TaskChecklistEdit from './TaskChecklistEdit';
+import FileAttachmentCard from './FileAttachmetCard';
+import styles from './index.module.scss';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
@@ -30,6 +30,8 @@ const TaskDetail: FC<ITaskDetail> = ({
 }) => {
   const dispatch = useDispatch();
   const builderTaskApply = useBuilderTaskApply();
+
+  const [expanded, setExpanded] = useState(false);
 
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
@@ -63,9 +65,38 @@ const TaskDetail: FC<ITaskDetail> = ({
   return (
     <div>
       <div className={styles['avatar-container']}>
-        <button>{selectedTask?.status}</button>
+        {expanded ? (
+          <button
+            className={styles['task-status']}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <div>
+              <span>{selectedTask?.status}</span>
+              <i className="material-icons">expand_less</i>
+            </div>
+            <div>
+              <p>Open</p>
+              <p>Interviewing</p>
+              <p>In-Progress</p>
+              <p>In-Review</p>
+              <p>Completed</p>
+            </div>
+          </button>
+        ) : (
+          <button
+            className={styles['task-status--expanded']}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <span>{selectedTask?.status}</span>
+            <i className="material-icons">expand_more</i>
+          </button>
+        )}
+
         {selectedTask?.profileTask.length > 0 && (
-          <div onClick={() => setViewTalentList(true)}>
+          <div
+            className={expanded ? styles['expanded'] : ''}
+            onClick={() => setViewTalentList(true)}
+          >
             {selectedTask?.status !== 'open' &&
             selectedTask?.profileTask.filter(
               (profile: any) => profile.applicationStatus === 'accepted'
@@ -78,23 +109,26 @@ const TaskDetail: FC<ITaskDetail> = ({
                   item.Profile.picture !== null ? (
                     <img src="" alt="" key={index} />
                   ) : (
-                    <div className={styles['builder-avatar']} key={index}></div>
+                    <div className={styles['builder-avatar']} key={index} />
                   )
                 )
             ) : (
               <>
-                {selectedTask?.profileTask.map((item: any, index: number) =>
-                  item.Profile.picture !== null ? (
-                    <img src="" alt="" key={index} />
-                  ) : (
-                    <div className={styles['builder-avatar']} key={index}></div>
-                  )
-                )}
+                {selectedTask?.profileTask
+                  .slice(0, 5)
+                  .map((item: any, index: number) =>
+                    item.Profile.picture !== null ? (
+                      <img src="" alt="" key={index} />
+                    ) : (
+                      <div className={styles['builder-avatar']} key={index} />
+                    )
+                  )}
               </>
             )}
           </div>
         )}
       </div>
+
       <div className={styles['project-details']}>
         <div>
           <div className={styles['project-detail-item']}>
@@ -143,7 +177,7 @@ const TaskDetail: FC<ITaskDetail> = ({
           <div className={styles['project-detail-item']}>
             <i className="material-icons">local_fire_department</i>
             <div>
-              Burned: 10 &emsp;
+              Burned: {selectedTask?.fndrToken} &emsp;
               <CoinIcon width={20} height={20} />
             </div>
           </div>
@@ -162,10 +196,14 @@ const TaskDetail: FC<ITaskDetail> = ({
       <TaskChecklistEdit selectedTask={selectedTask} />
       <div className={styles['project-action-delete']}>
         {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
-          <span>
-            <i className="material-icons">delete</i>
-            <span>Delete Task</span>
-          </span>
+          <>
+            {selectedTask?.status !== 'completed' && (
+              <span>
+                <i className="material-icons">delete</i>
+                <span>Delete Task</span>
+              </span>
+            )}
+          </>
         ) : selectedTask?.status === 'open' ? (
           <button onClick={applyToTask}>Apply for task</button>
         ) : selectedTask?.status === 'interviewing' &&
@@ -176,9 +214,7 @@ const TaskDetail: FC<ITaskDetail> = ({
               item?.applicationStatus === 'accepted'
           ).length > 0 ? (
           <button onClick={handleCommit}>Commit to task</button>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
     </div>
   );

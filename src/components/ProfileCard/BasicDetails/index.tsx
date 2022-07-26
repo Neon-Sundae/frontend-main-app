@@ -11,10 +11,9 @@ import useProfileManage from './hooks';
 
 const BasicDetails: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
-
   return (
     <>
-      <ProfileImage />
+      <ProfileImage picture={profile?.picture} />
       <NameDesignation title={profile?.title} />
       <ExperiencePoints />
       <ProfileAddressChain />
@@ -39,11 +38,16 @@ const EditIconContainer: FC = () => {
   );
 };
 
-const ProfileImage: FC = () => {
+interface ProfileImageProps {
+  picture?: string | null;
+}
+
+
+const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
-        <img alt="user" src={userImage} />
+        <img alt="user" src={picture ? picture : userImage} />
       </div>
     </div>
   );

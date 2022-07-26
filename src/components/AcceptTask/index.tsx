@@ -12,17 +12,19 @@ import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verif
 
 interface IAcceptTask {
   setOpen: Dispatch<SetStateAction<boolean>>;
-  taskId: number;
+  setViewComplete: Dispatch<SetStateAction<boolean>>;
+  taskId: number,
   handleApprove: any;
   selected: boolean;
   selectedBuilder: any;
   project_founder: string;
   project_name: string;
-  handleCommit: any;
+  handleCommit: any
 }
 
 const AcceptTask: FC<IAcceptTask> = ({
   setOpen,
+  setViewComplete,
   taskId,
   handleApprove,
   project_name,

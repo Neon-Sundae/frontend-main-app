@@ -12,10 +12,10 @@ import {
   taskContractAddress,
   USDCAddress,
 } from 'contracts/contracts';
+import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import { RootState } from 'reducers';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
-import USDCAbi from 'contracts/abi/USDCToken.sol/USDCToken.json';
 import { getAccessToken } from 'utils/authFn';
 import {
   SET_ACCEPTED_BUILDER,
@@ -57,7 +57,7 @@ const useFetchTaskDataOnChain = async (tokenId: number | undefined) => {
       taskContractAddress
     );
     const result = await taskContract.methods.getTaskById(tokenId).call();
-    console.log(result);
+    // console.log(result);
   } catch (err) {
     console.log(err);
   }
@@ -94,7 +94,7 @@ const useSelectBuilder = () => {
           projectAddress,
           builderInfo?.Profile?.user?.walletId,
           taskName,
-          web3.utils.toWei(String(price), 'ether'),
+          price * Math.pow(10, 6),
           xp,
           difficulty
         )
@@ -109,7 +109,8 @@ const useSelectBuilder = () => {
         .addTask(tokenId, taskContractAddress)
         .send({ from: walletId });
 
-      saveAcceptedBuilder(taskId, builderInfo?.profileId);
+      await saveTaskTokenId(taskId, tokenId);
+      await saveAcceptedBuilder(taskId, builderInfo?.profileId);
       setPending('confirmed');
     } catch (err: any) {
       setPending('failed');
@@ -118,6 +119,30 @@ const useSelectBuilder = () => {
           ? 'MetaMask Tx Signature: User denied transaction signature.'
           : 'Error happens while confirming transaction'
       );
+    }
+  };
+
+  const saveTaskTokenId = async (taskId: number, tokenId: number) => {
+    try {
+      const ac = new AbortController();
+      const { signal } = ac;
+
+      const payload = { taskSmartContractId: tokenId };
+      const response = await fetch(
+        `${config.ApiBaseUrl}/task/contract/${taskId}`,
+        {
+          signal,
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      await handleApiErrors(response);
+    } catch (err) {
+      console.log(err);
     }
   };
 

@@ -9,7 +9,7 @@ import { projectManageContractAddress, USDCAddress } from 'contracts/contracts';
 import { GET_WALLET_USDC_BALANCE } from 'actions/user/types';
 import config from 'config';
 import { IProfileSmartContractApiResponse } from 'interfaces/profile';
-import USDCAbi from 'contracts/abi/USDCToken.sol/USDCToken.json';
+import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import ProjectManageAbi from 'contracts/abi/ProjectManage.sol/ProjectManage.json';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import { getAccessToken } from 'utils/authFn';
@@ -43,7 +43,7 @@ const useProject = () => {
         USDCAddress
       );
       let balance = await USDCContract.methods.balanceOf(walletId).call();
-      balance = Number(web3.utils.fromWei(balance, 'ether')).toFixed(2);
+      balance = Number(balance / Math.pow(10, 6)).toFixed(2);
       dispatch({
         type: GET_WALLET_USDC_BALANCE,
         payload: balance,
@@ -53,7 +53,7 @@ const useProject = () => {
     }
   };
 
-  const getOnChainProject = async (id: number, founder: string) => {
+  const getOnChainProject = async (id: string | undefined, founder: string) => {
     try {
       const web3 = getWeb3Instance();
       const ProjectManageContract = new web3.eth.Contract(
@@ -115,7 +115,7 @@ const useProject = () => {
       let result = await projectManageContract.methods
         .createProject(1, USDCAddress, 'test', 'testtest', 1000)
         .estimateGas({ from: walletId });
-      result = Number(web3.utils.fromWei(Number(result).toString(), 'ether'));
+      result = Number(Number(result / Math.pow(10, 6)).toFixed(4));
       setGasFee(result);
     } catch (err) {
       console.log(err);
@@ -123,7 +123,7 @@ const useProject = () => {
   };
 
   const publishProject = async (
-    projectId: number,
+    projectId: string,
     budget: number,
     name: string,
     description: string
@@ -146,7 +146,7 @@ const useProject = () => {
         USDCAddress,
         name,
         description,
-        web3.utils.toWei(String(budget), 'ether')
+        budget * Math.pow(10, 6)
       )
       .send({ from: walletId })
       .on('transactionHash', (hash: any) => {
@@ -183,35 +183,42 @@ const useProject = () => {
         USDCAbi.abi as AbiItem[],
         USDCAddress
       );
-      await USDCContract.methods
+      USDCContract.methods
         .approve(
           selectedProjectAddress,
-          web3.utils.toWei(String(Number(Number(budget * 1.1).toFixed(4))))
-        )
-        .send({ from: walletId });
-
-      const projectContract = new web3.eth.Contract(
-        ProjectAbi.abi as AbiItem[],
-        selectedProjectAddress
-      );
-      projectContract.methods
-        .depositFunds(
-          web3.utils.toWei(String(Number(Number(budget * 1.1).toFixed(4))))
+          budget * 1.1 * Math.pow(10, 6)
         )
         .send({ from: walletId })
         .on('transactionHash', (hash: any) => {
-          setDeploying('depositing');
+          setDeploying('approving')
         })
         .on('receipt', (receipt: any) => {
-          setDeploying('deposit_success');
-          dispatch({
-            type: IS_DEPOSITED,
-            payload: true,
-          });
+          const projectContract = new web3.eth.Contract(
+            ProjectAbi.abi as AbiItem[],
+            selectedProjectAddress
+          );
+          projectContract.methods
+            .depositFunds(
+              budget * 1.1 * Math.pow(10, 6)
+            )
+            .send({ from: walletId })
+            .on('transactionHash', (hash: any) => {
+              setDeploying('depositing');
+            })
+            .on('receipt', (receipt: any) => {
+              setDeploying('deposit_success');
+              dispatch({
+                type: IS_DEPOSITED,
+                payload: true,
+              });
+            })
+            .on('error', (err: any) => {
+              setDeploying('deposit');
+            });
         })
-        .on('error', (err: any) => {
-          setDeploying('deposit');
-        });
+        .on('error', (error: any) => {
+          setDeploying('failed');
+        })
     } catch (err) {
       console.log(err);
     }
@@ -219,7 +226,7 @@ const useProject = () => {
 
   const saveProjectContractAddress = async (
     address: string,
-    projectId: number
+    projectId: string
   ) => {
     try {
       const ac = new AbortController();
