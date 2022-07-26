@@ -50,8 +50,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
   const handleClose = () => {
     setOpen(false);
   };
-  console.log("USDC balance: ", usdcBalance)
-  console.log("Project Budget: ", budget);
+
   return (
     <Modal onClose={handleClose}>
       {usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
@@ -75,17 +74,21 @@ const PublishProjectModal: FC<IPublishProject> = ({
                   </div>
                 </div>
                 <div className={styles['publish-info']}>
-                  {
-                    Number(usdcBalance) < Number(Number(budget * 1.1).toFixed(2)) ? (
-                      <span className={clsx(styles['font-size--small--low'], styles[''])}>
-                        *Your wallet amount is to low
-                      </span>
-                    ) : (
-                      <span className={styles['font-size--small--enough']}>
-                        *You can always withdraw
-                      </span>
-                    )
-                  }
+                  {Number(usdcBalance) <
+                  Number(Number(budget * 1.1).toFixed(2)) ? (
+                    <span
+                      className={clsx(
+                        styles['font-size--small--low'],
+                        styles['']
+                      )}
+                    >
+                      *Your wallet amount is to low
+                    </span>
+                  ) : (
+                    <span className={styles['font-size--small--enough']}>
+                      *You can always withdraw
+                    </span>
+                  )}
                   <span>Top Up Wallet +</span>
                 </div>
                 <button
@@ -137,17 +140,21 @@ const PublishProjectModal: FC<IPublishProject> = ({
                   </div>
                 </div>
                 <div className={styles['publish-info']}>
-                  {
-                    Number(usdcBalance) < Number(Number(budget * 1.1).toFixed(2)) ? (
-                      <span className={clsx(styles['font-size--small--low'], styles[''])}>
-                        *Your wallet amount is to low
-                      </span>
-                    ) : (
-                      <span className={styles['font-size--small--enough']}>
-                        *You can always withdraw
-                      </span>
-                    )
-                  }
+                  {Number(usdcBalance) <
+                  Number(Number(budget * 1.1).toFixed(2)) ? (
+                    <span
+                      className={clsx(
+                        styles['font-size--small--low'],
+                        styles['']
+                      )}
+                    >
+                      *Your wallet amount is to low
+                    </span>
+                  ) : (
+                    <span className={styles['font-size--small--enough']}>
+                      *You can always withdraw
+                    </span>
+                  )}
                   <span>Top Up Wallet +</span>
                 </div>
                 <button

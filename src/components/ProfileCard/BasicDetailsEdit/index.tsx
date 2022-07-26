@@ -9,14 +9,16 @@ import toast from 'react-hot-toast';
 import useProfileManage from '../BasicDetails/hooks';
 
 const BasicDetailsEdit: FC = () => {
-  const { profile, profileContractAddress } = useSelector((state: RootState) => state.profile);
+  const { profile, profileContractAddress, xp } = useSelector(
+    (state: RootState) => state.profile
+  );
   const user = useSelector((state: RootState) => state.user.user);
 
   const [name, setName] = useState(user?.name ?? 'Rachel Green');
   const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
   const [bio, setBio] = useState(
     profile?.description ??
-    `Lorem imsum text is here imsum text is here imsum text is here imsum
+      `Lorem imsum text is here imsum text is here imsum text is here imsum
   text is here imsum text is here imsum text is here imsum text is here
   imsum.`
   );
@@ -42,7 +44,7 @@ const BasicDetailsEdit: FC = () => {
         name={name}
         setName={setName}
       />
-      <ExperiencePoints />
+      <ExperiencePoints xp={xp} />
       <ProfileAddressChain
         name={name}
         profileContractAddress={profileContractAddress}
@@ -63,7 +65,7 @@ const SaveProfile: FC<ISaveProfile> = ({ handleSave }) => {
   return (
     <div className={styles['save-profile']} onClick={handleSave}>
       <span className={styles.text}>Save</span>
-      <i className="material-icons">done</i>
+      <i className='material-icons'>done</i>
     </div>
   );
 };
@@ -72,7 +74,7 @@ const ProfileImage: FC = () => {
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
-        <img alt="user" src={userImage} />
+        <img alt='user' src={userImage} />
       </div>
     </div>
   );
@@ -100,13 +102,13 @@ const NameDesignation: FC<INameDesignation> = ({
   return (
     <div className={styles['name-designation']}>
       <input
-        type="text"
+        type='text'
         className={styles.name}
         value={name}
         onChange={handleNameChange}
       />
       <input
-        type="text"
+        type='text'
         className={styles.designation}
         value={title}
         onChange={handleTitleChange}
@@ -115,11 +117,14 @@ const NameDesignation: FC<INameDesignation> = ({
   );
 };
 
-const ExperiencePoints: FC = () => {
+interface IExperiencePoints {
+  xp: number;
+}
+const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
   return (
     <div className={styles['experience-points']}>
       <span className={styles.value}>
-        1230 <span className={styles.label}>XP</span>
+        {xp} <span className={styles.label}>XP</span>
       </span>
     </div>
   );
@@ -132,38 +137,51 @@ interface IProfileAddressChain {
   title: string;
 }
 
-const ProfileAddressChain: FC<IProfileAddressChain> = ({ profileContractAddress, name, walletId, title }) => {
-
+const ProfileAddressChain: FC<IProfileAddressChain> = ({
+  profileContractAddress,
+  name,
+  walletId,
+  title,
+}) => {
   const { createProfile } = useProfileManage();
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profileContractAddress);
-    toast.success("Copied!");
-  }
+    toast.success('Copied!');
+  };
 
   return (
     <div className={styles['profile-address-chain']}>
-      {
-        profileContractAddress === "0x0000000000000000000000000000000000000000" ? (
-          <div className={styles['address-container']} style={{ cursor: 'pointer' }} onClick={() => createProfile(name, title, walletId)}>
-            <span className="material-icons" style={{ color: '#FAA5B9' }}>close</span>
-            <p className={styles['profile-address']}>
-              Mint on Chain
-            </p>
-            <div></div>
-          </div>
-        ) : (
-          <div className={styles['address-container']}>
-            <FoundersLabIcon width={28} height={28} />
-            <p className={styles['profile-address']}>
-              {profileContractAddress?.slice(0, 6)}...{profileContractAddress?.slice(profileContractAddress.length - 6, profileContractAddress.length)}
-            </p>
-            <i className="material-icons-200" onClick={handleCopyAddress}>content_copy</i>
-          </div>
-        )
-      }
+      {profileContractAddress ===
+      '0x0000000000000000000000000000000000000000' ? (
+        <div
+          className={styles['address-container']}
+          style={{ cursor: 'pointer' }}
+          onClick={() => createProfile(name, title, walletId)}
+        >
+          <span className='material-icons' style={{ color: '#FAA5B9' }}>
+            close
+          </span>
+          <p className={styles['profile-address']}>Mint on Chain</p>
+          <div></div>
+        </div>
+      ) : (
+        <div className={styles['address-container']}>
+          <FoundersLabIcon width={28} height={28} />
+          <p className={styles['profile-address']}>
+            {profileContractAddress?.slice(0, 6)}...
+            {profileContractAddress?.slice(
+              profileContractAddress.length - 6,
+              profileContractAddress.length
+            )}
+          </p>
+          <i className='material-icons-200' onClick={handleCopyAddress}>
+            content_copy
+          </i>
+        </div>
+      )}
       <p className={styles['sync-text']}>
-        Sync On Chain <i className="material-icons-200">sync</i>
+        Sync On Chain <i className='material-icons-200'>sync</i>
       </p>
     </div>
   );
