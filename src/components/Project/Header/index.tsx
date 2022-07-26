@@ -69,40 +69,44 @@ const Header: FC<IHeaderProps> = props => {
       <div className={styles.container}>
         <div className={styles['project-info']}>
           <span className={styles['project-name']}>{props.projectName}</span>
-          <span className={styles['founder-name']}>by&nbsp;&nbsp;{props.founderName}</span>
-          {
-            props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
-              selectedProjectAddress === '' ? (
-                <button onClick={handleOpen}>Publish a Project</button>
-              ) : (
-                !isDeposit ? (
-                  <button onClick={handleOpen}>Deposit Funds</button>
-                ) : (
-                  <>
-                    <span className={styles['deposit-funds']}>
-                      Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC
-                    </span>
-                    <VerifiedIcon className={styles['project-verified']} width={20} height={20} />
-                  </>
-                )
-              )
+          <span className={styles['founder-name']}>
+            by&nbsp;&nbsp;{props.founderName}
+          </span>
+          {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
+            selectedProjectAddress === '' ? (
+              <button onClick={handleOpen}>Publish a Project</button>
+            ) : !isDeposit ? (
+              <button onClick={handleOpen}>Deposit Funds</button>
             ) : (
-              selectedProjectAddress === '' ? (
-                <button>Not Published</button>
-              ) : (
-                !isDeposit ? (
-                  <button>Not Deposited</button>
-                ) : (
-                  <>
-                    <span className={styles['deposit-funds']}>
-                      Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))}
-                    </span>
-                    <VerifiedIcon className={styles['project-verified']} width={20} height={20} />
-                  </>
-                )
-              )
+              <>
+                <span className={styles['deposit-funds']}>
+                  Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))}{' '}
+                  USDC
+                </span>
+                <VerifiedIcon
+                  className={styles['project-verified']}
+                  width={20}
+                  height={20}
+                />
+              </>
             )
-          }
+          ) : selectedProjectAddress === '' ? (
+            <button>Not Published</button>
+          ) : !isDeposit ? (
+            <button>Not Deposited</button>
+          ) : (
+            <>
+              <span className={styles['deposit-funds']}>
+                Deposit Funds:{' '}
+                {Number(Number(Number(props.budget) * 1.1).toFixed(4))}
+              </span>
+              <VerifiedIcon
+                className={styles['project-verified']}
+                width={20}
+                height={20}
+              />
+            </>
+          )}
           {/* {
             founder.toLowerCase() === walletId?.toLowerCase() && selectedProjectAddress === '' ? (
               <button onClick={handleOpen}>Publish a Project</button>
@@ -111,14 +115,18 @@ const Header: FC<IHeaderProps> = props => {
             ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
           } */}
         </div>
-        {
-          selectedProjectAddress !== '' && (
-            <div className={styles['contract-address']}>
-              Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...{selectedProjectAddress.slice(selectedProjectAddress.length - 5, selectedProjectAddress.length)}
-              <i className="material-icons-200" onClick={handleCopy}>content_copy</i>
-            </div>
-          )
-        }
+        {selectedProjectAddress !== '' && (
+          <div className={styles['contract-address']}>
+            Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...
+            {selectedProjectAddress.slice(
+              selectedProjectAddress.length - 5,
+              selectedProjectAddress.length
+            )}
+            <i className="material-icons-200" onClick={handleCopy}>
+              content_copy
+            </i>
+          </div>
+        )}
       </div>
     </>
   );

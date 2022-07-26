@@ -32,16 +32,16 @@ const FirstTimeUser: FC = () => {
         <div className={styles.StepContainer}>
           <FoundersLabIcon width={200} height={26} />
           <BaseBlob
-          blobColor="rgba(247, 153, 255, 1)"
-          width={270}
-          height={270}
-          className="login-container-blob-pink"
-           />
+            blobColor="rgba(247, 153, 255, 1)"
+            width={270}
+            height={270}
+            className="login-container-blob-pink"
+          />
           <BaseBlob
-          blobColor="rgba(167, 153, 255, 1)"
-          width={270}
-          height={270}
-          className="login-container-blob-purple"
+            blobColor="rgba(167, 153, 255, 1)"
+            width={270}
+            height={270}
+            className="login-container-blob-purple"
           />
           <h1 className={styles.title}>Create your profile</h1>
           <form className={styles['form-container']} onSubmit={handleSubmit}>

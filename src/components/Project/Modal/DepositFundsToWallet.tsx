@@ -10,8 +10,8 @@ const DepositFundsToWallet = () => {
       <h1 className={styles['deposit-title']}>Deposit Funds to your wallet</h1>
       <div className={styles['deposit-content-wrapper']}>
         <a
-          href='https://www.moonpay.com/buy'
-          target='_blank'
+          href="https://www.moonpay.com/buy"
+          target="_blank"
           className={styles['wallet-item']}
         >
           <div>
@@ -22,8 +22,8 @@ const DepositFundsToWallet = () => {
           </div>
         </a>
         <a
-          href='https://ftx.com'
-          target='_blank'
+          href="https://ftx.com"
+          target="_blank"
           className={styles['wallet-item']}
         >
           <div>
@@ -34,8 +34,8 @@ const DepositFundsToWallet = () => {
           </div>
         </a>
         <a
-          href='https://www.sendwyre.com/'
-          target='_blank'
+          href="https://www.sendwyre.com/"
+          target="_blank"
           className={styles['wallet-item']}
         >
           <div>

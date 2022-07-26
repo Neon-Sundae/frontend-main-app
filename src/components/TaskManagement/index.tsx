@@ -141,7 +141,6 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   project_name,
   project_founder,
 }) => {
-
   const dispatch = useDispatch();
 
   const { create } = useParams();
@@ -187,15 +186,17 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
 
   const handleDragEnd = (result: any) => {
     if (result.destination.droppableId === 'completed') {
-      if (notAllowedCases(
-        result,
-        projectData.organisation.organisationUser[0].userId,
-        user?.userId
-      )) {
+      if (
+        notAllowedCases(
+          result,
+          projectData.organisation.organisationUser[0].userId,
+          user?.userId
+        )
+      ) {
         dispatch({
           type: GET_SELECTED_TASK,
-          payload: elements[result.source.droppableId][result.source.index]
-        })
+          payload: elements[result.source.droppableId][result.source.index],
+        });
         setOpenComplete(true);
       }
     } else {
@@ -222,10 +223,10 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
     setOpenTask(true);
   };
 
-  const handleOpenComplete = (val) => {
+  const handleOpenComplete = val => {
     setOpenComplete(val);
     setOpenTask(false);
-  }
+  };
 
   if (elements) {
     return (
@@ -260,16 +261,8 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             selectedBuilder={selectedBuilder}
           />
         )}
-        {
-          openCommitTask && <CommitTask
-            handleClose={handleCloseCommitTask}
-          />
-        }
-        {
-          openComplete && <CompleteTask
-            setOpen={(val) => setOpenComplete(val)}
-          />
-        }
+        {openCommitTask && <CommitTask handleClose={handleCloseCommitTask} />}
+        {openComplete && <CompleteTask setOpen={val => setOpenComplete(val)} />}
       </DragDropContext>
     );
   }

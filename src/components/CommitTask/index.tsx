@@ -64,13 +64,13 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
               <p>Confirm this transaction in your wallet</p>
               {hash === '' ? (
                 <p>
-                  <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <i className="material-icons">open_in_new</i>&nbsp;View on
                   Explorer
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target='_blank'>
-                    <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                    <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
                 </p>
@@ -83,13 +83,13 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
               <p>Confirm this transaction in your wallet</p>
               {hash === '' ? (
                 <p>
-                  <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <i className="material-icons">open_in_new</i>&nbsp;View on
                   Explorer
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target='_blank'>
-                    <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                    <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
                 </p>
@@ -105,13 +105,13 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
               </p>
               {hash === '' ? (
                 <p>
-                  <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <i className="material-icons">open_in_new</i>&nbsp;View on
                   Explorer
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target='_blank'>
-                    <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                    <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
                 </p>
@@ -124,13 +124,13 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
               <p>Confirm this transaction in your wallet</p>
               {hash === '' ? (
                 <p>
-                  <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <i className="material-icons">open_in_new</i>&nbsp;View on
                   Explorer
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target='_blank'>
-                    <i className='material-icons'>open_in_new</i>&nbsp;View on
+                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                    <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
                 </p>

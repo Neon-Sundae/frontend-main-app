@@ -22,7 +22,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     (end.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24)
   );
   const flResourcesStringJoined = flResources
-    ?.map((resource) => resource.title)
+    ?.map(resource => resource.title)
     .join(', ');
   return (
     <div className={styles.container}>
