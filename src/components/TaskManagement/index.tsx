@@ -23,20 +23,13 @@ import SelectBuilder from 'components/AcceptTask/SelectBuilder';
 import CommitTask from 'components/CommitTask';
 import CompleteTask from 'components/CompleteTask';
 import { useFetchProjects } from 'components/Project/Landing/hooks';
+import { GET_SELECTED_TASK } from 'actions/flProject/types';
+import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
-import { GET_SELECTED_TASK } from 'actions/flProject/types';
-import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 
-const lists = [
-  'open',
-  'interviewing',
-  'in progress',
-  'in review',
-  'completed',
-  'cancelled',
-];
+const lists = ['open', 'in progress', 'in review', 'completed', 'cancelled'];
 
 interface ITaskManagement {
   project_budget: number;
@@ -331,8 +324,6 @@ const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
             Apply to task
           </span>
         );
-      case 'interviewing':
-        return null;
       default:
         return (
           <div className={styles['avatar-image-wrapper']}>
