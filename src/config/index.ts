@@ -14,19 +14,25 @@ const configs: Environment = {
     ApiBaseUrl: 'http://localhost:3001',
     AppDomain: 'http://localhost:3000',
     chainId: '0x61',
-    explorerURL: 'https://testnet.bscscan.com'
+    explorerURL: 'https://testnet.bscscan.com',
   },
   dev: {
-    ApiBaseUrl: 'https://api.develop.founderslab.xyz',
+    ApiBaseUrl: 'https://api.develop.founderslab.xyz/development',
     AppDomain: 'https://develop.founderslab.xyz',
     chainId: '0x61',
-    explorerURL: 'https://testnet.bscscan.com'
+    explorerURL: 'https://testnet.bscscan.com',
+  },
+  stage: {
+    ApiBaseUrl: 'https://api.develop.founderslab.xyz/staging',
+    AppDomain: 'https://develop.founderslab.xyz',
+    chainId: '0x61',
+    explorerURL: 'https://testnet.bscscan.com',
   },
   prod: {
     ApiBaseUrl: '',
     AppDomain: '',
     chainId: '0x89',
-    explorerURL: 'https://polygonscan.com'
+    explorerURL: 'https://polygonscan.com',
   },
 };
 
