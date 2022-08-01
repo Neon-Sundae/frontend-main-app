@@ -67,33 +67,36 @@ const ProjectCard: FC<ProjectCardProps> = ({
     );
   }
   return (
-    <Card className={styles['project-card']} showTransparentBg width={width}>
-      <>
-        <header>
-          <BrandImage width={70} height={70} />
-          <h3 className={styles['text--primary']}>
-            {projectName?.length > 16
-              ? `${projectName?.substring(0, 16)}...`
-              : projectName}
-          </h3>
-          <span className={styles['text--secondary']}>{org}</span>
-        </header>
-        <p className={styles['text-content']}>
-          {description?.length > 121
-            ? `${description?.substring(0, 121)}...`
-            : description}
-        </p>
+    <div
+      onClick={() => {
+        navigate(`/project/${projectId}`);
+      }}
+      style={{ cursor: 'pointer' }}
+    >
+      <Card className={styles['project-card']} showTransparentBg width={width}>
+        <>
+          <header>
+            <BrandImage width={70} height={70} />
+            <h3 className={styles['text--primary']}>
+              {projectName?.length > 16
+                ? `${projectName?.substring(0, 16)}...`
+                : projectName}
+            </h3>
+            <span className={styles['text--secondary']}>{org}</span>
+          </header>
+          <p className={styles['text-content']}>
+            {description?.length > 121
+              ? `${description?.substring(0, 121)}...`
+              : description}
+          </p>
 
-        <footer
-          onClick={() => {
-            navigate(`/project/${projectId}`);
-          }}
-        >
-          <span className={styles['text-extra']}>{numTasks} tasks</span>
-          <span className={clsx('material-icons', styles.icon)}>east</span>
-        </footer>
-      </>
-    </Card>
+          <footer>
+            <span className={styles['text-extra']}>{numTasks} tasks</span>
+            <span className={clsx('material-icons', styles.icon)}>east</span>
+          </footer>
+        </>
+      </Card>
+    </div>
   );
 };
 
