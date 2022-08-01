@@ -1,0 +1,211 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  padding: 25px;
+  line-height: 1.2;
+  
+  .addResWrap {
+    margin-top: 15px;
+  }
+  .savedResContainer {
+    margin-bottom: 15px;
+  }
+  .cancelBtn {
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+
+  .cancelIcon {
+    color: transparent;
+    text-shadow: 0 0 0 white,
+  }
+
+  .centerBtn {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .budgetNum {
+    margin-left: 22px;
+  }
+
+
+
+  .secHead {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    padding-top: 25px;
+    margin-bottom: 5px;
+  }
+
+  h2 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+
+  .addMore {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    font-size: 13.338px;
+  }
+
+  input {
+    height: 39px;
+    width: 300px;
+    padding-left: 10px;
+  }
+
+  input[type='text'],
+  input[type='number'] {
+    font-size: 15px;
+  }
+
+  input[type='date'] {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    background-color: #fff;
+  }
+
+  textarea {
+    height: auto;
+    font-size: 15px;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-top: 15px;
+  }
+
+  input,
+  textarea {
+    border: 1px solid rgb(180, 180, 180);
+    background-color: transparent;
+    border-radius: 5px;
+    color: white;
+    font-family: var(--font-family-roboto-flex);
+    font-size: 15px;
+    width: 100%;
+
+    &.name {
+      height: 50px;
+    }
+
+    &.desc {
+      height: 120px;
+    }
+  }
+
+  .wrapIconAndInput {
+    position: relative;
+
+    button {
+      position: absolute;
+      top: -3px;
+    }
+  }
+
+  .dateTimeZoneContainer {
+    position: relative;
+    padding-top: 25px;
+
+    .inputsWrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding-top: 25px;
+    }
+
+    .datePick {
+      width: 46%;
+    }
+
+    .heading1 {
+      position: absolute;
+      left: 0;
+    }
+
+    .heading2 {
+      position: absolute;
+      right: 142px;
+    }
+
+    .heading1,
+    .heading2 {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+    }
+  }
+
+  .catBudgetWrap {
+    position: relative;
+    padding-top: 25px;
+    margin-top: 15px;
+
+    .head1 {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .head2 {
+      position: absolute;
+      right: 33%;
+      top: 0;
+    }
+
+    .inlineIt {
+      .stylesItInline {
+        width: 48%;
+        margin: auto;
+        margin-bottom: 15px;
+      }
+
+      .stylesItInline:nth-child(2) {
+        margin-left: 22px;
+      }
+    }
+  }
+
+  .saveBtn {
+    border: 1px solid #d39bff;
+    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+    width: 200px;
+    height: 45px;
+    backdrop-filter: blur(43.3229px);
+    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+    background-size: cover;
+    border-radius: 26.8312px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  .stylesItInline {
+    width: 50%;
+    margin: auto;
+  }
+
+
+}
