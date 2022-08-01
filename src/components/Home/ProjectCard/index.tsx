@@ -65,7 +65,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
           <h3 className={styles['text--primary']}>{projectName}</h3>
           <span className={styles['text--secondary']}>{org}</span>
         </header>
-        <p className={styles['text-content']}>{description}</p>
+        <p className={styles['text-content']}>
+          {' '}
+          {`${description.substring(0, 126)}...`}
+        </p>
 
         <footer
           onClick={() => {
