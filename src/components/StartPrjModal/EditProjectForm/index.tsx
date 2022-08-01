@@ -19,11 +19,7 @@ import {
 import styles from './index.module.scss';
 import { customStyles } from './selectStyles';
 
-interface IEditProjectFormProps {
-  onClose: () => void;
-}
-
-const EditProjectForm: FC<IEditProjectFormProps> = ({ onClose }) => {
+const EditProjectForm: FC = () => {
   const { projectData } = useProjectData();
   const prevData = normalizeFormData(projectData);
   const [formData, setFormData] = useState(prevData);
