@@ -46,9 +46,6 @@ const sourceCancelled = (result: any) =>
 const destinationOpen = (result: any) =>
   result.destination.droppableId === 'open';
 
-const destinationInterviewing = (result: any) =>
-  result.destination.droppableId === 'interviewing';
-
 const destinationInProgress = (result: any) =>
   result.destination.droppableId === 'in progress';
 
@@ -92,7 +89,7 @@ const notAllowedCases = (
   }
 
   if (
-    (destinationOpen(result) || destinationInterviewing(result)) &&
+    destinationOpen(result) &&
     (sourceInProgress(result) || sourceInReview(result))
   ) {
     toast.error('Cannot move to open');
