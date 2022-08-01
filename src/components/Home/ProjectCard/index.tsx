@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
@@ -32,7 +33,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
         className={styles['project-card']}
         showTransparentBg
         width={width}
-        marginRight={'50px'}
+        marginRight="50px"
       >
         <>
           <header>
@@ -40,7 +41,9 @@ const ProjectCard: FC<ProjectCardProps> = ({
             <h3 className={styles['text--primary']}>{projectName}</h3>
             <span className={styles['text--secondary']}>{org}</span>
           </header>
-          <p className={styles['text-content']}>{description}</p>
+          <p className={styles['text-content']}>
+            {`${description.substring(0, 121)}...`}
+          </p>
 
           <footer
             onClick={() => {
