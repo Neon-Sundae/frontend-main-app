@@ -49,7 +49,6 @@ const StepTwo: FC<StepTwoProps> = ({
   const handleNFTClick = (tokenId: any) => {
     setSelectedNFTId(tokenId);
   };
-  console.log('nfts', nfts.total);
   return (
     <Modal
       onClose={() => {
