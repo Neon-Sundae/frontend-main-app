@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   color: #fff;
-  padding: 5px;
+  // padding: 5px;
 }
 .content {
   width: 100%;
@@ -28,19 +28,33 @@
 }
 .catWrap {
   border: 0.7px solid #e0b9ff;
-  border-radius: 20px;
-  height: 2.5rem;
+  border-radius: 17px;
+  max-width: 103px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 30px;
   .cat {
     color: #e0b9ff;
+    font-size: 10px;
   }
 }
 .wrapContent {
-  padding: 5px;
+  // padding: 5px;
   margin-top: 10px;
+  h4 {
+    font-family: var(--font-family-roboto-flex);
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+  p {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 12px;
+  }
 }
 .col {
   margin-right: 10px;

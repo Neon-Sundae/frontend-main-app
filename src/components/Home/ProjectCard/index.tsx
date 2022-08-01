@@ -32,13 +32,13 @@ const ProjectCard: FC<ProjectCardProps> = ({
         className={styles['project-card']}
         showTransparentBg
         width={width}
-        marginRight={'50px'}
+        marginRight={'44px'}
       >
         <>
           <header>
             <BrandImage width={70} height={70} />
+            <p className={styles['text--secondary']}>{org}</p>
             <h3 className={styles['text--primary']}>{projectName}</h3>
-            <span className={styles['text--secondary']}>{org}</span>
           </header>
           <p className={styles['text-content']}>{description}</p>
 
