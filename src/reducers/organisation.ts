@@ -1,26 +1,24 @@
-import { IOrganisation } from 'interfaces/organisation';
-import { CREATE_ORG } from 'actions/organisation/types';
+import { EDIT_ORGANISATION } from 'actions/organisation/types';
 
 interface State {
-  org: Partial<IOrganisation>[];
+  isEditable: boolean;
 }
 
 type Action = {
-  type: typeof CREATE_ORG;
-  org: Partial<IOrganisation>;
+  type: typeof EDIT_ORGANISATION;
+  isEditable: boolean;
 };
 
 const initialState: State = {
-  org: [],
+  isEditable: false,
 };
 
 const org = (state = initialState, action: Action): State => {
   switch (action.type) {
-    case CREATE_ORG: {
-      const orgArray = [...state.org, action.org];
+    case EDIT_ORGANISATION: {
       return {
         ...state,
-        org: orgArray,
+        isEditable: action.isEditable,
       };
     }
     default:

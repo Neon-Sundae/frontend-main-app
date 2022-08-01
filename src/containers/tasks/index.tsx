@@ -1,7 +1,7 @@
-import CreateTask from 'components/CreateTask';
+import Landing from 'components/Tasks/Landing';
 
 const Tasks = () => {
-  return <CreateTask />;
+  return <Landing />;
 };
 
 export default Tasks;

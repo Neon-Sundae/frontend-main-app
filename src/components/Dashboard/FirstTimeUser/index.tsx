@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 import { FC, FormEvent, useState } from 'react';
 import { validateCreateProfile } from 'validations/auth';
-import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab.svg';
+import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab-light.svg';
 import { Background } from 'components/Login';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
+import BaseBlob from 'components/BaseBlob';
 
 const FirstTimeUser: FC = () => {
   const [name, setName] = useState('');
@@ -29,7 +30,19 @@ const FirstTimeUser: FC = () => {
       <Background />
       <div className={styles.LoginContainer}>
         <div className={styles.StepContainer}>
-          <FoundersLabIcon width={227} height={29} />
+          <FoundersLabIcon width={200} height={26} />
+          <BaseBlob
+            blobColor="rgba(247, 153, 255, 1)"
+            width={270}
+            height={270}
+            className="login-container-blob-pink"
+          />
+          <BaseBlob
+            blobColor="rgba(167, 153, 255, 1)"
+            width={270}
+            height={270}
+            className="login-container-blob-purple"
+          />
           <h1 className={styles.title}>Create your profile</h1>
           <form className={styles['form-container']} onSubmit={handleSubmit}>
             <label

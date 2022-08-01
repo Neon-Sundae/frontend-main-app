@@ -13,6 +13,10 @@
     color: white;
 }
 
+.d-flex {
+    display: flex;
+}
+
 .loader {
     display: block;
     margin: auto;
@@ -53,9 +57,14 @@
         color: white;
         margin-top: 16px;
 
-        .font-size--small {
+        .font-size--small--enough {
             font-size: 14px;
             color: #CECECE !important;
+        }
+
+        .font-size--small--low {
+            font-size: 14px;
+            color: #FF7979 !important;
         }
     }
 
@@ -137,6 +146,11 @@
         justify-content: space-between;
         padding: 12px 32px;
         margin: 20px 0;
+
+        &>div {
+            width: 50%;
+            text-align: center;
+        }
     }
 
     .deposit-top-up {

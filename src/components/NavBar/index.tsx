@@ -5,7 +5,6 @@ import ProfileButton from './ProfileButton';
 import styles from './index.module.scss';
 
 const NavBar = () => {
-
   const navigate = useNavigate();
 
   return (

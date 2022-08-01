@@ -6,6 +6,7 @@ interface ModalProps {
   children: ReactNode;
   width?: string;
   height?: string;
+  maxHeight?: string;
   overflowY?: any;
   onClose: () => void;
 }
@@ -14,13 +15,17 @@ const Modal: FC<ModalProps> = ({
   children,
   width,
   height,
+  maxHeight,
   overflowY,
   onClose,
 }) => {
   return (
     <>
       <div className={styles.backdrop} />
-      <div className={styles.overlay} style={{ width, height, overflowY }}>
+      <div
+        className={styles.overlay}
+        style={{ width, height, maxHeight, overflowY }}
+      >
         <button type="button" onClick={onClose} className={styles['icon-cont']}>
           <span className={`material-icons ${styles.icon}`}>close</span>
         </button>
@@ -33,7 +38,7 @@ const Modal: FC<ModalProps> = ({
 
 Modal.defaultProps = {
   width: '617px',
-  height: '630px',
+  // height: '630px',
   overflowY: 'clip',
 };
 

@@ -15,6 +15,7 @@ const Organisation = lazy(() => import('containers/organisation'));
 const Project = lazy(() => import('containers/project'));
 const Tasks = lazy(() => import('containers/tasks'));
 const Logout = lazy(() => import('containers/logout'));
+const TaskCancel = lazy(() => import('containers/taskCancel'));
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
@@ -23,7 +24,9 @@ const App = () => {
   const { getProfileContractAddress, fetchOnChainProfileData } = useProfile();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const profileContractAddress = useSelector((state: RootState) => state.profile.profileContractAddress);
+  const profileContractAddress = useSelector(
+    (state: RootState) => state.profile.profileContractAddress
+  );
 
   useEffect(() => {
     if (walletId !== undefined) {
@@ -32,7 +35,10 @@ const App = () => {
   }, [walletId]);
 
   useEffect(() => {
-    if (profileContractAddress !== "0x0000000000000000000000000000000000000000" && profileContractAddress !== "") {
+    if (
+      profileContractAddress !== '0x0000000000000000000000000000000000000000' &&
+      profileContractAddress !== ''
+    ) {
       fetchOnChainProfileData(profileContractAddress);
     }
   }, [profileContractAddress]);
@@ -91,6 +97,15 @@ const App = () => {
               // </PrivateRoute>
             }
           />
+          <Route
+            path="/tasks/all"
+            element={
+              <PrivateRoute>
+                <Tasks />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/task/cancel/:identifier" element={<TaskCancel />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </Suspense>

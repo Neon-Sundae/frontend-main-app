@@ -18,9 +18,13 @@ const ProfileSkillsEdit: FC = () => {
         className={styles['profile-skills-container']}
         onClick={handleOpenModal}
       >
-        {profileSkills.length > 0 ? profileSkills.map(skill => (
-          <ProfileSkillTag key={skill.skillsId} name={skill.name} />
-        )) : <div className={styles.white}>Add Skills</div>}
+        {profileSkills.length > 0 ? (
+          profileSkills.map(skill => (
+            <ProfileSkillTag key={skill.skillsId} name={skill.name} />
+          ))
+        ) : (
+          <div className={styles.white}>Add Skills</div>
+        )}
       </div>
       {open && <ProfileSkillsModal setOpen={setOpen} />}
     </>

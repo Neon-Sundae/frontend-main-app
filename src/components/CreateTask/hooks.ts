@@ -1,7 +1,7 @@
 import { updateProjectCategory } from 'actions/flProject';
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
@@ -29,7 +29,7 @@ const useCreateTask = (setOpen: Dispatch<SetStateAction<boolean>>) => {
         setOpen(false);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries('projectTasks');
+        queryClient.invalidateQueries(['projectTasks']);
         setOpen(false);
       },
     }
@@ -47,23 +47,28 @@ const useFetchProjectCategories = () => {
   };
 
   const { data } = useQuery(
-    'projectCategory',
+    ['projectCategory'],
     async ({ signal }) => {
-      const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/category/${create}`,
-        {
-          signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const json = await handleApiErrors(response);
-      const normalizedCategories = normalizeCategories(json);
-      dispatch(
-        updateProjectCategory(getFormattedCategories(normalizedCategories))
-      );
-      return normalizedCategories;
+      if (create) {
+        const response = await fetch(
+          `${config.ApiBaseUrl}/fl-project/category/${create}`,
+          {
+            signal,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const json = await handleApiErrors(response);
+        const normalizedCategories = normalizeCategories(json);
+        dispatch(
+          updateProjectCategory(getFormattedCategories(normalizedCategories))
+        );
+        return normalizedCategories;
+      }
+
+      // create is falsy so throw error
+      throw new Error('Error');
     },
     {
       retry: 1,

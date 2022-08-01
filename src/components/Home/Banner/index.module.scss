@@ -1,66 +1,78 @@
 .banner {
-	padding: 24px;
-	margin: 0px 75px;
-	display: flex;
-	justify-content: space-between;
-	background-color: purple;
-	border-radius: 20px;
+  padding: 24px;
+  // margin: 0px 75px;
+  margin: auto;
+  @media (min-width: 1440px) {
+    width: 70%;
+  }
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    width: 90%;
+  }
 
-	& .content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
-		color: white;
-		margin-left: 40px;
-
-		& .text {
-			&--secondary {
-				font-size: 32px;
-				font-family: var(--font-family-roboto-light);
-			}
-			&--primary {
-				font-family: var(--font-family-asap-bold);
-				font-size: 65px;
-				line-height: 0.9;
-			}
-		}
-	}
+  display: flex;
+  justify-content: space-between;
+  background-color: purple;
+  border-radius: 20px;
+  background: url('/src/assets/illustrations/home/banner-bg.png') center;
+  border: 1px solid #d39bff;
+  & .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    color: white;
+    margin-left: 40px;
+    & .text {
+      &--secondary {
+        font-size: 32px;
+        font-family: var(--font-family-roboto-light);
+      }
+      &--primary {
+        font-family: var(--font-family-asap-bold);
+        font-size: 65px;
+        line-height: 0.9;
+        text-transform: capitalize;
+      }
+    }
+  }
 }
 
 .bannerBtn {
-	background-color: transparent;
-	min-width: 280px;
-	padding: 18px 20px;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	position: relative;
-	cursor: pointer;
+  background-color: transparent;
+  min-width: 280px;
+  padding: 18px 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  cursor: pointer;
 
-	&:first-of-type {
-		margin-bottom: 30px;
-	}
+  &:first-of-type {
+    margin-bottom: 30px;
+  }
 
-	$border: 1px;
-  border: solid $border rgb(255, 255, 255); /* !importanté */
+  border: 0.7px solid #cf92ff;
   border-radius: 23px;
 
-	& .title {
-		font-family: var(--font-family-roboto-regular);
-		font-size: 22px;
-	}
+  & .title {
+    font-family: var(--font-family-roboto-regular);
+    font-size: 22px;
+  }
 
-	& .icon {
-		font-size: 24px;
-	}
+  & .icon {
+    font-size: 24px;
+  }
 }
 
 .glass {
-	background: rgba(255,255,255, 0.3);
-	background: linear-gradient(126.59deg, rgba(255,255,255,0.12) 12.11%, rgba(255,255,255,0.03) 73.08%);
-	backdrop-filter: blur(40px);
-	-webkit-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.66);
-	-moz-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.66);
-	box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.66);
+  // background: url('/src/assets/illustrations/home/banner-bg.png') cover;
+  // background: linear-gradient(
+  //   126.59deg,
+  //   rgba(255, 255, 255, 0.12) 12.11%,
+  //   rgba(255, 255, 255, 0.03) 73.08%
+  // );
+  // backdrop-filter: blur(40px);
+  // -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+  // -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+  // box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
 }

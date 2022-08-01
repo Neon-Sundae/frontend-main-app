@@ -27,10 +27,9 @@ const Step2: FC = () => {
 
   return (
     <>
-      <SuccessIcon width={128} height={128} className={styles.SuccessIcon} />
-      <h1 className={styles.title}>Successful!</h1>
+      <h1 className={styles.title}>Success!</h1>
       <div className={styles['connection-container']}>
-        <MetamaskIcon width={35} height={33} />
+        <MetamaskIcon width={23} height={22} />
         <span className={styles['connection-text']}>
           You&apos;re connected with{' '}
           {`${user?.walletId?.slice(0, 4)}...${user?.walletId?.slice(38)}`}

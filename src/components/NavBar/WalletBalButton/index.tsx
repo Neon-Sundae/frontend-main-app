@@ -11,25 +11,29 @@ import styles from './index.module.scss';
 import useWithdrawFund from './hooks';
 
 const WalletBalButton = () => {
-
   const [openWithdraw, setOpenWithdraw] = useState(false);
 
-  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
+  const { usdcBalance, profileContractAddress } = useSelector(
+    (state: RootState) => state.profile
+  );
 
-  const { withdrawFund } = useWithdrawFund()
+  const { withdrawFund } = useWithdrawFund();
 
   const handleWithdraw = () => {
     if (usdcBalance === 0) {
-      toast.error("Zero Balance");
+      toast.error('Zero Balance');
     } else {
       withdrawFund(profileContractAddress);
     }
     setOpenWithdraw(false);
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <div className={styles.balance} onClick={() => setOpenWithdraw(!openWithdraw)}>
+      <div
+        className={styles.balance}
+        onClick={() => setOpenWithdraw(!openWithdraw)}
+      >
         <div className={styles.icon}>
           <WalletIcon width={28} height={28} />
         </div>
@@ -41,7 +45,12 @@ const WalletBalButton = () => {
               styles['text--clickable']
             )}
           >
-            <span>{Number(Web3.utils.fromWei(usdcBalance.toString(), 'ether')).toLocaleString()} usdc</span>
+            <span>
+              {Number(
+                Number(usdcBalance / Math.pow(10, 6)).toFixed(4)
+              ).toLocaleString()}{' '}
+              usdc
+            </span>
             <span className="material-icons">keyboard_arrow_down</span>
           </div>
           <span
@@ -56,14 +65,12 @@ const WalletBalButton = () => {
           </span>
         </div>
       </div>
-      {
-        openWithdraw && (
-          <div className={styles.withdraw} onClick={handleWithdraw}>
-            <WithdrawIcon width={30} height={20} />
-            <span>Withdraw</span>
-          </div>
-        )
-      }
+      {openWithdraw && (
+        <div className={styles.withdraw} onClick={handleWithdraw}>
+          <WithdrawIcon width={30} height={20} />
+          <span>Withdraw</span>
+        </div>
+      )}
       <Toaster />
     </div>
   );

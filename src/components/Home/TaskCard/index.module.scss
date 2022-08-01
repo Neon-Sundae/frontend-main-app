@@ -1,50 +1,53 @@
-.task-card {
-	height: 116px;
-	min-width: 408px;
-	padding: 22px 45px;
-
-	color: white;
-	display: flex;
-	justify-content: space-between;
-
-	& .content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-		& .stats {
-			font-size: 14px;
-			display: flex;
-			justify-content: space-between;
-			margin-top: 10px;
-
-			& .icon {
-				font-size: 16px;
-				margin-right: 5px;
-			}
-			& .circle {
-				display: inline-block;
-				height: 16px;
-				width: 16px;
-				background-color: pink;
-				border-radius: 8px;
-			}
-		}
-	}
-	& .text--primary {
-		font-family: var(--font-family-roboto-flex);
-		font-size: 16px;
-	}
-
-	& .text--secondary {
-		font-family: var(--font-family-roboto-flex);
-		font-size: 12px;
-	}
-
-	& .extra {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: center;
-	}
+.wrapper {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 5px;
+}
+.content {
+  width: 100%;
+  margin-left: 25px;
+  position: relative;
+  p {
+    font-size: 14px;
+  }
+}
+.rating-star {
+  color: #fbc579;
+}
+.dot {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #a1a1e5;
+}
+.heading {
+  margin-left: 20%;
+  margin-bottom: 60px;
+}
+.catWrap {
+  border: 0.7px solid #e0b9ff;
+  border-radius: 20px;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  .cat {
+    color: #e0b9ff;
+  }
+}
+.wrapContent {
+  padding: 5px;
+  margin-top: 10px;
+}
+.col {
+  margin-right: 10px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 120px;
 }

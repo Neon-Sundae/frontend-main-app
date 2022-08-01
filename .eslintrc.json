@@ -17,7 +17,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["*.svg", "*.ttf", "*.png", "*.json"],
+  "ignorePatterns": ["*.svg", "*.ttf", "*.png", "*.json", "*.scss", "*.d.ts", "*.mp4"],
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off",
@@ -35,7 +35,8 @@
         "singleQuote": true,
         "trailingComma": "es5",
         "arrowParens": "avoid",
-        "endOfLine": "auto"
+        "endOfLine": "auto",
+        "useTabs": false
       }
     ],
     "no-use-before-define": ["error", { "variables": false }],
