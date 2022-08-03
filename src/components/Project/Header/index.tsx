@@ -20,8 +20,8 @@ interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   budget: number;
   projectName: string;
-  founderName: string;
   founderAddress: string;
+  organisationName: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -80,13 +80,17 @@ const Header: FC<IHeaderProps> = props => {
       <div className={styles['project-info']}>
         <span className={styles['project-name']}>{props.projectName}</span>
         <span className={styles['founder-name']}>
-          by&nbsp;&nbsp;{props.founderName}
+          by&nbsp;&nbsp;{props.organisationName}
         </span>
         {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
           selectedProjectAddress === '' ? (
-            <button onClick={handleOpen}>Publish a Project</button>
+            <button onClick={handleOpen} className={styles.transparentBtn}>
+              Publish a Project
+            </button>
           ) : !isDeposit ? (
-            <button onClick={handleOpen}>Deposit Funds</button>
+            <button onClick={handleOpen} className={styles.transparentBtn}>
+              Deposit Funds
+            </button>
           ) : (
             <>
               <span className={styles['deposit-funds']}>
@@ -101,9 +105,9 @@ const Header: FC<IHeaderProps> = props => {
             </>
           )
         ) : selectedProjectAddress === '' ? (
-          <button>Not Published</button>
+          <button className={styles.transparentBtn}> Not Published</button>
         ) : !isDeposit ? (
-          <button>Not Deposited</button>
+          <button className={styles.transparentBtn}>Not Deposited</button>
         ) : (
           <>
             <span className={styles['deposit-funds']}>
@@ -118,7 +122,7 @@ const Header: FC<IHeaderProps> = props => {
           </>
         )}
         <button onClick={handleEditButtonClick}>
-          Edit project <Pencil />
+          Edit project &nbsp; <Pencil />
         </button>
 
         {/* {
