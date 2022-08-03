@@ -28,7 +28,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
   orgImage,
 }) => {
   const navigate = useNavigate();
-  console.log(orgImage);
+  console.log(projectId);
 
   if (location === 'home') {
     return (
@@ -49,7 +49,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
               {orgImage ? (
                 <img src={orgImage} className={styles.orgImage}></img>
               ) : (
-                <BrandImage width={70} height={70} />
+                <BrandImage width={51} height={51} />
               )}
               <h3 className={styles['text--primary']}>
                 {projectName?.length > 13
@@ -86,7 +86,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
             {orgImage ? (
               <img src={orgImage} className={styles.orgImage}></img>
             ) : (
-              <BrandImage width={70} height={70} />
+              <BrandImage width={51} height={51} />
             )}
             <h3 className={styles['text--primary']}>
               {projectName?.length > 16

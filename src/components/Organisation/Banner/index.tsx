@@ -152,7 +152,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <Linkedin width={37} height={37} />
+                    <Linkedin width={30} height={30} />
                   </a>
                 ) : null}
                 {organisation.twitter ? (
@@ -161,7 +161,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <Twitter width={37} height={37} />
+                    <Twitter width={30} height={30} />
                   </a>
                 ) : null}
                 {organisation.instagram ? (
@@ -170,7 +170,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <Instagram width={37} height={37} />
+                    <Instagram width={30} height={30} />
                   </a>
                 ) : null}
               </span>
