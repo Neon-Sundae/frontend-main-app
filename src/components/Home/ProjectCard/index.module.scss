@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
 
   color: white;
   border: 0.7px solid rgb(211, 155, 255);
@@ -23,7 +22,6 @@
     & .text--secondary {
       font-family: var(--font-family-roboto-regular);
       font-size: 10px;
-   
     }
   }
 
@@ -34,12 +32,11 @@
     font-weight: 300;
     font-size: 10px;
     line-height: 16px;
-    overflow: hidden;
     text-overflow: ellipsis;
   }
 
   & footer {
-    // margin-top: 5px;
+    margin-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -60,4 +57,12 @@
 
 .project-card:last-of-type {
   // margin-right: 0;
+}
+
+.orgImage {
+  overflow: hidden;
+  width: 51px;
+  height: 51px;
+  border-radius: 30px;
+  cursor: pointer;
 }
