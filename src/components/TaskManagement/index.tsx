@@ -56,7 +56,7 @@ const TaskManagement: FC<ITaskManagement> = ({
         <h1 className={styles['task-header']}>Tasks</h1>
         <div className={styles['task-header-action']}>
           <button
-            className={clsx(styles['add-task-btn'], styles['filter-btn'])}
+            className={clsx(styles['filter-btn'])}
             onClick={toggleFilterMenu}
           >
             Filter
