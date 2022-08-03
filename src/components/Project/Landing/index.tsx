@@ -69,7 +69,6 @@ const Landing: FC = () => {
       <BlurBlobs />
       <Header
         projectName={name}
-        founderName={userName || ''}
         setOpen={val => setOpen(val)}
         budget={budget}
         founderAddress={organisation?.organisationUser[0]?.walletId}

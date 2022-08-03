@@ -13,7 +13,6 @@ interface IOrganisationProjects {
 
 const OrganisationProjects: FC<IOrganisationProjects> = ({ organisation }) => {
   const { flProjects } = organisation;
-  console.log(flProjects);
 
   return (
     <div className={styles['organisation-projects-container']}>
@@ -61,17 +60,18 @@ const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
   };
 
   return (
-    <ProjectCard
-      projectId={projectId}
-      description={description}
-      org={org}
-      numTasks={numTasks}
-      projectName={projectName}
-      orgImage={organisationImage}
-      location="organisation"
-      width="200px"
-      onClick={handleNavigation}
-    />
+    <div onClick={handleNavigation}>
+      <ProjectCard
+        projectId={projectId}
+        description={description}
+        org={org}
+        numTasks={numTasks}
+        projectName={projectName}
+        orgImage={organisationImage}
+        location="organisation"
+        width="200px"
+      />
+    </div>
   );
 };
 
