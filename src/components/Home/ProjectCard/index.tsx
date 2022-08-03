@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
@@ -13,6 +14,7 @@ interface ProjectCardProps {
   projectId: string;
   location?: string;
   width?: string;
+  orgImage?: string;
 }
 
 const ProjectCard: FC<ProjectCardProps> = ({
@@ -23,57 +25,89 @@ const ProjectCard: FC<ProjectCardProps> = ({
   projectId,
   location,
   width,
+  orgImage,
 }) => {
   const navigate = useNavigate();
+  console.log(orgImage);
 
   if (location === 'home') {
     return (
-      <Card
-        className={styles['project-card']}
-        showTransparentBg
-        width={width}
-        marginRight={'44px'}
+      <div
+        onClick={() => {
+          navigate(`/project/${projectId}`);
+        }}
+        style={{ cursor: 'pointer' }}
       >
+        <Card
+          className={styles['project-card']}
+          showTransparentBg
+          width={width}
+          marginRight="44px"
+        >
+          <>
+            <header>
+              {orgImage ? (
+                <img src={orgImage} className={styles.orgImage}></img>
+              ) : (
+                <BrandImage width={70} height={70} />
+              )}
+              <h3 className={styles['text--primary']}>
+                {projectName?.length > 13
+                  ? `${projectName?.substring(0, 13)}...`
+                  : projectName}
+              </h3>
+              <span className={styles['text--secondary']}>{org}</span>
+            </header>
+            <p className={styles['text-content']}>
+              {description?.length > 90
+                ? `${description?.substring(0, 90)}...`
+                : description}
+            </p>
+
+            <footer>
+              <span className={styles['text-extra']}>{numTasks} tasks</span>
+              <span className={clsx('material-icons', styles.icon)}>east</span>
+            </footer>
+          </>
+        </Card>
+      </div>
+    );
+  }
+  return (
+    <div
+      onClick={() => {
+        navigate(`/project/${projectId}`);
+      }}
+      style={{ cursor: 'pointer' }}
+    >
+      <Card className={styles['project-card']} showTransparentBg width={width}>
         <>
           <header>
-            <BrandImage width={70} height={70} />
-            <p className={styles['text--secondary']}>{org}</p>
-            <h3 className={styles['text--primary']}>{projectName}</h3>
+            {orgImage ? (
+              <img src={orgImage} className={styles.orgImage}></img>
+            ) : (
+              <BrandImage width={70} height={70} />
+            )}
+            <h3 className={styles['text--primary']}>
+              {projectName?.length > 16
+                ? `${projectName?.substring(0, 16)}...`
+                : projectName}
+            </h3>
+            <span className={styles['text--secondary']}>{org}</span>
           </header>
-          <p className={styles['text-content']}>{description}</p>
+          <p className={styles['text-content']}>
+            {description?.length > 90
+              ? `${description?.substring(0, 90)}...`
+              : description}
+          </p>
 
-          <footer
-            onClick={() => {
-              navigate(`/project/${projectId}`);
-            }}
-          >
+          <footer>
             <span className={styles['text-extra']}>{numTasks} tasks</span>
             <span className={clsx('material-icons', styles.icon)}>east</span>
           </footer>
         </>
       </Card>
-    );
-  }
-  return (
-    <Card className={styles['project-card']} showTransparentBg width={width}>
-      <>
-        <header>
-          <BrandImage width={70} height={70} />
-          <h3 className={styles['text--primary']}>{projectName}</h3>
-          <span className={styles['text--secondary']}>{org}</span>
-        </header>
-        <p className={styles['text-content']}>{description}</p>
-
-        <footer
-          onClick={() => {
-            navigate(`/project/${projectId}`);
-          }}
-        >
-          <span className={styles['text-extra']}>{numTasks} tasks</span>
-          <span className={clsx('material-icons', styles.icon)}>east</span>
-        </footer>
-      </>
-    </Card>
+    </div>
   );
 };
 

@@ -17,11 +17,7 @@ const Dashboard: FC = () => {
     return <FirstTimeUser />;
   }
 
-  return (
-    <>
-      <Landing />
-    </>
-  );
+  return <Landing />;
 };
 
 export default Dashboard;
