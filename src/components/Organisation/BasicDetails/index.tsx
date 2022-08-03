@@ -58,6 +58,10 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation }) => {
   return (
     <div className={styles.content}>
       <section className={styles.section}>
+        <div className={styles['organisation-profile-created']}>
+          <h3 className={styles['organisation-heading']}>Profile Created By</h3>
+          <CreatedBy organisation={organisation} />
+        </div>
         <div className={styles['organisation-name-description']}>
           <h3 className={styles['organisation-heading']}>
             Company Description
@@ -79,40 +83,36 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation }) => {
               <p>{description}</p>
             )}
           </div>
-        </div>
-        <div className={styles['organisation-profile-created']}>
-          <h3 className={styles['organisation-heading']}>Profile Created By</h3>
-          <CreatedBy organisation={organisation} />
+          <div className={styles['whitepaper-container']}>
+            <h3
+              className={clsx(
+                styles['organisation-heading'],
+                styles['organisation-heading--whitepaper']
+              )}
+            >
+              White Paper
+            </h3>
+            {isEditable ? (
+              <input
+                type="text"
+                name="whitepaper"
+                className={styles['organisation-whitepaper-edit']}
+                value={whitepaper}
+                onChange={handleWhitepaperChange}
+              />
+            ) : (
+              <a
+                href={organisation.whitepaper ?? '#'}
+                target="_blank"
+                rel="noreferrer"
+                className={styles['organisation-whitepaper-link']}
+              >
+                {whitepaper}
+              </a>
+            )}
+          </div>
         </div>
       </section>
-      <div className={styles['whitepaper-container']}>
-        <h3
-          className={clsx(
-            styles['organisation-heading'],
-            styles['organisation-heading--whitepaper']
-          )}
-        >
-          White Paper
-        </h3>
-        {isEditable ? (
-          <input
-            type="text"
-            name="whitepaper"
-            className={styles['organisation-whitepaper-edit']}
-            value={whitepaper}
-            onChange={handleWhitepaperChange}
-          />
-        ) : (
-          <a
-            href={organisation.whitepaper ?? '#'}
-            target="_blank"
-            rel="noreferrer"
-            className={styles['organisation-whitepaper-link']}
-          >
-            {whitepaper}
-          </a>
-        )}
-      </div>
     </div>
   );
 };
