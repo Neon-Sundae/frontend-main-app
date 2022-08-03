@@ -1,7 +1,6 @@
 import { FC, ReactNode } from 'react';
 import BaseBlob from 'components/BaseBlob';
 import styles from './index.module.scss';
-import { StringNullableChain } from 'lodash';
 
 interface ModalProps {
   children: ReactNode;
