@@ -14,7 +14,7 @@ interface ProjectCardProps {
   projectId: string;
   location?: string;
   width?: string;
-  orgImage?: string;
+  orgImage?: string | null;
 }
 
 const ProjectCard: FC<ProjectCardProps> = ({

@@ -27,7 +27,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({ organisation }) => {
                 numTasks={flProject.taskCount}
                 projectName={flProject.flProjectName}
                 org={organisation.name}
-                organisationImage={organisation.profileImage}
+                profileImage={organisation.profileImage}
               />
             ))
           : null}
@@ -42,7 +42,7 @@ interface IOrganisationProjectCard {
   description: string;
   numTasks: number;
   projectId: string;
-  organisationImage?: string;
+  profileImage?: string | null;
 }
 
 const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
@@ -51,7 +51,7 @@ const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
   numTasks,
   org,
   projectName,
-  organisationImage,
+  profileImage,
 }) => {
   const navigate = useNavigate();
 
@@ -67,7 +67,7 @@ const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
         org={org}
         numTasks={numTasks}
         projectName={projectName}
-        orgImage={organisationImage}
+        orgImage={profileImage}
         location="organisation"
         width="200px"
       />
