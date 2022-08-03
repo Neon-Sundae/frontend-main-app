@@ -17,9 +17,9 @@ export const customStyles: StylesConfig<Option> = {
   control: styles => ({
     ...styles,
     backgroundColor: '#2d2d35',
-    borderWidth: 1.2,
+    borderWidth: 0.56491,
     borderColor: '#fff',
-    borderRadius: '10px',
+    borderRadius: '5.6491px',
     width: '300px',
     padding: '0 20px',
     cursor: 'pointer',

@@ -9,6 +9,7 @@ interface ModalProps {
   maxHeight?: string;
   overflowY?: any;
   onClose: () => void;
+  title?: string;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -18,6 +19,7 @@ const Modal: FC<ModalProps> = ({
   maxHeight,
   overflowY,
   onClose,
+  title,
 }) => {
   return (
     <>
@@ -26,9 +28,17 @@ const Modal: FC<ModalProps> = ({
         className={styles.overlay}
         style={{ width, height, maxHeight, overflowY }}
       >
-        <button type="button" onClick={onClose} className={styles['icon-cont']}>
-          <span className={`material-icons ${styles.icon}`}>close</span>
-        </button>
+        <div className={styles.titleDiv}>
+          <h1>{title}</h1>
+          <button
+            type="button"
+            onClick={onClose}
+            className={styles['icon-cont']}
+          >
+            <span className={`material-icons ${styles.icon}`}>close</span>
+          </button>
+        </div>
+
         {children}
         <ModalBlobs />
       </div>
@@ -38,7 +48,6 @@ const Modal: FC<ModalProps> = ({
 
 Modal.defaultProps = {
   width: '617px',
-  // height: '630px',
   overflowY: 'clip',
 };
 

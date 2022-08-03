@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import styles from './index.module.scss';
+import ProjectCard from '../../../components/Home/ProjectCard/index';
 
 interface IOrganisationProjects {
   organisation: IOrganisation;
@@ -20,12 +21,13 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({ organisation }) => {
         {flProjects.length > 0
           ? flProjects.map(flProject => (
               <OrganisationProjectCard
-                key={flProject.flProjectId_uuid}
-                projectId={flProject.flProjectId_uuid}
+                key={flProject.flProject_uuid}
+                projectId={flProject.flProject_uuid}
                 description={flProject.flProjectDescription}
                 numTasks={flProject.taskCount}
                 projectName={flProject.flProjectName}
                 org={organisation.name}
+                profileImage={organisation.profileImage}
               />
             ))
           : null}
@@ -40,6 +42,7 @@ interface IOrganisationProjectCard {
   description: string;
   numTasks: number;
   projectId: string;
+  profileImage?: string | null;
 }
 
 const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
@@ -48,6 +51,7 @@ const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
   numTasks,
   org,
   projectName,
+  profileImage,
 }) => {
   const navigate = useNavigate();
 
@@ -56,21 +60,17 @@ const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
   };
 
   return (
-    <div
-      className={styles['organisation-project-card']}
-      onClick={handleNavigation}
-    >
-      <header>
-        <BrandImage width={70} height={70} />
-        <h3 className={styles['text--primary']}>{projectName}</h3>
-        <span className={styles['text--secondary']}>{org}</span>
-      </header>
-      <p className={styles['text-content']}>{description}</p>
-
-      <footer>
-        <span className={styles['text-extra']}>{numTasks} tasks</span>
-        <span className={clsx('material-icons', styles.icon)}>east</span>
-      </footer>
+    <div onClick={handleNavigation}>
+      <ProjectCard
+        projectId={projectId}
+        description={description}
+        org={org}
+        numTasks={numTasks}
+        projectName={projectName}
+        orgImage={profileImage}
+        location="organisation"
+        width="200px"
+      />
     </div>
   );
 };

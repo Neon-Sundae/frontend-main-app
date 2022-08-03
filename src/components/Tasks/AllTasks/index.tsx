@@ -15,14 +15,13 @@ const AllTasks: FC = () => {
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
-
   return (
     <div>
       <div className={styles.container}>
         <h1 className={styles.heading}>All Tasks</h1>
         <div className={styles.taskCardWrapper}>
           {data.map((task: any) => (
-            <TaskCard key={task.id} data={task} width={'60vw'} />
+            <TaskCard key={task.id} data={task} width="60vw" />
           ))}
         </div>
       </div>

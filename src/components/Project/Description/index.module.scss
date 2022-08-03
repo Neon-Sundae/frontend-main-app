@@ -1,6 +1,6 @@
 .container {
   color: #fff;
-  width: 90%;
+  width: 80%;
   margin: auto;
   .wrap {
     display: flex;
@@ -12,14 +12,14 @@
     margin-bottom: 25px;
     font-style: normal;
     font-weight: 500;
-    font-size: 27px;
+    font-size: 21px;
     line-height: 32px;
   }
   .projectDescription {
-    width: 70vw;
+    width: 44vw;
     height: 250px;
-    padding: 25px;
-    line-height: 2rem;
+    padding: 32px;
+    line-height: 24.83px;
     background: linear-gradient(
       126.59deg,
       rgba(255, 255, 255, 0.12) 12.11%,
@@ -29,9 +29,13 @@
     backdrop-filter: blur(40px);
     /* Note: backdrop-filter has minimal browser support */
     border-radius: 23px;
+    border: .7px solid #FF9BFB;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
   }
   .card {
-    width: 25vw;
+    width: 33vw;
     height: 250px;
     padding: 25px;
     line-height: 2rem;
@@ -45,5 +49,16 @@
     /* Note: backdrop-filter has minimal browser support */
     border-radius: 23px;
     margin-left: 25px;
+    border: .7px solid #FF9BFB;
+  }
+  .inline {
+    display: flex;
+    margin-bottom: 20px;
+    svg {
+      width: 18.85px;
+      height: 18.85px;
+      margin-right: 10px;
+      margin-top: 7px;
+    }
   }
 }

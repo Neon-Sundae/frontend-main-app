@@ -1,9 +1,16 @@
+.container {
+  height: 75%;
+  color: #fff;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 32.97px;
+  margin-top: 35.72px;
+}
 .project-card {
-  width: 190px;
-  max-height: 247px;
-
+  width: 189.95px;
+  height: 242.75px;
   padding: 20px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -12,40 +19,32 @@
   border: 0.7px solid rgb(211, 155, 255);
   & header {
     & .text--primary {
-      margin-top: 6px;
-      font-family: var(--font-family-roboto-regular);
-      font-size: 18px;
-      line-height: 21px;
-      font-weight: 500px;
+      margin-top: 14px;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 22px;
     }
 
     & .text--secondary {
       font-family: var(--font-family-roboto-regular);
-      font-size: 10px;
+      font-size: 16px;
     }
   }
 
   & .text-content {
-    height: 41px;
-    margin-top: 13px;
     font-family: var(--font-family-roboto-flex);
     font-weight: 300;
-    font-size: 10px;
+    font-size: 14px;
     line-height: 16px;
-    text-overflow: ellipsis;
   }
 
   & footer {
-    margin-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     & .text-extra {
       font-family: var(--font-family-roboto-medium);
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 14px;
+      font-size: 14px;
     }
 
     & .icon {
@@ -57,12 +56,4 @@
 
 .project-card:last-of-type {
   // margin-right: 0;
-}
-
-.orgImage {
-  overflow: hidden;
-  width: 51px;
-  height: 51px;
-  border-radius: 30px;
-  cursor: pointer;
 }
