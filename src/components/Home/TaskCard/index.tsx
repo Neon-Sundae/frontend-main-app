@@ -116,7 +116,7 @@ const TaskCard = (props: any) => {
             style={{ width: '200px', cursor: 'pointer' }}
             onClick={applyToTask}
           >
-            Apply to task
+            <p>Apply to task</p> 
           </div>
         </div>
       </>
