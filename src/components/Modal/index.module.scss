@@ -16,7 +16,7 @@
   box-shadow: 0px 2px 52px rgba(0, 0, 0, 0.2);
   top: 50%;
   left: 50%;
-  border-radius: 20px;
+  border-radius: 18px;
   transform: translateX(-50%) translateY(-50%);
   overflow: hidden;
   z-index: 2;
@@ -36,4 +36,28 @@
       color: white;
     }
   }
+}
+.titleDiv {
+  width: 112%;
+  height: 15%;
+  margin-top: -30px;
+  margin-left: -31px;
+  background-color: rgba(41, 41, 50, 0.5);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 33px;
+
+  h1 {
+    font-family: var(--font-family-roboto-regular);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 25px;
+    /* or 101% */
+
+    color: #ffffff;
+  }
+  // background-color: white;
 }

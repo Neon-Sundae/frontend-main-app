@@ -54,29 +54,52 @@
   height: 40px;
 }
 
-.input {
-  padding: 12px;
-  border: 1px solid #fff;
-  border-radius: 10px;
-
+.budget {
+  //create the flex inside the budget
+  display: flex;
+  flex-direction: row;
+}
+.currency {
+  border: 0.56491px solid #ffffff;
+  border-radius: 0px 5.6491px 5.6491px 0px;
   font-size: 14px;
   background: transparent;
-  color: #fff;
-  font-family: var(--font-family-roboto-regular);
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 100;
+  line-height: 16px;
+  color: #fbfbfb;
+  align-items: center;
+  width: 62px;
+  padding: 12px;
+}
+
+.input {
+  padding: 12px;
+  border: 0.56491px solid #ffffff;
+  border-radius: 5.6491px;
+  min-width: 17em;
+  font-size: 14px;
+  background: transparent;
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 100;
+  line-height: 16px;
+  color: #fbfbfb;
 }
 .input[type='date'] {
-  color: #fff;
-  font-family: var(--font-family-roboto-regular);
-  opacity: 1;
   cursor: pointer;
-  border: 1px solid #fff;
-  border-radius: 10px;
-  height: 39px;
 }
 input[type='date']::-webkit-calendar-picker-indicator {
   background-color: #fff;
 }
-
+//firefox disable arrows
+.input[type='number'] {
+  -moz-appearance: textfield;
+}
+//chrome and safari
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .input::placeholder {
   color: #fff;
   position: absolute;
@@ -97,20 +120,20 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .saveBtn {
-  background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
-  width: 200px;
-  height: 45px;
-  backdrop-filter: blur(43.3229px);
-  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
-  background-size: cover;
-  border-radius: 26.8312px;
-  border: 0.62px solid;
+  width: 180px;
+  height: 55px;
   color: #fff;
   cursor: pointer;
+  background: linear-gradient(
+      94.63deg,
+      rgba(255, 255, 255, 0.16) 4.94%,
+      rgba(255, 255, 255, 0.04) 93.94%
+    ),
+    linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%);
+  box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+  border-radius: 22px;
 }
-.plus {
-  // font-weight: 600;
-}
+
 span {
   & .input {
     width: 100px;
@@ -130,4 +153,23 @@ span {
   position: relative;
   cursor: pointer;
   opacity: 0.5;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.fieldNames {
+  font-family: var(--font-family-roboto-flex);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
+
+  color: #ffffff;
+  margin-bottom: 10px;
 }
