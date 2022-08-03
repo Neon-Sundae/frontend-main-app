@@ -1,5 +1,5 @@
 .container {
-  height: 347px;
+  height: 293px;
   overflow: hidden;
   position: relative;
 }
@@ -25,10 +25,12 @@
 }
 
 .organisation-name {
-  font-family: var(--font-family-roboto-semibold);
-  font-size: 34px;
+  font-family: var(--font-family-roboto-regular);
+  font-size: 30px;
   color: white;
   margin-bottom: 30px;
+  line-height: 41px;
+  font-weight: 600px;
 
   &--edit {
     background: rgba(60, 60, 70, 0.5);
@@ -59,12 +61,14 @@
 
   & > .socials-header {
     font-family: var(--font-family-roboto-regular);
-    font-size: 24px;
+    font-size: 21px;
+    font-weight: 500px;
   }
 
   & > .organisation-website {
     font-family: var(--font-family-roboto-regular);
-    font-size: 24px;
+    font-size: 21px;
+    font-weight: 500px;
     color: white;
 
     &--edit {
@@ -101,8 +105,8 @@
 }
 
 .logo {
-  width: 125px;
-  height: 125px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
 
@@ -126,27 +130,29 @@
 }
 
 .btn {
-  min-width: 250px;
+  min-width: 225px;
   padding: 14px 40px;
   color: white;
   cursor: pointer;
 
   $border: 1px;
   border: solid $border rgb(255, 255, 255); /* !importanté */
-  border-radius: 19px;
+  border-radius: 23px;
 
   font-family: var(--font-family-roboto-regular);
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 21px;
   font-weight: 400;
   text-align: center;
 
-  background: rgba(255, 255, 255, 0.3);
   background: linear-gradient(
-    126.59deg,
-    rgba(255, 255, 255, 0.12) 12.11%,
-    rgba(255, 255, 255, 0.03) 73.08%
+    94.3deg,
+    rgba(255, 255, 255, 0.12) 8.58%,
+    rgba(255, 255, 255, 0.03) 96.04%
   );
-  backdrop-filter: blur(40px);
+  box-shadow: 0px 4px 4px rgba(68, 68, 68, 0.5);
+  backdrop-filter: blur(64.767px);
+
   -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
   -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
   box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
