@@ -3,15 +3,24 @@ import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import styles from './index.module.scss';
 import useFetchUserOrgs from './hooks';
+import { useNavigate } from 'react-router-dom';
 
 const OrganisationCard = () => {
   const userOrgs = useFetchUserOrgs();
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
       {userOrgs?.data?.length === 0 && <p>No Organisations</p>}
       {userOrgs?.data?.map((org: any) => {
         return (
-          <div className={styles.wrap}>
+          <div
+            className={styles.wrap}
+            onClick={() => {
+              navigate(`/organisation/${org.organisationId}`);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <Card
               showTransparentBg
               className={styles.cardsContainer}
