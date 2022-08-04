@@ -43,7 +43,7 @@ const ProjectsCard = () => {
               </header>
               <p className={styles['text-content']}>
                 {project?.description?.length > 121
-                  ? `${project?.description?.substring(0, 121)}...`
+                  ? `${project?.description?.substring(0, 65)}...`
                   : project?.description}
               </p>
               <footer>
