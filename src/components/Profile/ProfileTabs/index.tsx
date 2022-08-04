@@ -18,7 +18,7 @@ const ProfileTabs: FC = () => {
       case 'organisation':
         return <OrganisationTab />;
       case 'project':
-        return userOrgs.data.length && <ProjectsTab />;
+        return <ProjectsTab />;
       case 'task':
         return <Tasks />;
       case 'workHistory':
