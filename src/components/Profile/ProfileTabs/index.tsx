@@ -37,7 +37,7 @@ const ProfileTabs: FC = () => {
   return (
     <>
       <div className={styles['profile-tab-header']}>
-        {userOrgs.data.length !== 0 && (
+        {userOrgs?.data?.length !== 0 && (
           <h3
             className={clsx(
               styles['profile-tab-title'],
@@ -49,7 +49,7 @@ const ProfileTabs: FC = () => {
             Organisations
           </h3>
         )}
-        {userOrgs.data.length !== 0 && (
+        {userOrgs?.data?.length !== 0 && (
           <h3
             className={clsx(
               styles['profile-tab-title'],
