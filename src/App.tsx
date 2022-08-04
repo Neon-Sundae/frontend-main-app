@@ -15,6 +15,7 @@ const Organisation = lazy(() => import('containers/organisation'));
 const Project = lazy(() => import('containers/project'));
 const Tasks = lazy(() => import('containers/tasks'));
 const Logout = lazy(() => import('containers/logout'));
+const TaskCancel = lazy(() => import('containers/taskCancel'));
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
@@ -104,6 +105,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/task/cancel/:identifier" element={<TaskCancel />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </Suspense>

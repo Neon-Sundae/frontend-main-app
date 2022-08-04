@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/extensions */
 import clsx from 'clsx';
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { ChangeEvent, FC, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import _debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce';
 import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete.svg';
 import numberRange from 'utils/numberRange';
 import months from 'utils/getMonthsArray';
@@ -86,6 +86,15 @@ const EducationCard: FC<IEducation> = ({
   );
 };
 
+interface IEditPayload {
+  name: string;
+  value: string;
+  degreeEdit: string;
+  universityEdit: string;
+  startDateEdit: string;
+  endDateEdit: string;
+}
+
 const EducationCardEdit: FC<IEducation> = ({
   educationId,
   degree,
@@ -99,25 +108,22 @@ const EducationCardEdit: FC<IEducation> = ({
   const [startDateLocal, setStartDateLocal] = useState(startDate);
   const [endDateLocal, setEndDateLocal] = useState(endDate);
 
-  const payload = {
-    educationId,
-    degree: degreeLocal,
-    university: universityLocal,
-    startDate: startDateLocal,
-    endDate: endDateLocal,
-  };
-
   const removeProfileEducation = useRemoveProfileEducation();
   const updateProfileEducation = useUpdateProfileEducation();
 
   const handleDebounceFn = (name: string, value: string) => {
     updateProfileEducation({
-      ...payload,
-      [name]: value,
+      educationId,
+      name,
+      value,
     });
   };
 
-  const debounceFn: any = useCallback(_debounce(handleDebounceFn, 1000), []);
+  const debounceFn: any = useRef(
+    debounce((name: string, value: string) => {
+      handleDebounceFn(name, value);
+    }, 500)
+  ).current;
 
   const handleDegreeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

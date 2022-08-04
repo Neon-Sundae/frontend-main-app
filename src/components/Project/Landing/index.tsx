@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { getAccessToken } from 'utils/authFn';
 import { RootState } from 'reducers';
+
 import Header from '../Header';
 import Description from '../Description';
 import { useProject, useFetchProjects } from './hooks';
@@ -54,12 +55,13 @@ const Landing: FC = () => {
     flResources,
     organisation,
   } = projectData;
-
   useEffect(() => {
     if (organisation?.organisationUser[0]?.walletId) {
       getOnChainProject(create, organisation?.organisationUser[0]?.walletId);
     }
   }, [organisation]);
+
+  console.log(organisation);
 
   return projectData ? (
     <div className={styles.container}>
@@ -67,10 +69,10 @@ const Landing: FC = () => {
       <BlurBlobs />
       <Header
         projectName={name}
-        founderName={userName || ''}
         setOpen={val => setOpen(val)}
         budget={budget}
         founderAddress={organisation?.organisationUser[0]?.walletId}
+        organisationName={organisation?.name}
       />
       <Description
         description={description}

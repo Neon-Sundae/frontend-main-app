@@ -234,16 +234,15 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       <Modal
         onClose={() => onClose()}
         width="700px"
-        height="80vh"
+        maxHeight="85vh"
         overflowY={'auto'}
+        title={'Start a Project'}
       >
         <div className={styles.container}>
-          <div className={styles.formContentWrap}>
-            <form>
-              <h2>Start a Project</h2>
-              <br />
-              <br />
+          <form>
+            <div className={styles.row}>
               <div>
+                <p className={styles.fieldNames}>Name</p>
                 <input
                   className={styles.input}
                   type="text"
@@ -258,8 +257,32 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                   }
                 />
               </div>
-              <br />
               <div>
+                <p className={styles.fieldNames}>Budget</p>
+                <div className={styles.budget}>
+                  <input
+                    className={styles.input}
+                    type="number"
+                    id="budget"
+                    placeholder="Project Budget"
+                    style={{
+                      width: '100%',
+                      borderRadius: '5.6491px 0px 0px 5.6491px',
+                    }}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        budget: parseInt(e.target.value),
+                      })
+                    }
+                  />
+                  <div className={styles.currency}>USDC</div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.row}>
+              <div style={{ width: '100%' }}>
+                <p className={styles.fieldNames}>Decription</p>
                 <textarea
                   id="description"
                   placeholder="Description"
@@ -273,137 +296,98 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                   }
                 />
               </div>
-              <br />
+            </div>
+            <div className={styles.row}>
               <div>
-                <h4>Project Timeline</h4>
-                <br />
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {/* FIXME: move input to seperate comp */}
-                  <input
-                    className={styles.input}
-                    type="date"
-                    id="dueDate"
-                    placeholder="Project Due Date"
-                    style={{ width: '300px' }}
-                    onChange={e =>
-                      setFormData({
-                        ...formData,
-                        timeOfCompletion: e.target.value,
-                      })
-                    }
-                  />
-                  &nbsp; &nbsp;
-                  <span style={{ position: 'relative' }}>
-                    <label style={{ position: 'absolute', top: '-35px' }}>
-                      <h4 style={{ width: '220px' }}>Preferred Timezones</h4>
-                    </label>
-                    <Select
-                      options={options}
-                      styles={customStyles}
-                      isMulti
-                      onChange={options => setSelectedOptions(options)}
-                    />
-                  </span>
-                </div>
-                <br />
-              </div>
-
-              <div>
-                <br />
-                <h4>Project Budget</h4>
-                <br />
+                <p className={styles.fieldNames}>Project est. End Date</p>
                 <input
-                  type="text"
-                  id="resource-name"
-                  placeholder="Add project budget"
                   className={styles.input}
-                  style={{ width: '100%' }}
-                  onBlur={e => {
-                    setFormData((prevState: any) => {
-                      const target = e.target as HTMLInputElement;
-                      prevState.budget = parseInt(target.value);
-                      return {
-                        ...prevState,
-                      };
-                    });
-                  }}
+                  type="date"
+                  id="dueDate"
+                  placeholder="Project Due Date"
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      timeOfCompletion: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div>
-                <br />
-                <br />
-                <h4>Resources needed</h4>
-                <br />
-                <div>
-                  <input
-                    type="text"
-                    id="resource-name"
-                    placeholder="Add a resource"
-                    className={styles.input}
-                    style={{ width: '100%' }}
-                    onBlur={e => {
-                      handleResourceChange(e);
-                    }}
-                  />
-                  {Array.from(Array(addMoreResources.counter))?.map(
-                    (c, index) => {
-                      const uId = getRandomString(5);
-                      return (
-                        <div id={`${uId}`} key={index}>
-                          <div className={styles.addHeight}></div>
-                          <input
-                            type="text"
-                            placeholder="Add a resource"
-                            style={{ width: '100%' }}
-                            className={styles.input}
-                            onBlur={e => {
-                              handleResourceChange(e);
-                            }}
-                          />
-                          <span
-                            id={`resource-cancel-${index}`}
-                            className={styles.inputIcon}
-                            onClick={() => {
-                              handleRemoveResource(uId);
+                <p className={styles.fieldNames}>Preferred Timezones</p>
+                <Select
+                  options={options}
+                  styles={customStyles}
+                  isMulti
+                  onChange={options => setSelectedOptions(options)}
+                />
+              </div>
+            </div>
+            <div className={styles.row}>
+              <div style={{ width: '100%' }}>
+                <p className={styles.fieldNames}>Talents Needed</p>
+                <input
+                  type="text"
+                  id="resource-name"
+                  placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
+                  className={styles.input}
+                  style={{ width: '100%' }}
+                  onBlur={e => {
+                    handleResourceChange(e);
+                  }}
+                />
+                {Array.from(Array(addMoreResources.counter))?.map(
+                  (c, index) => {
+                    const uId = getRandomString(5);
+                    return (
+                      <div id={`${uId}`} key={index}>
+                        <div className={styles.addHeight}></div>
+                        <input
+                          type="text"
+                          placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
+                          style={{ width: '100%' }}
+                          className={styles.input}
+                          onBlur={e => {
+                            handleResourceChange(e);
+                          }}
+                        />
+                        <span
+                          id={`resource-cancel-${index}`}
+                          className={styles.inputIcon}
+                          onClick={() => {
+                            handleRemoveResource(uId);
+                          }}
+                        >
+                          <div
+                            style={{
+                              color: 'transparent',
+                              textShadow: '0 0 0 white',
                             }}
                           >
-                            <div
-                              style={{
-                                color: 'transparent',
-                                textShadow: '0 0 0 white',
-                              }}
-                            >
-                              ❌
-                            </div>
-                          </span>
-                        </div>
-                      );
-                    }
-                  )}
-                  {formData?.flResources?.map((element: any, index: any) => {
-                    <h5 key={index}>{element}</h5>;
-                  })}
-                </div>
+                            ❌
+                          </div>
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
+                {formData?.flResources?.map((element: any, index: any) => {
+                  <h5 key={index}>{element}</h5>;
+                })}
                 <div>
                   <p className={styles.pointer} onClick={handleAddResource}>
-                    Add more resources <span className={styles.plus}>+</span>
+                    Add more resources <span>+</span>
                   </p>
                 </div>
               </div>
-              <br />
+            </div>
+            <div className={styles.row} style={{ marginBottom: '5px' }}>
               <div>
-                <br />
-                <h4>Budget</h4>
-                <br />
+                <p className={styles.fieldNames}>Categories</p>
                 <input
                   type="text"
-                  id="name"
-                  placeholder="Write a category"
+                  id="category"
+                  placeholder="Category name (“Website Design”)"
                   className={styles.input}
                   onChange={e =>
                     setFormData((prevState: any) => {
@@ -414,19 +398,20 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                       };
                     })
                   }
-                  style={{ width: '48%' }}
                 />
-                &nbsp; &nbsp; &nbsp;
-                <span style={{ position: 'relative' }}>
-                  <label style={{ position: 'absolute', top: '-49px' }}>
-                    % of Budget
-                  </label>
+              </div>
+              <div>
+                <p className={styles.fieldNames}>Percentage of Budget</p>
+                <div className={styles.budget}>
                   <input
-                    type="text"
+                    type="number"
                     id="percentageAllocation"
                     className={styles.input}
-                    placeholder=""
-                    style={{ width: '48%' }}
+                    placeholder="% of budget for this category"
+                    style={{
+                      width: '100%',
+                      borderRadius: '5.6491px 0px 0px 5.6491px',
+                    }}
                     onChange={e =>
                       setFormData((prevState: any) => {
                         prevState.flProjectCategory[0].percentageAllocation =
@@ -437,92 +422,94 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                       })
                     }
                   />
-                </span>
-                {Array.from(Array(addMoreCategories.counter))?.map(
-                  (c, index) => {
-                    const uId: string = getRandomString(5);
-                    return (
-                      <div key={index} id={`resource-category-${uId}`}>
-                        <div className={styles.addHeight}></div>
-                        <input
-                          type="text"
-                          id="name"
-                          placeholder="Write a category"
-                          className={styles.input}
-                          style={{ width: '48%' }}
-                          onBlur={e =>
-                            setFormData((prevState: any) => {
-                              prevState.flProjectCategory.push({
-                                categoryName: e.target.value,
-                              });
-                              return {
-                                ...prevState,
-                              };
-                            })
-                          }
-                        />
-                        &nbsp; &nbsp; &nbsp;
-                        <span style={{ position: 'relative' }}>
-                          <input
-                            type="text"
-                            id="percentageAllocation"
-                            className={styles.input}
-                            placeholder=""
-                            style={{ width: '48%' }}
-                            onBlur={e =>
-                              setFormData((prevState: any) => {
-                                prevState.flProjectCategory[
-                                  prevState.flProjectCategory.length - 1
-                                ].percentageAllocation = parseFloat(
-                                  e.target.value
-                                );
-                                return {
-                                  ...prevState,
-                                };
-                              })
-                            }
-                          />
-                          <span
-                            id={`resource-cancel-${uId}`}
-                            className={styles.inputIcon}
-                            onClick={() => {
-                              handleRemoveCategory(uId);
-                            }}
-                          >
-                            <div
-                              style={{
-                                color: 'transparent',
-                                textShadow: '0 0 0 white',
-                              }}
-                            >
-                              ❌
-                            </div>
-                          </span>
-                        </span>
-                      </div>
-                    );
-                  }
-                )}
-                <p className={styles.pointer} onClick={handleAddCategory}>
-                  Add more Categories <span className={styles.plus}>+</span>
-                </p>
-                <br />
+                  <div className={styles.currency}>%</div>
+                </div>
               </div>
-              <br />
-              <footer
-                style={{ textAlign: 'center' }}
-                onClick={e => e.preventDefault()}
-              >
-                <button
-                  className={styles.saveBtn}
-                  onClick={e => handleAddProject(e)}
+            </div>
+            {Array.from(Array(addMoreCategories.counter))?.map((c, index) => {
+              const uId: string = getRandomString(5);
+              return (
+                <div
+                  key={index}
+                  id={`resource-category-${uId}`}
+                  className={styles.row}
+                  style={{ marginBottom: '5px' }}
                 >
-                  SAVE
-                </button>
-                &nbsp; &nbsp;
-              </footer>
-            </form>
-          </div>
+                  <input
+                    type="text"
+                    id="category"
+                    placeholder="Category name (“Website Design”)"
+                    className={styles.input}
+                    onChange={e =>
+                      setFormData((prevState: any) => {
+                        prevState.flProjectCategory[0].categoryName =
+                          e.target.value;
+                        return {
+                          ...prevState,
+                        };
+                      })
+                    }
+                  />
+                  <span style={{ position: 'relative' }}>
+                    <div className={styles.budget}>
+                      <input
+                        type="text"
+                        id="percentageAllocation"
+                        className={styles.input}
+                        placeholder="% of budget for this category"
+                        style={{
+                          width: '100%',
+                          borderRadius: '5.6491px 0px 0px 5.6491px',
+                        }}
+                        onChange={e =>
+                          setFormData((prevState: any) => {
+                            prevState.flProjectCategory[0].percentageAllocation =
+                              parseFloat(e.target.value);
+                            return {
+                              ...prevState,
+                            };
+                          })
+                        }
+                      />
+                      <div className={styles.currency}>%</div>
+                    </div>
+                    <span
+                      id={`resource-cancel-${uId}`}
+                      className={styles.inputIcon}
+                      onClick={() => {
+                        handleRemoveCategory(uId);
+                      }}
+                    >
+                      <div
+                        style={{
+                          marginLeft: '5px',
+                          color: 'transparent',
+                          textShadow: '0 0 0 white',
+                        }}
+                      >
+                        ❌
+                      </div>
+                    </span>
+                  </span>
+                </div>
+              );
+            })}
+            <p className={styles.pointer} onClick={handleAddCategory}>
+              Add more Categories <span>+</span>
+            </p>
+            <footer
+              style={{ textAlign: 'center' }}
+              onClick={e => e.preventDefault()}
+            >
+              <button
+                className={styles.saveBtn}
+                onClick={e => handleAddProject(e)}
+              >
+                SAVE
+              </button>
+              &nbsp; &nbsp;
+            </footer>
+          </form>
         </div>
       </Modal>
     </>

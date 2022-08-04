@@ -107,7 +107,12 @@ const TaskDetail: FC<ITaskDetail> = ({
                 )
                 .map((item: any, index: number) =>
                   item.Profile.picture !== null ? (
-                    <img src="" alt="" key={index} />
+                    <img
+                      src={item.Profile.picture}
+                      className={styles['builder-avatar']}
+                      alt=""
+                      key={index}
+                    />
                   ) : (
                     <div className={styles['builder-avatar']} key={index} />
                   )
@@ -118,7 +123,12 @@ const TaskDetail: FC<ITaskDetail> = ({
                   .slice(0, 5)
                   .map((item: any, index: number) =>
                     item.Profile.picture !== null ? (
-                      <img src="" alt="" key={index} />
+                      <img
+                        src={item.Profile.picture}
+                        className={styles['builder-avatar']}
+                        alt=""
+                        key={index}
+                      />
                     ) : (
                       <div className={styles['builder-avatar']} key={index} />
                     )

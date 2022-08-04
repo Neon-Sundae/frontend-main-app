@@ -9,7 +9,7 @@ interface OrganisationUser {
 }
 
 interface OrganisationProjects {
-  flProjectId_uuid: string;
+  flProject_uuid: string;
   flProjectName: string;
   flProjectDescription: string;
   taskCount: number;

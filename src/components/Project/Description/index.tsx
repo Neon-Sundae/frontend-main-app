@@ -1,5 +1,10 @@
 import { FC } from 'react';
+import { ReactComponent as Money } from 'assets/illustrations/icons/money.svg';
+import { ReactComponent as Graph } from 'assets/illustrations/icons/graph.svg';
+import { ReactComponent as Time } from 'assets/illustrations/icons/time.svg';
+import { ReactComponent as Resource } from 'assets/illustrations/icons/resource.svg';
 import styles from './index.module.scss';
+
 interface DescriptionProps {
   description: string;
   budget: number;
@@ -26,17 +31,29 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     .join(', ');
   return (
     <div className={styles.container}>
-      <h4>Company Description</h4>
+      <h4>Description</h4>
       <div className={styles.wrap}>
         <section className={styles.projectDescription}>
           <p>{description}</p>
         </section>
         <section className={styles.projectDetails}>
           <div className={styles.card}>
-            <p>Budget: {budget} USDC</p>
-            <p>Timeline: {days} days</p>
-            <p>Preferred TimeZones: {preferredTimeZones}</p>
-            <p>Looking For: {flResourcesStringJoined}</p>
+            <span className={styles.inline}>
+              <Money />
+              <p>Budget: {budget} USDC</p>
+            </span>
+            <span className={styles.inline}>
+              <Time />
+              <p>Timeline: {days} days</p>
+            </span>
+            <span className={styles.inline}>
+              <Graph />
+              <p>Timezones: {preferredTimeZones}</p>
+            </span>
+            <span className={styles.inline}>
+              <Resource />
+              <p>Looking For: {flResourcesStringJoined}</p>
+            </span>
           </div>
         </section>
       </div>

@@ -32,7 +32,6 @@ const StepTwo: FC<StepTwoProps> = ({
       toast.error("NFT doesn't have image! Select another");
       setSelectedNFTId('');
     }
-    console.log('data', data);
     setPicture(data);
   };
   const getTokenMetadata = (token: any) => {
@@ -102,6 +101,11 @@ const StepTwo: FC<StepTwoProps> = ({
               </span>
             );
           })}
+          {nfts?.total === 0 && (
+            <div className={styles.noNfts}>
+              <h3>No NFTs found</h3>
+            </div>
+          )}
         </div>
         <button
           onClick={() => {

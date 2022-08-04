@@ -99,11 +99,8 @@ const useRemoveProfileWorkplace = () => {
 
 interface IUpdateProfileWorkplaceParameters {
   workplaceId: number;
-  role: string;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
+  keyName: string;
+  value: string;
 }
 
 const useUpdateProfileWorkplace = () => {
@@ -111,11 +108,8 @@ const useUpdateProfileWorkplace = () => {
 
   const updateProfileWorkplace = ({
     workplaceId,
-    role,
-    name,
-    description,
-    startDate,
-    endDate,
+    keyName,
+    value,
   }: IUpdateProfileWorkplaceParameters) => {
     const accessToken = getAccessToken();
 
@@ -127,11 +121,7 @@ const useUpdateProfileWorkplace = () => {
         try {
           const payload = {
             workplaceId,
-            role,
-            name,
-            description,
-            startDate,
-            endDate,
+            [keyName]: value,
           };
 
           const response = await fetch(
@@ -147,16 +137,7 @@ const useUpdateProfileWorkplace = () => {
             }
           );
           await handleApiErrors(response);
-          dispatch(
-            updateProfileWorkplaceAction({
-              workplaceId,
-              role,
-              name,
-              description,
-              startDate,
-              endDate,
-            })
-          );
+          dispatch(updateProfileWorkplaceAction(workplaceId, keyName, value));
         } catch (err) {
           console.log(err);
           handleUnAuthorization(err);

@@ -25,8 +25,8 @@ const useAddProfileEducation = () => {
       (async () => {
         try {
           const payload = {
-            degree: 'Creative Designer',
-            university: 'Google Corporation',
+            degree: 'Computer Science',
+            university: 'National University of Singapore',
             startDate: now.toISOString(),
             endDate: now.toISOString(),
             profileId: profile?.profileId,
@@ -97,10 +97,8 @@ const useRemoveProfileEducation = () => {
 
 interface IUpdateProfileEducationParameters {
   educationId: number;
-  degree: string;
-  university: string;
-  startDate: string;
-  endDate: string;
+  name: string;
+  value: string;
 }
 
 const useUpdateProfileEducation = () => {
@@ -108,10 +106,8 @@ const useUpdateProfileEducation = () => {
 
   const updateProfileEducation = ({
     educationId,
-    degree,
-    university,
-    startDate,
-    endDate,
+    name,
+    value,
   }: IUpdateProfileEducationParameters) => {
     const accessToken = getAccessToken();
 
@@ -122,10 +118,7 @@ const useUpdateProfileEducation = () => {
       (async () => {
         try {
           const payload = {
-            degree,
-            university,
-            startDate,
-            endDate,
+            [name]: value,
           };
 
           const response = await fetch(
@@ -141,15 +134,7 @@ const useUpdateProfileEducation = () => {
             }
           );
           await handleApiErrors(response);
-          dispatch(
-            updateProfileEducationAction(
-              educationId,
-              degree,
-              university,
-              startDate,
-              endDate
-            )
-          );
+          dispatch(updateProfileEducationAction(educationId, name, value));
         } catch (err) {
           console.log(err);
           handleUnAuthorization(err);
