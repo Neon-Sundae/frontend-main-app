@@ -28,16 +28,18 @@ const Modal: FC<ModalProps> = ({
         className={styles.overlay}
         style={{ width, height, maxHeight, overflowY }}
       >
-        <div className={styles.titleDiv}>
-          <h1>{title}</h1>
-          <button
-            type="button"
-            onClick={onClose}
-            className={styles['icon-cont']}
-          >
-            <span className={`material-icons ${styles.icon}`}>close</span>
-          </button>
-        </div>
+        {title && (
+          <div className={styles.titleDiv}>
+            <h1>{title}</h1>
+            <button
+              type="button"
+              onClick={onClose}
+              className={styles['icon-cont']}
+            >
+              <span className={`material-icons ${styles.icon}`}>close</span>
+            </button>
+          </div>
+        )}
 
         {children}
         <ModalBlobs />
