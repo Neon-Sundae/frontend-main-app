@@ -31,16 +31,11 @@ const Modal: FC<ModalProps> = ({
         {title && (
           <div className={styles.titleDiv}>
             <h1>{title}</h1>
-            <button
-              type="button"
-              onClick={onClose}
-              className={styles['icon-cont']}
-            >
-              <span className={`material-icons ${styles.icon}`}>close</span>
-            </button>
           </div>
         )}
-
+        <button type="button" onClick={onClose} className={styles['icon-cont']}>
+          <span className={`material-icons ${styles.icon}`}>close</span>
+        </button>
         {children}
         <ModalBlobs />
       </div>

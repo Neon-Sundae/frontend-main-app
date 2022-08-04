@@ -7,10 +7,12 @@ import Tasks from 'components/Tasks';
 import WorkHistory from 'components/WorkHistory';
 import OrganisationTab from 'components/OrganisationTab';
 import ProjectsTab from 'components/ProjectsTab';
+import useFetchUserOrgs from './hooks';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
   const [activeState, setActiveState] = useState('task');
+  const userOrgs = useFetchUserOrgs();
   const renderTabs = () => {
     switch (activeState) {
       case 'organisation':
@@ -35,25 +37,29 @@ const ProfileTabs: FC = () => {
   return (
     <>
       <div className={styles['profile-tab-header']}>
-        <h3
-          className={clsx(
-            styles['profile-tab-title'],
-            activeState === 'organisation' &&
-              styles['profile-tab-title--active']
-          )}
-          onClick={() => handleClick('organisation')}
-        >
-          Organisations
-        </h3>
-        <h3
-          className={clsx(
-            styles['profile-tab-title'],
-            activeState === 'project' && styles['profile-tab-title--active']
-          )}
-          onClick={() => setActiveState('project')}
-        >
-          Projects
-        </h3>
+        {userOrgs?.data?.length !== 0 && (
+          <h3
+            className={clsx(
+              styles['profile-tab-title'],
+              activeState === 'organisation' &&
+                styles['profile-tab-title--active']
+            )}
+            onClick={() => handleClick('organisation')}
+          >
+            Organisations
+          </h3>
+        )}
+        {userOrgs?.data?.length !== 0 && (
+          <h3
+            className={clsx(
+              styles['profile-tab-title'],
+              activeState === 'project' && styles['profile-tab-title--active']
+            )}
+            onClick={() => setActiveState('project')}
+          >
+            Projects
+          </h3>
+        )}
         <h3
           className={clsx(
             styles['profile-tab-title'],
