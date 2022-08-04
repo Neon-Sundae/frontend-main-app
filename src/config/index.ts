@@ -13,20 +13,20 @@ const configs: Environment = {
   local: {
     ApiBaseUrl: 'http://localhost:3001/local',
     AppDomain: 'http://localhost:3000',
-    chainId: '0x13881',
-    explorerURL: 'https://mumbai.polygonscan.com/',
+    chainId: '0x61', //0x61 (for binance chain) 0x13881 for Mumbai testnet
+    explorerURL: 'https://testnet.bscscan.com', //https://mumbai.polygonscan.com/
   },
   dev: {
     ApiBaseUrl: 'https://api.develop.founderslab.xyz/development',
     AppDomain: 'https://develop.founderslab.xyz',
-    chainId: '0x13881',
-    explorerURL: 'https://mumbai.polygonscan.com/',
+    chainId: '0x61',
+    explorerURL: 'https://testnet.bscscan.com',
   },
   stage: {
     ApiBaseUrl: 'https://api.develop.founderslab.xyz/staging',
     AppDomain: 'https://testnet.founderslab.xyz',
-    chainId: '0x13881',
-    explorerURL: 'https://mumbai.polygonscan.com/',
+    chainId: '0x61',
+    explorerURL: 'https://testnet.bscscan.com',
   },
   prod: {
     ApiBaseUrl: '',
