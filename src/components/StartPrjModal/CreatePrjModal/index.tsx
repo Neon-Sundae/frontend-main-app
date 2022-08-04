@@ -234,7 +234,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       <Modal
         onClose={() => onClose()}
         width="700px"
-        height="80vh"
+        maxHeight="85vh"
         overflowY={'auto'}
         title={'Start a Project'}
       >
