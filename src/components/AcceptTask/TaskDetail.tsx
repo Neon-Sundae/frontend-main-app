@@ -76,7 +76,6 @@ const TaskDetail: FC<ITaskDetail> = ({
             </div>
             <div>
               <p>Open</p>
-              <p>Interviewing</p>
               <p>In-Progress</p>
               <p>In-Review</p>
               <p>Completed</p>
