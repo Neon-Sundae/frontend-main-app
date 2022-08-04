@@ -120,7 +120,6 @@ const flProject = (state = initialState, action: Action): State => {
               { ...item, applicationStatus: 'accepted' } :
               { ...item, applicationStatus: 'rejected' }
           ),
-          status: 'interviewing'
         }
       }
     case SET_TASK_XP:

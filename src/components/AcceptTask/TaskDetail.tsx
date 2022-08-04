@@ -76,7 +76,6 @@ const TaskDetail: FC<ITaskDetail> = ({
             </div>
             <div>
               <p>Open</p>
-              <p>Interviewing</p>
               <p>In-Progress</p>
               <p>In-Review</p>
               <p>Completed</p>
@@ -216,10 +215,13 @@ const TaskDetail: FC<ITaskDetail> = ({
           </>
         ) : (
           <>
-            {selectedTask?.status === 'open' ? (
+            {selectedTask?.status === 'open' && selectedTask?.profileTask.filter(
+                (item: any) =>
+                  item?.Profile?.user?.walletId.toLowerCase() ===
+                    walletId?.toLowerCase()
+              ).length === 0 ? (
               <button onClick={applyToTask}>Apply for task</button>
-            ) : selectedTask?.status === 'interviewing' &&
-              selectedTask?.profileTask.filter(
+            ) : selectedTask?.status === 'open' && selectedTask?.profileTask.filter(
                 (item: any) =>
                   item?.Profile?.user?.walletId.toLowerCase() ===
                     walletId?.toLowerCase() &&
