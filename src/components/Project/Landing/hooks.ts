@@ -146,7 +146,7 @@ const useProject = () => {
         USDCAddress,
         name,
         description,
-        budget * Math.pow(10, 6)
+        Number(budget * Math.pow(10, 6)).toFixed(0)
       )
       .send({ from: walletId })
       .on('transactionHash', (hash: any) => {
@@ -186,7 +186,7 @@ const useProject = () => {
       USDCContract.methods
         .approve(
           selectedProjectAddress,
-          budget * 1.1 * Math.pow(10, 6)
+          Number(budget * 1.1 * Math.pow(10, 6)).toFixed(0)
         )
         .send({ from: walletId })
         .on('transactionHash', (hash: any) => {
@@ -199,7 +199,7 @@ const useProject = () => {
           );
           projectContract.methods
             .depositFunds(
-              budget * 1.1 * Math.pow(10, 6)
+              Number(budget * 1.1 * Math.pow(10, 6)).toFixed(0)
             )
             .send({ from: walletId })
             .on('transactionHash', (hash: any) => {

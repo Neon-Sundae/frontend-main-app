@@ -21,6 +21,7 @@ import {
   SET_ACCEPTED_BUILDER,
   SET_REJECTED_BUILDER,
 } from 'actions/flProject/types';
+import { useUpdateTaskStatus } from 'components/TaskManagement/hooks';
 
 const useFetchTaskData = (taskId: number | undefined) => {
   const { data } = useQuery(
@@ -94,7 +95,7 @@ const useSelectBuilder = () => {
           projectAddress,
           builderInfo?.Profile?.user?.walletId,
           taskName,
-          price * Math.pow(10, 6),
+          Number(price * Math.pow(10, 6)).toFixed(0),
           xp,
           difficulty
         )
@@ -312,10 +313,62 @@ const useUpdateTaskChecklist = (taskChecklistId: number) => {
   return updateTaskChecklist;
 };
 
+const useCancelTask = () => {
+
+  const updateTask = useUpdateTaskStatus();
+  const accessToken = getAccessToken();
+  const [success, setSuccess] = useState(false);
+
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const { selectedTask } = useSelector((state: RootState) => state.flProject);
+  const { selectedProjectAddress } = useSelector(
+    (state: RootState) => state.flProject
+  );
+
+  const cancelTask = async() => {
+    try {
+      if (!selectedTask.cancelPermission) {
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const payload = { taskId: selectedTask?.taskId };
+
+        const response = await fetch(`${config.ApiBaseUrl}/task/cancel/founder`, {
+          signal,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        await handleApiErrors(response);
+        setSuccess(true);
+      } else {
+        const web3 = getWeb3Instance();
+        const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
+        await taskContract.methods.cancelTask(selectedTask?.taskSmartContractId)
+          .send({ from: walletId });
+
+        await updateTask.mutateAsync({
+            taskId: selectedTask?.taskId,
+            status: 'cancelled'
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      setSuccess(false);
+    }
+  }
+
+  return {cancelTask, success, setSuccess}
+}
+
 export {
   useFetchTaskData,
   useFetchTaskDataOnChain,
   useSelectBuilder,
   useCommitToTask,
   useUpdateTaskChecklist,
+  useCancelTask
 };

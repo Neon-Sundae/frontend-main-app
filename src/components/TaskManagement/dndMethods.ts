@@ -63,7 +63,7 @@ const notAllowedCases = (
   founderUserId: any,
   userId: number | undefined
 ) => {
-  console.log('test');
+  console.log('test', result);
   if (!result.destination) {
     return false;
   }
