@@ -183,6 +183,7 @@ const useProject = () => {
         USDCAbi.abi as AbiItem[],
         USDCAddress
       );
+      console.log(budget * 1.1 * Math.pow(10, 6));
       USDCContract.methods
         .approve(
           selectedProjectAddress,
@@ -190,7 +191,7 @@ const useProject = () => {
         )
         .send({ from: walletId })
         .on('transactionHash', (hash: any) => {
-          setDeploying('approving')
+          setDeploying('approving');
         })
         .on('receipt', (receipt: any) => {
           const projectContract = new web3.eth.Contract(
@@ -201,6 +202,7 @@ const useProject = () => {
             .depositFunds(
               Number(budget * 1.1 * Math.pow(10, 6)).toFixed(0)
             )
+
             .send({ from: walletId })
             .on('transactionHash', (hash: any) => {
               setDeploying('depositing');
@@ -218,7 +220,7 @@ const useProject = () => {
         })
         .on('error', (error: any) => {
           setDeploying('failed');
-        })
+        });
     } catch (err) {
       console.log(err);
     }
