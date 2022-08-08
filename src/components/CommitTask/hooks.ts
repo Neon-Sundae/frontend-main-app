@@ -27,7 +27,7 @@ const useCommitToTask = () => {
             const FNDRContract = new web3.eth.Contract(FNDRAbi.abi as AbiItem[], FNDRAddress);
             const balance = await FNDRContract.methods.balanceOf(walletId).call();
             if (balance >= amount * Math.pow(10, 6)) {
-                FNDRContract.methods.approve(taskContractAddress, amount * Math.pow(10, 6))
+                FNDRContract.methods.approve(taskContractAddress, Number(amount * Math.pow(10, 6)).toFixed(0))
                     .send({ from: walletId })
                     .on('transactionHash', (hash: any) => {
                         setHash(hash);
@@ -37,7 +37,7 @@ const useCommitToTask = () => {
                         setPending('confirming');
                         const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
                         // TODO: should use task token id not taskId of db.
-                        taskContract.methods.commitToTask(taskId, amount * Math.pow(10, 6))
+                        taskContract.methods.commitToTask(taskId, Number(amount * Math.pow(10, 6)).toFixed(0))
                             .send({ from: walletId })
                             .on('transactionHash', (hash: any) => {
                                 setHash(hash);
