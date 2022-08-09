@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-dummy-1.svg';
 import { ReactComponent as Edit } from 'assets/illustrations/icons/stroke.svg';
 import BaseModal from 'components/Home/BaseModal';
@@ -17,11 +17,11 @@ interface IStartPrjProps {
   onClose: () => void;
 }
 
-let organizationId: number = 0;
 const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
+  const [selected, setSelected] = useState<any>(0);
   const { isLoading, error, data, isFetching } = useQuery(['userOrgs'], () =>
     fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
       method: 'GET',
@@ -34,25 +34,18 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const handleOrgModalShow = () => {
     setShowOrgModal(true);
   };
-
   const handleOrgModalClose = () => {
     setShowOrgModal(false);
   };
-
   if (showOrgModal) {
     return <StartOrgModal onClose={handleOrgModalClose} />;
   }
-
   const handleNext = () => {
-    {
-      !organizationId
-        ? toast.error('Please select an organization')
-        : setShowCreateProjectModal(true);
-    }
+    if (!selected) toast.error('Please select an organization');
+    else setShowCreateProjectModal(true);
   };
-
   return (
-    <>
+    <div>
       {!showCreateProjectModal ? (
         <>
           <Toaster />
@@ -60,7 +53,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
             onClose={onClose}
             header="Choose an organisation to start a project"
             onNext={handleNext}
-            showBtn={true}
+            showBtn
           >
             <section className={styles['org-list']}>
               {data?.map((org: any) => (
@@ -75,6 +68,8 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
                       <DummyImage1 width={135} height={135} />
                     )
                   }
+                  onClick={() => setSelected(org.organisationId)}
+                  selected={selected}
                 />
               ))}
               <section
@@ -89,7 +84,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
               <footer
                 className={styles.btnCont}
                 style={{ position: 'absolute', bottom: '8%', left: '27vw' }}
-              ></footer>
+              />
             </section>
           </BaseModal>
         </>
@@ -99,43 +94,36 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
           onNext={() => {
             console.log('next!');
           }}
-          orgId={organizationId}
+          orgId={selected}
         />
       )}
-    </>
+    </div>
   );
 };
 
 interface IOrgProps {
-  id: number;
+  id: any;
   organisation: string;
   organisationImage: JSX.Element;
-  style?: React.CSSProperties;
+  onClick: () => any;
+  selected: number | null;
 }
 
 const Organisation: FC<IOrgProps> = ({
   id,
   organisation,
   organisationImage,
+  onClick,
+  selected,
 }) => {
-  const [orgId, setOrgId] = useState(0);
-  const [resetSelect, setResetSelect] = useState(false);
-  useEffect(() => {
-    if (!resetSelect) organizationId = 0;
-  }, [resetSelect]);
   return (
     <section
       style={{ padding: '12px' }}
       className={styles.container}
-      onClick={() => {
-        setResetSelect(v => !v);
-        if (resetSelect) setOrgId(0);
-        else setOrgId(id);
-        organizationId = id;
-      }}
+      onClick={onClick}
     >
       {organisationImage}
-      {orgId != 0 ? (
+      {selected === id ? (
         <p>
           <strong>{organisation}</strong>
         </p>
