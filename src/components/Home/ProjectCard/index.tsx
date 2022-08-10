@@ -28,8 +28,6 @@ const ProjectCard: FC<ProjectCardProps> = ({
   orgImage,
 }) => {
   const navigate = useNavigate();
-  console.log(projectId);
-
   if (location === 'home') {
     return (
       <div
