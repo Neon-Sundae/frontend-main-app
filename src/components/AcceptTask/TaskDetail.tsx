@@ -6,12 +6,15 @@ import { RootState } from 'reducers';
 import { ReactComponent as ProjectIcon } from 'assets/illustrations/icons/project.svg';
 import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/category.svg';
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
+import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
+import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileAttachmentCard from './FileAttachmetCard';
 import styles from './index.module.scss';
+import { useCancelTask } from './hooks';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
@@ -32,6 +35,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   const builderTaskApply = useBuilderTaskApply();
 
   const [expanded, setExpanded] = useState(false);
+  const [isCancel, setIsCancel] = useState(false);
 
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
@@ -192,48 +196,162 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
         </div>
       </div>
-      <div className={styles['project-description']}>
-        <p>{selectedTask?.description}</p>
-        {selectedTask?.taskAttachment.length > 0 && (
-          <div className={styles['project-attachments']}>
-            {selectedTask?.taskAttachment.map((file: any, index: number) => (
-              <FileAttachmentCard key={index} label="Wireframes v1.0" />
-            ))}
+
+      {isCancel ? (
+        <FounderCancelTaskContainer handleGoBack={() => setIsCancel(false)} />
+      ) : (
+        <>
+          <div className={styles['project-description']}>
+            <p>{selectedTask?.description}</p>
+            {selectedTask?.taskAttachment.length > 0 && (
+              <div className={styles['project-attachments']}>
+                {selectedTask?.taskAttachment.map(
+                  (file: any, index: number) => (
+                    <FileAttachmentCard key={index} label="Wireframes v1.0" />
+                  )
+                )}
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <TaskChecklistEdit selectedTask={selectedTask} />
-      <div className={styles['project-action-delete']}>
-        {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
-          <>
-            {selectedTask?.status !== 'completed' && (
-              <span>
-                <i className="material-icons">delete</i>
-                <span>Delete Task</span>
-              </span>
-            )}
-          </>
-        ) : (
-          <>
-            {selectedTask?.status === 'open' && selectedTask?.profileTask.filter(
-                (item: any) =>
-                  item?.Profile?.user?.walletId.toLowerCase() ===
-                    walletId?.toLowerCase()
-              ).length === 0 ? (
-              <button onClick={applyToTask}>Apply for task</button>
-            ) : selectedTask?.status === 'open' && selectedTask?.profileTask.filter(
-                (item: any) =>
-                  item?.Profile?.user?.walletId.toLowerCase() ===
-                    walletId?.toLowerCase() &&
-                  item?.applicationStatus === 'accepted'
-              ).length > 0 ? (
-              <button onClick={handleCommit}>Commit to task</button>
+          <TaskChecklistEdit selectedTask={selectedTask} />
+          <div className={styles['project-action-delete']}>
+            {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
+              <>
+                {selectedTask?.status !== 'completed' && (
+                  <span onClick={() => setIsCancel(true)}>
+                    <i className="material-icons">delete</i>
+                    <span>Delete Task</span>
+                  </span>
+                )}
+              </>
             ) : (
-              <></>
+              <>
+                {selectedTask?.status === 'open' &&
+                selectedTask?.profileTask.filter(
+                  (item: any) => item?.Profile?.user?.walletId === walletId
+                ).length === 0 ? (
+                  <button onClick={applyToTask}>Apply for task</button>
+                ) : selectedTask?.status === 'open' &&
+                  selectedTask?.profileTask.filter(
+                    (item: any) =>
+                      item?.Profile?.user?.walletId.toLowerCase() ===
+                        walletId?.toLowerCase() &&
+                      item?.applicationStatus === 'accepted'
+                  ).length > 0 ? (
+                  <button onClick={handleCommit}>Commit to task</button>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+interface IFounderCancelTaskContainer {
+  handleGoBack: Dispatch<SetStateAction<boolean>>;
+}
+const FounderCancelTaskContainer: FC<IFounderCancelTaskContainer> = ({
+  handleGoBack,
+}) => {
+  const { cancelTask, success, setSuccess } = useCancelTask();
+
+  return (
+    <div className={styles['cancel-task-container']}>
+      {success ? (
+        <>
+          <CheckIcon width={100} height={100} />
+          <p>Email sent to builder</p>
+          <div>
+            <p>
+              Once Builder Accepts task cancellation you can proceed to delete
+              it.
+            </p>
+          </div>
+          <div className={styles.actions}>
+            <button
+              className={styles.proceed}
+              onClick={() => setSuccess(false)}
+            >
+              Okay, Go Back
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <CheckmarkIcon width={100} height={100} />
+          <p>Looks like you want to cancel the task? </p>
+          <div>
+            <p>
+              We will need Builder to accept cancellation of this task before
+              you proceed to cancel it. When you will cancel we will send an
+              email to Builder.
+            </p>
+          </div>
+          <div className={styles.actions}>
+            <button
+              className={styles.go_back}
+              onClick={() => handleGoBack(true)}
+            >
+              Go Back
+            </button>
+            <button className={styles.proceed} onClick={cancelTask}>
+              Yes, Proceed
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+interface IBuilderCancelTaskContainer {
+  handleGoBack: Dispatch<SetStateAction<boolean>>;
+}
+const BuilderCancelTaskContainer: FC<IBuilderCancelTaskContainer> = ({
+  handleGoBack,
+}) => {
+  const [success, setSuccess] = useState(false);
+
+  return (
+    <div className={styles['cancel-task-container']}>
+      {success ? (
+        <>
+          <CheckIcon width={100} height={100} />
+          <p>Email sent to Founder</p>
+          <div>
+            <p>This task has been succesfully cancelled.</p>
+          </div>
+          <div className={styles.actions}>
+            <button
+              className={styles.proceed}
+              onClick={() => setSuccess(false)}
+            >
+              Okay, Go Back
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <CheckmarkIcon width={100} height={100} />
+          <p>Do you accept the cancellation of task? </p>
+          <div>
+            <p>
+              Founder has requested to cancel this task, You can Accept to canel
+              it immediately or Reject to start a DAO disscussion{' '}
+            </p>
+          </div>
+          <div className={styles.actions}>
+            <button className={styles.proceed} onClick={() => setSuccess(true)}>
+              Accept
+            </button>
+            <button className={styles.go_back}>Reject</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

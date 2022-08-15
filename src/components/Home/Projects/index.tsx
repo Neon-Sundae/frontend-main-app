@@ -39,7 +39,6 @@ const Projects: FC = () => {
       </div>
       <div className={styles.border}>
         <Card className={styles['projects-cont']} showTransparentBg>
-          {data.map((project: any) => console.log(project))}
           {data.map((project: any) => (
             <ProjectCard
               key={getRandomString(5)}
