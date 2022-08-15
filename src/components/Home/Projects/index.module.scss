@@ -4,15 +4,11 @@
   align-items: center;
   margin-top: 75px;
   margin-bottom: 30px;
-  // padding: 0px 10px;
-
   color: white;
-
   & p {
     font-family: var(--font-family-roboto-medium);
     font-size: 21px;
   }
-
   & span {
     font-size: 18px;
     text-decoration: underline;
@@ -20,12 +16,31 @@
 }
 
 .projects-cont {
-  width: 735px;
+  width: 52vw;
   padding: 39px;
-
   display: flex;
   flex-direction: row;
   z-index: 1;
+  margin: auto;
+  justify-content: space-evenly;
+  @media (max-width: 1920px)  {
+    width: 48vw;
+  }
+  @media (max-width: 1680px)  {
+    
+    width: 45vw;
+  }
+  @media (max-width: 1440px)  {
+  
+    width: 52vw;
+  }
+  
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+  
+  
+  
 }
 .border {
   width: auto;

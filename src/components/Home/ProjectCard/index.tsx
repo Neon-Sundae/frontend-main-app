@@ -40,7 +40,6 @@ const ProjectCard: FC<ProjectCardProps> = ({
           className={styles['project-card']}
           showTransparentBg
           width={width}
-          marginRight="44px"
         >
           <>
             <header>
