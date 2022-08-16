@@ -9,21 +9,11 @@ export interface IProfile {
   twitter: string | null;
   instagram: string | null;
   github: string | null;
+  profileSmartContractId: string | null;
   userId: number;
-}
-
-export interface IProfile {
-  profileId: number;
-  title: string | null;
-  description: string | null;
-  picture: string | null;
-  timezone: string | null;
-  portfolio: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  instagram: string | null;
-  github: string | null;
-  userId: number;
+  user: {
+    name: string | null;
+  };
 }
 
 export interface IProfileCertifications {

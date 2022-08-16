@@ -127,14 +127,11 @@ const CreatedBy: FC<ICreatedBy> = ({ organisation }) => {
   const { organisationUser } = organisation;
   const {
     name,
-    profile: { title, createdAt },
+    profile: { title, createdAt, profileId },
   } = organisationUser[0];
 
   const handleNavigation = () => {
-    // navigate(
-    //   `../../profile/${organisation.organisationUser[0].profile.profileId}`
-    // );
-    navigate(`../../profile`);
+    navigate(`../../profile/${profileId}`);
   };
 
   return (

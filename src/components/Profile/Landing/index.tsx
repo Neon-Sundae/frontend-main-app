@@ -1,15 +1,16 @@
 import { FC } from 'react';
+import { useParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
 import ProfileCard from 'components/ProfileCard';
-import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import styles from './index.module.scss';
 import ProfileContent from '../ProfileContent';
+import { useFetchPublicProfile } from './hooks';
 
 const Landing: FC = () => {
-  // const { offChainProfile } = useFetchOffChainProfile();
+  const { profileId } = useParams();
+  useFetchPublicProfile(profileId);
 
-  // if (offChainProfile) {
   return (
     <div className={styles.container}>
       <NavBar />
@@ -20,9 +21,6 @@ const Landing: FC = () => {
       </div>
     </div>
   );
-  // }
-
-  // return null;
 };
 
 export default Landing;
