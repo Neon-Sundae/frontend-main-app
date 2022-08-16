@@ -18,7 +18,9 @@ const BasicDetailsEdit: FC = () => {
   const { profile, xp } = useSelector((state: RootState) => state.profile);
   const profileId = profile?.profileId ? profile.profileId : 0;
   const user = useSelector((state: RootState) => state.user.user);
-  const [name, setName] = useState(profile?.user.name ?? 'Rachel Green');
+  const [name, setName] = useState(
+    profile?.user?.name ? profile?.user.name : 'Rachel Green'
+  );
   const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
   const [bio, setBio] = useState(
     profile?.description ??
