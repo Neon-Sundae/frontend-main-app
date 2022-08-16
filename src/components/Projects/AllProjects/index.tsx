@@ -11,7 +11,7 @@ interface AllProjectsProps {
 const AllProjects: FC<AllProjectsProps> = ({ projectData }) => {
   return (
     <div className={styles.container}>
-      <h1 className={styles.heading}>All Projects</h1>
+      <h1 className={styles.heading}>New Projects</h1>
       <Card className={styles.cardsContainer}>
         <>
           {projectData.map((project: any) => {
