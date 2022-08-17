@@ -1,7 +1,7 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TaskCard from '../TaskCard';
 import styles from './index.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 const Tasks: FC<any> = (props: any) => {
   const navigate = useNavigate();
@@ -22,8 +22,8 @@ const Tasks: FC<any> = (props: any) => {
           <TaskCard
             key={task.id}
             data={task}
-            width={'365px'}
-            height={'130px'}
+            width="365px"
+            height="130px"
             location="home"
           />
         ))}

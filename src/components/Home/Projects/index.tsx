@@ -7,7 +7,6 @@ import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
 import ProjectCard from '../ProjectCard';
 import styles from './index.module.scss';
-import { castArray } from 'lodash';
 
 const Projects: FC = () => {
   const navigate = useNavigate();
