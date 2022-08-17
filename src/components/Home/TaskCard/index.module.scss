@@ -82,10 +82,9 @@
 }
 
 .img {
-  overflow: hidden;
-  width: 130px;
-  height: 130px;
-  object-fit: none;
-  border-radius: 30px;
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 50%;
   cursor: pointer;
 }
