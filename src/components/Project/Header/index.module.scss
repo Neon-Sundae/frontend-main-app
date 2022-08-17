@@ -2,7 +2,23 @@
   color: #fff;
   // display: flex;
   align-items: baseline;
+
+  @media (max-width: 1920px)  {
+    width: 72%;
+    
+  }
+  @media (max-width: 1680px)  {
+    width: 78%;
+    
+  }
+  @media (max-width: 1440px)  {
   width: 90%;
+  }
+  
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
+  
   margin: auto;
   z-index: 999;
 
@@ -11,8 +27,11 @@
     align-items: baseline;
     width: 89%;
     margin: auto;
-
+    position: relative;
     .project-name {
+      white-space: nowrap;
+    }
+    .project-name > p {
       font-style: normal;
       font-weight: 600;
       font-size: 30px;
@@ -55,17 +74,6 @@
       font-size: 18px;
     }
     button {
-      @media (min-width: 1440px) {
-        margin-left:62%;
-        
-
-      }
-      @media (min-width: 1024px) and (max-width: 1440px) {
-        
-    margin-left: 50%;
-
-      }
-      
       background: linear-gradient(126.59deg,
           rgba(255, 255, 255, 0.12) 12.11%,
           rgba(255, 255, 255, 0.03) 73.08%);
@@ -79,6 +87,10 @@
       border: .7px solid #FF9BFB;
       font-weight: 400;
       font-size: 18.225px;
+    }
+    .buttonRight {
+      position: absolute;
+      right: 0;
     }
   }
   

@@ -78,7 +78,9 @@ const Header: FC<IHeaderProps> = props => {
   return (
     <div className={styles.container}>
       <div className={styles['project-info']}>
-        <span className={styles['project-name']}>{props.projectName}</span>
+        <span className={styles['project-name']}>
+          <p> {props.projectName}</p>
+        </span>
         <span className={styles['founder-name']}>
           by&nbsp;&nbsp;{props.organisationName}
         </span>
@@ -121,7 +123,7 @@ const Header: FC<IHeaderProps> = props => {
             />
           </>
         )}
-        <button onClick={handleEditButtonClick}>
+        <button onClick={handleEditButtonClick} className={styles.buttonRight}>
           Edit project &nbsp; <Pencil />
         </button>
       </div>

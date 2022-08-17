@@ -2,7 +2,22 @@
   width: 80%;
   margin-inline: auto;
   margin-top: 50px;
-
+  @media (max-width: 1920px)  {
+    width: 65%;
+    
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+    
+  }  
+  @media (max-width: 1440px)  {
+    width: 80%;
+    }
+    
+    @media (max-width: 1024px) {
+      width: 80%;
+    }
+    
   &>hr {
     margin: 25px 0;
   }

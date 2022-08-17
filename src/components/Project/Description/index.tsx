@@ -31,7 +31,10 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     .join(', ');
   return (
     <div className={styles.container}>
-      <h4>Description</h4>
+      <span className={styles.projectContentHeading}>
+        <h4>Description</h4>
+        <h4>Project Details</h4>
+      </span>
       <div className={styles.wrap}>
         <section className={styles.projectDescription}>
           <p>{description}</p>

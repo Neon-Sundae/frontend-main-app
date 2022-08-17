@@ -1,12 +1,52 @@
 .container {
   color: #fff;
+  @media (max-width: 1920px)  {
+    width: 65%;
+    
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+    
+  }
+  @media (max-width: 1440px)  {
   width: 80%;
+        
+  }
+  
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+  
   margin: auto;
   .wrap {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+  .projectContentHeading {
+    display: flex;
+    justify-content: space-between;
+    :nth-child(2) {
+        position: absolute;
+        @media (max-width: 1920px)  {
+          left: 49.5%;
+          
+        }
+        @media (max-width: 1680px)  {
+          left: 52%;
+          
+        }
+        @media (max-width: 1440px)  {
+          left: 56.8%;
+              
+        }
+        
+        @media (max-width: 1024px) {
+          left: 56.8%;
+        }    
+      }
+     
+   }
   h4 {
     margin-top: 25px;
     margin-bottom: 25px;
@@ -33,6 +73,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
+    overflow-y: auto;
   }
   .card {
     width: 33vw;
