@@ -2,9 +2,10 @@ import { FC, useState } from 'react';
 import clsx from 'clsx';
 import StartOrgModal from 'components/StartOrgModal';
 import StartPrjModal from 'components/StartPrjModal';
-import styles from './index.module.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import styles from './index.module.scss';
+
 const Banner: FC = () => {
   const userName = useSelector((state: RootState) => state.user.user?.name);
 
@@ -25,6 +26,7 @@ const Banner: FC = () => {
 
   const handlePrjModalClose = () => {
     setShowPrjModal(false);
+    window.location.reload();
   };
 
   return (
