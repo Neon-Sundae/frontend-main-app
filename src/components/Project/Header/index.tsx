@@ -22,6 +22,7 @@ interface IHeaderProps {
   projectName: string;
   founderAddress: string;
   organisationName: string;
+  organisationOwnerWalletId: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -75,6 +76,11 @@ const Header: FC<IHeaderProps> = props => {
     setShowProjectFormModalWithData(true);
   };
 
+  const isFounder = () => {
+    if (walletId === props.organisationOwnerWalletId) return true;
+    return false;
+  };
+  console.log(isFounder());
   return (
     <div className={styles.container}>
       <div className={styles['project-info']}>
@@ -122,10 +128,15 @@ const Header: FC<IHeaderProps> = props => {
               height={20}
             />
           </>
+        )}{' '}
+        {isFounder() && (
+          <button
+            onClick={handleEditButtonClick}
+            className={styles.buttonRight}
+          >
+            Edit project &nbsp; <Pencil />
+          </button>
         )}
-        <button onClick={handleEditButtonClick} className={styles.buttonRight}>
-          Edit project &nbsp; <Pencil />
-        </button>
       </div>
       {selectedProjectAddress !== '' && (
         <div className={styles['contract-address']}>

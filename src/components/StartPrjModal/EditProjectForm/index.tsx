@@ -5,6 +5,8 @@ import getRandomString from 'utils/getRandomString';
 import { useState, FC, useEffect } from 'react';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import { normalizeFormData, formatTimeZones, handleSubmitBtn } from './utils';
 import {
   useProjectData,
@@ -20,9 +22,12 @@ import styles from './index.module.scss';
 import { customStyles } from './selectStyles';
 
 const EditProjectForm: FC = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+
   const { projectData } = useProjectData();
   const prevData = normalizeFormData(projectData);
   const [formData, setFormData] = useState(prevData);
+  console.log('formData', formData);
   const [selectedTimeZones, setSelectedTimeZones] = useState<any>(
     formData.preferredTimeZones
   );
@@ -183,6 +188,7 @@ const EditProjectForm: FC = () => {
       }
     });
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
