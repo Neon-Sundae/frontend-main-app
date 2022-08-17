@@ -18,7 +18,6 @@ const TaskCard = (props: any) => {
     return (
       <>
         <Card
-          className={styles['task-card']}
           showTransparentBg
           width={width}
           height={height}
@@ -82,7 +81,6 @@ const TaskCard = (props: any) => {
   return (
     <>
       <Card
-        className={styles['task-card']}
         showTransparentBg
         width={width || '888px'}
         height={height}

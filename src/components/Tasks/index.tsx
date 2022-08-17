@@ -51,12 +51,7 @@ const TaskCard: FC<ITaskCard> = ({
   const applyToTask = () => {};
   return (
     <div className={styles.container}>
-      <Card
-        className={styles['task-card']}
-        showTransparentBg
-        width="100%"
-        height="auto"
-      >
+      <Card showTransparentBg width="100%" height="auto">
         <div className={styles.wrapper}>
           <div className={styles.content} style={{ width: '100px' }}>
             <BrandImage width={95} height={95} />

@@ -16,13 +16,12 @@
 }
 
 .projects-cont {
-  width: 52vw;
-  padding: 39px;
-  display: flex;
-  flex-direction: row;
-  z-index: 1;
-  margin: auto;
-  justify-content: space-between;
+  padding: 39px  !important;
+  display: flex  !important;
+  flex-direction: row  !important;
+  z-index: 1  !important;
+  margin: auto  !important;
+  justify-content: space-between !important;
   @media (max-width: 1920px)  {
     width: 48vw;
   }
