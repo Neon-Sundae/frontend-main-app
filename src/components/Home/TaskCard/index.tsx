@@ -6,7 +6,6 @@ import styles from './index.module.scss';
 
 const TaskCard = (props: any) => {
   const { width, height, data, location } = props;
-  console.log(width);
   const builderTaskApply = useBuilderTaskApply();
 
   const applyToTask = () => {
@@ -82,51 +81,6 @@ const TaskCard = (props: any) => {
   }
   return (
     <>
-      {/* // <Card
-    //   className={styles['task-card']}
-    //   showTransparentBg
-    //   width={width}
-    //   height={height}
-    // >
-    //   <div className={styles.wrapper}>
-    //     <div className={styles.content} style={{ width: '100px' }}>
-    //       {data.flProjectCategory.flProject.organisation.profileImage ? (
-    //         <img
-    //           src={data.flProjectCategory.flProject.organisation.profileImage}
-    //           className={styles.img}
-    //           alt="organisation Image"
-    //         />
-    //       ) : (
-    //         <BrandImage width={95} height={95} />
-    //       )}
-    //     </div>
-    //     <div className={styles.content} style={{ lineHeight: '2rem' }}>
-    //       <h4>{data.name}</h4>
-    //       <p>{data.flProjectCategory.flProject.name}</p>
-    //       {Array.from({ length: data.estimatedDifficulty }).map((_, index) => (
-    //         <i
-    //           key={index}
-    //           className={clsx('material-icons', styles['rating-star'])}
-    //         >
-    //           star
-    //         </i>
-    //       ))}
-    //     </div>
-    //     <div className={styles.content} style={{ width: '200px' }}>
-    //       <div className={styles.dot} style={{ top: '1px', left: '-25px' }}>
-    //         {' '}
-    //       </div>
-    //       <p>{data.price} USDC </p>
-    //     </div>
-    //     <div
-    //       className={styles.content}
-    //       style={{ width: '200px', cursor: 'pointer' }}
-    //       onClick={applyToTask}
-    //     >
-    //       <p>Apply to task</p>
-    //     </div>
-    //   </div>
-    // </Card> */}
       <Card
         className={styles['task-card']}
         showTransparentBg
@@ -140,6 +94,8 @@ const TaskCard = (props: any) => {
               src={data.flProjectCategory.flProject.organisation.profileImage}
               className={styles.img}
               alt="organisation Image"
+              width={130}
+              height={130}
             />
           ) : (
             <BrandImage width={130} height={130} />
