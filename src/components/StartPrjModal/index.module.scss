@@ -1,8 +1,15 @@
 .org-list {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  margin-left: 5%;
+  flex-wrap: wrap;
+ 
 }
-
+.org-image {
+  border-radius: 50%;
+  width: 135px;
+  height: 135px;
+}
 .container {
   display: flex;
   flex-direction: column;

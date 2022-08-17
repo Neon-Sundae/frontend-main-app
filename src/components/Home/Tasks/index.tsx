@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import getRandomString from "utils/getRandomString";
 import TaskCard from '../TaskCard';
 import styles from './index.module.scss';
 
@@ -20,7 +21,7 @@ const Tasks: FC<any> = (props: any) => {
       <section className={styles['tasks-cont']}>
         {props.data.map((task: any) => (
           <TaskCard
-            key={task.id}
+            key={getRandomString(5)}
             data={task}
             width="365px"
             height="130px"

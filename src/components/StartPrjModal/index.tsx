@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-dummy-1.svg';
 import { ReactComponent as Edit } from 'assets/illustrations/icons/stroke.svg';
 import BaseModal from 'components/Home/BaseModal';
@@ -22,15 +22,23 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
   const [selected, setSelected] = useState<any>(0);
-  const { isLoading, error, data, isFetching } = useQuery(['userOrgs'], () =>
-    fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then(response => response.json())
+  const { isLoading, error, data, isFetching, refetch } = useQuery(
+    ['userOrgs'],
+    () =>
+      fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }).then(response => response.json()),
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
   );
-  if (isFetching) return <p>Loading...</p>;
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error...</div>;
+
+  if (isFetching) return null;
+  if (isLoading) return null;
+  if (error) return null;
+
   const handleOrgModalShow = () => {
     setShowOrgModal(true);
   };
@@ -44,6 +52,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
     if (!selected) toast.error('Please select an organization');
     else setShowCreateProjectModal(true);
   };
+  console.log(onClose);
   return (
     <div>
       {!showCreateProjectModal ? (
@@ -56,22 +65,28 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
             showBtn
           >
             <section className={styles['org-list']}>
-              {data?.map((org: any) => (
-                <Organisation
-                  key={getRandomString(5)}
-                  id={org.organisationId}
-                  organisation={org.name}
-                  organisationImage={
-                    org.bannerImage ? (
-                      org.bannerImage
-                    ) : (
-                      <DummyImage1 width={135} height={135} />
-                    )
-                  }
-                  onClick={() => setSelected(org.organisationId)}
-                  selected={selected}
-                />
-              ))}
+              {data?.map((org: any) => {
+                return (
+                  <Organisation
+                    key={getRandomString(5)}
+                    id={org.organisationId}
+                    organisation={org.name}
+                    organisationImage={
+                      org.profileImage ? (
+                        <img
+                          src={org.profileImage}
+                          alt={org.name}
+                          className={styles['org-image']}
+                        />
+                      ) : (
+                        <DummyImage1 width={135} height={135} />
+                      )
+                    }
+                    onClick={() => setSelected(org.organisationId)}
+                    selected={selected}
+                  />
+                );
+              })}
               <section
                 className={styles.container}
                 onClick={handleOrgModalShow}
