@@ -124,14 +124,6 @@ const Header: FC<IHeaderProps> = props => {
         <button onClick={handleEditButtonClick}>
           Edit project &nbsp; <Pencil />
         </button>
-
-        {/* {
-            founder.toLowerCase() === walletId?.toLowerCase() && selectedProjectAddress === '' ? (
-              <button onClick={handleOpen}>Publish a Project</button>
-            ) : founder.toLowerCase() === walletId?.toLowerCase() && !isDeposit ? (
-              <button onClick={handleOpen}>Deposit Funds</button>
-            ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
-          } */}
       </div>
       {selectedProjectAddress !== '' && (
         <div className={styles['contract-address']}>

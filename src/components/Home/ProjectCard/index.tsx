@@ -44,7 +44,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           <>
             <header>
               {orgImage ? (
-                <img src={orgImage} className={styles.orgImage}></img>
+                <img src={orgImage} className={styles.orgImage} alt="org" />
               ) : (
                 <BrandImage width={51} height={51} />
               )}
@@ -57,7 +57,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
             </header>
             <p className={styles['text-content']}>
               {description?.length > 90
-                ? `${description?.substring(0, 90)}...`
+                ? `${description?.substring(0, 85)}...`
                 : description}
             </p>
 
@@ -81,7 +81,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
         <>
           <header>
             {orgImage ? (
-              <img src={orgImage} className={styles.orgImage}></img>
+              <img src={orgImage} className={styles.orgImage} />
             ) : (
               <BrandImage width={51} height={51} />
             )}

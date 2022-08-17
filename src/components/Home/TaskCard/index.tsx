@@ -91,9 +91,8 @@ const TaskCard = (props: any) => {
             <img
               src={data.flProjectCategory.flProject.organisation.profileImage}
               className={styles.img}
-              alt="organisation Image"
-              width={130}
-              height={130}
+              alt="organisation"
+              style={{ height: '130px', width: '130px' }}
             />
           ) : (
             <BrandImage width={130} height={130} />
