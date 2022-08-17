@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
+import bg from 'assets/illustrations/profile/bg.svg';
 import NavBar from 'components/NavBar';
-import BlurBlobs from 'components/BlurBlobs';
 import ProfileCard from 'components/ProfileCard';
 import styles from './index.module.scss';
 import ProfileContent from '../ProfileContent';
@@ -12,9 +12,8 @@ const Landing: FC = () => {
   useFetchPublicProfile(profileId);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ backgroundImage: `url(${bg})` }}>
       <NavBar />
-      <BlurBlobs />
       <div className={styles['profile-card-content-container']}>
         <ProfileCard />
         <ProfileContent />
