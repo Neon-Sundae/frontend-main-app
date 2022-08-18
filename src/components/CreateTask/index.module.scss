@@ -38,9 +38,7 @@ $error-color: #c0392b;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
   height: 50px;
 
-  // z-index: 1;
   flex-grow: 1;
-  width: min(100%, 15rem);
 
   &::placeholder {
     color: white;
@@ -255,4 +253,19 @@ input[type='number']::-webkit-outer-spin-button {
     font-size: 14px;
     margin-inline: 5px;
   }
+}
+
+.difficulty-rating-container {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+}
+
+.rating-star {
+  font-size: 20px;
+  margin-left: 5px;
+  color: #fbc579;
 }

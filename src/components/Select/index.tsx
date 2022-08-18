@@ -10,6 +10,10 @@ export type Option =
   | {
       value: string;
       label: string;
+    }
+  | {
+      value: number;
+      label: JSX.Element;
     };
 
 interface ComponentProps {
