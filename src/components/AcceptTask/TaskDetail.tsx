@@ -69,22 +69,22 @@ const TaskDetail: FC<ITaskDetail> = ({
   return (
     <div>
       <div className={styles['avatar-container']}>
-        {expanded ? (
+        {/* {expanded ? (
           <button
             className={styles['task-status']}
             onClick={() => setExpanded(!expanded)}
-          >
-            <div>
-              <span>{selectedTask?.status}</span>
-              <i className="material-icons">expand_less</i>
-            </div>
-            <div>
+          > */}
+        <span className={styles['task-status-btn']}>
+          {selectedTask?.status}
+        </span>
+
+        {/* <div>
               <p>Open</p>
               <p>In-Progress</p>
               <p>In-Review</p>
               <p>Completed</p>
-            </div>
-          </button>
+            </div> */}
+        {/* </button>
         ) : (
           <button
             className={styles['task-status--expanded']}
@@ -93,7 +93,7 @@ const TaskDetail: FC<ITaskDetail> = ({
             <span>{selectedTask?.status}</span>
             <i className="material-icons">expand_more</i>
           </button>
-        )}
+        )} */}
 
         {selectedTask?.profileTask.length > 0 && (
           <div

@@ -468,7 +468,7 @@
 }
 
 .cancel-task-container {
-  background: #2D2D35;
+  background: #2d2d35;
   border-radius: 28.475px;
   transform: rotate(0.23deg);
   padding: 15px;
@@ -483,7 +483,7 @@
   & > div {
     width: 60%;
     margin: auto;
-    &>p {
+    & > p {
       text-align: center;
       margin-top: 20px;
     }
@@ -499,24 +499,42 @@
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
-    
+
     .go_back {
       padding: 10px 20px;
       color: white;
-      background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+      background: linear-gradient(
+          94.63deg,
+          rgba(255, 255, 255, 0.16) 4.94%,
+          rgba(255, 255, 255, 0.04) 93.94%
+        ),
+        linear-gradient(
+          89.58deg,
+          #c6bbfb 2.95%,
+          #e59cf3 48.36%,
+          #ffb8d5 103.17%
+        );
       box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
       border-radius: 23px;
       border: 0.94px solid;
-      border-image-source: linear-gradient(0deg, #E49DF4, #E49DF4),
-      radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF9BFB 0%, #FFFFFF 100%);
-      border: 1px solid #E49DF4;
+      border-image-source: linear-gradient(0deg, #e49df4, #e49df4),
+        radial-gradient(
+          116.97% 116.97% at 34.87% -2.72%,
+          #ff9bfb 0%,
+          #ffffff 100%
+        );
+      border: 1px solid #e49df4;
       cursor: pointer;
     }
 
     .proceed {
       padding: 10px 20px;
       color: white;
-      background: linear-gradient(94.3deg, rgba(255, 255, 255, 0.12) 8.58%, rgba(255, 255, 255, 0.03) 96.04%);
+      background: linear-gradient(
+        94.3deg,
+        rgba(255, 255, 255, 0.12) 8.58%,
+        rgba(255, 255, 255, 0.03) 96.04%
+      );
       box-shadow: 0px 4px 4px rgba(68, 68, 68, 0.5);
       backdrop-filter: blur(64.767px);
       border-radius: 23px;
@@ -528,8 +546,29 @@
       margin-left: 0 !important;
     }
 
-    &>button:nth-child(2) {
+    & > button:nth-child(2) {
       margin-left: 50px;
     }
   }
+}
+
+.task-status-btn {
+  text-transform: capitalize;
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 400;
+  font-size: 17px;
+  color: white;
+  text-align: center;
+  width: max-content;
+
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.4) 12.11%,
+    rgba(255, 255, 255, 0.1) 73.08%
+  );
+  box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+  backdrop-filter: blur(40px);
+  border: 0.5px solid white;
+  border-radius: 11px;
+  padding: 7px 20px;
 }
