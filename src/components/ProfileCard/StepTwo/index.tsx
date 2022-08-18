@@ -56,8 +56,8 @@ const StepTwo: FC<StepTwoProps> = ({
         setStepTwo(false);
         setProfilePictureModal(false);
       }}
-      width="599px"
-      height="711px"
+      width="550px"
+      height="600px"
       overflowY="auto"
     >
       <div className={styles.nftsWrapper}>
@@ -118,7 +118,7 @@ const StepTwo: FC<StepTwoProps> = ({
             setProfilePictureModal(false);
           }}
         >
-          Select NFT
+          Choose avatar
         </button>
       </div>
     </Modal>

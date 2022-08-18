@@ -45,7 +45,7 @@ body {
 
 .promptImg {
   width: 600px;
-  height: 277px;
+  height: 254.34px;
 }
 
 .wrapper {
@@ -57,27 +57,28 @@ body {
   .promptText {
     position: absolute;
     height: 500px;
-    bottom: -25%;
+    bottom: -45%;
     left: 0;
     padding-left: 20px;
     padding-right: 20px;
 
     & h2 {
-      font-size: 32px;
+      font-size: 25px;
       margin-bottom: 12px;
+      color: #FFFFFF;
     }
 
     & p {
-      color: #CBCBCB;
-      font-size: 18px;
+      color: #FBFBFB;
+      font-size: 16px;
     }
 
     & div {
-      height: 20%;
+      height: 11%;
     }
 
     & footer {
-      font-size: 18px;
+      font-size: 12px;
       color: #CBCBCB;
       margin-bottom: 20px;
 
@@ -86,12 +87,16 @@ body {
         color: #fff;
         text-decoration: underline;
       }
+      & .spanLeft {
+        position: absolute;
+        right: 15%;
+      }
     }
 
     & button {
-      background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
-      width: 241px;
-      height: 59px;
+      background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+      width: 192px;
+      height: 55px;
       backdrop-filter: blur(43.3229px);
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       background-size: cover;
@@ -99,7 +104,7 @@ body {
       border: 0.62px solid;
       color: #fff;
       cursor: pointer;
-      font-size: 22.58px;
+      font-size: 18px;
       position: absolute;
       left: 25%;
     }

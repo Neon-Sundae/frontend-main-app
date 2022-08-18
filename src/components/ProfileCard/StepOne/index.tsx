@@ -15,8 +15,8 @@ const StepOne: FC<StepOneProps> = ({ setProfilePictureModal, setStepTwo }) => {
         setProfilePictureModal(false);
         setStepTwo(false);
       }}
-      width="650px"
-      height="482.13px"
+      width="596px"
+      height="550px"
       overflowY="auto"
     >
       <div className={styles.center}>
