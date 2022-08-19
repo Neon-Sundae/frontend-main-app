@@ -112,9 +112,9 @@ const SelectComponent: FC<ComponentProps> = ({
     input: styles => ({ ...styles, backgroundColor: 'red', outline: 'none' }),
     placeholder: styles => ({
       ...styles,
-      color: 'white',
+      color: '#fbfbfb',
       fontFamily: "'Roboto Flex', sans-serif",
-      fontWeight: 500,
+      fontWeight: 100,
       fontSize: 18,
     }),
     singleValue: (styles, { data }) => ({ ...styles, color: 'white' }),

@@ -41,7 +41,8 @@ $error-color: #c0392b;
   flex-grow: 1;
 
   &::placeholder {
-    color: white;
+    color: #fbfbfb;
+    font-weight: 300;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
   }
 
@@ -70,10 +71,10 @@ $error-color: #c0392b;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
 
   margin-bottom: min(3vh, 1.5rem);
-  // z-index: 1;
 
   &::placeholder {
-    color: white;
+    color: #fbfbfb;
+    font-weight: 300;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
   }
 }

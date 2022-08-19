@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import Modal from 'components/Modal';
-import gradientBtn from 'assets/illustrations/button/button-gradient.svg';
+import GradientBtn from 'components/GradientBtn';
 import timezoneData from 'assets/data/timezones.json';
 import styles from './index.module.scss';
 import useUpdateProfileTimezone from './hooks';
@@ -32,13 +32,7 @@ const TimezoneModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
         ))}
       </div>
-      <div className={styles['gradient-save-btn']} onClick={handleClose}>
-        <div
-          className={styles['gradient-blur']}
-          style={{ backgroundImage: `url(${gradientBtn})` }}
-        />
-        <p>Save</p>
-      </div>
+      <GradientBtn label="Save" onClick={handleClose} />
     </Modal>
   );
 };

@@ -148,6 +148,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
       width="clamp(20rem, 45vw, 45rem)"
       height="min(90%, 45rem)"
       overflowY="auto"
+      padding="33px 50px"
     >
       <h1 className={styles['create-task-title']}>Create a Task</h1>
       <div className={styles['create-task-content']}>
