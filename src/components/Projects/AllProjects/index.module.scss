@@ -37,7 +37,7 @@
   }
 }
 .cardsContainer {
-  padding: 65px;
+  padding: 30px 65px;
   display: grid;
   @media (max-width: 1920px)  {
     grid-template-columns: repeat(auto-fill, 200px);
