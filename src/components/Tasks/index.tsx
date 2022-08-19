@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import clsx from 'clsx';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
+import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import Card from 'components/Card';
 import styles from './index.module.scss';
 import useFetchUserTasks from './hooks';
@@ -74,8 +75,11 @@ const TaskCard: FC<ITaskCard> = ({
               </i>
             ))}
           </div>
-          <div className={styles.content} style={{ width: '200px' }}>
-            <p className={styles.dot} style={{ top: '1px', left: '-25px' }} />
+          <div
+            className={styles.content}
+            style={{ width: '200px', display: 'flex' }}
+          >
+            <USDCIcon className={styles['task-card-usdc-icon']} />
             <p>{price} USDC </p>
           </div>
           <div
