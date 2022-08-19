@@ -1,20 +1,62 @@
 .container {
   color: #fff;
-  width: 85vw;
-  height: 100vh;
+  height: 100%;
+  @media (max-width: 1920px)  {
+    height:  120vh;
+    width: 85vw;
+  }
+  @media (max-width: 1680px)  {
+    height:  120vh;
+    width: 70vw;
+  }
+  @media (max-width: 1440px)  {
+    height:  120vh;
+    width: 84vw;      
+  }
+  @media (max-width: 1024px) {
+    height:  120vh;
+    width: 92vw;
+  }
   margin: auto;
   overflow: hidden;
   .heading {
-    margin-left: 7.5%;
-    font-size: 40px;
-    margin-bottom: 2rem;
+    @media (max-width: 1920px)  {
+      margin-left: 12.5%;
+    }
+    @media (max-width: 1680px)  {
+      margin-left: 5.5%;
+    }
+    @media (max-width: 1440px)  {
+      margin-left: 8%;
+    }
+    @media (max-width: 1024px) {
+      margin-left: 13%;
+    }
+    margin-top: 2%;
+    font-size: 25px;
   }
 }
 .cardsContainer {
-  height: 90%;
-  padding: 65px;
+  padding: 30px 65px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 265px);
+  @media (max-width: 1920px)  {
+    grid-template-columns: repeat(auto-fill, 200px);
+    width: 70vw;
+  }
+  @media (max-width: 1680px)  {
+    grid-template-columns: repeat(auto-fill, 210px);
+    width: 69vw;
+  }
+  @media (max-width: 1440px)  {
+    grid-template-columns: repeat(auto-fill, 200px);
+    width: 79vw;
+    flex-basis: 35%;
+  }
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, 180px);
+    width: 80vw;
+    flex-basis: 30%;
+  }
   justify-content: space-between;
   grid-gap: 20px;
   align-items: flex-start;
@@ -22,13 +64,5 @@
   margin: auto;
   & > div {
     margin-bottom: 25px;
-  }
-  @media (min-width: 1440px) {
-    width: 79vw;
-    flex-basis: 35%;
-  }
-  @media (min-width: 1024px) and (max-width: 1440px) {
-    width: 80vw;
-    flex-basis: 30%;
   }
 }

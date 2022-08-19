@@ -7,12 +7,11 @@ import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
 import ProjectCard from '../ProjectCard';
 import styles from './index.module.scss';
-import { castArray } from 'lodash';
 
 const Projects: FC = () => {
   const navigate = useNavigate();
   const { isLoading, error, data, isFetching } = useQuery(
-    ['userOrgs'],
+    ['newFlProjects'],
     () =>
       fetch(`${config.ApiBaseUrl}/fl-project/new`, {
         method: 'GET',
@@ -25,7 +24,6 @@ const Projects: FC = () => {
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
-
   return (
     <section className={styles.projects}>
       <div className={styles.header}>
@@ -39,7 +37,6 @@ const Projects: FC = () => {
       </div>
       <div className={styles.border}>
         <Card className={styles['projects-cont']} showTransparentBg>
-          {data.map((project: any) => console.log(project))}
           {data.map((project: any) => (
             <ProjectCard
               key={getRandomString(5)}

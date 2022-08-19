@@ -73,6 +73,7 @@ const Landing: FC = () => {
         budget={budget}
         founderAddress={organisation?.organisationUser[0]?.walletId}
         organisationName={organisation?.name}
+        organisationOwnerWalletId={organisation?.organisationUser[0]?.walletId}
       />
       <Description
         description={description}

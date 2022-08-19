@@ -22,6 +22,7 @@ interface IHeaderProps {
   projectName: string;
   founderAddress: string;
   organisationName: string;
+  organisationOwnerWalletId: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -76,10 +77,17 @@ const Header: FC<IHeaderProps> = props => {
     setShowProjectFormModalWithData(true);
   };
 
+  const isFounder = () => {
+    if (walletId === props.organisationOwnerWalletId) return true;
+    return false;
+  };
+  console.log(isFounder());
   return (
     <div className={styles.container}>
       <div className={styles['project-info']}>
-        <span className={styles['project-name']}>{props.projectName}</span>
+        <span className={styles['project-name']}>
+          <p> {props.projectName}</p>
+        </span>
         <span className={styles['founder-name']}>
           by&nbsp;&nbsp;{props.organisationName}
         </span>
@@ -121,18 +129,15 @@ const Header: FC<IHeaderProps> = props => {
               height={20}
             />
           </>
+        )}{' '}
+        {isFounder() && (
+          <button
+            onClick={handleEditButtonClick}
+            className={styles.buttonRight}
+          >
+            Edit project &nbsp; <Pencil />
+          </button>
         )}
-        <button onClick={handleEditButtonClick}>
-          Edit project &nbsp; <Pencil />
-        </button>
-
-        {/* {
-            founder.toLowerCase() === walletId?.toLowerCase() && selectedProjectAddress === '' ? (
-              <button onClick={handleOpen}>Publish a Project</button>
-            ) : founder.toLowerCase() === walletId?.toLowerCase() && !isDeposit ? (
-              <button onClick={handleOpen}>Deposit Funds</button>
-            ) : <><span className={styles['deposit-funds']}>Deposit Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))} USDC</span><VerifiedIcon className={styles['project-verified']} width={20} height={20} /></>
-          } */}
       </div>
       {selectedProjectAddress !== '' && (
         <div className={styles['contract-address']}>

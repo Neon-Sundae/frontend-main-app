@@ -5,6 +5,8 @@ import getRandomString from 'utils/getRandomString';
 import { useState, FC, useEffect } from 'react';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import { normalizeFormData, formatTimeZones, handleSubmitBtn } from './utils';
 import {
   useProjectData,
@@ -20,9 +22,12 @@ import styles from './index.module.scss';
 import { customStyles } from './selectStyles';
 
 const EditProjectForm: FC = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+
   const { projectData } = useProjectData();
   const prevData = normalizeFormData(projectData);
   const [formData, setFormData] = useState(prevData);
+  console.log('formData', formData);
   const [selectedTimeZones, setSelectedTimeZones] = useState<any>(
     formData.preferredTimeZones
   );
@@ -183,12 +188,40 @@ const EditProjectForm: FC = () => {
       }
     });
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h2>Edit Project</h2>
-        <input type="text" defaultValue={formData.name} id="name" />
-        <textarea defaultValue={formData.description} id="description" />
+        <div className={styles.nameBudgetWrap}>
+          <p className={styles.header0}>Name</p>
+          <p className={styles.header1}>Budget</p>
+          <span className={styles.inlineIt}>
+            <input
+              type="text"
+              defaultValue={formData.name}
+              id="name"
+              className={styles.stylesItInline}
+              placeholder="Project Name"
+            />
+            <span className={styles.inputWithCurrency}>
+              <input
+                type="number"
+                defaultValue={formData.budget}
+                id="budget"
+                placeholder="Project Budget"
+                readOnly
+              />
+              <input type="text" value="USDC" readOnly />
+            </span>
+          </span>
+        </div>
+        <p className={styles.header0}>Description</p>
+        <textarea
+          defaultValue={formData.description}
+          id="description"
+          placeholder="Project Description"
+        />
         <div className={styles.dateTimeZoneContainer}>
           <p className={styles.heading1}>Project Timeline</p>
           <p className={styles.heading2}>Preferred Timezone</p>
@@ -198,6 +231,7 @@ const EditProjectForm: FC = () => {
               defaultValue={formData.timeOfCompletion}
               id="dueDate"
               className={styles.datePick}
+              placeholder="Estimate Project End Date"
             />
             <Select
               defaultValue={selectedTimeZones}
@@ -205,17 +239,12 @@ const EditProjectForm: FC = () => {
               styles={customStyles}
               options={formatTimeZones()}
               onChange={options => setSelectedTimeZones(options)}
+              placeholder="Select Timezone"
             />
           </div>
         </div>
-        <p className={styles.secHead}>Budget</p>
-        <input
-          type="number"
-          defaultValue={formData.budget}
-          id="budget"
-          readOnly
-        />
-        <p className={styles.secHead}>Resources Required</p>
+
+        <p className={styles.secHead}>Talents Needed</p>
         <div id="resourcesContainer">
           {formData.flResources.map(
             (resource: {
@@ -237,6 +266,7 @@ const EditProjectForm: FC = () => {
                       id={resource?.flResourceId}
                       type="text"
                       defaultValue={resource?.title}
+                      placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
                     />
                     <button className={styles.cancelBtn}>
                       <div
@@ -280,11 +310,11 @@ const EditProjectForm: FC = () => {
           }}
           className={styles.addMore}
         >
-          Add More Resources +
+          Add More Talents +
         </button>
         <div id="categoriesContainer" className={styles.catBudgetWrap}>
           <p className={styles.head1}>Category</p>
-          <p className={styles.head2}>% of Budget</p>
+          <p className={styles.head2}>Percentage of Budget</p>
           {formData.flProjectCategory.map(
             (category: {
               flProjectCategoryId: string | undefined;
@@ -304,6 +334,7 @@ const EditProjectForm: FC = () => {
                       defaultValue={category.categoryName}
                       className={styles.stylesItInline}
                       id={category?.flProjectCategoryId}
+                      placeholder="Category name ( e.g.  “Website Design”)"
                     />
 
                     <span
@@ -316,6 +347,7 @@ const EditProjectForm: FC = () => {
                         type="text"
                         defaultValue={category.percentageAllocation}
                         className={styles.stylesItInline}
+                        placeholder="% of budget for this category"
                       />
                       <button
                         onClick={() => handleCategoryDelete(uid)}
@@ -364,7 +396,7 @@ const EditProjectForm: FC = () => {
       </div>
       <div className={styles.centerBtn}>
         <button onClick={e => handleSubmit(e)} className={styles.saveBtn}>
-          Submit
+          Save
         </button>
       </div>
     </div>

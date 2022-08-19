@@ -1,12 +1,17 @@
 .tasks {
   display: flex;
   flex-direction: column;
-  margin-top: 75px;
+  margin-top: 30px;
+  
   .tasks-cont {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     flex: 1;
+    @media (max-width: 1024px) {
+      justify-content: space-between;
+      flex-direction: row;
+    }
   }
 
   .header {
@@ -20,7 +25,7 @@
 
     & p {
       font-family: var(--font-family-roboto-medium);
-      font-size: 25px;
+      font-size: 21px;
     }
 
     & span {
