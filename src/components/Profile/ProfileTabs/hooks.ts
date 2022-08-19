@@ -26,6 +26,7 @@ const useFetchUserOrgs = () => {
       return json;
     },
     {
+      enabled: user !== undefined,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
         handleError({

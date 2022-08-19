@@ -1,36 +1,38 @@
 .gradient-save-btn {
-  // height: 76px;
-  // width: 270px;
   height: min(7vh, 12rem);
   width: min(100%, 16rem);
-  background-color: transparent;
   overflow: hidden;
   border-radius: 30px;
   position: relative;
   margin: 0 auto;
   cursor: pointer;
+  outline: none;
   z-index: 1;
 
-  & > .gradient-blur {
-    width: 99.9%;
-    height: 100%;
-    filter: blur(26px);
-    box-shadow: 0px -4px 5px rgba(255, 206, 239, 0.15),
-      inset 0px 4px 15px #d39bff;
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 400;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: white;
+  text-align: center;
 
-  & > p {
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-family-roboto-flex);
-    font-weight: 500;
-    // font-size: 22px;
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
-    text-transform: uppercase;
-    cursor: pointer;
-  }
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.2) 12.11%,
+    rgba(255, 255, 255, 0.05) 73.08%
+  );
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(40px);
+  /* Note: backdrop-filter has minimal browser support */
+  border: 1px solid #414141;
+  background: linear-gradient(
+      94.63deg,
+      rgba(255, 255, 255, 0.16) 4.94%,
+      rgba(255, 255, 255, 0.04) 93.94%
+    ),
+    linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%);
+  padding: 10px 18px;
 }

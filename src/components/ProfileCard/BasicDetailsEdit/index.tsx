@@ -15,12 +15,12 @@ import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
-  const { profile, profileContractAddress, xp } = useSelector(
-    (state: RootState) => state.profile
-  );
+  const { profile, xp } = useSelector((state: RootState) => state.profile);
   const profileId = profile?.profileId ? profile.profileId : 0;
   const user = useSelector((state: RootState) => state.user.user);
-  const [name, setName] = useState(user?.name ?? 'Rachel Green');
+  const [name, setName] = useState(
+    profile?.user?.name ? profile?.user.name : 'Rachel Green'
+  );
   const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
   const [bio, setBio] = useState(
     profile?.description ??
@@ -74,7 +74,7 @@ const BasicDetailsEdit: FC = () => {
       <ExperiencePoints xp={xp} />
       <ProfileAddressChain
         name={name}
-        profileContractAddress={profileContractAddress}
+        profileSmartContractId={profile?.profileSmartContractId}
         walletId={user?.walletId}
         title={title}
       />
@@ -182,14 +182,14 @@ const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
 };
 
 interface IProfileAddressChain {
-  profileContractAddress: string;
+  profileSmartContractId: string | null | undefined;
   name: string;
   walletId: string | undefined;
   title: string;
 }
 
 const ProfileAddressChain: FC<IProfileAddressChain> = ({
-  profileContractAddress,
+  profileSmartContractId,
   name,
   walletId,
   title,
@@ -197,13 +197,13 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
   const { createProfile } = useProfileManage();
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(profileContractAddress);
+    navigator.clipboard.writeText(profileSmartContractId ?? '');
     toast.success('Copied!');
   };
 
   return (
     <div className={styles['profile-address-chain']}>
-      {profileContractAddress ===
+      {profileSmartContractId ===
       '0x0000000000000000000000000000000000000000' ? (
         <>
           <div
@@ -221,10 +221,10 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
         <div className={styles['address-container']}>
           <FoundersLabIcon width={28} height={28} />
           <p className={styles['profile-address']}>
-            {profileContractAddress?.slice(0, 6)}...
-            {profileContractAddress?.slice(
-              profileContractAddress.length - 6,
-              profileContractAddress.length
+            {profileSmartContractId?.slice(0, 6)}...
+            {profileSmartContractId?.slice(
+              profileSmartContractId.length - 6,
+              profileSmartContractId.length
             )}
           </p>
           <i className="material-icons-200" onClick={handleCopyAddress}>

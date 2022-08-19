@@ -1,22 +1,26 @@
-import { FC } from 'react';
-import gradientBtn from 'assets/illustrations/button/button-gradient.svg';
+import { CSSProperties, FC } from 'react';
 import styles from './index.module.scss';
 
 interface IGradientBtn {
   label: string;
   onClick: () => void;
+  style?: CSSProperties;
 }
 
-const GradientBtn: FC<IGradientBtn> = ({ label, onClick }) => {
+const GradientBtn: FC<IGradientBtn> = ({ label, onClick, style }) => {
   return (
-    <div className={styles['gradient-save-btn']} onClick={onClick}>
-      <div
-        className={styles['gradient-blur']}
-        style={{ backgroundImage: `url(${gradientBtn})` }}
-      />
-      <p>{label}</p>
-    </div>
+    <button
+      className={styles['gradient-save-btn']}
+      style={style}
+      onClick={onClick}
+    >
+      {label}
+    </button>
   );
+};
+
+GradientBtn.defaultProps = {
+  style: {},
 };
 
 export default GradientBtn;

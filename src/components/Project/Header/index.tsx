@@ -60,7 +60,8 @@ const Header: FC<IHeaderProps> = props => {
         props.setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
-        navigate('/profile');
+        // TODO - Move to profile page
+        // navigate('/profile');
       }
     } catch (err) {
       console.log(err);

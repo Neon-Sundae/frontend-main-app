@@ -1,19 +1,17 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Web3 from 'web3';
 import toast, { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import { ReactComponent as WalletIcon } from 'assets/illustrations/icons/wallet.svg';
-import { ReactComponent as VisibilityIcon } from 'assets/illustrations/icons/visibility.svg';
 import { ReactComponent as WithdrawIcon } from 'assets/illustrations/icons/withdraw.svg';
 import styles from './index.module.scss';
 import useWithdrawFund from './hooks';
 
-const WalletBalButton = () => {
+const WalletBalButton: FC = () => {
   const [openWithdraw, setOpenWithdraw] = useState(false);
 
-  const { usdcBalance, profileContractAddress } = useSelector(
+  const { usdcBalance, profile } = useSelector(
     (state: RootState) => state.profile
   );
 
@@ -23,7 +21,7 @@ const WalletBalButton = () => {
     if (usdcBalance === 0) {
       toast.error('Zero Balance');
     } else {
-      withdrawFund(profileContractAddress);
+      withdrawFund(profile?.profileSmartContractId);
     }
     setOpenWithdraw(false);
   };
@@ -47,7 +45,7 @@ const WalletBalButton = () => {
           >
             <span>
               {Number(
-                Number(usdcBalance / Math.pow(10, 6)).toFixed(4)
+                Number(usdcBalance / 10 ** 6).toFixed(4)
               ).toLocaleString()}{' '}
               usdc
             </span>

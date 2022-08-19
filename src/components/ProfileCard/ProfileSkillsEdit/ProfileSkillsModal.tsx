@@ -51,7 +51,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
   };
 
   return (
-    <Modal onClose={handleClose}>
+    <Modal onClose={handleClose} height="min(75%, 45rem)" overflowY="auto">
       <h1 className={styles['skill-title']}>Skills</h1>
       <p className={styles['skill-description']}>
         To add more skills, write it in field below and click ENTER to add a
@@ -76,7 +76,11 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
         ))}
       </div>
-      <GradientBtn label="Save" onClick={handleClose} />
+      <GradientBtn
+        label="Save"
+        onClick={handleClose}
+        style={{ zIndex: 'unset' }}
+      />
     </Modal>
   );
 };

@@ -1,19 +1,14 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-dummy-1.svg';
-import { ReactComponent as DummyImage2 } from 'assets/illustrations/task/task-dummy-2.svg';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
-import userImg from 'assets/images/profile/user-image.png';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import Card from 'components/Card';
 import styles from './index.module.scss';
 import useFetchUserTasks from './hooks';
 
 const Tasks = () => {
-  const { profile } = useSelector((state: RootState) => state.profile);
-  const profileId = profile?.profileId ? profile.profileId : 0;
-  const { data } = useFetchUserTasks(profileId);
+  const { data } = useFetchUserTasks();
+
   if (data) {
     return (
       <div className={styles['tasks-container']}>
@@ -25,6 +20,7 @@ const Tasks = () => {
             estimatedDifficulty={d.estimatedDifficulty}
             price={d.price}
             organisationImage={d.organisationImage}
+            categoryName={d.categoryName}
           />
         ))}
       </div>
@@ -39,6 +35,7 @@ interface ITaskCard {
   estimatedDifficulty: number;
   price: number;
   organisationImage: JSX.Element;
+  categoryName: string;
 }
 
 const TaskCard: FC<ITaskCard> = ({
@@ -47,18 +44,27 @@ const TaskCard: FC<ITaskCard> = ({
   estimatedDifficulty,
   price,
   organisationImage,
+  categoryName,
 }) => {
   const applyToTask = () => {};
   return (
     <div className={styles.container}>
-      <Card showTransparentBg width="100%" height="auto">
+      <Card
+        className={styles['task-card']}
+        showTransparentBg
+        width="100%"
+        height="auto"
+      >
+        {/* <div className={styles['profile-category-container']}>
+          <p className={styles['category-text']}>{categoryName}</p>
+        </div> */}
         <div className={styles.wrapper}>
           <div className={styles.content} style={{ width: '100px' }}>
-            <BrandImage width={95} height={95} />
+            <BrandImage width={68} height={68} />
           </div>
           <div className={styles.content} style={{ lineHeight: '2rem' }}>
-            <h4>{title}</h4>
-            <p>{organisation}</p>
+            <h4 className={styles['task-card-title']}>{title}</h4>
+            <p className={styles['task-card-organisation']}>{organisation}</p>
             {Array.from({ length: estimatedDifficulty }).map((_, index) => (
               <i
                 // eslint-disable-next-line react/no-array-index-key
@@ -69,8 +75,11 @@ const TaskCard: FC<ITaskCard> = ({
               </i>
             ))}
           </div>
-          <div className={styles.content} style={{ width: '200px' }}>
-            <p className={styles.dot} style={{ top: '1px', left: '-25px' }} />
+          <div
+            className={styles.content}
+            style={{ width: '200px', display: 'flex' }}
+          >
+            <USDCIcon className={styles['task-card-usdc-icon']} />
             <p>{price} USDC </p>
           </div>
           <div
