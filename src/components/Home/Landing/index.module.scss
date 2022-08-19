@@ -27,16 +27,24 @@
 .content {
   display: flex;
   justify-content: space-between;
-  // margin: 50px 75px 0px 75px;
   margin: auto;
-
-  @media (min-width: 1440px) {
+  @media (max-width: 1920px)  {
     width: 70%;
   }
-
-  @media (min-width: 1024px) and (max-width: 1440px) {
-    width: 90%;
+  @media (max-width: 1680px)  {
+    width: 70%;
   }
+  
+  @media (max-width: 1440px)  {
+    width: 80%;
+  }
+  
+  @media (max-width: 1024px) {
+    width: 82%;
+    flex-direction: column;
+  }
+  
+   
 
   padding-bottom: 60px;
 }

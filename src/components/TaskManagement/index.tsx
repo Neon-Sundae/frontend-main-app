@@ -25,6 +25,7 @@ import CompleteTask from 'components/CompleteTask';
 import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
+import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
@@ -224,7 +225,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   if (elements) {
     return (
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className={styles['container']}>
+        <div className={styles.container}>
           {lists.map(listKey => (
             <Column
               elements={elements[listKey]}
@@ -365,7 +366,7 @@ const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
                 ))}
               </span>
               <div className={styles['price-container']}>
-                <div />
+                <USDCIcon />
                 <span>{item.price} USDC</span>
               </div>
             </div>

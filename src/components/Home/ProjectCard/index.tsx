@@ -40,25 +40,24 @@ const ProjectCard: FC<ProjectCardProps> = ({
           className={styles['project-card']}
           showTransparentBg
           width={width}
-          marginRight="44px"
         >
           <>
             <header>
               {orgImage ? (
-                <img src={orgImage} className={styles.orgImage}></img>
+                <img src={orgImage} className={styles.orgImage} alt="org" />
               ) : (
                 <BrandImage width={51} height={51} />
               )}
+              <span className={styles['text--secondary']}>{org}</span>
               <h3 className={styles['text--primary']}>
                 {projectName?.length > 13
                   ? `${projectName?.substring(0, 13)}...`
                   : projectName}
               </h3>
-              <span className={styles['text--secondary']}>{org}</span>
             </header>
             <p className={styles['text-content']}>
               {description?.length > 90
-                ? `${description?.substring(0, 90)}...`
+                ? `${description?.substring(0, 85)}...`
                 : description}
             </p>
 
@@ -82,16 +81,16 @@ const ProjectCard: FC<ProjectCardProps> = ({
         <>
           <header>
             {orgImage ? (
-              <img src={orgImage} className={styles.orgImage}></img>
+              <img src={orgImage} className={styles.orgImage} alt="org" />
             ) : (
               <BrandImage width={51} height={51} />
             )}
+            <span className={styles['text--secondary']}>{org}</span>
             <h3 className={styles['text--primary']}>
               {projectName?.length > 16
-                ? `${projectName?.substring(0, 16)}...`
+                ? `${projectName?.substring(0, 14)}...`
                 : projectName}
             </h3>
-            <span className={styles['text--secondary']}>{org}</span>
           </header>
           <p className={styles['text-content']}>
             {description?.length > 90

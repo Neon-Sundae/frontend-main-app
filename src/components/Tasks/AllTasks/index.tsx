@@ -6,11 +6,16 @@ import { getAccessToken } from 'utils/authFn';
 import styles from './index.module.scss';
 
 const AllTasks: FC = () => {
-  const { isLoading, error, data, isFetching } = useQuery(['allTasks'], () =>
-    fetch(`${config.ApiBaseUrl}/task/all`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    }).then(response => response.json())
+  const { isLoading, error, data, isFetching } = useQuery(
+    ['allTasks'],
+    () =>
+      fetch(`${config.ApiBaseUrl}/task/all`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }).then(response => response.json()),
+    {
+      refetchOnWindowFocus: false,
+    }
   );
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <div>Loading...</div>;
@@ -21,7 +26,7 @@ const AllTasks: FC = () => {
         <h1 className={styles.heading}>All Tasks</h1>
         <div className={styles.taskCardWrapper}>
           {data.map((task: any) => (
-            <TaskCard key={task.id} data={task} width="60vw" />
+            <TaskCard key={task.id} data={task} />
           ))}
         </div>
       </div>
