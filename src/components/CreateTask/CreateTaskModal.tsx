@@ -179,6 +179,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
             />
           </div>
         </div>
+        <label className={styles['difficulty-price-label']}>Description</label>
         <textarea
           placeholder="Task Description"
           className={styles['task-description-field']}

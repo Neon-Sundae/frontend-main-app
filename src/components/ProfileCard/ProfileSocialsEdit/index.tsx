@@ -23,7 +23,11 @@ const ProfileSocialsEdit: FC = () => {
         {profile?.instagram && <InstagramIcon width={40} height={40} />}
         {profile?.github && <LinkedinIcon width={40} height={40} />}
         {profile?.portfolio && <LinkedinIcon width={40} height={40} />}
-        {!profile && <div className={styles.white}>Add Links</div>}
+        {!profile?.linkedin &&
+          !profile?.twitter &&
+          !profile?.instagram &&
+          !profile?.github &&
+          !profile?.portfolio && <div className={styles.white}>Add Links</div>}
       </div>
       {open && <ProfileSocialsModal setOpen={setOpen} />}
     </>

@@ -76,7 +76,11 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
           />
         ))}
       </div>
-      <GradientBtn label="Save" onClick={handleClose} />
+      <GradientBtn
+        label="Save"
+        onClick={handleClose}
+        style={{ zIndex: 'unset' }}
+      />
     </Modal>
   );
 };
