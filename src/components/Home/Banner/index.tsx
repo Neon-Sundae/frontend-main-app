@@ -26,7 +26,6 @@ const Banner: FC = () => {
 
   const handlePrjModalClose = () => {
     setShowPrjModal(false);
-    window.location.reload();
   };
 
   return (

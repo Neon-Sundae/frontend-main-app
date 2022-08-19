@@ -11,7 +11,7 @@ import styles from './index.module.scss';
 const Projects: FC = () => {
   const navigate = useNavigate();
   const { isLoading, error, data, isFetching } = useQuery(
-    ['userOrgs'],
+    ['newFlProjects'],
     () =>
       fetch(`${config.ApiBaseUrl}/fl-project/new`, {
         method: 'GET',
