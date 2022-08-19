@@ -12,8 +12,8 @@
     box-sizing: border-box;
     height: 177px;
     padding: 10px;
-    border: 2px solid #FFFFFF;
-    border-radius: 10px;
+    border: 0.855856px solid #FFFFFF;
+    border-radius: 8.55856px;
   }
 
   .singleNft:nth-child(3n) {
@@ -94,9 +94,10 @@
       border: 0.62px solid;
       color: #fff;
       cursor: pointer;
-      font-size: 22.58px;
+      font-family: var(--font-family-roboto-regular);
+      font-size: 18px;
       position: absolute;
-      left: 25%;
+      left: 31%;
     }
   }
 
@@ -122,11 +123,12 @@
     border-radius: 23px;
     color: #fff;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     padding: 14.41px;
     border: .7px solid #FF9BFB;
     width: 202px;
     height: 55px;
+    font-family: var(--font-family-roboto-regular);
   }
 
   & h2 {

@@ -26,13 +26,14 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
   const days = Math.floor(
     (end.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24)
   );
+  const formattedEndDate = end.toLocaleDateString('en-GB');
   const flResourcesStringJoined = flResources
     ?.map(resource => resource.title)
     .join(', ');
   return (
     <div className={styles.container}>
       <span className={styles.projectContentHeading}>
-        <h4>Description</h4>
+        <h4>Company Description</h4>
         <h4>Project Details</h4>
       </span>
       <div className={styles.wrap}>
@@ -42,19 +43,19 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
         <section className={styles.projectDetails}>
           <div className={styles.card}>
             <span className={styles.inline}>
-              <Money />
+              <Money /> &nbsp; &nbsp;
               <p>Budget: {budget} USDC</p>
             </span>
             <span className={styles.inline}>
-              <Time />
-              <p>Timeline: {days} days</p>
+              <Time /> &nbsp; &nbsp;
+              <p>Timeline: {formattedEndDate}</p>
             </span>
             <span className={styles.inline}>
-              <Graph />
+              <Graph /> &nbsp; &nbsp;
               <p>Timezones: {preferredTimeZones}</p>
             </span>
             <span className={styles.inline}>
-              <Resource />
+              <Resource /> &nbsp; &nbsp;
               <p>Looking For: {flResourcesStringJoined}</p>
             </span>
           </div>

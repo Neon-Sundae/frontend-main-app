@@ -81,7 +81,7 @@ body {
       font-size: 12px;
       color: #CBCBCB;
       margin-bottom: 20px;
-
+      width: 480px;
       & span {
         cursor: pointer;
         color: #fff;
@@ -89,7 +89,7 @@ body {
       }
       & .spanLeft {
         position: absolute;
-        right: 15%;
+        right: 8%;
       }
     }
 

@@ -80,13 +80,14 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
           <h2>Show off your prized possessions</h2>
           <p>
             Set your profile picture to an NFT you own by connecting your wallet
-            wallet and verifying address
+            and verifying address
           </p>
           <div />
           <footer>
             By connecting your wallet you authorize Founder’s Lab to extract
             your NFT information belonging to &nbsp;
-            <span>{truncatedWalletId}</span> <span className={styles.spanLeft}>Learn More</span>
+            <span>{truncatedWalletId}</span>{' '}
+            <span className={styles.spanLeft}>Learn More</span>
           </footer>
           <button
             onClick={e => {

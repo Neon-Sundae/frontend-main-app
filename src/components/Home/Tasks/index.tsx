@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import getRandomString from "utils/getRandomString";
+import getRandomString from 'utils/getRandomString';
 import TaskCard from '../TaskCard';
 import styles from './index.module.scss';
 

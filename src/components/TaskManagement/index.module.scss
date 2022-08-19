@@ -172,7 +172,7 @@
   text-transform: capitalize;
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: 17px;
+  font-size: 14px;
   color: white;
   text-align: center;
   width: max-content;
@@ -210,10 +210,10 @@ div[data-rbd-droppable-context-id] {
   /* Note: backdrop-filter has minimal browser support */
 
   border-radius: 20px;
-  border: 1px solid #414141;
+  border: .44px solid rgba(211, 155, 255, 1);
   margin-bottom: 15px;
   cursor: pointer;
-  padding: 10px 15px;
+  padding: 10px 30px;
 
   display: flex;
   flex-direction: column;
@@ -234,7 +234,7 @@ div[data-rbd-droppable-context-id] {
 .task-category {
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: 14px;
+  font-size: 10px;
   padding: 2px 12px;
 
   border: 0.7px solid #e0b9ff;
@@ -245,7 +245,7 @@ div[data-rbd-droppable-context-id] {
 .apply-task-text {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  font-size: 14px;
+  font-size: 12px;
   color: white;
   cursor: pointer;
 }
@@ -263,14 +263,14 @@ div[data-rbd-droppable-context-id] {
 .task-name {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   color: white;
 }
 
 .task-organisation-name {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  font-size: 14px;
+  font-size: 10px;
   color: white;
 }
 
@@ -296,15 +296,13 @@ div[data-rbd-droppable-context-id] {
   &>div {
     width: 18px;
     height: 18px;
-    background-color: #ffb9c2;
-    border-radius: 50%;
-    margin-right: 10px;
   }
 
   &>span {
     font-family: var(--font-family-roboto-flex);
     font-weight: 500;
-    font-size: 15px;
+    font-size: 12px;
     color: white;
+    margin-left: 7px;
   }
 }

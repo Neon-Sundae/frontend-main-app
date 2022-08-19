@@ -1,4 +1,5 @@
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
+import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import clsx from 'clsx';
 import Card from 'components/Card';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
@@ -60,12 +61,11 @@ const TaskCard = (props: any) => {
                   Apply to task
                 </div>
                 <div className={styles.row}>
-                  <div
+                  <USDCIcon
                     className={styles.dot}
                     style={{
-                      background: '#FFB9C2',
-                      top: '88px',
-                      left: '65px',
+                      top: '89px',
+                      marginRight: '5px',
                     }}
                   />
                   <p>{data.price} USDC </p>
@@ -86,7 +86,10 @@ const TaskCard = (props: any) => {
         height={height}
         borderType="0.7px solid #e0b9ff"
       >
-        <div className={styles.wrapper}>
+        <div
+          className={styles.wrapper}
+          style={{ marginLeft: '55px', marginRight: '55px' }}
+        >
           {data.flProjectCategory.flProject.organisation.profileImage ? (
             <img
               src={data.flProjectCategory.flProject.organisation.profileImage}
@@ -94,7 +97,7 @@ const TaskCard = (props: any) => {
               alt="organisation"
             />
           ) : (
-            <BrandImage width={130} height={130} />
+            <BrandImage width={170} height={170} />
           )}
           <div className={styles.content}>
             <div className={styles.content} style={{ width: '100px' }} />
@@ -127,14 +130,13 @@ const TaskCard = (props: any) => {
                 Apply to task
               </div>
               <div className={styles.row}>
-                <div
-                  className={styles.dot}
+                <USDCIcon
                   style={{
-                    background: '#FFB9C2',
                     top: '89px',
-                    right: '17%',
+                    marginRight: '5px',
                   }}
                 />
+
                 <p>{data.price} USDC </p>
               </div>
             </div>

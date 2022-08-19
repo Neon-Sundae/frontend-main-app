@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-dummy-1.svg';
-import { ReactComponent as Edit } from 'assets/illustrations/icons/stroke.svg';
+import { ReactComponent as Add } from 'assets/illustrations/icons/add.svg';
 import BaseModal from 'components/Home/BaseModal';
 import StartOrgModal from 'components/StartOrgModal';
 import toast, { Toaster } from 'react-hot-toast';
@@ -52,7 +52,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
     if (!selected) toast.error('Please select an organization');
     else setShowCreateProjectModal(true);
   };
-  console.log(onClose);
+  console.log(selected);
   return (
     <div>
       {!showCreateProjectModal ? (
@@ -60,10 +60,13 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
           <Toaster />
           <BaseModal
             onClose={onClose}
-            header="Choose an organisation to start a project"
+            header="Choose an organisation"
             onNext={handleNext}
             showBtn
           >
+            <p className={styles.promptPara}>
+              To Start a Project you need to choose an organisation
+            </p>
             <section className={styles['org-list']}>
               {data?.map((org: any) => {
                 return (
@@ -92,7 +95,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
                 onClick={handleOrgModalShow}
               >
                 <div className={styles['icon-cont']}>
-                  <Edit width={30} height={30} />
+                  <Add width={30} height={30} />
                 </div>
                 <p>Add an organisation</p>
               </section>
@@ -132,20 +135,22 @@ const Organisation: FC<IOrgProps> = ({
   selected,
 }) => {
   return (
-    <section
-      style={{ padding: '12px' }}
-      className={styles.container}
-      onClick={onClick}
-    >
-      {organisationImage}
-      {selected === id ? (
-        <p>
-          <strong>{organisation}</strong>
-        </p>
-      ) : (
-        <p>{organisation}</p>
-      )}
-    </section>
+    <div className={selected === id ? styles.selected : ''}>
+      <section
+        style={{ padding: '12px' }}
+        className={styles.container}
+        onClick={onClick}
+      >
+        {organisationImage}
+        {selected === id ? (
+          <strong>
+            <p>{organisation}</p>{' '}
+          </strong>
+        ) : (
+          <p>{organisation}</p>
+        )}
+      </section>
+    </div>
   );
 };
 
