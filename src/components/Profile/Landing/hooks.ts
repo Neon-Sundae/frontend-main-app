@@ -14,6 +14,7 @@ import { IProfileApiResponse } from 'interfaces/profile';
 import { normalizeSkills } from 'utils/normalizeSkills';
 import { fillProfileSkillsData } from 'actions/skills';
 import { RootState } from 'reducers';
+import { getAccessToken } from 'utils/authFn';
 
 const useProfile = () => {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ const useProfile = () => {
 
 const useFetchPublicProfile = (profileId: string | undefined) => {
   const dispatch = useDispatch();
+  const accessToken = getAccessToken();
   const user = useSelector((state: RootState) => state.user.user);
 
   useQuery(
@@ -76,6 +78,7 @@ const useFetchPublicProfile = (profileId: string | undefined) => {
         {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
