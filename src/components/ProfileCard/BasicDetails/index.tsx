@@ -111,7 +111,9 @@ const ProfileAddressChain = () => {
   return (
     <div className={styles['profile-address-chain']}>
       {profile?.profileSmartContractId ===
-      '0x0000000000000000000000000000000000000000' ? (
+        '0x0000000000000000000000000000000000000000' ||
+      profile?.profileSmartContractId === null ||
+      profile?.profileSmartContractId === '' ? (
         <div
           className={styles['address-container']}
           style={{ cursor: 'pointer' }}
