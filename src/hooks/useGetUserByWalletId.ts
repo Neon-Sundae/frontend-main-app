@@ -37,6 +37,7 @@ const useGetUserByWalletId = () => {
       return json;
     },
     {
+      retry: 1,
       enabled: !!accessToken,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
