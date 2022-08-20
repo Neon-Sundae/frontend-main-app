@@ -204,7 +204,9 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
   return (
     <div className={styles['profile-address-chain']}>
       {profileSmartContractId ===
-      '0x0000000000000000000000000000000000000000' ? (
+        '0x0000000000000000000000000000000000000000' ||
+      profileSmartContractId === null ||
+      profileSmartContractId === '' ? (
         <>
           <div
             className={styles['address-container']}

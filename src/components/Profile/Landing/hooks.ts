@@ -21,10 +21,7 @@ const useProfile = () => {
 
   const fetchOnChainProfileData = async (address: string) => {
     try {
-      if (
-        address !== '0x0000000000000000000000000000000000000000' &&
-        address !== ''
-      ) {
+      if (address !== '0x0000000000000000000000000000000000000000' && address) {
         const web3 = getWeb3Instance();
         const contract = new web3.eth.Contract(
           profileAbi.abi as AbiItem[],
