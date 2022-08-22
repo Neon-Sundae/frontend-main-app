@@ -16,7 +16,7 @@ const ProjectsCard = () => {
   const projectsFlat = projects.flat();
   const navigate = useNavigate();
   return (
-    <div className={styles.container}>
+    <div className={styles['profile-project-container']}>
       {projectsFlat?.map((project: any) => {
         return (
           <div
@@ -30,7 +30,6 @@ const ProjectsCard = () => {
               className={styles['project-card']}
               showTransparentBg
               width="189.95px"
-              marginRight="50px"
             >
               <header>
                 <BrandImage width={70} height={70} />
