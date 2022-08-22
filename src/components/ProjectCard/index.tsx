@@ -1,30 +1,28 @@
-/* eslint-disable no-underscore-dangle */
 import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
-import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 import useFetchUserProjects from './hooks';
 
 const ProjectsCard = () => {
-  const data = useFetchUserProjects();
-  const projects: any = [];
-  data?.data?.forEach((project: any) => {
-    projects.push(project.flProjects);
-  });
-  const projectsFlat = projects.flat();
+  const { flProjects, isLoading } = useFetchUserProjects();
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <div className={styles['profile-project-container']}>
-      {projectsFlat?.map((project: any) => {
+      {flProjects?.map((project: any) => {
         return (
           <div
             onClick={() => {
-              navigate(`/project/${project.flProjectId_uuid}`);
+              navigate(`/project/${project.id}`);
             }}
             style={{ cursor: 'pointer' }}
-            key={getRandomString(5)}
+            key={project.id}
           >
             <Card
               className={styles['project-card']}
@@ -32,21 +30,27 @@ const ProjectsCard = () => {
               width="189.95px"
             >
               <header>
-                <BrandImage width={70} height={70} />
-                <h3 className={styles['text--primary']}>
-                  {project?.name?.length > 13
-                    ? `${project?.name?.substring(0, 13)}...`
-                    : project?.name}
+                {project.image ? (
+                  <div className={styles['profile-project-image-wrapper']}>
+                    <img src={project.image} alt="Organisation logo" />
+                  </div>
+                ) : (
+                  <BrandImage width={60} height={60} />
+                )}
+                <h5 className={styles['profile-project-organisation']}>
+                  {project.organisation}
+                </h5>
+                <h3 className={styles['profile-project-title']}>
+                  {project.name}
                 </h3>
-                <span className={styles['text--secondary']}>org</span>
               </header>
-              <p className={styles['text-content']}>
-                {project?.description?.length > 121
-                  ? `${project?.description?.substring(0, 65)}...`
-                  : project?.description}
+              <p className={styles['profile-project-description']}>
+                {project.description}
               </p>
               <footer>
-                <span className={styles['text-extra']}>{1} tasks</span>
+                <span className={styles['text-extra']}>
+                  {project.taskCount} tasks
+                </span>
                 <span className={clsx('material-icons', styles.icon)}>
                   east
                 </span>
@@ -55,7 +59,7 @@ const ProjectsCard = () => {
           </div>
         );
       })}
-      {projectsFlat?.length === 0 && <p>No Projects</p>}
+      {flProjects.length === 0 && <p>No Projects</p>}
     </div>
   );
 };
