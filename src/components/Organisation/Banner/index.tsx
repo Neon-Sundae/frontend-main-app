@@ -6,7 +6,7 @@ import gradient from 'assets/illustrations/organisation/gradient.svg';
 import { ReactComponent as Instagram } from 'assets/illustrations/profile/instagram.svg';
 import { ReactComponent as Linkedin } from 'assets/illustrations/profile/linkedin.svg';
 import { ReactComponent as Twitter } from 'assets/illustrations/profile/twitter.svg';
-import { ReactComponent as Apple } from 'assets/illustrations/organisation/apple.svg';
+import { ReactComponent as Bitcoin } from 'assets/illustrations/organisation/bitcoin.svg';
 import { IOrganisation } from 'interfaces/organisation';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,13 +81,13 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       />
       <div className={styles.content}>
         <div className={styles.center}>
-          <div className={styles.logo}>
-            {organisation.profileImage ? (
+          {organisation.profileImage ? (
+            <div className={styles.logo}>
               <img src={organisation.profileImage} alt="logo" />
-            ) : (
-              <Apple width={95} height={117} className={styles['logo-svg']} />
-            )}
-          </div>
+            </div>
+          ) : (
+            <Bitcoin width={80} height={80} className={styles['logo-svg']} />
+          )}
         </div>
         <div className={styles.center}>
           {isEditable ? (
