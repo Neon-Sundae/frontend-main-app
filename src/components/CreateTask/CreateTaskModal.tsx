@@ -39,10 +39,10 @@ const initialData = [
 
 const difficultyData = [
   { label: <DifficultyRating level={1} title="Beginner" />, value: 1 },
-  { label: <DifficultyRating level={2} title="Beginner" />, value: 2 },
-  { label: <DifficultyRating level={3} title="Beginner" />, value: 3 },
-  { label: <DifficultyRating level={4} title="Beginner" />, value: 4 },
-  { label: <DifficultyRating level={5} title="Beginner" />, value: 5 },
+  { label: <DifficultyRating level={2} title="Moderate" />, value: 2 },
+  { label: <DifficultyRating level={3} title="Significant" />, value: 3 },
+  { label: <DifficultyRating level={4} title="Advanced" />, value: 4 },
+  { label: <DifficultyRating level={5} title="Moderate" />, value: 5 },
 ];
 
 interface IProfileSkills {
