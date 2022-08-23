@@ -1,6 +1,12 @@
 .assign-task-container {
   color: white;
-
+  h2 {
+    font-family: var(--font-family-roboto-regular);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 35px;
+  }
   .project-action-delete {
     cursor: pointer;
     display: flex;
@@ -46,6 +52,11 @@
   .founder-name {
     margin-top: 20px;
     margin-bottom: 20px;
+    font-family: var(--font-family-roboto-regular);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
   }
 
   .token-id {
@@ -107,7 +118,11 @@
       display: flex;
       align-items: center;
       width: 50% !important;
-
+      font-family: var(--font-family-roboto-regular);
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
       & > div {
         padding-left: 20px;
         display: flex;
@@ -124,6 +139,24 @@
     }
   }
 
+  .project-description {
+    & > p {
+      font-family: var(--font-family-roboto-flex);
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      padding: 0 20px;
+    }
+  }
+  .project-check-list {
+    & > p {
+      font-family: var(--font-family-roboto-regular);
+      font-style: normal;
+      font-weight: 500;
+      font-size: 21px;
+      line-height: 32px;
+      }
+  }
   .project-description,
   .project-check-list {
     background: #2d2d35;
@@ -132,6 +165,12 @@
     margin-top: 30px;
 
     & > .task-check-list-container {
+      font-family: var(--font-family-roboto-regular);
+      font-style: normal;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 19px;
+
       padding: 10px 20px;
       display: flex;
       align-items: center;
@@ -164,7 +203,7 @@
           margin: 0 20px;
           font-size: 16px;
           font-family: var(--font-family-roboto-flex);
-          font-size: 16px;
+         
           color: white;
           cursor: pointer;
         }

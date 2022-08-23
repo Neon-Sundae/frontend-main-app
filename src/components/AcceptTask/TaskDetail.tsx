@@ -11,6 +11,7 @@ import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.sv
 import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
+import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileAttachmentCard from './FileAttachmetCard';
 import styles from './index.module.scss';
@@ -97,7 +98,7 @@ const TaskDetail: FC<ITaskDetail> = ({
 
         {selectedTask?.profileTask.length > 0 && (
           <div
-            className={expanded ? styles['expanded'] : ''}
+            className={expanded ? styles.expanded : ''}
             onClick={() => setViewTalentList(true)}
           >
             {selectedTask?.status !== 'open' &&
@@ -185,7 +186,10 @@ const TaskDetail: FC<ITaskDetail> = ({
         <div>
           <div className={styles['project-detail-item']}>
             <span>&nbsp;XP</span>
-            <div>Point: {taskXP}XP</div>
+            <div>
+              Point: {taskXP}&nbsp;
+              <XPIcon width="20.64px" height="19px" />
+            </div>
           </div>
           <div className={styles['project-detail-item']}>
             <i className="material-icons">local_fire_department</i>
