@@ -91,11 +91,13 @@ const TaskCard = (props: any) => {
           style={{ marginLeft: '55px', marginRight: '55px' }}
         >
           {data.flProjectCategory.flProject.organisation.profileImage ? (
-            <img
-              src={data.flProjectCategory.flProject.organisation.profileImage}
-              className={styles.img}
-              alt="organisation"
-            />
+            <div className={styles.orgImgWrap}>
+              <img
+                src={data.flProjectCategory.flProject.organisation.profileImage}
+                className={styles.img}
+                alt="organisation"
+              />
+            </div>
           ) : (
             <BrandImage width={170} height={170} />
           )}

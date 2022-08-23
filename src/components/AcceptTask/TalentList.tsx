@@ -11,7 +11,6 @@ interface ITalentList {
 
 const TalentList: FC<ITalentList> = ({ setViewTalentList, handleApprove }) => {
   const { selectedTask } = useSelector((state: RootState) => state.flProject);
-
   return (
     <div className={styles['talent-list-container']}>
       {selectedTask?.status !== 'open' &&
@@ -47,7 +46,7 @@ const TalentList: FC<ITalentList> = ({ setViewTalentList, handleApprove }) => {
         className={styles['btn-back']}
         onClick={() => setViewTalentList(false)}
       >
-        Back
+        BACK
       </button>
     </div>
   );

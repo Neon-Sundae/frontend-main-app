@@ -43,12 +43,14 @@ const TalentListItem: FC<ITalentListItem> = ({
       className={styles['talent-list-item-container']}
       onClick={handleNavigation}
     >
-      <div className={styles['builder']}>
-        <div className={styles['builder-avatar']}></div>
+      <div className={styles.builder}>
+        <div className={styles['builder-avatar']}>
+          <img src={data.Profile.picture} alt="" />
+        </div>
         <div className={styles['builder-name']}>{data?.Profile.user.name}</div>
       </div>
       <div className={styles['builder-position']}>{data?.Profile.title}</div>
-      <div className={styles['action']}>
+      <div className={styles.action}>
         {task_status === 'open' &&
           data?.applicationStatus === 'applied' &&
           walletId?.toLowerCase() === founder.toLowerCase() && (
