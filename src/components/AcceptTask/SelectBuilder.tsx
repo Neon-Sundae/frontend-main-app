@@ -2,12 +2,12 @@ import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
 import Spinner from 'components/Project/Modal/Spinner';
-import { useSelectBuilder } from './hooks';
 import { RootState } from 'reducers';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as CloseIcon } from 'assets/illustrations/icons/close-outlined.svg';
-import styles from './index.module.scss';
 import DepositFundsToWallet from 'components/Project/Modal/DepositFundsToWallet';
+import styles from './index.module.scss';
+import { useSelectBuilder } from './hooks';
 
 interface ISelectBuilder {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -53,9 +53,9 @@ const SelectBuilder: FC<ISelectBuilder> = ({
       setPending('budget_exceed');
     }
   };
-
+  console.log('selectedBuilder', selectedBuilder);
   return (
-    <Modal onClose={handleClose}>
+    <Modal onClose={handleClose} width="550px" height="500px">
       {pending === 'add_funds' ? (
         <DepositFundsToWallet />
       ) : (
@@ -74,6 +74,19 @@ const SelectBuilder: FC<ISelectBuilder> = ({
               ? 'Failed'
               : 'Select Builder'}
           </h1>
+          <div className={styles['selected-builder-details']}>
+            <img
+              src={selectedBuilder.Profile.picture}
+              alt=""
+              width="70.51px"
+              height="70.51px"
+            />
+            <p>
+              <a href="#">{selectedBuilder.Profile.user.name} </a>
+              <br />
+              {selectedBuilder.Profile.title}
+            </p>
+          </div>
           {pending === 'initial' ? (
             <>
               <div>
@@ -97,7 +110,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
                 )}
                 <span>Top Up Wallet +</span>
               </p>
-              <button onClick={handleSelect}>Select</button>
+              <button onClick={handleSelect}>Confirm</button>
             </>
           ) : pending === 'waiting' ? (
             <div className={styles['accept-task-content']}>
