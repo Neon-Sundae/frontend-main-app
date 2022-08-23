@@ -207,18 +207,16 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
         '0x0000000000000000000000000000000000000000' ||
       profileSmartContractId === null ||
       profileSmartContractId === '' ? (
-        <>
-          <div
-            className={styles['address-container']}
-            style={{ cursor: 'pointer' }}
-            onClick={() => createProfile(name, title, walletId)}
-          />
+        <div
+          className={styles['address-container']}
+          style={{ cursor: 'pointer' }}
+          onClick={() => createProfile(name, title, walletId)}
+        >
           <span className="material-icons" style={{ color: '#FAA5B9' }}>
             close
           </span>
           <p className={styles['profile-address']}>Mint on Chain</p>
-          <div />
-        </>
+        </div>
       ) : (
         <div className={styles['address-container']}>
           <FoundersLabIcon width={28} height={28} />
