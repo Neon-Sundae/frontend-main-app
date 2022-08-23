@@ -59,6 +59,7 @@ const AcceptTask: FC<IAcceptTask> = ({
       width="clamp(20rem, 45vw, 45rem)"
       maxHeight="min(90%, 45rem)"
       overflowY="auto"
+      padding="42px"
     >
       <div className={styles['assign-task-container']}>
         <h2 className={styles['project-name']}>

@@ -1,6 +1,12 @@
 .assign-task-container {
   color: white;
-
+  h2 {
+    font-family: var(--font-family-roboto-regular);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 35px;
+  }
   .project-action-delete {
     cursor: pointer;
     display: flex;
@@ -46,6 +52,11 @@
   .founder-name {
     margin-top: 20px;
     margin-bottom: 20px;
+    font-family: var(--font-family-roboto-regular);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
   }
 
   .token-id {
@@ -86,6 +97,7 @@
       margin-left: -20px;
       border: 1px solid white;
       cursor: pointer;
+     
     }
   }
 
@@ -106,7 +118,11 @@
       display: flex;
       align-items: center;
       width: 50% !important;
-
+      font-family: var(--font-family-roboto-regular);
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
       & > div {
         padding-left: 20px;
         display: flex;
@@ -123,6 +139,24 @@
     }
   }
 
+  .project-description {
+    & > p {
+      font-family: var(--font-family-roboto-flex);
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      padding: 0 20px;
+    }
+  }
+  .project-check-list {
+    & > p {
+      font-family: var(--font-family-roboto-regular);
+      font-style: normal;
+      font-weight: 500;
+      font-size: 21px;
+      line-height: 32px;
+      }
+  }
   .project-description,
   .project-check-list {
     background: #2d2d35;
@@ -131,6 +165,12 @@
     margin-top: 30px;
 
     & > .task-check-list-container {
+      font-family: var(--font-family-roboto-regular);
+      font-style: normal;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 19px;
+
       padding: 10px 20px;
       display: flex;
       align-items: center;
@@ -163,7 +203,7 @@
           margin: 0 20px;
           font-size: 16px;
           font-family: var(--font-family-roboto-flex);
-          font-size: 16px;
+         
           color: white;
           cursor: pointer;
         }
@@ -208,15 +248,32 @@
           overflow: hidden;
           border: 1px solid white;
           cursor: pointer;
+          &>img {
+            
+            object-fit: cover;
+            width: 36px;
+            height: 36px;
+          }
         }
 
         .builder-name {
+          font-family: var(--font-family-roboto-flex);
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 16px;
           margin-left: 15px;
         }
       }
 
       .builder-position {
         width: 40%;
+        font-family: var(--font-family-roboto-flex);
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+
       }
 
       .action {
@@ -234,6 +291,14 @@
           color: #a1b4e5;
           min-width: 80px;
           text-align: center;
+          font-family: var(--font-family-roboto-flex);
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          
+          /* identical to box height */
+
+        
         }
 
         .btn-reject {
@@ -246,6 +311,11 @@
           min-width: 80px;
           text-align: center;
           margin-left: 20px;
+          font-family: var(--font-family-roboto-flex);
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          
         }
 
         .selected-builder {
@@ -263,15 +333,18 @@
         rgba(255, 255, 255, 0.12) 12.11%,
         rgba(255, 255, 255, 0.03) 73.08%
       );
+      
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       border: 1px solid rgba(255, 155, 251, 0.2);
       border-radius: 23px;
       padding: 12px 32px;
-      min-width: 150px;
-      font-size: 20px;
+      min-width: 129px;
+      height: 55px;
+      font-size: 18px;
       text-align: center;
       color: #ffffff;
+      
     }
   }
 }
@@ -301,11 +374,34 @@
   // padding: 30px;
   color: white;
 
+ .selected-builder-details {
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &> p{
+    font-family: var(--font-family-roboto-flex);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 13.4458px;
+    line-height: 16px;
+    margin-left: 3%;
+  }
+  & > p > a {
+    color: #fff;
+    font-weight: 600;
+    font-family: var(--font-family-roboto-flex);
+    font-size: 19.4217px;
+  }
+  & > img {
+    border-radius: 50%
+  };
+ }
   & > div {
     background: #2d2d35;
     border-radius: 30px;
     padding: 20px;
-    margin-top: 30px;
+    margin-top: 12%;
 
     & > div {
       display: flex;
@@ -314,27 +410,28 @@
       padding: 15px 0;
     }
   }
-
+  & > h1 {
+    margin-left: 5%;
+    font-size: 25px;
+  }
   & > p {
+    margin: 0 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    font-size: 16px;
     & > span:nth-child(1) {
       color: #c4c4c4;
-      font-size: 16px;
+      font-size: 12px;
     }
+    
   }
 
   & > button {
     display: block;
-    margin: 40px auto;
+    margin: 25px auto;
     cursor: pointer;
-    background: linear-gradient(
-      126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%
-    );
+    background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 155, 251, 0.2);
@@ -344,6 +441,8 @@
     font-size: 20px;
     text-align: center;
     color: #ffffff;
+    width: 148px;
+    height: 55px;
   }
 }
 
