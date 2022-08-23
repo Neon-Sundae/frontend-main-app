@@ -1,11 +1,10 @@
 import TaskManagement from 'components/TaskManagement';
 import { FC, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { default as AllTasks } from 'components/Tasks/Landing';
+import { useLocation } from 'react-router-dom';
 import CreateTaskModal from './CreateTaskModal';
 import styles from './index.module.scss';
-import { default as AllTasks } from 'components/Tasks/Landing';
-
-import { useLocation } from 'react-router-dom';
 
 const CreateTask: FC = () => {
   const location = useLocation();
