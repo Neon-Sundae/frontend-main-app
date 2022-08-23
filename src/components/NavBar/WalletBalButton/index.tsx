@@ -1,35 +1,37 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Web3 from 'web3';
 import toast, { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import { ReactComponent as WalletIcon } from 'assets/illustrations/icons/wallet.svg';
-import { ReactComponent as VisibilityIcon } from 'assets/illustrations/icons/visibility.svg';
 import { ReactComponent as WithdrawIcon } from 'assets/illustrations/icons/withdraw.svg';
 import styles from './index.module.scss';
 import useWithdrawFund from './hooks';
 
-const WalletBalButton = () => {
-
+const WalletBalButton: FC = () => {
   const [openWithdraw, setOpenWithdraw] = useState(false);
 
-  const { usdcBalance, profileContractAddress } = useSelector((state: RootState) => state.profile);
+  const { usdcBalance, profile } = useSelector(
+    (state: RootState) => state.profile
+  );
 
-  const { withdrawFund } = useWithdrawFund()
+  const { withdrawFund } = useWithdrawFund();
 
   const handleWithdraw = () => {
     if (usdcBalance === 0) {
-      toast.error("Zero Balance");
+      toast.error('Zero Balance');
     } else {
-      withdrawFund(profileContractAddress);
+      withdrawFund(profile?.profileSmartContractId);
     }
     setOpenWithdraw(false);
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <div className={styles.balance} onClick={() => setOpenWithdraw(!openWithdraw)}>
+      <div
+        className={styles.balance}
+        onClick={() => setOpenWithdraw(!openWithdraw)}
+      >
         <div className={styles.icon}>
           <WalletIcon width={28} height={28} />
         </div>
@@ -41,7 +43,12 @@ const WalletBalButton = () => {
               styles['text--clickable']
             )}
           >
-            <span>{Number(Web3.utils.fromWei(usdcBalance.toString(), 'ether')).toLocaleString()} usdc</span>
+            <span>
+              {Number(
+                Number(usdcBalance / 10 ** 6).toFixed(4)
+              ).toLocaleString()}{' '}
+              usdc
+            </span>
             <span className="material-icons">keyboard_arrow_down</span>
           </div>
           <span
@@ -51,19 +58,17 @@ const WalletBalButton = () => {
               styles['text--align']
             )}
           >
-            Hide balance
-            <VisibilityIcon width={15} height={15} />
+            Profile Balance
+            {/* <VisibilityIcon width={15} height={15} /> TODO - toggle visibility */}
           </span>
         </div>
       </div>
-      {
-        openWithdraw && (
-          <div className={styles.withdraw} onClick={handleWithdraw}>
-            <WithdrawIcon width={30} height={20} />
-            <span>Withdraw</span>
-          </div>
-        )
-      }
+      {openWithdraw && (
+        <div className={styles.withdraw} onClick={handleWithdraw}>
+          <WithdrawIcon width={30} height={20} />
+          <span>Withdraw</span>
+        </div>
+      )}
       <Toaster />
     </div>
   );

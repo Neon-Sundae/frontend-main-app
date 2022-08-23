@@ -1,0 +1,122 @@
+@import '../../../styles/mixins/scrollbar.scss';
+
+body {
+  color: #fff;
+}
+
+.profile-image {
+  width: 110px;
+  height: 110px;
+  margin: auto;
+
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+
+  .image-wrapper {
+    .userImage {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+    }
+
+    .bgImage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+  }
+
+  .editIcon {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+}
+
+.promptImg {
+  width: 600px;
+  height: 254.34px;
+}
+
+.wrapper {
+  position: relative;
+
+  height: 100%;
+  width: auto;
+
+  .promptText {
+    position: absolute;
+    height: 500px;
+    bottom: -45%;
+    left: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    & h2 {
+      font-size: 25px;
+      margin-bottom: 12px;
+      color: #FFFFFF;
+    }
+
+    & p {
+      color: #FBFBFB;
+      font-size: 16px;
+    }
+
+    & div {
+      height: 11%;
+    }
+
+    & footer {
+      font-size: 12px;
+      color: #CBCBCB;
+      margin-bottom: 20px;
+      width: 480px;
+      & span {
+        cursor: pointer;
+        color: #fff;
+        text-decoration: underline;
+      }
+      & .spanLeft {
+        position: absolute;
+        right: 8%;
+      }
+    }
+
+    & button {
+      background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+      width: 192px;
+      height: 55px;
+      backdrop-filter: blur(43.3229px);
+      box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+      background-size: cover;
+      border-radius: 26.8312px;
+      border: 0.62px solid;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      position: absolute;
+      left: 28%;
+    }
+  }
+
+  img {
+    position: absolute;
+    z-index: -1;
+    top: -6%;
+    left: -6%;
+  }
+}
+
+
+

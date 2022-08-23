@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import ProfileCardContainer from 'components/ProfileCardContainer';
@@ -9,7 +10,6 @@ import BasicDetailsEdit from './BasicDetailsEdit';
 import ProfileSkillsEdit from './ProfileSkillsEdit';
 import ProfileSocialsEdit from './ProfileSocialsEdit';
 import TimezoneEdit from './TimezoneEdit';
-import { Toaster } from 'react-hot-toast';
 
 const ProfileCard = () => {
   const isEditable = useSelector(

@@ -1,60 +1,43 @@
-import { createOrg } from 'actions/organisation';
 import config from 'config';
-import { IOrgApiResponse } from 'interfaces/organisation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
-import { handleApiErrors } from 'utils/handleApiErrors';
 import { useNavigate } from 'react-router-dom';
+import { updateUser } from 'actions/user';
+import { useMutation } from '@tanstack/react-query';
+import { handleError } from 'utils/handleUnAuthorization';
 
-interface ICreateOrg {
-  name: string;
-  description: string;
-}
-
-const useCreateOrg = () => {
+const useCreateOrganisation = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
-
   const navigate = useNavigate();
+  const accessToken = getAccessToken();
 
-  const createOrganisation = ({ name, description }: ICreateOrg) => {
-    const accessToken = getAccessToken();
+  const user = useSelector((state: RootState) => state.user.user);
 
-    if (accessToken) {
-      const ac = new AbortController();
-      const { signal } = ac;
-
-      (async () => {
-        try {
-          const payload = {
-            userId,
-            name,
-            description,
-          };
-
-          const response = await fetch(`${config.ApiBaseUrl}/organisation`, {
-            signal,
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(payload),
-          });
-
-          const json: IOrgApiResponse = await handleApiErrors(response);
-
-          dispatch(createOrg(json));
+  const createOrganisation = useMutation(
+    (formData: FormData) =>
+      fetch(`${config.ApiBaseUrl}/organisation`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      }),
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: (data: Response) => {
+        dispatch(updateUser({ ...user, isFounder: true }));
+        data.json().then(json => {
           navigate(`../organisation/${json.organisationId}`);
-        } catch (err) {
-          console.log(err);
-        }
-      })();
+        });
+      },
     }
-  };
+  );
 
-  return { createOrganisation };
+  return createOrganisation;
 };
 
-export default useCreateOrg;
+export default useCreateOrganisation;

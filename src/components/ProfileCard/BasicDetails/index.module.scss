@@ -7,9 +7,10 @@
     height: 110px;
     border-radius: 50%;
 
-    & > img {
+    &>img {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
     }
   }
 }
@@ -30,15 +31,15 @@
   .name {
     font-family: var(--font-family-roboto-flex);
     font-weight: 600;
-    font-size: 35px;
+    font-size: 25px;
     color: white;
     margin-top: 28px;
   }
 
   .designation {
     font-family: var(--font-family-roboto-flex);
-    font-weight: 500;
-    font-size: 18px;
+    font-weight: 400;
+    font-size: 14px;
     color: white;
     margin-top: 8px;
   }
@@ -51,19 +52,18 @@
 
   .value {
     font-family: var(--font-family-roboto-slab-medium);
-    font-size: 30px;
+    font-weight: 500;
+    font-size: 26.5154px;
     color: white;
 
     .label {
       font-family: var(--font-family-roboto-bold);
       font-size: 23px;
-      background: -webkit-linear-gradient(
-        298.19deg,
-        #ffbedf 27.52%,
-        #eac4ff 48.39%,
-        #ffc9af 69.27%,
-        #ffd9a0 94.32%
-      );
+      background: -webkit-linear-gradient(298.19deg,
+          #ffbedf 27.52%,
+          #eac4ff 48.39%,
+          #ffc9af 69.27%,
+          #ffd9a0 94.32%);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -93,22 +93,22 @@
       color: white;
     }
 
-    & > i {
+    &>i {
       color: white;
     }
   }
 
   .sync-text {
     font-family: var(--font-family-roboto-flex);
-    font-weight: 300;
-    font-size: 14px;
     color: white;
     display: flex;
     align-items: center;
     cursor: pointer;
     margin: 15px 0;
-
-    & > i {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 14px;
+    &>i {
       color: white;
       margin-left: 5px;
     }
@@ -118,10 +118,13 @@
 .profile-bio {
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 131.19%;
   color: white;
   text-align: center;
   max-width: 383px;
   margin: 0 auto;
   margin-bottom: 40px;
+  padding-left: 31.99px;
+  padding-right: 31.99px;
 }

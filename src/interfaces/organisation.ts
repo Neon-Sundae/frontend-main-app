@@ -1,8 +1,26 @@
+interface OrganisationUser {
+  name: string;
+  userId: number;
+  profile: {
+    profileId: number;
+    title: string | null;
+    createdAt: string;
+  };
+}
+
+interface OrganisationProjects {
+  flProject_uuid: string;
+  flProjectName: string;
+  flProjectDescription: string;
+  taskCount: number;
+}
+
 export interface IOrganisation {
   organisationId: number;
   name: string;
   description: string | null;
   email: string | null;
+  website: string | null;
   whitepaper: string | null;
   twitter: string | null;
   facebook: string | null;
@@ -10,6 +28,6 @@ export interface IOrganisation {
   instagram: string | null;
   profileImage: string | null;
   bannerImage: string | null;
+  organisationUser: OrganisationUser[];
+  flProjects: OrganisationProjects[];
 }
-
-export type IOrgApiResponse = IOrganisation;

@@ -1,50 +1,94 @@
-.task-card {
-	height: 116px;
-	min-width: 408px;
-	padding: 22px 45px;
+.wrapper {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  height: 120px;
+  margin-top: -1px;
+  .orgImgWrap {
+    .img {
+      width: 55px;
+      height: 55px;
+      object-fit: cover;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+ 
+  
+}
+.content {
+  width: 100%;
+  margin-left: 18px;
+  position: relative;
+  p {
+    font-size: 12px;
+    line-height: 14px;
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+  }
+}
+.rating-star {
+  color: #fbc579;
+}
+.heading {
+  margin-left: 20%;
+  margin-bottom: 60px;
+}
+.catWrap {
+  border: 0.7px solid #e0b9ff;
+  border-radius: 17px;
+  max-width: 103px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .cat {
+    color: #e0b9ff;
+    font-size: 10px;
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+  }
+}
+.wrapContent {
+  margin-top: 12px;
+  h4 {
+    font-family: var(--font-family-roboto-flex);
+    font-size: 18px;
+    line-height: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-transform: capitalize;
 
-	color: white;
-	display: flex;
-	justify-content: space-between;
+  }
+  p {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    text-transform: capitalize;
+    margin-bottom: 12px;
 
-	& .content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+  }
+}
+.col {
+  margin-right: 10px;
+  height: 106px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  // width: 120px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
 
-		& .stats {
-			font-size: 14px;
-			display: flex;
-			justify-content: space-between;
-			margin-top: 10px;
-
-			& .icon {
-				font-size: 16px;
-				margin-right: 5px;
-			}
-			& .circle {
-				display: inline-block;
-				height: 16px;
-				width: 16px;
-				background-color: pink;
-				border-radius: 8px;
-			}
-		}
-	}
-	& .text--primary {
-		font-family: var(--font-family-roboto-flex);
-		font-size: 16px;
-	}
-
-	& .text--secondary {
-		font-family: var(--font-family-roboto-flex);
-		font-size: 12px;
-	}
-
-	& .extra {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: center;
-	}
+.img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
 }

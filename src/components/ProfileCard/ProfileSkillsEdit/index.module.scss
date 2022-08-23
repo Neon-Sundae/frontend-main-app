@@ -67,16 +67,15 @@
   border-radius: 30.5px;
   margin: 0 10px;
   margin-bottom: 20px;
-  z-index: 1;
 
-  &>span {
+  & > span {
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
     font-size: 14px;
     margin-right: 15px;
   }
 
-  &>i {
+  & > i {
     font-size: 20px;
     cursor: pointer;
   }

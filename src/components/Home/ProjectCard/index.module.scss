@@ -1,53 +1,70 @@
 .project-card {
-	// max-width: 228px;
-	min-height: 290px;
-	margin-right: 45px;
+  width: 190px;
+  max-height: 247px;
 
-	padding: 25px;
+  padding: 20px;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-	color: white;
+  color: white;
+  border: 0.7px solid rgb(211, 155, 255);
+  & header {
+    & .text--primary {
+      margin-top: 6px;
+      font-family: var(--font-family-roboto-regular);
+      font-size: 18px;
+      line-height: 21px;
+      font-weight: 500px;
+    }
 
-	& header {
+    & .text--secondary {
+      display: block;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 10px;
+    }
+  }
 
-		& .text--primary {
-			margin-top: 10px;
-			font-family: var(--font-family-roboto-flex);
-			font-size: 22px;
-		}
+  & .text-content {
+    height: 41px;
+    margin-top: 13px;
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+  }
 
-		& .text--secondary {
-			font-family: var(--font-family-roboto-regular);
-			font-size: 12px;
-		}
-	}
+  & footer {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-	& .text-content {
-		font-family: var(--font-family-roboto-flex);
-		font-weight: 300;
-		font-size: 10px;
-		line-height: 12px;
-	}
+    & .text-extra {
+      font-family: var(--font-family-roboto-medium);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 14px;
+    }
 
-	& footer {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-
-		& .text-extra {
-			font-family: var(--font-family-roboto-medium);
-			font-size: 14px;
-		}
-
-		& .icon {
-			font-size: 22px;
-		}
-	}
+    & .icon {
+      font-size: 22px;
+      cursor: pointer;
+    }
+  }
 }
 
 .project-card:last-of-type {
-	margin-right: 0;
+  // margin-right: 0;
+}
+
+.orgImage {
+  overflow: hidden;
+  width: 51px;
+  height: 51px;
+  border-radius: 30px;
+  cursor: pointer;
+  object-fit: cover;
 }

@@ -2,14 +2,15 @@ $error-color: #c0392b;
 
 .page-container {
   background-color: #242529;
+ 
 }
 
 .create-task-title {
   font-family: var(--font-family-roboto-flex);
-  font-weight: 600;
-  font-size: clamp(1.5rem, 2vw, 1.75rem);
+  font-weight: 500;
+  font-size: 25px;
   color: white;
-  margin-bottom: max(30px, 8%);
+  margin-bottom: 57.91px;
 }
 
 .create-task-content {
@@ -22,29 +23,29 @@ $error-color: #c0392b;
   display: flex;
   gap: max(2vw, 1.5rem);
   flex-wrap: wrap;
-  margin-bottom: min(3vh, 1.5rem);
+  margin-bottom: 25px;
 }
 
 .task-name-field {
   background: #2d2d35;
   color: white;
-  border: 1px solid white;
+  border: 0.56491px solid #FFFFFF;
   outline: none;
   border-radius: 10px;
   padding: 0 15px;
-
+  
   font-family: var(--font-family-roboto-flex);
-  font-weight: 400;
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
-  height: 50px;
+  font-weight: 100;
+  font-size: 14px;
+  height: 38px;
 
-  // z-index: 1;
   flex-grow: 1;
-  width: min(100%, 15rem);
 
   &::placeholder {
-    color: white;
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-family: var(--font-family-roboto-flex);
+    color: #fbfbfb;
+    font-weight: 100;
+    font-size: 14px;
   }
 
   &::-webkit-calendar-picker-indicator {
@@ -61,36 +62,37 @@ $error-color: #c0392b;
   resize: none;
   background: #2d2d35;
   color: white;
-  border: 1px solid white;
+  border: 0.56491px solid #FFFFFF;
   outline: none;
   border-radius: 10px;
   padding: 10px 15px;
-  height: 110px;
+  height: 67.79px;
 
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
 
-  margin-bottom: min(3vh, 1.5rem);
-  // z-index: 1;
+  margin-bottom: 25px;
 
   &::placeholder {
-    color: white;
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-family: var(--font-family-roboto-flex);
+    color: #fbfbfb;
+    font-weight: 100;
+    font-size: 14px;
   }
 }
 
 .difficulty-price-label {
   font-family: var(--font-family-roboto-flex);
   font-weight: 500;
-  font-size: clamp(1.2rem, 1.5vw, 1.3rem);
+  font-size: 16px;
   color: white;
-  margin-bottom: min(2vh, 1rem);
+  margin-bottom: 10.25px;
 }
 
 .task-price-field {
   width: 100%;
-  height: 50px;
+  height: 38px;
 }
 
 .select-category-field {
@@ -117,7 +119,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .task-skills-container {
-  margin-bottom: min(3vh, 1.5rem);
+  margin-bottom: 25px;
 }
 
 .profile-skill-modal-tag-container {
@@ -132,7 +134,7 @@ input[type='number']::-webkit-outer-spin-button {
   justify-content: space-between;
   align-items: center;
   padding: 5px 20px;
-  border: 1px solid white;
+  border: 0.56491px solid #FFFFFF;
   border-radius: 30.5px;
   margin: 0 10px;
   margin-bottom: 20px;
@@ -160,18 +162,17 @@ input[type='number']::-webkit-outer-spin-button {
 .add-more-btn {
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  font-size: 11.3px;
   color: white;
   display: flex;
-  border: 1px solid white;
   width: max-content;
-  border-radius: 3px;
+  align-items: center;
   padding: 0 10px;
   cursor: pointer;
   // z-index: 1;
-
   & > i {
-    margin-left: 5px;
+    margin-left: 2px;
+    font-size: 12px;
   }
 }
 
@@ -185,7 +186,7 @@ input[type='number']::-webkit-outer-spin-button {
   & > span {
     width: 14px;
     height: 14px;
-    border: 1px solid white;
+    border: 0.56491px solid #FFFFFF;
     border-radius: 3px;
   }
 
@@ -193,9 +194,9 @@ input[type='number']::-webkit-outer-spin-button {
     border: none;
     outline: none;
     background: transparent;
-    font-family: var(--font-family-roboto-flex);
-    font-weight: 400;
-    font-size: 16px;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 300;
+    font-size: 14px;
     color: white;
     border-bottom: 1px solid;
     width: min(100%, 20rem);
@@ -217,7 +218,7 @@ input[type='number']::-webkit-outer-spin-button {
 .file-input-container {
   min-height: 120px;
   width: min(30rem, 100%);
-  border: 1px dashed white;
+  border: 0.56491px dashed #F5F5F5;
   border-radius: 4px;
   display: flex;
   justify-content: center;
@@ -229,8 +230,9 @@ input[type='number']::-webkit-outer-spin-button {
 
 .file-upload-text {
   font-family: var(--font-family-roboto-flex);
-  font-size: 18px;
-  color: white;
+  font-weight: 100;
+  font-size: 14px;
+  color: #FBFBFB;
 }
 
 .attachments {
@@ -255,4 +257,19 @@ input[type='number']::-webkit-outer-spin-button {
     font-size: 14px;
     margin-inline: 5px;
   }
+}
+
+.difficulty-rating-container {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+}
+
+.rating-star {
+  font-size: 20px;
+  margin-left: 5px;
+  color: #fbc579;
 }

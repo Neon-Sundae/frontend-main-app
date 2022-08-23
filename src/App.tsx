@@ -6,7 +6,7 @@ import PrivateRoute from 'components/PrivateRoute';
 import useSetAppMetadata from 'hooks/useSetAppMetadata';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import useProfile from 'components/Profile/Landing/hooks';
+import { useProfile } from 'components/Profile/Landing/hooks';
 
 const Login = lazy(() => import('containers/login'));
 const Dashboard = lazy(() => import('containers/dashboard'));
@@ -15,27 +15,28 @@ const Organisation = lazy(() => import('containers/organisation'));
 const Project = lazy(() => import('containers/project'));
 const Tasks = lazy(() => import('containers/tasks'));
 const Logout = lazy(() => import('containers/logout'));
+const TaskCancel = lazy(() => import('containers/taskCancel'));
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
   useSetAppMetadata();
 
-  const { getProfileContractAddress, fetchOnChainProfileData } = useProfile();
+  const { fetchOnChainProfileData } = useProfile();
 
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const profileContractAddress = useSelector((state: RootState) => state.profile.profileContractAddress);
-
-  useEffect(() => {
-    if (walletId !== undefined) {
-      getProfileContractAddress(walletId);
-    }
-  }, [walletId]);
+  const profile = useSelector((state: RootState) => state.profile.profile);
 
   useEffect(() => {
-    if (profileContractAddress !== "0x0000000000000000000000000000000000000000" && profileContractAddress !== "") {
-      fetchOnChainProfileData(profileContractAddress);
+    if (profile) {
+      if (
+        profile.profileSmartContractId &&
+        profile.profileSmartContractId !==
+          '0x0000000000000000000000000000000000000000'
+      ) {
+        fetchOnChainProfileData(profile.profileSmartContractId);
+      }
     }
-  }, [profileContractAddress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
 
   return (
     <Router>
@@ -52,7 +53,7 @@ const App = () => {
             }
           />
           <Route
-            path="/profile"
+            path="/profile/:profileId"
             element={
               <PrivateRoute>
                 <Profile />
@@ -91,6 +92,15 @@ const App = () => {
               // </PrivateRoute>
             }
           />
+          <Route
+            path="/tasks/all"
+            element={
+              <PrivateRoute>
+                <Tasks />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/task/cancel/:identifier" element={<TaskCancel />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </Suspense>

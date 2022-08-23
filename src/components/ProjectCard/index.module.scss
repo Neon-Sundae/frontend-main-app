@@ -1,0 +1,101 @@
+.profile-project-container {
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 32.97px;
+  margin-top: 35.72px;
+}
+
+.project-card {
+  width: 189.95px;
+  height: 242.75px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: white;
+  border: 0.7px solid rgb(211, 155, 255);
+  & header {
+    & .text--primary {
+      margin-top: 14px;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 22px;
+    }
+
+    & .text--secondary {
+      font-family: var(--font-family-roboto-regular);
+      font-size: 16px;
+    }
+  }
+
+  & .text-content {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  & footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & .text-extra {
+      font-family: var(--font-family-roboto-medium);
+      font-size: 14px;
+    }
+
+    & .icon {
+      font-size: 22px;
+      cursor: pointer;
+    }
+  }
+}
+
+.profile-project-organisation {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.profile-project-title {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 18px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.profile-project-description {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 300;
+  font-size: 12px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.profile-project-image-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+}

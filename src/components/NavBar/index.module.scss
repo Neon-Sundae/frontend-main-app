@@ -1,8 +1,16 @@
 .nav {
   display: flex;
   justify-content: space-between;
+  margin: auto;
+  @media (min-width: 1440px) {
+    width: 80%;
+  }
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    width: 90%;
+  }
+
   // align-items: center;
-  padding: 54px;
+  padding: 35px 75px;
   max-height: 191px;
 
   & .actions {
@@ -12,5 +20,6 @@
 
   & .logo {
     cursor: pointer;
+    margin-top: 14px;
   }
 }

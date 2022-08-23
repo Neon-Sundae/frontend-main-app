@@ -1,0 +1,140 @@
+@import '../../../styles/mixins/scrollbar.scss';
+
+
+.nftsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 386px;
+  
+  .selected {
+    box-sizing: border-box;
+    height: 177px;
+    padding: 10px;
+    border: 0.855856px solid #FFFFFF;
+    border-radius: 8.55856px;
+  }
+
+  .singleNft:nth-child(3n) {
+    margin-right: 0;
+  }
+
+  .singleNft {
+    margin-right: 30px;
+    cursor: pointer;
+
+    h3 {
+      font-size: 11.01px;
+      font-weight: 400;
+      color: #C4C4C4;
+    }
+
+    p {
+      font-size: 13.37px;
+      font-weight: 600;
+    }
+  }
+
+  img {
+    width: 119.53px;
+    height: 119.53px;
+    object-fit: cover;
+  }
+}
+
+.wrapper {
+  position: relative;
+
+  height: 100%;
+  width: auto;
+
+  .promptText {
+    position: absolute;
+    height: 500px;
+    bottom: -25%;
+    left: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    & h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    & p {
+      color: #CBCBCB;
+      font-size: 18px;
+    }
+
+    & div {
+      height: 20%;
+    }
+
+    & footer {
+      font-size: 18px;
+      color: #CBCBCB;
+      margin-bottom: 20px;
+
+      & span {
+        cursor: pointer;
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+
+    & button {
+      background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
+      width: 241px;
+      height: 59px;
+      backdrop-filter: blur(43.3229px);
+      box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+      background-size: cover;
+      border-radius: 26.8312px;
+      border: 0.62px solid;
+      color: #fff;
+      cursor: pointer;
+      font-family: var(--font-family-roboto-regular);
+      font-size: 18px;
+      position: absolute;
+      left: 31%;
+    }
+  }
+
+  img {
+    position: absolute;
+    z-index: -1;
+    top: -6%;
+    left: -6%;
+  }
+}
+
+
+
+.nftsWrapper {
+  position: relative;
+
+  button {
+    position: absolute;
+    left: 30%;
+    background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+    box-shadow: 0px 3.79667px 22.78px -0.949168px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(37.9667px);
+    border-radius: 23px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 18px;
+    padding: 14.41px;
+    border: .7px solid #FF9BFB;
+    width: 202px;
+    height: 55px;
+    font-family: var(--font-family-roboto-regular);
+  }
+
+  & h2 {
+    text-align: left;
+    font-size: 25px;
+    margin-left: 5px;
+    margin-bottom: 54px;
+  }
+}

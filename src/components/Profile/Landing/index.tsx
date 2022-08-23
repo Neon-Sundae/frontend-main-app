@@ -1,33 +1,18 @@
-import { useSelector } from 'react-redux';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import bg from 'assets/illustrations/profile/bg.svg';
 import NavBar from 'components/NavBar';
-import BlurBlobs from 'components/BlurBlobs';
 import ProfileCard from 'components/ProfileCard';
 import styles from './index.module.scss';
 import ProfileContent from '../ProfileContent';
-import useProfile from './hooks';
-import { getAccessToken } from 'utils/authFn';
-import { RootState } from 'reducers';
+import { useFetchPublicProfile } from './hooks';
 
 const Landing: FC = () => {
-
-  const { user } = useSelector((state: RootState) => state.user);
-
-  const {
-    fetchOffChainProfileData,
-  } = useProfile();
-
-  const accessToken = getAccessToken();
-
-  useEffect(() => {
-    if (user?.userId && accessToken) {
-      fetchOffChainProfileData();
-    }
-  }, [user])
+  const { profileId } = useParams();
+  useFetchPublicProfile(profileId);
 
   return (
-    <div className={styles.container}>
-      <BlurBlobs />
+    <div className={styles.container} style={{ backgroundImage: `url(${bg})` }}>
       <NavBar />
       <div className={styles['profile-card-content-container']}>
         <ProfileCard />

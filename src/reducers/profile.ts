@@ -13,10 +13,10 @@ import {
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
   GET_USDC_BALANCE,
-  GET_PROFILE_CONTRACT_ADDRESS
+  GET_PROFILE_CONTRACT_ADDRESS,
+  GET_USER_XP,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
-import { GET_USER_XP } from 'actions/profile/types';
 import {
   IProfile,
   IProfileApiResponse,
@@ -33,85 +33,90 @@ interface State {
   workplaces: IProfileWorkplace[];
   profileSkills: IProfileSkills[];
   isEditable: boolean;
-  xp: number,
-  usdcBalance: number,
-  profileContractAddress: string
+  xp: number;
+  usdcBalance: number;
+  navbarProfile: {
+    profileId: number;
+    image: string | null;
+  } | null;
 }
 
 type Action =
   | {
-    type: typeof FILL_PROFILE_DATA;
-    profile: IProfileApiResponse;
-  }
+      type: typeof FILL_PROFILE_DATA;
+      profile: IProfileApiResponse;
+    }
   | {
-    type: typeof EDIT_PROFILE;
-    isEditable: boolean;
-  }
+      type: typeof EDIT_PROFILE;
+      isEditable: boolean;
+    }
   | {
-    type: typeof ADD_PROFILE_SKILL;
-    skill: ISkills;
-  }
+      type: typeof ADD_PROFILE_SKILL;
+      skill: ISkills;
+    }
   | {
-    type: typeof REMOVE_PROFILE_SKILL;
-    skills: ISkills[];
-  }
+      type: typeof REMOVE_PROFILE_SKILL;
+      skills: ISkills[];
+    }
   | {
-    type: typeof UPDATE_PROFILE_SOCIALS;
-    portfolio: string;
-    linkedin: string;
-    twitter: string;
-    instagram: string;
-    github: string;
-  }
+      type: typeof UPDATE_PROFILE_SOCIALS;
+      portfolio: string;
+      linkedin: string;
+      twitter: string;
+      instagram: string;
+      github: string;
+    }
   | {
-    type: typeof UPDATE_PROFILE_TIMEZONE;
-    timezone: string;
-  }
+      type: typeof UPDATE_PROFILE_TIMEZONE;
+      timezone: string;
+    }
   | {
-    type: typeof ADD_PROFILE_EDUCATION;
-    education: IProfileEducation;
-  }
+      type: typeof ADD_PROFILE_EDUCATION;
+      education: IProfileEducation;
+    }
   | {
-    type: typeof REMOVE_PROFILE_EDUCATION;
-    educationId: number;
-  }
+      type: typeof REMOVE_PROFILE_EDUCATION;
+      educationId: number;
+    }
   | {
-    type: typeof UPDATE_PROFILE_EDUCATION;
-    educationId: number;
-    degree: string;
-    university: string;
-    startDate: string;
-    endDate: string;
-  }
+      type: typeof UPDATE_PROFILE_EDUCATION;
+      educationId: number;
+      name: string;
+      value: string;
+    }
   | {
-    type: typeof ADD_PROFILE_WORKPLACE;
-    workplace: IProfileWorkplace;
-  }
+      type: typeof ADD_PROFILE_WORKPLACE;
+      workplace: IProfileWorkplace;
+    }
   | {
-    type: typeof REMOVE_PROFILE_WORKPLACE;
-    workplaceId: number;
-  }
+      type: typeof REMOVE_PROFILE_WORKPLACE;
+      workplaceId: number;
+    }
   | {
-    type: typeof UPDATE_PROFILE_WORKPLACE;
-    workplace: IProfileWorkplace;
-  }
+      type: typeof UPDATE_PROFILE_WORKPLACE;
+      workplaceId: number;
+      keyName: string;
+      value: string;
+    }
   | {
-    type: typeof UPDATE_PROFILE_DETAILS;
-    title: string;
-    description: string;
-  }
+      type: typeof UPDATE_PROFILE_DETAILS;
+      title: string;
+      description: string;
+      picture: string;
+      name: string;
+    }
   | {
-    type: typeof GET_USER_XP;
-    payload: number;
-  }
+      type: typeof GET_USER_XP;
+      payload: number;
+    }
   | {
-    type: typeof GET_USDC_BALANCE;
-    payload: number;
-  }
+      type: typeof GET_USDC_BALANCE;
+      payload: number;
+    }
   | {
-    type: typeof GET_PROFILE_CONTRACT_ADDRESS;
-    payload: string;
-  };
+      type: typeof GET_PROFILE_CONTRACT_ADDRESS;
+      payload: string;
+    };
 
 const initialState: State = {
   profile: null,
@@ -122,7 +127,7 @@ const initialState: State = {
   isEditable: false,
   xp: 0,
   usdcBalance: 0,
-  profileContractAddress: ''
+  navbarProfile: null,
 };
 
 const profile = (state = initialState, action: Action): State => {
@@ -137,6 +142,10 @@ const profile = (state = initialState, action: Action): State => {
         education,
         workplaces,
         profileSkills,
+        navbarProfile: {
+          profileId: rest.profileId,
+          image: rest.picture,
+        },
       };
     }
     case ADD_PROFILE_SKILL:
@@ -203,12 +212,9 @@ const profile = (state = initialState, action: Action): State => {
         education: state.education.map(e =>
           e.educationId === action.educationId
             ? {
-              ...e,
-              degree: action.degree,
-              university: action.university,
-              startDate: action.startDate,
-              endDate: action.endDate,
-            }
+                ...e,
+                [action.name]: action.value,
+              }
             : e
         ),
       };
@@ -230,7 +236,12 @@ const profile = (state = initialState, action: Action): State => {
       return {
         ...state,
         workplaces: state.workplaces.map(w =>
-          w.workplaceId === action.workplace.workplaceId ? action.workplace : w
+          w.workplaceId === action.workplaceId
+            ? {
+                ...w,
+                [action.keyName]: action.value,
+              }
+            : w
         ),
       };
     case UPDATE_PROFILE_DETAILS:
@@ -241,6 +252,10 @@ const profile = (state = initialState, action: Action): State => {
             ...state.profile,
             title: action.title,
             description: action.description,
+            picture: action.picture,
+            user: {
+              name: action.name,
+            },
           },
         };
       }
@@ -254,11 +269,6 @@ const profile = (state = initialState, action: Action): State => {
       return {
         ...state,
         usdcBalance: action.payload,
-      };
-    case GET_PROFILE_CONTRACT_ADDRESS:
-      return {
-        ...state,
-        profileContractAddress: action.payload,
       };
     default:
       return { ...state };

@@ -10,6 +10,10 @@ export type Option =
   | {
       value: string;
       label: string;
+    }
+  | {
+      value: number;
+      label: JSX.Element;
     };
 
 interface ComponentProps {
@@ -56,13 +60,13 @@ const SelectComponent: FC<ComponentProps> = ({
       fontFamily: 'Roboto Flex',
       fontWeight: 400,
       backgroundColor: '#2d2d35',
-      borderWidth: 1.2,
+      borderWidth: 0.6,
       borderColor,
       borderRadius,
       width: '100%',
-      height,
+      // height,
       margin: '0 auto',
-      padding: '0 20px',
+      padding: '0 10px',
       cursor: 'pointer',
       ':hover': {
         ...styles[':hover'],
@@ -84,7 +88,7 @@ const SelectComponent: FC<ComponentProps> = ({
       return {
         ...styles,
         fontFamily: 'Roboto Flex',
-        fontWeight: 400,
+        fontWeight: 100,
         backgroundColor: isSelected ? '#1d1d23' : '#2d2d35',
         color: 'white',
         cursor: isDisabled ? 'not-allowed' : 'default',
@@ -108,10 +112,10 @@ const SelectComponent: FC<ComponentProps> = ({
     input: styles => ({ ...styles, backgroundColor: 'red', outline: 'none' }),
     placeholder: styles => ({
       ...styles,
-      color: 'white',
+      color: '#fbfbfb',
       fontFamily: "'Roboto Flex', sans-serif",
-      fontWeight: 500,
-      fontSize: 18,
+      fontWeight: 100,
+      fontSize: 14,
     }),
     singleValue: (styles, { data }) => ({ ...styles, color: 'white' }),
     indicatorSeparator: styles => ({ ...styles, display: 'none' }),
@@ -132,9 +136,9 @@ const SelectComponent: FC<ComponentProps> = ({
 };
 
 SelectComponent.defaultProps = {
-  borderColor: '#3c3c3c',
-  height: 55,
-  borderRadius: 20,
+  borderColor: '#fff',
+  height: 38,
+  borderRadius: 5.6491,
 };
 
 export default SelectComponent;

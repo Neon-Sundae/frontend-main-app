@@ -1,5 +1,5 @@
 import config from 'config';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
@@ -26,19 +26,25 @@ const useFetchProjectTasks = () => {
         return '';
       };
 
-      const response = await fetch(
-        `${config.ApiBaseUrl}/fl-project/${create}/tasks${getCategoryQuery()}`,
-        {
-          signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const json = await handleApiErrors(response);
-      const formattedData = formatTasksData(json);
+      if (create) {
+        const response = await fetch(
+          `${config.ApiBaseUrl
+          }/fl-project/${create}/tasks${getCategoryQuery()}`,
+          {
+            signal,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const json = await handleApiErrors(response);
+        const formattedData = formatTasksData(json);
 
-      return formattedData;
+        return formattedData;
+      }
+
+      // create is falsy throw error
+      throw new Error('error');
     },
     {
       retry: 1,
@@ -85,7 +91,7 @@ const useUpdateTaskStatus = () => {
         handleError({ error });
       },
       onSuccess: () => {
-        queryClient.invalidateQueries('projectTasks');
+        queryClient.invalidateQueries(['projectTasks']);
       },
     }
   );

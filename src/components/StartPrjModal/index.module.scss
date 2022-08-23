@@ -1,26 +1,49 @@
+.promptPara {
+  font-family: var(--font-family-roboto-flex);
+  font-size: 16px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.selected {
+  border: 0.5px solid #FFFFFF;
+  height: auto;
+  width: auto;
+  border-radius: 10px;
+}
 .org-list {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 3%;
+  overflow-y: auto;
+  height: 215px;
 }
-
+.org-image {
+  border-radius: 50%;
+  width: 102.44px;
+  height: 102.44px;
+}
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   z-index: 2;
-
+  
   & p {
     margin-top: 32px;
     font-family: var(--font-family-roboto-flex);
     font-size: 16px;
     color: white;
   }
+ 
 }
 
 .icon-cont {
-  width: 135px;
-  height: 135px;
+  width: 102.44px;
+  height: 102.44px;
   background: rgba(39, 40, 51, 1);
   border-radius: 68px;
   display: flex;

@@ -1,73 +1,165 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable camelcase */
+/* eslint-disable no-nested-ternary */
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
-import styles from './index.module.scss';
 import { AbiItem } from 'web3-utils';
 import { profileManageContractAddress } from 'contracts/contracts';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { GET_DEPLOY_STATE } from 'actions/flProject/types';
+import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
+import { ReactComponent as Pencil } from 'assets/illustrations/icons/pencil.svg';
+import styles from './index.module.scss';
+import CreatePrjModalWithData from '../../StartPrjModal/CreatePrjModalWithData';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
-  budget: number,
+  budget: number;
   projectName: string;
-  founderName: string;
+  founderAddress: string;
+  organisationName: string;
+  organisationOwnerWalletId: string;
 }
 
-const Header: FC<IHeaderProps> = (props) => {
-
+const Header: FC<IHeaderProps> = props => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { selectedProjectAddress } = useSelector((state: RootState) => state.flProject);
+  const { selectedProjectAddress, isDeposit } = useSelector(
+    (state: RootState) => state.flProject
+  );
+  const [showProjectFormModalWithData, setShowProjectFormModalWithData] =
+    useState(false);
 
   const handleOpen = async () => {
     try {
       const web3 = getWeb3Instance();
-      const profileManageContract = new web3.eth.Contract(ProfileManageAbi.abi as AbiItem[], profileManageContractAddress);
-      const address = await profileManageContract.methods.getProfileContractAddress(walletId).call();
+      const profileManageContract = new web3.eth.Contract(
+        ProfileManageAbi.abi as AbiItem[],
+        profileManageContractAddress
+      );
+      const profile_address = await profileManageContract.methods
+        .getProfileContractAddress(walletId)
+        .call();
 
-      if (address !== "0x0000000000000000000000000000000000000000") {
+      if (profile_address !== '0x0000000000000000000000000000000000000000') {
+        dispatch({
+          type: GET_DEPLOY_STATE,
+          payload:
+            selectedProjectAddress !== ''
+              ? isDeposit
+                ? 'deposit_success'
+                : 'deposit'
+              : 'go_live',
+        });
         props.setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
-        navigate('/profile');
+        // TODO - Move to profile page
+        // navigate('/profile');
       }
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(selectedProjectAddress)
+    navigator.clipboard.writeText(selectedProjectAddress);
     toast.success('Copied!');
-  }
+  };
 
+  const handleEditButtonClick = () => {
+    setShowProjectFormModalWithData(true);
+  };
+
+  const isFounder = () => {
+    if (walletId === props.organisationOwnerWalletId) return true;
+    return false;
+  };
+  console.log(isFounder());
   return (
-    <>
-      <div className={styles.container}>
-        <span className={styles['project-name']}>{props.projectName}</span>
-        <span className={styles['founder-name']}>{props.founderName}</span>
-        {
-          selectedProjectAddress === '' && (
-            <button onClick={handleOpen}>Publish a Project</button>
+    <div className={styles.container}>
+      <div className={styles['project-info']}>
+        <span className={styles['project-name']}>
+          <p> {props.projectName}</p>
+        </span>
+        <span className={styles['founder-name']}>
+          by&nbsp;&nbsp;{props.organisationName}
+        </span>
+        {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
+          selectedProjectAddress === '' ? (
+            <button onClick={handleOpen} className={styles.transparentBtn}>
+              Publish a Project
+            </button>
+          ) : !isDeposit ? (
+            <button onClick={handleOpen} className={styles.transparentBtn}>
+              Deposit Funds
+            </button>
+          ) : (
+            <>
+              <span className={styles['deposit-funds']}>
+                Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))}{' '}
+                USDC
+              </span>
+              <VerifiedIcon
+                className={styles['project-verified']}
+                width={20}
+                height={20}
+              />
+            </>
           )
-        }
-        {
-          selectedProjectAddress !== '' && props.budget !== 0 && <span className={styles['deposit-funds']}>Deposit Funds: {props.budget} USDC</span>
-        }
-        {
-          selectedProjectAddress !== '' && (
-            <div className={styles['contract-address']}>
-              Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...{selectedProjectAddress.slice(selectedProjectAddress.length - 5, selectedProjectAddress.length)}
-              <i className="material-icons-200" onClick={handleCopy}>content_copy</i>
-            </div>
-          )
-        }
+        ) : selectedProjectAddress === '' ? (
+          <button className={styles.transparentBtn}> Not Published</button>
+        ) : !isDeposit ? (
+          <button className={styles.transparentBtn}>Not Deposited</button>
+        ) : (
+          <>
+            <span className={styles['deposit-funds']}>
+              Deposit Funds:{' '}
+              {Number(Number(Number(props.budget) * 1.1).toFixed(4))}
+            </span>
+            <VerifiedIcon
+              className={styles['project-verified']}
+              width={20}
+              height={20}
+            />
+          </>
+        )}{' '}
+        {isFounder() && (
+          <button
+            onClick={handleEditButtonClick}
+            className={styles.buttonRight}
+          >
+            Edit project &nbsp; <Pencil />
+          </button>
+        )}
       </div>
-    </>
+      {selectedProjectAddress !== '' && (
+        <div className={styles['contract-address']}>
+          Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...
+          {selectedProjectAddress.slice(
+            selectedProjectAddress.length - 5,
+            selectedProjectAddress.length
+          )}
+          <i className="material-icons-200" onClick={handleCopy}>
+            content_copy
+          </i>
+        </div>
+      )}
+
+      {showProjectFormModalWithData && (
+        <CreatePrjModalWithData
+          onClose={() =>
+            setShowProjectFormModalWithData(!showProjectFormModalWithData)
+          }
+        />
+      )}
+    </div>
   );
 };
 

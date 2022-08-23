@@ -10,16 +10,16 @@ export type Option =
     };
 
 export const customStyles: StylesConfig<Option> = {
-  container: (styles) => ({
+  container: styles => ({
     ...styles,
     color: 'white',
   }),
-  control: (styles) => ({
+  control: styles => ({
     ...styles,
     backgroundColor: '#2d2d35',
-    borderWidth: 1.2,
+    borderWidth: 0.56491,
     borderColor: '#fff',
-    borderRadius: '10px',
+    borderRadius: '5.6491px',
     width: '300px',
     padding: '0 20px',
     cursor: 'pointer',
@@ -32,7 +32,7 @@ export const customStyles: StylesConfig<Option> = {
       borderColor: '#3c3c3c',
     },
   }),
-  menu: (styles) => ({
+  menu: styles => ({
     ...styles,
     backgroundColor: '#2d2d35',
     width: '100%',
@@ -61,25 +61,25 @@ export const customStyles: StylesConfig<Option> = {
       },
     };
   },
-  input: (styles) => ({
+  input: styles => ({
     ...styles,
     outline: 'none',
   }),
-  placeholder: (styles) => ({
+  placeholder: styles => ({
     ...styles,
     fontFamily: "'Roboto Flex', sans-serif",
     fontSize: 14,
     color: 'white',
   }),
   singleValue: (styles, { data }) => ({ ...styles, color: 'white' }),
-  multiValue: (styles) => ({
+  multiValue: styles => ({
     ...styles,
     backgroundColor: 'none',
   }),
-  multiValueLabel: (styles) => ({
+  multiValueLabel: styles => ({
     ...styles,
 
     color: 'white',
   }),
-  indicatorSeparator: (styles) => ({ ...styles, display: 'none' }),
+  indicatorSeparator: styles => ({ ...styles, display: 'none' }),
 };
