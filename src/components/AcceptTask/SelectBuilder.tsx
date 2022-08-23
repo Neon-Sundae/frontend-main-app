@@ -74,7 +74,10 @@ const SelectBuilder: FC<ISelectBuilder> = ({
               ? 'Failed'
               : 'Select Builder'}
           </h1>
-          <div className={styles['selected-builder-details']}>
+       
+          {pending === 'initial' ? (
+            <>
+               <div className={styles['selected-builder-details']}>
             <img
               src={selectedBuilder.Profile.picture}
               alt=""
@@ -87,9 +90,8 @@ const SelectBuilder: FC<ISelectBuilder> = ({
               {selectedBuilder.Profile.title}
             </p>
           </div>
-          {pending === 'initial' ? (
-            <>
               <div>
+                
                 <div>
                   <span>Project Amount</span>
                   <span>
