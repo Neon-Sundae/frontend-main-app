@@ -53,7 +53,6 @@ const SelectBuilder: FC<ISelectBuilder> = ({
       setPending('budget_exceed');
     }
   };
-  console.log('selectedBuilder', selectedBuilder);
   return (
     <Modal onClose={handleClose} width="550px" height="500px">
       {pending === 'add_funds' ? (
