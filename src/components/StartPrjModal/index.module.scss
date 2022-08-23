@@ -17,7 +17,8 @@
   flex-wrap: wrap;
   align-items: center;
   margin-top: 3%;
-  
+  overflow-y: auto;
+  height: 215px;
 }
 .org-image {
   border-radius: 50%;

@@ -60,7 +60,9 @@ const useUpdateProfileDetails = () => {
             }
           );
           await handleApiErrors(response);
-          dispatch(updateProfileDetailsAction(title, description, picture));
+          dispatch(
+            updateProfileDetailsAction(title, description, picture, name)
+          );
           dispatch(updateUserName(name));
           dispatch(editProfile(false));
         } catch (err) {

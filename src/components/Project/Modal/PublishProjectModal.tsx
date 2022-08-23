@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
-import { FC, Dispatch, SetStateAction, useEffect } from 'react';
+import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as SugarIcon } from 'assets/illustrations/icons/sugar.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Modal from 'components/Modal';
+import clsx from 'clsx';
 import DepositFundsToWallet from './DepositFundsToWallet';
 import { useProject } from '../Landing/hooks';
 import styles from './index.module.scss';
 import Spinner from './Spinner';
-import clsx from 'clsx';
 
 interface IPublishProject {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +41,8 @@ const PublishProjectModal: FC<IPublishProject> = ({
     (state: RootState) => state.flProject
   );
 
+  const [showTopUpModal, setShowTopUpModal] = useState(false);
+
   useEffect(() => {
     getGasFeeToPublish();
     setDeploying(deploy_state);
@@ -50,9 +52,18 @@ const PublishProjectModal: FC<IPublishProject> = ({
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleTopUpWallet = () => {
+    setShowTopUpModal(true);
+  };
+  if (showTopUpModal) {
+    return (
+      <Modal onClose={handleClose} width="550px" height="500px">
+        <DepositFundsToWallet />;
+      </Modal>
+    );
+  }
   return (
-    <Modal onClose={handleClose}>
+    <Modal onClose={handleClose} width="550px" height="500px">
       {usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
         <>
           <h1 className={styles['publish-title']}>Publish your project</h1>
@@ -89,7 +100,9 @@ const PublishProjectModal: FC<IPublishProject> = ({
                       *You can always withdraw
                     </span>
                   )}
-                  <span>Top Up Wallet +</span>
+                  <span onClick={() => handleTopUpWallet()}>
+                    Top Up Wallet +
+                  </span>
                 </div>
                 <button
                   className={styles['publish-go-live']}
@@ -155,7 +168,12 @@ const PublishProjectModal: FC<IPublishProject> = ({
                       *You can always withdraw
                     </span>
                   )}
-                  <span>Top Up Wallet +</span>
+                  <span
+                    className={styles['top-up-text']}
+                    onClick={() => handleTopUpWallet()}
+                  >
+                    Top Up Wallet +
+                  </span>
                 </div>
                 <button
                   className={styles['publish-go-live']}
