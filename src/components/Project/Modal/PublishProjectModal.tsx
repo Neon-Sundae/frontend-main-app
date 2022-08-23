@@ -5,11 +5,11 @@ import { ReactComponent as SugarIcon } from 'assets/illustrations/icons/sugar.sv
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Modal from 'components/Modal';
+import clsx from 'clsx';
 import DepositFundsToWallet from './DepositFundsToWallet';
 import { useProject } from '../Landing/hooks';
 import styles from './index.module.scss';
 import Spinner from './Spinner';
-import clsx from 'clsx';
 
 interface IPublishProject {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -52,7 +52,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
   };
 
   return (
-    <Modal onClose={handleClose}>
+    <Modal onClose={handleClose} width="550px">
       {usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
         <>
           <h1 className={styles['publish-title']}>Publish your project</h1>
@@ -155,7 +155,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
                       *You can always withdraw
                     </span>
                   )}
-                  <span>Top Up Wallet +</span>
+                  <span className={styles['top-up-text']}>Top Up Wallet +</span>
                 </div>
                 <button
                   className={styles['publish-go-live']}
