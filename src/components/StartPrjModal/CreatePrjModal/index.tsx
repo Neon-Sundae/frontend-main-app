@@ -225,7 +225,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
     });
     setSubmit(true);
   };
-
   return (
     <>
       <Toaster />
@@ -501,7 +500,13 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
             >
               <button
                 className={styles.saveBtn}
-                onClick={e => handleAddProject(e)}
+                onClick={e => {
+                  if (error.message.length) {
+                    toast.error('Check for invalid or missing values!');
+                  } else {
+                    handleAddProject(e);
+                  }
+                }}
               >
                 SAVE
               </button>
