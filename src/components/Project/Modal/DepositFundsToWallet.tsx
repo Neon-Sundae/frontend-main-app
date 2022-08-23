@@ -13,6 +13,7 @@ const DepositFundsToWallet = () => {
           href="https://www.moonpay.com/buy"
           target="_blank"
           className={styles['wallet-item']}
+          rel="noreferrer"
         >
           <div>
             <MoonPayIcon width={43} height={43} />
@@ -25,6 +26,7 @@ const DepositFundsToWallet = () => {
           href="https://ftx.com"
           target="_blank"
           className={styles['wallet-item']}
+          rel="noreferrer"
         >
           <div>
             <FtxIcon width={43} height={43} />
@@ -37,6 +39,7 @@ const DepositFundsToWallet = () => {
           href="https://www.sendwyre.com/"
           target="_blank"
           className={styles['wallet-item']}
+          rel="noreferrer"
         >
           <div>
             <WyreIcon width={43} height={43} />
@@ -53,11 +56,10 @@ const DepositFundsToWallet = () => {
             <span>Transak</span>
           </div>
         </div>
-        <button className={styles['deposit-top-up']}>Top Up</button>
-        <p className={styles['deposit-bottom-text']}>
-          On clicking one service you will be redicted to partner website
-        </p>
       </div>
+      <p className={styles['deposit-bottom-text']}>
+        On clicking one service you will be redicted to partner website
+      </p>
     </>
   );
 };

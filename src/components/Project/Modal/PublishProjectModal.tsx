@@ -52,7 +52,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
   };
 
   return (
-    <Modal onClose={handleClose} width="550px">
+    <Modal onClose={handleClose} width="550px" height="500px">
       {usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
         <>
           <h1 className={styles['publish-title']}>Publish your project</h1>

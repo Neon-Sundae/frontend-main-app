@@ -16,7 +16,15 @@
 .d-flex {
     display: flex;
 }
-
+.deposit-bottom-text {
+    font-family: var(--font-family-roboto-regular);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    color: #fff !important;
+    text-align: center;
+    
+}
 .loader {
     display: block;
     margin: auto;
@@ -141,31 +149,37 @@
 
 .deposit-title {
     font-family: var(--font-family-roboto-flex);
-    font-weight: 600;
-    font-size: 24px;
+    font-weight: 500;
+    font-size: 25px;
     color: white;
-    text-align: center;
+    margin-left: 5%;
 }
 
 .deposit-content-wrapper {
     margin: 64px 0;
-
+    width: 70%;
+    margin: auto;
     .wallet-item {
+        
         background: #2D2D35;
         border-radius: 10px;
         color: white;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 32px;
+        padding: 10px 32px;
         margin: 20px 0;
 
         &>div {
             width: 50%;
             text-align: center;
         }
-    }
+        &>div>svg {
+             
 
+        }
+    }
+    
     .deposit-top-up {
         display: block;
         margin: 40px auto;
@@ -182,8 +196,5 @@
         color: #FFFFFF;
     }
 
-    .deposit-bottom-text {
-        color: #9f9f9f !important;
-        text-align: center;
-    }
+   
 }
