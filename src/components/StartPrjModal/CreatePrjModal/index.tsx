@@ -434,13 +434,14 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                 >
                   <input
                     type="text"
-                    id="category"
+                    id="name"
                     placeholder="Category name (“Website Design”)"
                     className={styles.input}
-                    onChange={e =>
+                    onBlur={e =>
                       setFormData((prevState: any) => {
-                        prevState.flProjectCategory[0].categoryName =
-                          e.target.value;
+                        prevState.flProjectCategory.push({
+                          categoryName: e.target.value,
+                        });
                         return {
                           ...prevState,
                         };
@@ -458,10 +459,11 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                           width: '100%',
                           borderRadius: '5.6491px 0px 0px 5.6491px',
                         }}
-                        onChange={e =>
+                        onBlur={e =>
                           setFormData((prevState: any) => {
-                            prevState.flProjectCategory[0].percentageAllocation =
-                              parseFloat(e.target.value);
+                            prevState.flProjectCategory[
+                              prevState.flProjectCategory.length - 1
+                            ].percentageAllocation = parseFloat(e.target.value);
                             return {
                               ...prevState,
                             };

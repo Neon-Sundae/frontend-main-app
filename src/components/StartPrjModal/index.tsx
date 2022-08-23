@@ -52,7 +52,6 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
     if (!selected) toast.error('Please select an organization');
     else setShowCreateProjectModal(true);
   };
-  console.log(selected);
   return (
     <div>
       {!showCreateProjectModal ? (
