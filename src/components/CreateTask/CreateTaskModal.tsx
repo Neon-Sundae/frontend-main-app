@@ -14,9 +14,23 @@ import TaskChecklist, { IChecklistItem } from './TaskChecklist';
 import TaskFileUpload, { IFile } from './TaskFileUpload';
 import { useCreateTask, useFetchProjectCategories } from './hooks';
 
-interface IProfileSkills {
-  setOpen: Dispatch<SetStateAction<boolean>>;
+interface IDifficultyRating {
+  title: string;
+  level: number;
 }
+
+const DifficultyRating: FC<IDifficultyRating> = ({ level, title }) => {
+  return (
+    <div className={styles['difficulty-rating-container']}>
+      <span>{title}</span>
+      {[...Array(level).keys()].map(i => (
+        <i key={i} className={clsx('material-icons', styles['rating-star'])}>
+          star
+        </i>
+      ))}
+    </div>
+  );
+};
 
 const initialData = [
   { id: getRandomString(5), value: 'Information Architecture' },
@@ -24,12 +38,16 @@ const initialData = [
 ];
 
 const difficultyData = [
-  { label: 'Difficulty 1', value: 1 },
-  { label: 'Difficulty 2', value: 2 },
-  { label: 'Difficulty 3', value: 3 },
-  { label: 'Difficulty 4', value: 4 },
-  { label: 'Difficulty 5', value: 5 },
+  { label: <DifficultyRating level={1} title="Beginner" />, value: 1 },
+  { label: <DifficultyRating level={2} title="Moderate" />, value: 2 },
+  { label: <DifficultyRating level={3} title="Significant" />, value: 3 },
+  { label: <DifficultyRating level={4} title="Advanced" />, value: 4 },
+  { label: <DifficultyRating level={5} title="Moderate" />, value: 5 },
 ];
+
+interface IProfileSkills {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
   const createTask = useCreateTask(setOpen);
@@ -130,21 +148,26 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
       width="clamp(20rem, 45vw, 45rem)"
       height="min(90%, 45rem)"
       overflowY="auto"
+      padding="33px 50px"
     >
       <h1 className={styles['create-task-title']}>Create a Task</h1>
       <div className={styles['create-task-content']}>
         <div className={styles['create-task-form-row']}>
-          <input
-            type="text"
-            placeholder="Task Name"
-            className={clsx(
-              styles['task-name-field'],
-              error.nameError && styles['task-name-field--error']
-            )}
-            value={taskName}
-            onChange={handleInputChange(setTaskName)}
-          />
-          <div className={styles['select-category-field']}>
+          <div className={styles['difficulty-price-container']}>
+            <label className={styles['difficulty-price-label']}>Name</label>
+            <input
+              type="text"
+              placeholder="Task Name"
+              className={clsx(
+                styles['task-name-field'],
+                error.nameError && styles['task-name-field--error']
+              )}
+              value={taskName}
+              onChange={handleInputChange(setTaskName)}
+            />
+          </div>
+          <div className={styles['difficulty-price-container']}>
+            <label className={styles['difficulty-price-label']}>Category</label>
             <Select
               options={categories ?? []}
               placeholder="Select Category"
@@ -157,6 +180,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
             />
           </div>
         </div>
+        <label className={styles['difficulty-price-label']}>Description</label>
         <textarea
           placeholder="Task Description"
           className={styles['task-description-field']}
@@ -207,23 +231,37 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
           setTaskSkills={setTaskSkills}
         />
         <div className={styles['create-task-form-row']}>
-          <input
-            type="date"
-            placeholder="Task Start Date"
-            className={styles['task-name-field']}
-            value={taskStartDate}
-            onChange={handleInputChange(setTaskStartDate)}
-          />
-          <input
-            type="date"
-            placeholder="Task Due Date"
-            className={clsx(
-              styles['task-name-field'],
-              error.dueDateError && styles['task-name-field--error']
-            )}
-            value={taskDueDate}
-            onChange={handleInputChange(setTaskDueDate)}
-          />
+          <div
+            className={styles['difficulty-price-container']}
+            style={{ zIndex: 'unset' }}
+          >
+            <label className={styles['difficulty-price-label']}>
+              Start Date
+            </label>
+            <input
+              type="date"
+              placeholder="Task Start Date"
+              className={styles['task-name-field']}
+              value={taskStartDate}
+              onChange={handleInputChange(setTaskStartDate)}
+            />
+          </div>
+          <div
+            className={styles['difficulty-price-container']}
+            style={{ zIndex: 'unset' }}
+          >
+            <label className={styles['difficulty-price-label']}>End Date</label>
+            <input
+              type="date"
+              placeholder="Task Due Date"
+              className={clsx(
+                styles['task-name-field'],
+                error.dueDateError && styles['task-name-field--error']
+              )}
+              value={taskDueDate}
+              onChange={handleInputChange(setTaskDueDate)}
+            />
+          </div>
         </div>
         <div className={styles['create-task-form-row']}>
           <TaskChecklist

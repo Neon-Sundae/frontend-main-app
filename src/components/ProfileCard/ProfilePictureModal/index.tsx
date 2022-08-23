@@ -48,7 +48,7 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
     setTimeout(() => {
       setStepOne(false);
       setStepTwo(true);
-    }, 2000);
+    }, 1000);
     return (
       <StepOne
         setProfilePictureModal={setProfilePictureModal}
@@ -71,8 +71,8 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
   return (
     <Modal
       onClose={() => setProfilePictureModal(false)}
-      width="599px"
-      height="711px"
+      width="550.24px"
+      height="600px"
     >
       <div className={styles.wrapper}>
         <img src={PromptImage} alt="Profile" className={styles.promptImg} />
@@ -80,13 +80,14 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
           <h2>Show off your prized possessions</h2>
           <p>
             Set your profile picture to an NFT you own by connecting your wallet
-            wallet and verifying address
+            and verifying address
           </p>
           <div />
           <footer>
             By connecting your wallet you authorize Founder’s Lab to extract
-            your NFT information belonging to
-            <span> {truncatedWalletId} Learn More</span>
+            your NFT information belonging to &nbsp;
+            <span>{truncatedWalletId}</span>{' '}
+            <span className={styles.spanLeft}>Learn More</span>
           </footer>
           <button
             onClick={e => {

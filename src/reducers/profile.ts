@@ -35,7 +35,10 @@ interface State {
   isEditable: boolean;
   xp: number;
   usdcBalance: number;
-  profileContractAddress: string;
+  navbarProfile: {
+    profileId: number;
+    image: string | null;
+  } | null;
 }
 
 type Action =
@@ -123,7 +126,7 @@ const initialState: State = {
   isEditable: false,
   xp: 0,
   usdcBalance: 0,
-  profileContractAddress: '',
+  navbarProfile: null,
 };
 
 const profile = (state = initialState, action: Action): State => {
@@ -138,6 +141,10 @@ const profile = (state = initialState, action: Action): State => {
         education,
         workplaces,
         profileSkills,
+        navbarProfile: {
+          profileId: rest.profileId,
+          image: rest.picture,
+        },
       };
     }
     case ADD_PROFILE_SKILL:
@@ -258,11 +265,6 @@ const profile = (state = initialState, action: Action): State => {
       return {
         ...state,
         usdcBalance: action.payload,
-      };
-    case GET_PROFILE_CONTRACT_ADDRESS:
-      return {
-        ...state,
-        profileContractAddress: action.payload,
       };
     default:
       return { ...state };

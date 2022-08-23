@@ -1,15 +1,24 @@
 .banner {
   padding: 24px;
   height: 200px;
-  // margin: 0px 75px;
   margin: auto;
-  @media (min-width: 1440px) {
-    width:70%;
+  @media (max-width: 1920px)  {
+    width: 72%;
+    
   }
-  @media (min-width: 1024px) and (max-width: 1440px) {
-    width: 90%;
+  @media (max-width: 1680px)  {
+    width: 70%;
+    
   }
-
+  @media (max-width: 1440px)  {
+  width: 80%;
+        
+  }
+  
+  @media (max-width: 1024px) {
+    
+  }
+  
   display: flex;
   justify-content: space-between;
   background-color: purple;

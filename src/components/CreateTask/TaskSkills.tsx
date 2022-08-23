@@ -64,7 +64,7 @@ const TaskSkills: FC<ITaskSkills> = ({
 
 interface ISkillTag {
   skillsId: string | number;
-  name: string;
+  name: string | JSX.Element;
   handleRemove: (skillsId: string | number) => void;
 }
 

@@ -1,8 +1,6 @@
 .container {
-
   margin-top: 35.72px;
   margin-bottom: 25px;
-
 }
 .wrapper {
   display: flex;
@@ -49,7 +47,6 @@
   margin-top: 10px;
 }
 .col {
-  
   margin-right: 10px;
   height: 110px;
   display: flex;
@@ -57,4 +54,86 @@
   justify-content: space-between;
   align-items: flex-end;
   width: 120px;
+}
+
+.profile-category-container {
+  border: 0.7px solid #e0b9ff;
+  border-radius: 17px;
+  width: max-content;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  padding: 0 15px;
+
+  & > .category-text {
+    color: #e0b9ff;
+    font-size: 12px;
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 400;
+  }
+}
+
+.task-card-image-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+}
+
+.task-card-content-container {
+  display: flex;
+}
+
+.task-card-image-wrapper {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.task-card-content-column {
+  width: 80%;
+}
+
+.task-card-title {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.task-card-organisation {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 400;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.rating-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-card-usdc-container {
+  display: flex;
+
+  & > .task-card-usdc-icon {
+    width: 19px;
+    height: 19px;
+    margin-right: 5px;
+  }
+
+  & > p {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 12.63px;
+  }
 }

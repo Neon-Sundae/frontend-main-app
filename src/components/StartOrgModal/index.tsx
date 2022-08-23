@@ -151,7 +151,7 @@ const StepModal: FC<IStepProps> = ({
   return (
     <BaseModal
       showBtn
-      header="Start an Organization"
+      header="Start an organization"
       onClose={onClose}
       onNext={onNext}
     >

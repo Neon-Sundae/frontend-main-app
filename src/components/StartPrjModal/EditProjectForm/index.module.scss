@@ -5,7 +5,26 @@
   color: #fff;
   padding: 25px;
   line-height: 1.2;
-  
+  .nameBudgetWrap {
+    position: relative;
+    padding-top: 25px;
+    margin-top: 15px;
+    .header0 {
+      font-weight: 500;
+      font-size: 16px;
+      position: absolute;
+      left: 0;
+      top: -5px;
+    }
+    .header1 {
+      font-weight: 500;
+      font-size: 16px;
+      position: absolute;
+      right: 39.5%;
+      top: -5px;
+    }
+    margin-bottom: 30px;
+  }
   .addResWrap {
     margin-top: 15px;
   }
@@ -40,7 +59,7 @@
   .secHead {
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 21px;
     padding-top: 25px;
     margin-bottom: 5px;
@@ -51,7 +70,7 @@
     font-weight: 600;
     font-size: 22px;
     line-height: 30px;
-    margin-bottom: 10px;
+    margin-bottom: 55px;
   }
 
   .addMore {
@@ -64,13 +83,19 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
-    font-size: 13.338px;
+    font-size: 11.2982px;
   }
 
   input {
     height: 39px;
     width: 300px;
     padding-left: 10px;
+    border:  0.56491px solid #FFFFFF;
+  }
+  input::placeholder, textarea::placeholder {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #FBFBFB;
   }
 
   input[type='text'],
@@ -84,20 +109,21 @@
   }
 
   input[type='date']::-webkit-calendar-picker-indicator {
-    background-color: #fff;
+   display: none;
   }
 
   textarea {
-    height: auto;
+    height: 69px;
     font-size: 15px;
     padding-left: 10px;
     padding-top: 10px;
     margin-top: 15px;
+    resize: none;
   }
 
   input,
   textarea {
-    border: 1px solid rgb(180, 180, 180);
+    border: 0.56491px solid #FFFFFF;
     background-color: transparent;
     border-radius: 5px;
     color: white;
@@ -110,7 +136,7 @@
     }
 
     &.desc {
-      height: 120px;
+      height: 67.79px;
     }
   }
 
@@ -146,14 +172,14 @@
 
     .heading2 {
       position: absolute;
-      right: 142px;
+      right: 160px;
     }
 
     .heading1,
     .heading2 {
       font-style: normal;
       font-weight: 500;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 21px;
     }
   }
@@ -171,7 +197,7 @@
 
     .head2 {
       position: absolute;
-      right: 33%;
+      right: 22%;
       top: 0;
     }
 
@@ -190,22 +216,44 @@
 
   .saveBtn {
     border: 1px solid #d39bff;
-    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
-    width: 200px;
-    height: 45px;
+    background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+    box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+    width: 180px;
+    height: 55px;
     backdrop-filter: blur(43.3229px);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     background-size: cover;
     border-radius: 26.8312px;
     color: #fff;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .stylesItInline {
-    width: 50%;
+    width: 48%;
     margin: auto;
+    
   }
+  .stylesItInline:nth-child(2) {
+    width: 40%;
+    margin-left: 22px;
+  }
+  .inputWithCurrency {
+     
+  }
+  .inputWithCurrency input {
+    width: 37%;
+  }
+  .inputWithCurrency input:first-child {
+    margin-left: 21px;
+    border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 
+  }
+  .inputWithCurrency input:nth-child(2) {
+    width: 64.84px;
+    border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
 
+  }
 }

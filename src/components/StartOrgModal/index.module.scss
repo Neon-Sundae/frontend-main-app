@@ -16,7 +16,7 @@
   font-family: var(--font-family-roboto-flex);
   font-size: 20px;
   font-weight: 300;
-  color: rgba(223, 223, 223, 1);
+  color: #fff;
   background-color: transparent;
   text-align: center;
   outline: none;
@@ -24,6 +24,7 @@
   &::placeholder {
     color: rgba(223, 223, 223, 1);
   }
+  
 }
 
 .uploadPicture {
@@ -38,9 +39,10 @@
 }
 
 .file-input-container {
-  width: 200px;
-  height: 150px;
-  border-radius: 20px;
+  width: 105.48px;
+  height: 105.48px;
+  border: 0.953677px solid #FFFFFF;
+  border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;

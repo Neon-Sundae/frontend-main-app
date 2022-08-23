@@ -3,6 +3,7 @@ import config from 'config';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
+import getProfileProjects from 'utils/getProfileProjects';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 
@@ -10,7 +11,7 @@ const useFetchUserProjects = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const accessToken = getAccessToken();
 
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ['userOrgs'],
     async ({ signal }) => {
       const response = await fetch(
@@ -24,7 +25,8 @@ const useFetchUserProjects = () => {
         }
       );
       const json = await handleApiErrors(response);
-      return json;
+      const normalizedProjectData = getProfileProjects(json);
+      return normalizedProjectData;
     },
     {
       refetchOnWindowFocus: false,
@@ -37,6 +39,6 @@ const useFetchUserProjects = () => {
     }
   );
 
-  return { data };
+  return { flProjects: data ?? [], isLoading };
 };
 export default useFetchUserProjects;

@@ -7,4 +7,8 @@
   margin-left: 50px;
 
   position: relative;
+
+  &--is-editable {
+    overflow-y: auto;
+  }
 }

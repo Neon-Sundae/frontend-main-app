@@ -1,12 +1,12 @@
-.container {
-  height: 75%;
+.profile-project-container {
   color: #fff;
-  overflow-y: auto;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   gap: 32.97px;
   margin-top: 35.72px;
 }
+
 .project-card {
   width: 189.95px;
   height: 242.75px;
@@ -54,6 +54,48 @@
   }
 }
 
-.project-card:last-of-type {
-  // margin-right: 0;
+.profile-project-organisation {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.profile-project-title {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 18px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.profile-project-description {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 300;
+  font-size: 12px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.profile-project-image-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
 }

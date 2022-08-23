@@ -10,6 +10,7 @@ interface ModalProps {
   overflowY?: any;
   onClose: () => void;
   title?: string;
+  padding?: string;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -20,13 +21,14 @@ const Modal: FC<ModalProps> = ({
   overflowY,
   onClose,
   title,
+  padding,
 }) => {
   return (
     <>
       <div className={styles.backdrop} />
       <div
         className={styles.overlay}
-        style={{ width, height, maxHeight, overflowY }}
+        style={{ width, height, maxHeight, overflowY, padding }}
       >
         {title && (
           <div className={styles.titleDiv}>
@@ -46,6 +48,7 @@ const Modal: FC<ModalProps> = ({
 Modal.defaultProps = {
   width: '617px',
   overflowY: 'clip',
+  padding: '33px',
 };
 
 const ModalBlobs: FC = () => {

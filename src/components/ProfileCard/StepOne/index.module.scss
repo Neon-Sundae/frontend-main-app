@@ -3,14 +3,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  position: relative;
   & h2 {
+    position: absolute;
     margin-top: 5px;
-    font-size: 30px;
+    font-size: 25px;
+    top: 0;
+    left: 0;
   }
 
   & p {
-    font-size: 25px;
+    font-size: 18px;
     font-weight: 300;
     margin-top: 32.15px;
   }

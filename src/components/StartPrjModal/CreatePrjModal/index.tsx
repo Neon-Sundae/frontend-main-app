@@ -50,9 +50,9 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   });
   const [submit, setSubmit] = useState<boolean>(false);
 
-  const { isLoading: isLoading, mutate: createProject } = useMutation(
+  const { isLoading, mutate: createProject } = useMutation(
     async () => {
-      return await fetch(`${config.ApiBaseUrl}/fl-project`, {
+      return fetch(`${config.ApiBaseUrl}/fl-project`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
@@ -119,7 +119,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
         ...prevState,
         message: 'Please add atleast one resource',
       }));
-      return;
     } else if (
       formData.flProjectCategory[0].categoryName === '' ||
       formData.flProjectCategory[0].percentageAllocation === ''
@@ -128,7 +127,6 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
         ...prevState,
         message: 'Please add atleast one category and percentageAllocation',
       }));
-      return;
     } else if (
       formData?.flResources.length !== 0 ||
       formData.flProjectCategory.length !== 0
@@ -235,8 +233,8 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
         onClose={() => onClose()}
         width="700px"
         maxHeight="85vh"
-        overflowY={'auto'}
-        title={'Start a Project'}
+        overflowY="auto"
+        title="Start a Project"
       >
         <div className={styles.container}>
           <form>
@@ -272,7 +270,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     onChange={e =>
                       setFormData({
                         ...formData,
-                        budget: parseInt(e.target.value),
+                        budget: Number(e.target.value),
                       })
                     }
                   />
@@ -282,7 +280,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
             </div>
             <div className={styles.row}>
               <div style={{ width: '100%' }}>
-                <p className={styles.fieldNames}>Decription</p>
+                <p className={styles.fieldNames}>Description</p>
                 <textarea
                   id="description"
                   placeholder="Description"
@@ -341,7 +339,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                     const uId = getRandomString(5);
                     return (
                       <div id={`${uId}`} key={index}>
-                        <div className={styles.addHeight}></div>
+                        <div className={styles.addHeight} />
                         <input
                           type="text"
                           placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"

@@ -108,6 +108,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   cursor: pointer;
   font-size: 14px;
   padding-top: 2%;
+  text-align: left;
 }
 .select {
   background: transparent;
@@ -169,7 +170,7 @@ span {
   font-size: 16px;
   line-height: 19px;
   /* identical to box height */
-
+  text-align: left;
   color: #ffffff;
   margin-bottom: 10px;
 }
