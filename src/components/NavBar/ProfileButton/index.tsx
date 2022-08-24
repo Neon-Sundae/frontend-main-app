@@ -14,7 +14,7 @@ const ProfileButton: FC = () => {
   );
 
   const pictureFunc = () => {
-    return navbarProfile?.image ?? ProfileImage;
+    return navbarProfile?.image ? navbarProfile?.image : ProfileImage;
   };
 
   const handleNavigation = () => {
