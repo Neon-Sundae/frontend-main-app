@@ -127,7 +127,7 @@ const CreatedBy: FC<ICreatedBy> = ({ organisation }) => {
   const { organisationUser } = organisation;
   const {
     name,
-    profile: { title, createdAt, profileId },
+    profile: { title, createdAt, profileId, picture },
   } = organisationUser[0];
 
   const handleNavigation = () => {
@@ -137,7 +137,7 @@ const CreatedBy: FC<ICreatedBy> = ({ organisation }) => {
   return (
     <div className={styles['organisation-profile-container']}>
       <div className={styles['image-container']}>
-        <img src={ProfileImage} alt="Profile" />
+        <img src={picture ?? ProfileImage} alt="Profile" />
       </div>
       <p className={clsx(styles.text, styles['text--primary'])}>{name}</p>
       <p className={clsx(styles.text, styles['text--secondary'])}>
