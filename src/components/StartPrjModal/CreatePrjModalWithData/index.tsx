@@ -12,7 +12,7 @@ const CreatePrjModalWithData: FC<CreatePrjModalWithDataProps> = ({
 }) => {
   return (
     <Modal onClose={onClose} width="700px" overflowY="auto" maxHeight="90vh">
-      <EditProjectForm />
+      <EditProjectForm onClose={onClose} />
     </Modal>
   );
 };

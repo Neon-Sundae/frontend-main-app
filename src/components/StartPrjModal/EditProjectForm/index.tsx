@@ -21,7 +21,11 @@ import {
 import styles from './index.module.scss';
 import { customStyles } from './selectStyles';
 
-const EditProjectForm: FC = () => {
+interface IEditProjectProps {
+  onClose: () => void;
+}
+
+const EditProjectForm: FC<IEditProjectProps> = ({ onClose }) => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const { projectData } = useProjectData();
@@ -71,6 +75,7 @@ const EditProjectForm: FC = () => {
       budget: res.budget,
     });
     toast.success('Project updated successfully');
+    onClose();
   };
 
   const runDeleteProjectResMutation = (flResourceId: number) => {
