@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/extensions */
 import { ChangeEvent, FC, useCallback, useState } from 'react';
@@ -137,7 +138,7 @@ const CreatedBy: FC<ICreatedBy> = ({ organisation }) => {
   return (
     <div className={styles['organisation-profile-container']}>
       <div className={styles['image-container']}>
-        <img src={picture ?? ProfileImage} alt="Profile" />
+        <img src={picture ? picture : ProfileImage} alt="Profile" />
       </div>
       <p className={clsx(styles.text, styles['text--primary'])}>{name}</p>
       <p className={clsx(styles.text, styles['text--secondary'])}>
