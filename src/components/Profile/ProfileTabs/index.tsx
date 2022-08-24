@@ -1,18 +1,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import clsx from 'clsx';
 import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import clsx from 'clsx';
+import { RootState } from 'reducers';
 import Education from 'components/Education';
 import Tasks from 'components/Tasks';
 import WorkHistory from 'components/WorkHistory';
 import OrganisationTab from 'components/OrganisationTab';
 import ProjectsTab from 'components/ProjectsTab';
-import useFetchUserOrgs from './hooks';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
   const [activeState, setActiveState] = useState('task');
-  const userOrgs = useFetchUserOrgs();
+  const user = useSelector((state: RootState) => state.user.user);
+
   const renderTabs = () => {
     switch (activeState) {
       case 'organisation':
@@ -37,7 +39,7 @@ const ProfileTabs: FC = () => {
   return (
     <>
       <div className={styles['profile-tab-header']}>
-        {userOrgs?.data?.length !== 0 && (
+        {user?.isFounder && (
           <h3
             className={clsx(
               styles['profile-tab-title'],
@@ -49,7 +51,7 @@ const ProfileTabs: FC = () => {
             Organisations
           </h3>
         )}
-        {userOrgs?.data?.length !== 0 && (
+        {user?.isFounder && (
           <h3
             className={clsx(
               styles['profile-tab-title'],

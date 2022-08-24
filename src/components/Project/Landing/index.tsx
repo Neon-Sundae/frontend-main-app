@@ -61,8 +61,6 @@ const Landing: FC = () => {
     }
   }, [organisation]);
 
-  console.log(organisation);
-
   return projectData ? (
     <div className={styles.container}>
       <NavBar />
