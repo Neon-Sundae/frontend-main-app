@@ -14,7 +14,7 @@ const ProfileButton: FC = () => {
   );
 
   const pictureFunc = () => {
-    return navbarProfile?.image ?? ProfileImage;
+    return navbarProfile?.image ? navbarProfile?.image : ProfileImage;
   };
 
   const handleNavigation = () => {
@@ -24,9 +24,9 @@ const ProfileButton: FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleNavigation}>
       <div className={styles['image-cont']}>
-        <div className={styles.image} onClick={handleNavigation}>
+        <div className={styles.image}>
           <img src={pictureFunc()} alt="your profile" />
         </div>
       </div>
