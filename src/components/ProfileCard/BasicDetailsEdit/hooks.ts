@@ -18,7 +18,7 @@ interface IUpdateProfileDetailsParameters {
   name: string;
   title: string;
   description: string;
-  picture: string;
+  picture?: string;
 }
 
 const useUpdateProfileDetails = () => {
