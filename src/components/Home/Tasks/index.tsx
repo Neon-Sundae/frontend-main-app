@@ -24,7 +24,7 @@ const Tasks: FC<any> = (props: any) => {
             key={getRandomString(5)}
             data={task}
             width="365px"
-            height="130px"
+            height="140px"
             location="home"
           />
         ))}
