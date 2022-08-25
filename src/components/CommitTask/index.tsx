@@ -44,7 +44,7 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
                 <span>
                   *Your compensation will be unlocked after task completion
                 </span>
-                <span>Top Up Wallet +</span>
+                {/* <span>Top Up Wallet +</span> */}
               </p>
               <button
                 onClick={() =>

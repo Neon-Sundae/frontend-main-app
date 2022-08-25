@@ -5,6 +5,7 @@ interface OrganisationUser {
     profileId: number;
     title: string | null;
     createdAt: string;
+    picture: string;
   };
 }
 

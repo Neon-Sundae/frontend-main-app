@@ -35,7 +35,13 @@ const ProjectsCard = () => {
                     <img src={project.image} alt="Organisation logo" />
                   </div>
                 ) : (
-                  <BrandImage width={60} height={60} />
+                  <BrandImage
+                    width={60}
+                    height={60}
+                    style={{
+                      borderRadius: '50%',
+                    }}
+                  />
                 )}
                 <h5 className={styles['profile-project-organisation']}>
                   {project.organisation}

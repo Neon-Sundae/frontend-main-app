@@ -3,18 +3,18 @@ import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg'
 import clsx from 'clsx';
 import Card from 'components/Card';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
 const TaskCard = (props: any) => {
   const { width, height, data, location } = props;
   const builderTaskApply = useBuilderTaskApply();
-
+  const navigate = useNavigate();
   const applyToTask = () => {
     builderTaskApply.mutate({
       taskId: data.taskId,
     });
   };
-
   if (location === 'home') {
     return (
       <>
@@ -91,7 +91,14 @@ const TaskCard = (props: any) => {
           style={{ marginLeft: '55px', marginRight: '55px' }}
         >
           {data.flProjectCategory.flProject.organisation.profileImage ? (
-            <div className={styles.orgImgWrap}>
+            <div
+              className={styles.orgImgWrap}
+              onClick={() =>
+                navigate(
+                  `/project/${data.flProjectCategory.flProject.flProjectId_uuid}`
+                )
+              }
+            >
               <img
                 src={data.flProjectCategory.flProject.organisation.profileImage}
                 className={styles.img}
@@ -101,7 +108,14 @@ const TaskCard = (props: any) => {
           ) : (
             <BrandImage width={170} height={170} />
           )}
-          <div className={styles.content}>
+          <div
+            className={styles.content}
+            onClick={() =>
+              navigate(
+                `/project/${data.flProjectCategory.flProject.flProjectId_uuid}`
+              )
+            }
+          >
             <div className={styles.content} style={{ width: '100px' }} />
             <div className={styles.catWrap}>
               <p className={styles.cat}>

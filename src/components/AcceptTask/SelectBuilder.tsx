@@ -109,7 +109,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
                 ) : (
                   <span>*Your wallet amount is to low</span>
                 )}
-                <span>Top Up Wallet +</span>
+                {/* <span>Top Up Wallet +</span> */}
               </p>
               <button onClick={handleSelect}>Confirm</button>
             </>

@@ -231,6 +231,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               elements={elements[listKey]}
               key={listKey}
               prefix={listKey}
+              organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
             />
           ))}
@@ -267,10 +268,16 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
 interface IColumn {
   elements: any;
   prefix: string;
+  organisationName: string;
   setOpenTask: any;
 }
 
-const Column: FC<IColumn> = ({ elements, prefix, setOpenTask }) => {
+const Column: FC<IColumn> = ({
+  elements,
+  prefix,
+  organisationName,
+  setOpenTask,
+}) => {
   return (
     <div className={styles['column-container']}>
       <h1 className={styles['column-title']}>{prefix}</h1>
@@ -283,6 +290,7 @@ const Column: FC<IColumn> = ({ elements, prefix, setOpenTask }) => {
                   key={item.taskId}
                   item={item}
                   index={index}
+                  organisationName={organisationName}
                   setOpenTask={setOpenTask}
                 />
               ))}
@@ -298,10 +306,11 @@ const Column: FC<IColumn> = ({ elements, prefix, setOpenTask }) => {
 interface ICard {
   item: any;
   index: any;
+  organisationName: string;
   setOpenTask: any;
 }
 
-const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
+const Card: FC<ICard> = ({ item, index, organisationName, setOpenTask }) => {
   const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
@@ -353,7 +362,9 @@ const Card: FC<ICard> = ({ item, index, setOpenTask }) => {
               {getTextOrAvatar()}
             </div>
             <h4 className={styles['task-name']}>{title}</h4>
-            <p className={styles['task-organisation-name']}>Axie Infinity</p>
+            <p className={styles['task-organisation-name']}>
+              {organisationName}
+            </p>
             <div className={styles['rating-price-container']}>
               <span className={styles['rating-container']}>
                 {difficultyArray.map(n => (
