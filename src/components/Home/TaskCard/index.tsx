@@ -1,4 +1,4 @@
-import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
+import { ReactComponent as BrandImage } from 'assets/illustrations/task/task-dummy-1.svg';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import clsx from 'clsx';
 import Card from 'components/Card';
@@ -106,7 +106,14 @@ const TaskCard = (props: any) => {
               />
             </div>
           ) : (
-            <BrandImage width={170} height={170} />
+            <BrandImage
+              width="126px"
+              height="126px"
+              style={{
+                borderRadius: '50%',
+              }}
+              className={styles.svg}
+            />
           )}
           <div
             className={styles.content}
