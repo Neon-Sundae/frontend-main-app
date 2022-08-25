@@ -15,6 +15,7 @@ import {
   GET_USDC_BALANCE,
   GET_PROFILE_CONTRACT_ADDRESS,
   GET_USER_XP,
+  UPDATE_PROFILE_CONTRACT_ADDRESS,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
 import {
@@ -116,6 +117,10 @@ type Action =
   | {
       type: typeof GET_PROFILE_CONTRACT_ADDRESS;
       payload: string;
+    }
+  | {
+      type: typeof UPDATE_PROFILE_CONTRACT_ADDRESS;
+      address: string;
     };
 
 const initialState: State = {
@@ -270,6 +275,17 @@ const profile = (state = initialState, action: Action): State => {
         ...state,
         usdcBalance: action.payload,
       };
+    case UPDATE_PROFILE_CONTRACT_ADDRESS:
+      if (state.profile) {
+        return {
+          ...state,
+          profile: {
+            ...state.profile,
+            profileSmartContractId: action.address,
+          },
+        };
+      }
+      return { ...state };
     default:
       return { ...state };
   }
