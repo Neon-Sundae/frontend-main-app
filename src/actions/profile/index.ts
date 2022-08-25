@@ -20,6 +20,7 @@ import {
   UPDATE_PROFILE_WORKPLACE,
   GET_USER_XP,
   GET_USDC_BALANCE,
+  UPDATE_PROFILE_CONTRACT_ADDRESS,
 } from './types';
 
 export const getXP = (xp: number) => ({
@@ -133,4 +134,9 @@ export const updateProfileWorkplaceAction = (
   workplaceId,
   keyName,
   value,
+});
+
+export const updateProfileContractAddressAction = (address: string) => ({
+  type: UPDATE_PROFILE_CONTRACT_ADDRESS,
+  address,
 });
