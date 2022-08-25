@@ -359,6 +359,8 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                             style={{
                               color: 'transparent',
                               textShadow: '0 0 0 white',
+                              position: 'absolute',
+                              right: '-40px',
                             }}
                           >
                             ❌
@@ -484,6 +486,8 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
                           marginLeft: '5px',
                           color: 'transparent',
                           textShadow: '0 0 0 white',
+                          position: 'absolute',
+                          right: '-40px',
                         }}
                       >
                         ❌

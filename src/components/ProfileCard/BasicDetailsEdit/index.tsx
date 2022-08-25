@@ -28,7 +28,7 @@ const BasicDetailsEdit: FC = () => {
   text is here imsum text is here imsum text is here imsum text is here
   imsum.`
   );
-  const [picture, setPicture] = useState(profile?.picture ?? userImage);
+  const [picture, setPicture] = useState<any>(profile?.picture ?? null);
   const updateProfileDetails = useUpdateProfileDetails();
   const { mutate: updateProfilePicture } = useMutation(
     async () => {

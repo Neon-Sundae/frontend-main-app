@@ -18,7 +18,7 @@ interface IUpdateProfileDetailsParameters {
   name: string;
   title: string;
   description: string;
-  picture: string;
+  picture?: string | null | undefined;
 }
 
 const useUpdateProfileDetails = () => {
@@ -61,7 +61,7 @@ const useUpdateProfileDetails = () => {
           );
           await handleApiErrors(response);
           dispatch(
-            updateProfileDetailsAction(title, description, picture, name)
+            updateProfileDetailsAction(title, description, picture!, name)
           );
           dispatch(updateUserName(name));
           dispatch(editProfile(false));

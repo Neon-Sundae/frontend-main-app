@@ -81,7 +81,13 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
                           className={styles['org-image']}
                         />
                       ) : (
-                        <DummyImage1 width={135} height={135} />
+                        <DummyImage1
+                          style={{
+                            borderRadius: '50%',
+                          }}
+                          width={102.44}
+                          height={102.44}
+                        />
                       )
                     }
                     onClick={() => setSelected(org.organisationId)}
