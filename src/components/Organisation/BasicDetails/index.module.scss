@@ -1,5 +1,17 @@
 .content {
-  width: 90%;
+  @media (max-width: 1920px)  {
+    width: 70%;
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+  }
+  @media (max-width: 1440px)  {
+  width: 80%;
+  }
+  @media (max-width: 1024px) {
+    
+  }
+ 
   margin-top: 60px;
   margin-inline: auto;
   max-width: 1532px;
@@ -13,10 +25,20 @@
 }
 
 .organisation-name-description {
-  width: min(100%, 60rem);
-
+  @media (max-width: 1920px)  {
+    width: 72%;
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+  }
+  @media (max-width: 1440px)  {
+  width: 10%;
+  }
+  @media (max-width: 1024px) {
+    
+  }
   & > div {
-    min-height: 150px;
+    min-height: 100px;
     display: flex;
   }
 }
@@ -212,20 +234,25 @@
   box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
 }
 
-@media (max-width: 1460px) {
-  .organisation-name-description {
-    width: min(100%, 50rem);
-  }
-}
 
-@media (max-width: 1300px) {
-  .organisation-name-description {
-    width: min(100%, 45rem);
+  @media (max-width: 1920px)  {
+    .organisation-name-description {
+      width: 65%;
+    }
   }
-}
+  @media (max-width: 1680px)  {
+    .organisation-name-description {
+    width: 65%;
+    }
+  }
+  @media (max-width: 1440px)  {
+    .organisation-name-description {
+      width: 62%;
+    }
+  }
+  @media (max-width: 1024px) {
+    .organisation-name-description {
+      width: min(100%, 45rem);
+    }
+  }
 
-@media (max-width: 1200px) {
-  .organisation-name-description {
-    width: min(100%, 40rem);
-  }
-}
