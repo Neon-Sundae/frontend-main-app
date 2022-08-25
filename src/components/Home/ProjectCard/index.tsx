@@ -46,7 +46,13 @@ const ProjectCard: FC<ProjectCardProps> = ({
               {orgImage ? (
                 <img src={orgImage} className={styles.orgImage} alt="org" />
               ) : (
-                <BrandImage width={51} height={51} />
+                <BrandImage
+                  width={51}
+                  height={51}
+                  style={{
+                    borderRadius: '50%',
+                  }}
+                />
               )}
               <span className={styles['text--secondary']}>{org}</span>
               <h3 className={styles['text--primary']}>
@@ -83,7 +89,13 @@ const ProjectCard: FC<ProjectCardProps> = ({
             {orgImage ? (
               <img src={orgImage} className={styles.orgImage} alt="org" />
             ) : (
-              <BrandImage width={51} height={51} />
+              <BrandImage
+                width={51}
+                height={51}
+                style={{
+                  borderRadius: '50%',
+                }}
+              />
             )}
             <span className={styles['text--secondary']}>{org}</span>
             <h3 className={styles['text--primary']}>
