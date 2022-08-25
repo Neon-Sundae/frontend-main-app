@@ -106,7 +106,13 @@ const TaskCard = (props: any) => {
               />
             </div>
           ) : (
-            <BrandImage width={170} height={170} />
+            <BrandImage
+              width={170}
+              height={170}
+              style={{
+                borderRadius: '50%',
+              }}
+            />
           )}
           <div
             className={styles.content}
