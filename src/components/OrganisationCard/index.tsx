@@ -33,9 +33,12 @@ const OrganisationCard = () => {
                   </div>
                 ) : (
                   <BrandImage
-                    width="71.14px"
-                    height="73.53px"
+                    width="72px"
+                    height="72px"
                     className={styles['organisation-default-image']}
+                    style={{
+                      borderRadius: '50%',
+                    }}
                   />
                 )}
                 <h3 className={styles['text--primary']}>{org.name}</h3>
