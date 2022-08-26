@@ -113,6 +113,11 @@ const TaskCard = (props: any) => {
                 borderRadius: '50%',
               }}
               className={styles.svg}
+              onClick={() =>
+                navigate(
+                  `/project/${data.flProjectCategory.flProject.flProjectId_uuid}`
+                )
+              }
             />
           )}
           <div
