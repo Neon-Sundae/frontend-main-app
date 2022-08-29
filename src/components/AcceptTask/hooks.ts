@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -315,7 +315,6 @@ const useUpdateTaskChecklist = (taskChecklistId: number) => {
 };
 
 const useCancelTask = () => {
-
   const updateTask = useUpdateTaskStatus();
   const accessToken = getAccessToken();
   const [success, setSuccess] = useState(false);
@@ -326,7 +325,7 @@ const useCancelTask = () => {
     (state: RootState) => state.flProject
   );
 
-  const cancelTask = async() => {
+  const cancelTask = async () => {
     try {
       if (!selectedTask.cancelPermission) {
         const ac = new AbortController();
@@ -334,36 +333,74 @@ const useCancelTask = () => {
 
         const payload = { taskId: selectedTask?.taskId };
 
-        const response = await fetch(`${config.ApiBaseUrl}/task/cancel/founder`, {
-          signal,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(payload),
-        });
+        const response = await fetch(
+          `${config.ApiBaseUrl}/task/cancel/founder`,
+          {
+            signal,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(payload),
+          }
+        );
         await handleApiErrors(response);
         setSuccess(true);
       } else {
         const web3 = getWeb3Instance();
-        const taskContract = new web3.eth.Contract(TaskAbi.abi as AbiItem[], taskContractAddress);
-        await taskContract.methods.cancelTask(selectedTask?.taskSmartContractId)
+        const taskContract = new web3.eth.Contract(
+          TaskAbi.abi as AbiItem[],
+          taskContractAddress
+        );
+        await taskContract.methods
+          .cancelTask(selectedTask?.taskSmartContractId)
           .send({ from: walletId });
 
         await updateTask.mutateAsync({
-            taskId: selectedTask?.taskId,
-            status: 'cancelled'
+          taskId: selectedTask?.taskId,
+          status: 'cancelled',
         });
       }
     } catch (err) {
       console.log(err);
       setSuccess(false);
     }
-  }
+  };
 
-  return {cancelTask, success, setSuccess}
-}
+  return { cancelTask, success, setSuccess };
+};
+
+const useDeleteTask = (setOpen: Dispatch<SetStateAction<boolean>>) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const deleteTask = useMutation(
+    async (taskId: number) => {
+      const response = await fetch(`${config.ApiBaseUrl}/task/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['projectTasks']);
+        toast.success('Successfully Deleted');
+        setOpen(false);
+      },
+    }
+  );
+
+  return { deleteTask };
+};
 
 export {
   useFetchTaskData,
@@ -371,5 +408,6 @@ export {
   useSelectBuilder,
   useCommitToTask,
   useUpdateTaskChecklist,
-  useCancelTask
+  useCancelTask,
+  useDeleteTask,
 };
