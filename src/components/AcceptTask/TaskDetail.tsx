@@ -15,7 +15,7 @@ import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileAttachmentCard from './FileAttachmetCard';
 import styles from './index.module.scss';
-import { useCancelTask } from './hooks';
+import { useCancelTask, useDeleteTask } from './hooks';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
@@ -34,8 +34,7 @@ const TaskDetail: FC<ITaskDetail> = ({
 }) => {
   const dispatch = useDispatch();
   const builderTaskApply = useBuilderTaskApply();
-
-  const [expanded, setExpanded] = useState(false);
+  const { deleteTask } = useDeleteTask(setOpen);
   const [isCancel, setIsCancel] = useState(false);
 
   const { selectedTask, taskXP } = useSelector(
@@ -45,13 +44,13 @@ const TaskDetail: FC<ITaskDetail> = ({
 
   useEffect(() => {
     const getXP = async () => {
-      const _xp = await calculateTaskXP(
+      const xp = await calculateTaskXP(
         walletId,
         selectedTask?.estimatedDifficulty
       );
       dispatch({
         type: SET_TASK_XP,
-        payload: Number(_xp),
+        payload: Number(xp),
       });
     };
     if (selectedTask !== null) {
@@ -67,38 +66,39 @@ const TaskDetail: FC<ITaskDetail> = ({
     setOpen(false);
   };
 
+  const founderTaskAction = () => {
+    if (
+      selectedTask?.status === 'in progress' ||
+      selectedTask?.status === 'in review'
+    ) {
+      return (
+        <span onClick={() => setIsCancel(true)}>
+          <i className="material-icons">delete</i>
+          <span>Cancel Task</span>
+        </span>
+      );
+    }
+    if (selectedTask?.status === 'open') {
+      return (
+        <span onClick={() => deleteTask.mutate(selectedTask?.taskId)}>
+          <i className="material-icons">delete</i>
+          <span>Delete Task</span>
+        </span>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div>
       <div className={styles['avatar-container']}>
-        {/* {expanded ? (
-          <button
-            className={styles['task-status']}
-            onClick={() => setExpanded(!expanded)}
-          > */}
         <span className={styles['task-status-btn']}>
           {selectedTask?.status}
         </span>
-
-        {/* <div>
-              <p>Open</p>
-              <p>In-Progress</p>
-              <p>In-Review</p>
-              <p>Completed</p>
-            </div> */}
-        {/* </button>
-        ) : (
-          <button
-            className={styles['task-status--expanded']}
-            onClick={() => setExpanded(!expanded)}
-          >
-            <span>{selectedTask?.status}</span>
-            <i className="material-icons">expand_more</i>
-          </button>
-        )} */}
-
         {selectedTask?.profileTask.length > 0 && (
           <div
-            className={expanded ? styles.expanded : ''}
+            className={styles.expanded}
             onClick={() => setViewTalentList(true)}
           >
             {selectedTask?.status !== 'open' &&
@@ -220,14 +220,7 @@ const TaskDetail: FC<ITaskDetail> = ({
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
             {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
-              <>
-                {selectedTask?.status !== 'completed' && (
-                  <span onClick={() => setIsCancel(true)}>
-                    <i className="material-icons">delete</i>
-                    <span>Delete Task</span>
-                  </span>
-                )}
-              </>
+              founderTaskAction()
             ) : (
               <>
                 {selectedTask?.status === 'open' &&
