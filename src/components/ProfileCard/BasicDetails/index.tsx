@@ -154,12 +154,7 @@ interface IProfileBio {
 
 const ProfileBio: FC<IProfileBio> = ({ description }) => {
   return (
-    <p className={styles['profile-bio']}>
-      {description ??
-        `Lorem imsum text is here imsum text is here imsum text is here imsum
-      text is here imsum text is here imsum text is here imsum text is here
-      imsum.`}
-    </p>
+    <p className={styles['profile-bio']}>{description || 'Add your bio'}</p>
   );
 };
 

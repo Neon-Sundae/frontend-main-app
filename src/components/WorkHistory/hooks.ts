@@ -27,8 +27,7 @@ const useAddProfileWorkplace = () => {
           const payload = {
             role: 'Creative Designer',
             name: 'Google Corporation',
-            description:
-              'Lorem imsum text is here imsum text is here   imsum text is here imsum text is here imsumz shs s.  BioLorem imsum text is here imsum text is here   imsum text is here imsum text is here  imsum  here BioLorem imsum text is    imsum text is here imsum text is here imsum. BioLorem imsum text isimsum text is here   imsum text is here imsum text is here imsum. here imsum text is here',
+            description: 'Add a brief information about the workplace.',
             startDate: now.toISOString(),
             endDate: now.toISOString(),
             profileId: profile?.profileId,
