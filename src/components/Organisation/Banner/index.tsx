@@ -27,7 +27,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const [nameLocal, setNameLocal] = useState(organisation.name ?? 'Polkadot');
-  const [website, setWebsite] = useState(organisation.website ?? 'apple.com');
+  const [website, setWebsite] = useState(organisation.website ?? '');
   const [open, setOpen] = useState(false);
 
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);

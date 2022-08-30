@@ -78,7 +78,7 @@ const BasicDetailsEdit: FC = () => {
         walletId={user?.walletId}
         title={title}
       />
-      <ProfileBio bio={bio} setBio={setBio} />
+      <ProfileBio bio={bio || 'Add your bio'} setBio={setBio} />
       <SaveProfile handleSave={handleSave} />
     </>
   );
