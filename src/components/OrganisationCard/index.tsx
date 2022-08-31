@@ -15,17 +15,14 @@ const OrganisationCard = () => {
       {userOrgs?.data?.map((org: any) => {
         return (
           <div
+            key={org.organisationId}
             className={styles.wrap}
             onClick={() => {
               navigate(`/organisation/${org.organisationId}`);
             }}
             style={{ cursor: 'pointer' }}
           >
-            <Card
-              showTransparentBg
-              className={styles.cardsContainer}
-              key={org.organisationId}
-            >
+            <Card showTransparentBg className={styles.cardsContainer}>
               <header>
                 {org?.profileImage ? (
                   <div className={styles['organisation-image-wrapper']}>
