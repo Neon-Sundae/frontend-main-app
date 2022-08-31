@@ -77,7 +77,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
                   </div>
                   <div>
                     <span>Gas Fee</span>
-                    <span>$0.01 MATIC</span>
+                    <span>10% Platform fee</span>
                   </div>
                   <div>
                     <span>Deposit</span>
@@ -145,7 +145,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
                   </div>
                   <div>
                     <span>Gas Fee</span>
-                    <span>$0.01 MATIC</span>
+                    <span>10% Platform fee</span>
                   </div>
                   <div>
                     <span>Deposit</span>
