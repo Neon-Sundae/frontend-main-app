@@ -73,6 +73,11 @@
     font-size: 12px;
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
+
+    max-width: 103px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
