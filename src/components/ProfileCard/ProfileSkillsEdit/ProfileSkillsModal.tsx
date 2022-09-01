@@ -1,5 +1,6 @@
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { ActionMeta, SingleValue } from 'react-select';
+import toast from 'react-hot-toast';
 import Modal from 'components/Modal';
 import Select, { Option } from 'components/Select';
 import { useSelector } from 'react-redux';
@@ -39,9 +40,14 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
   ) => {
     if (newValue) {
       const found = profileSkills?.some(el => el.label === newValue.label);
-      if (!found) {
+      console.log(profileSkills);
+      if (!found && profileSkills.length < 5) {
         setSelectedSkill(newValue);
         addProfileSkill(newValue);
+      }
+      if (profileSkills.length === 5) {
+        const a = toast.error('Cannot add more skills');
+        console.log(a);
       }
     }
   };
@@ -55,7 +61,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
       <h1 className={styles['skill-title']}>Skills</h1>
       <p className={styles['skill-description']}>
         To add more skills, write it in field below and click ENTER to add a
-        skill. You can add maximum 6 skills.
+        skill. You can add maximum 5 skills.
       </p>
       <div className={styles['skills-select-container']}>
         <Select

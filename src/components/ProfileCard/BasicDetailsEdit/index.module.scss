@@ -5,20 +5,19 @@ body {
 }
 
 .profile-image {
-  width: 110px;
-  height: 110px;
+  width: 90px;
+  height: 90px;
   margin: auto;
 
   position: relative;
   cursor: pointer;
   overflow: hidden;
 
-
   .image-wrapper {
     .userImage {
       position: relative;
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
     }
 
@@ -26,8 +25,8 @@ body {
       position: absolute;
       top: 0;
       left: 0;
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       opacity: 0.7;
     }
@@ -40,7 +39,6 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
   }
 }
 
@@ -115,11 +113,13 @@ body {
     .label {
       font-family: var(--font-family-roboto-bold);
       font-size: 23px;
-      background: -webkit-linear-gradient(298.19deg,
-          #ffbedf 27.52%,
-          #eac4ff 48.39%,
-          #ffc9af 69.27%,
-          #ffd9a0 94.32%);
+      background: -webkit-linear-gradient(
+        298.19deg,
+        #ffbedf 27.52%,
+        #eac4ff 48.39%,
+        #ffc9af 69.27%,
+        #ffd9a0 94.32%
+      );
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -149,7 +149,7 @@ body {
       color: white;
     }
 
-    &>i {
+    & > i {
       color: white;
     }
   }
@@ -164,7 +164,7 @@ body {
     cursor: pointer;
     margin: 15px 0;
 
-    &>i {
+    & > i {
       color: white;
       margin-left: 5px;
     }
@@ -197,7 +197,6 @@ body {
 .promptImg {
   width: 600px;
   height: 277px;
-
 }
 
 .nftsContainer {
@@ -221,7 +220,7 @@ body {
     h3 {
       font-size: 14px;
       font-weight: 400;
-      color: #C4C4C4;
+      color: #c4c4c4;
     }
 
     p {
@@ -236,7 +235,6 @@ body {
     object-fit: cover;
   }
 }
-
 
 .wrapper {
   position: relative;
@@ -258,7 +256,7 @@ body {
     }
 
     & p {
-      color: #CBCBCB;
+      color: #cbcbcb;
       font-size: 18px;
     }
 
@@ -268,7 +266,7 @@ body {
 
     & footer {
       font-size: 18px;
-      color: #CBCBCB;
+      color: #cbcbcb;
       margin-bottom: 20px;
 
       & span {
@@ -279,7 +277,8 @@ body {
     }
 
     & button {
-      background: url('/src/assets/illustrations/button/save-btn-bg.png') no-repeat;
+      background: url('/src/assets/illustrations/button/save-btn-bg.png')
+        no-repeat;
       width: 241px;
       height: 59px;
       backdrop-filter: blur(43.3229px);
@@ -329,10 +328,13 @@ body {
   position: relative;
 
   button {
-
     position: absolute;
     left: 30%;
-    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
     box-shadow: 0px 3.79667px 22.78px -0.949168px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(37.9667px);
     /* Note: backdrop-filter has minimal browser support */
@@ -342,7 +344,7 @@ body {
     font-weight: 400;
     font-size: 20px;
     padding: 14.41px;
-    border: .7px solid #FF9BFB;
+    border: 0.7px solid #ff9bfb;
     width: 208px;
     height: 56.57px;
   }
