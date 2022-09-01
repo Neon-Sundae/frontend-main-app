@@ -71,6 +71,14 @@
     text-transform: capitalize;
     margin-bottom: 12px;
   }
+
+  h4,
+  p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 180px;
+  }
 }
 .col {
   margin-right: 10px;

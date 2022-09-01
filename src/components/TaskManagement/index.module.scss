@@ -292,6 +292,14 @@ div[data-rbd-droppable-context-id] {
   color: white;
 }
 
+.task-name,
+.task-organisation-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 180px;
+}
+
 .rating-price-container {
   display: flex;
   justify-content: space-between;
