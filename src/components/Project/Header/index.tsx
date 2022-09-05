@@ -2,13 +2,13 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 import { Dispatch, FC, SetStateAction, useState } from 'react';
+import config from 'config';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
 import { AbiItem } from 'web3-utils';
 import { profileManageContractAddress } from 'contracts/contracts';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
@@ -26,7 +26,6 @@ interface IHeaderProps {
 }
 
 const Header: FC<IHeaderProps> = props => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
@@ -69,7 +68,7 @@ const Header: FC<IHeaderProps> = props => {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(selectedProjectAddress);
+    navigator.clipboard.writeText('selectedProjectAddress123');
     toast.success('Copied!');
   };
 
@@ -146,9 +145,16 @@ const Header: FC<IHeaderProps> = props => {
             selectedProjectAddress.length - 5,
             selectedProjectAddress.length
           )}
-          <i className="material-icons-200" onClick={handleCopy}>
-            content_copy
-          </i>
+          <a
+            href={`${config.explorerURL}/address/${selectedProjectAddress}`}
+            target="_blank"
+            rel="noreferrer"
+            className={styles['explorer-icon']}
+          >
+            <i className="material-icons-200" onClick={handleCopy}>
+              open_in_new
+            </i>
+          </a>
         </div>
       )}
 
