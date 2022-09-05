@@ -46,7 +46,6 @@ const TaskManagement: FC<ITaskManagement> = ({
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
-
   const handleOpenModal = () => setOpen(true);
 
   const toggleFilterMenu = () => setFilterOpen(p => !p);
@@ -221,7 +220,6 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
     setOpenComplete(val);
     setOpenTask(false);
   };
-
   if (elements) {
     return (
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -233,6 +231,8 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               prefix={listKey}
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
+              projectFounder={project_founder}
+              appliedBuilders={elements.open[0].profileTask}
             />
           ))}
         </div>
@@ -270,6 +270,8 @@ interface IColumn {
   prefix: string;
   organisationName: string;
   setOpenTask: any;
+  projectFounder: string;
+  appliedBuilders: any;
 }
 
 const Column: FC<IColumn> = ({
@@ -277,6 +279,8 @@ const Column: FC<IColumn> = ({
   prefix,
   organisationName,
   setOpenTask,
+  projectFounder,
+  appliedBuilders,
 }) => {
   return (
     <div className={styles['column-container']}>
@@ -292,6 +296,8 @@ const Column: FC<IColumn> = ({
                   index={index}
                   organisationName={organisationName}
                   setOpenTask={setOpenTask}
+                  projectFounder={projectFounder}
+                  appliedBuilders={appliedBuilders}
                 />
               ))}
               {provided.placeholder}
@@ -308,9 +314,19 @@ interface ICard {
   index: any;
   organisationName: string;
   setOpenTask: any;
+  projectFounder: string;
+  appliedBuilders: any;
 }
 
-const Card: FC<ICard> = ({ item, index, organisationName, setOpenTask }) => {
+const Card: FC<ICard> = ({
+  item,
+  index,
+  organisationName,
+  setOpenTask,
+  projectFounder,
+  appliedBuilders,
+}) => {
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
@@ -329,6 +345,9 @@ const Card: FC<ICard> = ({ item, index, organisationName, setOpenTask }) => {
   const getTextOrAvatar = () => {
     switch (item.status) {
       case 'open':
+        if (projectFounder === walletId) {
+          return <Avatars appliedBuilders={appliedBuilders} />;
+        }
         return (
           <span className={styles['apply-task-text']} onClick={applyToTask}>
             Apply to task
@@ -385,6 +404,24 @@ const Card: FC<ICard> = ({ item, index, organisationName, setOpenTask }) => {
         );
       }}
     </Draggable>
+  );
+};
+
+interface IAvatars {
+  appliedBuilders: any;
+}
+
+const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
+  return (
+    <div className={styles['avatar-container']}>
+      {appliedBuilders.map(elem => (
+        <img
+          src={elem.Profile.picture ? elem.Profile.picture : userImage}
+          alt=""
+          className={styles['builder-avatar']}
+        />
+      ))}{' '}
+    </div>
   );
 };
 
