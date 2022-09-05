@@ -20,6 +20,24 @@
     margin: 25px 0;
   }
 }
+.avatar-container {
+  z-index: 10;
+  display: flex;
+  margin-top: 5px;
+  .builder-avatar {
+    background-color: #d39bff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid white;
+    margin-left: -20px;
+    :last-child {
+      margin-left: 0;
+    }
+  }
+}
+
 
 .task-management-header {
   display: flex;
