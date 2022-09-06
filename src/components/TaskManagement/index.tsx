@@ -33,7 +33,6 @@ import { notAllowedCases, onDragEnd } from './dndMethods';
 const lists = ['open', 'in progress', 'in review', 'completed', 'cancelled'];
 
 interface ITaskManagement {
-  project_budget: number;
   project_name: string;
   project_founder: string;
 }
@@ -232,7 +231,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
               projectFounder={project_founder}
-              appliedBuilders={elements.open[0]?.profileTask}
+              appliedBuilders={elements?.open[0]?.profileTask}
             />
           ))}
         </div>
