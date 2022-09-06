@@ -48,6 +48,7 @@ interface IUpdateOrg {
   description?: string | null;
   whitepaper?: string | null;
   website?: string | null;
+  file?: any;
 }
 
 const useUpdateOrganisation = (organisationId: number) => {
@@ -78,4 +79,63 @@ const useUpdateOrganisation = (organisationId: number) => {
   return updateOrgSocials;
 };
 
-export { useUpdateOrgSocials, useUpdateOrganisation };
+const useUpdateOrgPic = (organisationId: number) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const updateOrgSocials = useMutation(
+    (formData: FormData) =>
+      fetch(`${config.ApiBaseUrl}/organisation/${organisationId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      }),
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['organisation']);
+      },
+    }
+  );
+
+  return updateOrgSocials;
+};
+
+const useUpdateOrgCoverPic = (organisationId: number) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const updateOrgSocials = useMutation(
+    (formData: FormData) =>
+      fetch(`${config.ApiBaseUrl}/organisation/${organisationId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      }),
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['organisation']);
+      },
+    }
+  );
+
+  return updateOrgSocials;
+};
+
+export {
+  useUpdateOrgSocials,
+  useUpdateOrganisation,
+  useUpdateOrgPic,
+  useUpdateOrgCoverPic,
+};
