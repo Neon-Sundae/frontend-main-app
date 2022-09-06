@@ -35,6 +35,7 @@ const lists = ['open', 'in progress', 'in review', 'completed', 'cancelled'];
 interface ITaskManagement {
   project_name: string;
   project_founder: string;
+  project_budget: number;
 }
 
 const TaskManagement: FC<ITaskManagement> = ({
