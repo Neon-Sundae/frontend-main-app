@@ -232,7 +232,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
               projectFounder={project_founder}
-              appliedBuilders={elements.open[0].profileTask}
+              appliedBuilders={elements.open[0]?.profileTask}
             />
           ))}
         </div>
