@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import config from 'config';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
 import { AbiItem } from 'web3-utils';
@@ -67,11 +66,6 @@ const Header: FC<IHeaderProps> = props => {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText('selectedProjectAddress123');
-    toast.success('Copied!');
-  };
-
   const handleEditButtonClick = () => {
     setShowProjectFormModalWithData(true);
   };
@@ -84,79 +78,38 @@ const Header: FC<IHeaderProps> = props => {
   return (
     <div className={styles.container}>
       <div className={styles['project-info']}>
-        <span className={styles['project-name']}>
-          <p> {props.projectName}</p>
-        </span>
-        <span className={styles['founder-name']}>
-          by&nbsp;&nbsp;{props.organisationName}
-        </span>
-        {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() ? (
-          selectedProjectAddress === '' ? (
-            <button onClick={handleOpen} className={styles.transparentBtn}>
-              Publish a Project
-            </button>
-          ) : !isDeposit ? (
-            <button onClick={handleOpen} className={styles.transparentBtn}>
-              Deposit Funds
-            </button>
-          ) : (
-            <>
-              <span className={styles['deposit-funds']}>
-                Funds: {Number(Number(Number(props.budget) * 1.1).toFixed(4))}{' '}
-                USDC
-              </span>
+        <div className={styles['name-publish-btn-row']}>
+          <p className={styles['project-name']}>{props.projectName}</p>
+          {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() &&
+            selectedProjectAddress === '' && (
+              <button onClick={handleOpen} className={styles.transparentBtn}>
+                Publish a Project
+              </button>
+            )}
+        </div>
+        <div className={styles['org-edit-project-row']}>
+          <span className={styles['by-org-name']}>
+            <p className={styles['founder-name']}>
+              by&nbsp;&nbsp;{props.organisationName}
+            </p>
+            {selectedProjectAddress && (
               <VerifiedIcon
                 className={styles['project-verified']}
                 width={20}
                 height={20}
               />
-            </>
-          )
-        ) : selectedProjectAddress === '' ? (
-          <button className={styles.transparentBtn}> Not Published</button>
-        ) : !isDeposit ? (
-          <button className={styles.transparentBtn}>Not Deposited</button>
-        ) : (
-          <>
-            <span className={styles['deposit-funds']}>
-              Deposit Funds:{' '}
-              {Number(Number(Number(props.budget) * 1.1).toFixed(4))}
-            </span>
-            <VerifiedIcon
-              className={styles['project-verified']}
-              width={20}
-              height={20}
-            />
-          </>
-        )}{' '}
-        {isFounder() && (
-          <button
-            onClick={handleEditButtonClick}
-            className={styles.buttonRight}
-          >
-            Edit project &nbsp; <Pencil />
-          </button>
-        )}
-      </div>
-      {selectedProjectAddress !== '' && (
-        <div className={styles['contract-address']}>
-          Smart Contract Id: {selectedProjectAddress.slice(0, 6)}...
-          {selectedProjectAddress.slice(
-            selectedProjectAddress.length - 5,
-            selectedProjectAddress.length
+            )}
+          </span>
+          {isFounder() && (
+            <button
+              onClick={handleEditButtonClick}
+              className={styles['edit-project-btn']}
+            >
+              Edit project &nbsp; <Pencil width={15} height={15} />
+            </button>
           )}
-          <a
-            href={`${config.explorerURL}/address/${selectedProjectAddress}`}
-            target="_blank"
-            rel="noreferrer"
-            className={styles['explorer-icon']}
-          >
-            <i className="material-icons-200" onClick={handleCopy}>
-              open_in_new
-            </i>
-          </a>
         </div>
-      )}
+      </div>
 
       {showProjectFormModalWithData && (
         <CreatePrjModalWithData
