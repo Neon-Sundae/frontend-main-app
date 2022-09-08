@@ -1,116 +1,132 @@
 .container {
   color: #fff;
-  @media (max-width: 1920px)  {
+
+  @media (max-width: 1920px) {
     width: 65%;
-    
   }
-  @media (max-width: 1680px)  {
+
+  @media (max-width: 1680px) {
     width: 70%;
-    
   }
-  @media (max-width: 1440px)  {
+
+  @media (max-width: 1440px) {
     width: 78.5%;
-        
   }
-  
+
   @media (max-width: 1024px) {
     width: 80%;
   }
-  
-  margin: auto;
+
+  margin-top: 30px;
+  margin-inline: auto;
+
   .wrap {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .projectContentHeading {
-    display: flex;
-    justify-content: space-between;
-    :nth-child(2) {
-        position: absolute;
-        @media (max-width: 1920px)  {
-          left: 58.5%;
-        }
-        @media (max-width: 1680px)  {
-          left: 57.5%
-          
-        }
-        @media (max-width: 1440px)  {
-          left: 57.2%;
-        }
-        @media (max-width: 1024px) {
-          left: 44.8%;
-        }    
-      }
-     
-   }
-  h4 {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 21px;
-    line-height: 32px;
-    font-family: var(--font-family-roboto-regular);
-  }
+
   .projectDescription {
-    width: 44vw;
-    height: 197.99px;
-    padding: 26.96px;
-    line-height: 24.83px;
-    background: linear-gradient(
-      126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%
-    );
-    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(40px);
-    /* Note: backdrop-filter has minimal browser support */
-    border-radius: 23px;
-    border: .7px solid #FF9BFB;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    overflow-y: auto;
-    font-family: var(--font-family-roboto-flex);
-    padding-bottom: 0;
-   
+    width: 40%;
   }
+
+  .projectDetails {
+    width: 57%;
+  }
+
+  .projectDescription,
   .projectDetails {
     font-family: var(--font-family-roboto-regular);
     font-size: 13.2546px;
-  }
-  .card {
-    width: 457px;
     height: 198px;
-    padding: 27.34px;
-    line-height: 16px;
+    line-height: 24.83px;
     overflow-y: auto;
     background: linear-gradient(
       126.59deg,
       rgba(255, 255, 255, 0.12) 12.11%,
       rgba(255, 255, 255, 0.03) 73.08%
     );
-    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
     backdrop-filter: blur(40px);
-    /* Note: backdrop-filter has minimal browser support */
-    border-radius: 23px;
-    margin-left: 25px;
-    border: .7px solid #FF9BFB;
-    padding-bottom: 0;
-    
+    border-radius: 16.5px;
+    border: 0.7px solid #ff9bfb;
+    padding: 0 30px;
+
+    font-weight: 400;
+    font-size: 14px;
+
+    & > h4 {
+      font-weight: 500;
+      font-size: 21px;
+      line-height: 32px;
+      font-family: var(--font-family-roboto-regular);
+
+      margin: 15px 0;
+      text-align: center;
+      text-decoration: underline;
+    }
   }
+
   .inline {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+
     :last-child {
       margin-bottom: 0;
     }
+
     svg {
       width: 18.85px;
       height: 18.85px;
-       
     }
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+
+  & > div {
+    width: 50%;
+    display: flex;
+    align-items: center;
+
+    & > svg {
+      margin-right: 10px;
+    }
+  }
+
+  & .row-label {
+    font-weight: 500;
+    font-size: 14px;
+    font-family: var(--font-family-roboto-medium);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%;
+    overflow: hidden;
+
+    & a {
+      color: white;
+    }
+
+    & i {
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+
+  & .row-value {
+    font-weight: 400;
+    font-size: 14px;
+    font-family: var(--font-family-roboto-regular);
+  }
+
+  & .smart-contract-value {
+    text-decoration: underline;
+    cursor: pointer;
   }
 }

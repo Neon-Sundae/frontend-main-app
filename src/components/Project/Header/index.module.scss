@@ -26,14 +26,17 @@
 
   .project-info {
     display: flex;
+    flex-direction: column;
     align-items: baseline;
-    width: 89%;
+    width: 90%;
     margin: auto;
     position: relative;
+
     .project-name {
       white-space: nowrap;
     }
-    .project-name > p {
+
+    .project-name {
       font-family: var(--font-family-roboto-regular);
       font-style: normal;
       font-weight: 600;
@@ -42,11 +45,15 @@
       text-transform: capitalize;
     }
 
+    .by-org-name {
+      display: flex;
+      align-items: center;
+    }
+
     .founder-name,
     .deposit-funds {
       font-family: var(--font-family-roboto-light);
       font-weight: 300;
-      margin-left: 25px;
       font-size: 19.8819px;
       line-height: 23px;
     }
@@ -54,6 +61,7 @@
     .project-verified {
       margin-left: 20px;
     }
+
     .transparentBtn {
       background: linear-gradient(
         126.59deg,
@@ -63,11 +71,11 @@
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       /* Note: backdrop-filter has minimal browser support */
-      border-radius: 23px;
-      width: 223px;
-      height: 55px;
+      border-radius: 14px;
+      width: 195px;
+      height: 42px;
       font-family: var(--font-family-roboto-regular);
-      font-size: 18.225px;
+      font-size: 16px;
       color: #fff;
       border: 0.7px solid #ff9bfb;
       background: linear-gradient(
@@ -88,10 +96,10 @@
           rgba(255, 255, 255, 0.16) 4.94%,
           rgba(255, 255, 255, 0.04) 93.94%
         );
-      font-weight: 400;
-      font-size: 18px;
+      cursor: pointer;
     }
-    button {
+
+    .edit-project-btn {
       background: linear-gradient(
         126.59deg,
         rgba(255, 255, 255, 0.12) 12.11%,
@@ -100,30 +108,44 @@
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       font-family: var(--font-family-roboto-regular);
-      font-size: 18.225px;
+      font-size: 16px;
       /* Note: backdrop-filter has minimal browser support */
-      border-radius: 19.0534px;
-      width: 195.1px;
-      height: 52.3px;
+      border-radius: 14px;
+      width: 195px;
+      height: 42px;
       color: #fff;
       border: 0.7px solid #ff9bfb;
       font-weight: 400;
-      margin-left: 52.94px;
-    }
-    .buttonRight {
-      position: absolute;
-      right: 0;
-    }
-  }
+      cursor: pointer;
 
-  .contract-address {
-    display: flex;
-    margin-left: 5.4%;
-    font-size: 16px;
-    line-height: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
+}
 
-  .explorer-icon {
-    color: white;
-  }
+.contract-address {
+  display: flex;
+  margin-left: 5.4%;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.explorer-icon {
+  color: white;
+}
+
+.name-publish-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.org-edit-project-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 20px;
 }
