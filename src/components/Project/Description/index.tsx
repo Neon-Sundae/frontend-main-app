@@ -45,8 +45,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
         6
       )}...${selectedProjectAddress.slice(selectedProjectAddress.length - 6)}`;
     }
-
-    return 'Not published';
+    return '';
   };
 
   return (
@@ -60,14 +59,28 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
               <SmartContractIcon width={17} height={22} />
               <span className={styles['row-label']}>
                 Smart Contract id: &nbsp;
-                <span
-                  className={clsx(
-                    styles['row-value'],
-                    styles['smart-contract-value']
-                  )}
-                >
-                  {getSmartContractAddress()}
-                </span>{' '}
+                {selectedProjectAddress ? (
+                  <a
+                    className={clsx(
+                      styles['row-value'],
+                      styles['smart-contract-value']
+                    )}
+                    href={`${config.explorerURL}/address/${selectedProjectAddress}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {getSmartContractAddress()}
+                  </a>
+                ) : (
+                  <span
+                    className={clsx(
+                      styles['row-value'],
+                      styles['smart-contract-value']
+                    )}
+                  >
+                    Not published
+                  </span>
+                )}{' '}
                 &nbsp;
                 {selectedProjectAddress && (
                   <a
