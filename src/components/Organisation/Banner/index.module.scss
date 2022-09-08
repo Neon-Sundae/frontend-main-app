@@ -165,6 +165,19 @@
     height: 100%;
   }
 }
+.logo-svg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  
+  position: relative;
+  .centeredEdit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
 
 .center {
   display: flex;

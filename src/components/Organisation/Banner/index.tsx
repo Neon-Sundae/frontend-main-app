@@ -51,14 +51,15 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [open, setOpen] = useState(false);
   const [orgLogoFileData, setOrgLogoFileData] = useState<IFile | null>(null);
   const [orgCoverFileData, setCoverLogoFileData] = useState<IFile | null>(null);
+  const [updatedOrgCoverUrl, setUpdatedOrgCoverUrl] = useState<string | null>(
+    null
+  );
 
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
   const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
   const updateCoverOrgPicture = useUpdateOrgCoverPic(
     organisation.organisationId
   );
-  let updatedOrgCoverUrl = null;
-  console.log(organisation);
   const payload = {
     name: nameLocal,
     description: organisation.description,
@@ -68,20 +69,17 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const formData = new FormData();
   useEffect(() => {
     if (orgLogoFileData) {
-      formData.append('file', orgLogoFileData.file);
-      formData.append('type', 'logo');
+      formData.append('profileImage', orgLogoFileData.file);
       updateOrgPicture.mutate(formData);
     }
     if (orgCoverFileData) {
-      formData.append('file', orgCoverFileData.file);
-      formData.append('type', 'cover');
-      updatedOrgCoverUrl = URL.createObjectURL(orgCoverFileData.file);
+      formData.append('bannerImage', orgCoverFileData.file);
+      setUpdatedOrgCoverUrl(URL.createObjectURL(orgCoverFileData.file));
       updateCoverOrgPicture.mutate(formData);
     }
   }, [orgLogoFileData, orgCoverFileData]);
 
   const handleEdit = () => {
-    console.log('isEditable', isEditable);
     if (isEditable) {
       dispatch(editOrganisation(false));
     } else {
@@ -133,32 +131,32 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     if (user?.userId === organisation.organisationUser[0].userId) return true;
     return false;
   };
-
-  const handleOrgLogoChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     setFileState(files);
   };
-  const handleOrgCoverChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOrgCoverChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.target;
     setCoverFileState(files);
   };
-
   const handleClick = (e: any) => {
     e.preventDefault();
-    if (inputRef.current) inputRef.current.click();
+    if (isEditable) {
+      if (inputRef.current) inputRef.current.click();
+    }
   };
   const handleOrgCoverClick = (e: any) => {
     e.preventDefault();
-    if (inputRefCover.current) inputRefCover.current.click();
+    if (isEditable) {
+      if (inputRefCover.current) inputRefCover.current.click();
+    }
   };
-
   return (
     <div className={styles.container}>
       <input
         ref={inputRefCover}
-        id="orgCoverImage"
+        id="bannerImage"
         className={styles.attachments}
         type="file"
         accept="image/png, image/jpeg"
@@ -174,7 +172,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               }
         }
       />
-
       <div className={styles.content}>
         <div className={styles.center}>
           <input
@@ -185,7 +182,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             accept="image/png, image/jpeg"
             onChange={handleOrgLogoChange}
           />
-          {organisation.profileImage ? (
+          {organisation.profileImage ? ( // first block
             <div
               className={styles.logo}
               onClick={isEditable ? handleClick : () => {}}
@@ -198,38 +195,39 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                 }
                 alt="logo"
               />
-              {isEditable ? (
-                <img
-                  alt="background"
-                  src={Background}
-                  className={styles.bgImage}
-                />
-              ) : (
-                <> </>
-              )}
-
-              {isEditable ? (
-                <div className={styles.centered}>
-                  <EditIcon width={50} height={50} />
-                </div>
-              ) : (
-                <> </>
+              {isEditable && (
+                <>
+                  <img
+                    alt="background"
+                    src={Background}
+                    className={styles.bgImage}
+                  />
+                  <div className={styles.centered}>
+                    <EditIcon width={50} height={50} />
+                  </div>
+                </>
               )}
             </div>
-          ) : orgLogoFileData && orgLogoFileData.file ? (
-            <div
-              className={styles.logo}
-              onClick={isEditable ? handleClick : () => {}}
-            >
+          ) : orgLogoFileData && orgLogoFileData.file ? ( // second block
+            <div className={styles.logo} onClick={handleClick}>
               <img src={URL.createObjectURL(orgLogoFileData.file)} alt="logo" />
             </div>
           ) : (
-            <Bitcoin
-              width={80}
-              height={80}
-              className={styles['logo-svg']}
-              onClick={isEditable ? handleClick : () => {}}
-            />
+            <div className={styles['logo-svg']} onClick={handleClick}>
+              <Bitcoin width={80} height={80} />
+              {isEditable && (
+                <>
+                  <img
+                    alt="background"
+                    src={Background}
+                    className={styles.bgImage}
+                  />
+                  <div className={styles.centeredEdit}>
+                    <EditIcon width={50} height={50} />
+                  </div>
+                </>
+              )}
+            </div>
           )}
         </div>
         <div className={styles.center}>
@@ -320,15 +318,13 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               </span>
             )}
           </div>
-          {isEditable ? (
+          {isEditable && (
             <button
               onClick={handleOrgCoverClick}
               className={styles.coverPicBtn}
             >
               <EditIcon width={50} height={50} />
             </button>
-          ) : (
-            <p />
           )}
         </div>
       </div>
