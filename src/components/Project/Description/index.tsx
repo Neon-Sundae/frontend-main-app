@@ -52,7 +52,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     <div className={styles.container}>
       <div className={styles.wrap}>
         <div className={styles.projectDetails}>
-          <h4>Company Description</h4>
+          <h4>Project info</h4>
 
           <div className={styles.row}>
             <div>
