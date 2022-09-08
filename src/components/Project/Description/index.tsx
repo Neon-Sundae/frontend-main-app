@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import clsx from 'clsx';
 import config from 'config';
 import { useSelector } from 'react-redux';
@@ -27,7 +27,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     preferredTimeZones,
     flResources,
   } = props;
-  const [smartContract, setSmartContract] = useState('Not published');
+
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -38,15 +38,16 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     ?.map(resource => resource.title)
     .join(', ');
 
-  useCallback(() => {
+  const getSmartContractAddress = () => {
     if (selectedProjectAddress) {
-      setSmartContract(
-        `${selectedProjectAddress.slice(0, 6)}...${selectedProjectAddress.slice(
-          selectedProjectAddress.length - 6
-        )}`
-      );
+      return `${selectedProjectAddress.slice(
+        0,
+        6
+      )}...${selectedProjectAddress.slice(selectedProjectAddress.length - 6)}`;
     }
-  }, [selectedProjectAddress]);
+
+    return 'Not published';
+  };
 
   return (
     <div className={styles.container}>
@@ -65,7 +66,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
                     styles['smart-contract-value']
                   )}
                 >
-                  {smartContract}
+                  {getSmartContractAddress()}
                 </span>{' '}
                 &nbsp;
                 {selectedProjectAddress && (
