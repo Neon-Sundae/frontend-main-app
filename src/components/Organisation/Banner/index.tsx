@@ -1,14 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/extensions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useState,
-  useRef,
-  useEffect,
-} from 'react';
+import { ChangeEvent, FC, useCallback, useState, useRef } from 'react';
 import gradient from 'assets/illustrations/organisation/gradient.svg';
 import { ReactComponent as Instagram } from 'assets/illustrations/profile/instagram.svg';
 import { ReactComponent as Linkedin } from 'assets/illustrations/profile/linkedin.svg';
@@ -34,11 +27,6 @@ interface IBanner {
   organisation: IOrganisation;
 }
 
-interface IFile {
-  id: string;
-  file: File;
-}
-
 const Banner: FC<IBanner> = ({ organisation }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
@@ -49,12 +37,8 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [nameLocal, setNameLocal] = useState(organisation.name ?? 'Polkadot');
   const [website, setWebsite] = useState(organisation.website ?? '');
   const [open, setOpen] = useState(false);
-  const [orgLogoFileData, setOrgLogoFileData] = useState<IFile | null>(null);
-  const [orgCoverFileData, setCoverLogoFileData] = useState<IFile | null>(null);
-  const [updatedOrgCoverUrl, setUpdatedOrgCoverUrl] = useState<string | null>(
-    null
-  );
-
+  const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
+  const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
   const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
   const updateCoverOrgPicture = useUpdateOrgCoverPic(
@@ -66,21 +50,18 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     whitepaper: organisation.whitepaper,
     website,
   };
-  const formData = new FormData();
-  useEffect(() => {
-    if (orgLogoFileData) {
-      formData.append('profileImage', orgLogoFileData.file);
-      updateOrgPicture.mutate(formData);
-    }
-    if (orgCoverFileData) {
-      formData.append('bannerImage', orgCoverFileData.file);
-      setUpdatedOrgCoverUrl(URL.createObjectURL(orgCoverFileData.file));
-      updateCoverOrgPicture.mutate(formData);
-    }
-  }, [orgLogoFileData, orgCoverFileData]);
 
   const handleEdit = () => {
     if (isEditable) {
+      const formData = new FormData();
+      if (orgCoverFileData) {
+        formData.append('bannerImage', orgCoverFileData);
+        updateCoverOrgPicture.mutate(formData);
+      }
+      if (orgLogoFileData) {
+        formData.append('profileImage', orgLogoFileData);
+        updateOrgPicture.mutate(formData);
+      }
       dispatch(editOrganisation(false));
     } else {
       dispatch(editOrganisation(true));
@@ -101,26 +82,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     setNameLocal(value);
     debounceFn(name, value);
   };
-  const setFileState = (files: FileList | null) => {
-    const fileArray: IFile[] = [];
-    if (files) {
-      fileArray.push({
-        id: `${files[0].name}-${files[0].size}`,
-        file: files[0],
-      });
-      setOrgLogoFileData(fileArray[0]);
-    }
-  };
-  const setCoverFileState = (files: FileList | null) => {
-    const fileArray: IFile[] = [];
-    if (files) {
-      fileArray.push({
-        id: `${files[0].name}-${files[0].size}`,
-        file: files[0],
-      });
-      setCoverLogoFileData(fileArray[0]);
-    }
-  };
+
   const handleWebsiteChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setWebsite(value);
@@ -131,21 +93,25 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     if (user?.userId === organisation.organisationUser[0].userId) return true;
     return false;
   };
+
   const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    setFileState(files);
+    if (files) setOrgLogoFileData(files[0]);
   };
+
   const handleOrgCoverChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.target;
-    setCoverFileState(files);
+    if (files) setCoverLogoFileData(files[0]);
   };
+
   const handleClick = (e: any) => {
     e.preventDefault();
     if (isEditable) {
       if (inputRef.current) inputRef.current.click();
     }
   };
+
   const handleOrgCoverClick = (e: any) => {
     e.preventDefault();
     if (isEditable) {
@@ -165,8 +131,12 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       <div
         className={styles.gradient}
         style={
-          updatedOrgCoverUrl
-            ? { backgroundImage: `url(${updatedOrgCoverUrl})` }
+          orgCoverFileData
+            ? {
+                backgroundImage: `url(${URL.createObjectURL(
+                  orgCoverFileData
+                )})`,
+              }
             : {
                 backgroundImage: `url(${organisation.bannerImage ?? gradient})`,
               }
@@ -182,53 +152,13 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             accept="image/png, image/jpeg"
             onChange={handleOrgLogoChange}
           />
-          {organisation.profileImage ? ( // first block
-            <div
-              className={styles.logo}
-              onClick={isEditable ? handleClick : () => {}}
-            >
-              <img
-                src={
-                  orgLogoFileData && orgLogoFileData.file
-                    ? URL.createObjectURL(orgLogoFileData.file)
-                    : organisation.profileImage
-                }
-                alt="logo"
-              />
-              {isEditable && (
-                <>
-                  <img
-                    alt="background"
-                    src={Background}
-                    className={styles.bgImage}
-                  />
-                  <div className={styles.centered}>
-                    <EditIcon width={50} height={50} />
-                  </div>
-                </>
-              )}
-            </div>
-          ) : orgLogoFileData && orgLogoFileData.file ? ( // second block
-            <div className={styles.logo} onClick={handleClick}>
-              <img src={URL.createObjectURL(orgLogoFileData.file)} alt="logo" />
-            </div>
-          ) : (
-            <div className={styles['logo-svg']} onClick={handleClick}>
-              <Bitcoin width={80} height={80} />
-              {isEditable && (
-                <>
-                  <img
-                    alt="background"
-                    src={Background}
-                    className={styles.bgImage}
-                  />
-                  <div className={styles.centeredEdit}>
-                    <EditIcon width={50} height={50} />
-                  </div>
-                </>
-              )}
-            </div>
-          )}
+          {/* here */}
+          <OrgLogo
+            organisation={organisation}
+            isEditable={isEditable}
+            handleClick={handleClick}
+            orgLogoFileData={orgLogoFileData}
+          />
         </div>
         <div className={styles.center}>
           {isEditable ? (
@@ -334,6 +264,72 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           organisation={organisation}
           setOpen={setOpen}
         />
+      )}
+    </div>
+  );
+};
+
+interface IOrgLogo {
+  organisation: IOrganisation;
+  isEditable: boolean;
+  handleClick: any;
+  orgLogoFileData: any;
+}
+
+const OrgLogo: FC<IOrgLogo> = ({
+  organisation,
+  isEditable,
+  handleClick,
+  orgLogoFileData,
+}) => {
+  return (
+    <div>
+      {organisation.profileImage ? ( // first block
+        <div
+          className={styles.logo}
+          onClick={isEditable ? handleClick : () => {}}
+        >
+          <img
+            src={
+              orgLogoFileData
+                ? URL.createObjectURL(orgLogoFileData)
+                : organisation.profileImage
+            }
+            alt="logo"
+          />
+          {isEditable && (
+            <>
+              <img
+                alt="background"
+                src={Background}
+                className={styles.bgImage}
+              />
+              <div className={styles.centered}>
+                <EditIcon width={50} height={50} />
+              </div>
+            </>
+          )}
+        </div>
+      ) : orgLogoFileData ? ( // second block
+        <div className={styles.logo} onClick={handleClick}>
+          <img src={URL.createObjectURL(orgLogoFileData)} alt="logo" />
+        </div>
+      ) : (
+        <div className={styles['logo-svg']} onClick={handleClick}>
+          <Bitcoin width={80} height={80} />
+          {isEditable && (
+            <>
+              <img
+                alt="background"
+                src={Background}
+                className={styles.bgImage}
+              />
+              <div className={styles.centeredEdit}>
+                <EditIcon width={50} height={50} />
+              </div>
+            </>
+          )}
+        </div>
       )}
     </div>
   );
