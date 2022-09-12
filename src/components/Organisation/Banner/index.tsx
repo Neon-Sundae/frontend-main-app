@@ -52,6 +52,10 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
 
   const handleEdit = () => {
+    dispatch(editOrganisation(true));
+  };
+
+  const handleSave = () => {
     if (isEditable) {
       const formData = new FormData();
       if (orgCoverFileData) {
@@ -63,8 +67,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
         updateOrgPicture.mutate(formData);
       }
       dispatch(editOrganisation(false));
-    } else {
-      dispatch(editOrganisation(true));
     }
   };
 
@@ -172,7 +174,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           )}
           {isFounder() ? (
             isEditable ? (
-              <button className={styles.btn} onClick={handleEdit}>
+              <button className={styles.btn} onClick={handleSave}>
                 Save
               </button>
             ) : (
