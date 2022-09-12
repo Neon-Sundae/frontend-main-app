@@ -166,17 +166,25 @@
   }
 }
 .logo-svg {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  
   position: relative;
   .centeredEdit {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 65%;
+    left: 65%;
     transform: translate(-50%, -50%);
   }
+}
+.bgImageDefault {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0.7;
 }
 
 .center {

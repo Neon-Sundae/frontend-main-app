@@ -152,7 +152,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             accept="image/png, image/jpeg"
             onChange={handleOrgLogoChange}
           />
-          {/* here */}
           <OrgLogo
             organisation={organisation}
             isEditable={isEditable}
@@ -284,19 +283,13 @@ const OrgLogo: FC<IOrgLogo> = ({
 }) => {
   return (
     <div>
-      {organisation.profileImage ? ( // first block
+      {organisation.profileImage ? ( // checks for images from db
         <div
           className={styles.logo}
           onClick={isEditable ? handleClick : () => {}}
         >
-          <img
-            src={
-              orgLogoFileData
-                ? URL.createObjectURL(orgLogoFileData)
-                : organisation.profileImage
-            }
-            alt="logo"
-          />
+          <img src={orgLogoFileData && organisation.profileImage} alt="logo" />
+          {/* to show edit icon over image */}
           {isEditable && (
             <>
               <img
@@ -310,19 +303,24 @@ const OrgLogo: FC<IOrgLogo> = ({
             </>
           )}
         </div>
-      ) : orgLogoFileData ? ( // second block
+      ) : orgLogoFileData ? ( // checks for locally uploaded images
         <div className={styles.logo} onClick={handleClick}>
           <img src={URL.createObjectURL(orgLogoFileData)} alt="logo" />
+          <img alt="background" src={Background} className={styles.bgImage} />
+          <div className={styles.centered}>
+            <EditIcon width={50} height={50} />
+          </div>
         </div>
       ) : (
+        // shows default image
         <div className={styles['logo-svg']} onClick={handleClick}>
-          <Bitcoin width={80} height={80} />
+          <Bitcoin width={100} height={100} />
           {isEditable && (
             <>
               <img
                 alt="background"
                 src={Background}
-                className={styles.bgImage}
+                className={styles.bgImageDefault}
               />
               <div className={styles.centeredEdit}>
                 <EditIcon width={50} height={50} />
