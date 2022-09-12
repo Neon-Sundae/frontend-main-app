@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/extensions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useState, useRef } from 'react';
 import gradient from 'assets/illustrations/organisation/gradient.svg';
 import { ReactComponent as Instagram } from 'assets/illustrations/profile/instagram.svg';
 import { ReactComponent as Linkedin } from 'assets/illustrations/profile/linkedin.svg';
@@ -13,15 +13,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import _debounce from 'lodash/debounce';
 import { editOrganisation } from 'actions/organisation';
 import { RootState } from 'reducers';
+import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
+import Background from 'assets/illustrations/profile/pp-bg.png';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
-import { useUpdateOrganisation } from './hooks';
+import {
+  useUpdateOrganisation,
+  useUpdateOrgPic,
+  useUpdateOrgCoverPic,
+} from './hooks';
 
 interface IBanner {
   organisation: IOrganisation;
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRefCover = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
   const user = useSelector((state: RootState) => state.user.user);
@@ -29,9 +37,13 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [nameLocal, setNameLocal] = useState(organisation.name ?? 'Polkadot');
   const [website, setWebsite] = useState(organisation.website ?? '');
   const [open, setOpen] = useState(false);
-
+  const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
+  const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
-
+  const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
+  const updateCoverOrgPicture = useUpdateOrgCoverPic(
+    organisation.organisationId
+  );
   const payload = {
     name: nameLocal,
     description: organisation.description,
@@ -40,10 +52,21 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
 
   const handleEdit = () => {
+    dispatch(editOrganisation(true));
+  };
+
+  const handleSave = () => {
     if (isEditable) {
+      const formData = new FormData();
+      if (orgCoverFileData) {
+        formData.append('bannerImage', orgCoverFileData);
+        updateCoverOrgPicture.mutate(formData);
+      }
+      if (orgLogoFileData) {
+        formData.append('profileImage', orgLogoFileData);
+        updateOrgPicture.mutate(formData);
+      }
       dispatch(editOrganisation(false));
-    } else {
-      dispatch(editOrganisation(true));
     }
   };
 
@@ -69,25 +92,73 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
 
   const isFounder = () => {
-    if (user?.userId === organisation.organisationUser[0].userId) return true;
-    return false;
+    return user?.userId === organisation.organisationUser[0].userId;
   };
 
+  const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files) setOrgLogoFileData(files[0]);
+  };
+
+  const handleOrgCoverChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const { files } = e.target;
+    if (files) setCoverLogoFileData(files[0]);
+  };
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    if (isEditable) {
+      if (inputRef.current) inputRef.current.click();
+    }
+  };
+
+  const handleOrgCoverClick = (e: any) => {
+    e.preventDefault();
+    if (isEditable) {
+      if (inputRefCover.current) inputRefCover.current.click();
+    }
+  };
   return (
     <div className={styles.container}>
+      <input
+        ref={inputRefCover}
+        id="bannerImage"
+        className={styles.attachments}
+        type="file"
+        accept="image/png, image/jpeg"
+        onChange={handleOrgCoverChange}
+      />
       <div
         className={styles.gradient}
-        style={{ backgroundImage: `url(${gradient})` }}
+        style={
+          orgCoverFileData
+            ? {
+                backgroundImage: `url(${URL.createObjectURL(
+                  orgCoverFileData
+                )})`,
+              }
+            : {
+                backgroundImage: `url(${organisation.bannerImage ?? gradient})`,
+              }
+        }
       />
       <div className={styles.content}>
         <div className={styles.center}>
-          {organisation.profileImage ? (
-            <div className={styles.logo}>
-              <img src={organisation.profileImage} alt="logo" />
-            </div>
-          ) : (
-            <Bitcoin width={80} height={80} className={styles['logo-svg']} />
-          )}
+          <input
+            ref={inputRef}
+            id="profileImage"
+            className={styles.attachments}
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleOrgLogoChange}
+          />
+          <OrgLogo
+            organisation={organisation}
+            isEditable={isEditable}
+            handleClick={handleClick}
+            orgLogoFileData={orgLogoFileData}
+          />
         </div>
         <div className={styles.center}>
           {isEditable ? (
@@ -103,7 +174,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           )}
           {isFounder() ? (
             isEditable ? (
-              <button className={styles.btn} onClick={handleEdit}>
+              <button className={styles.btn} onClick={handleSave}>
                 Save
               </button>
             ) : (
@@ -113,6 +184,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             )
           ) : null}
         </div>
+
         <div className={clsx(styles.center, styles['org-socials'])}>
           <div className={styles['socials-row']}>
             <span className={styles['socials-header']}>Website:</span>
@@ -176,13 +248,87 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               </span>
             )}
           </div>
+          {isEditable && (
+            <button
+              onClick={handleOrgCoverClick}
+              className={styles.coverPicBtn}
+            >
+              <EditIcon width={50} height={50} />
+            </button>
+          )}
         </div>
       </div>
+
       {open && (
         <OrganisationSocialModal
           organisation={organisation}
           setOpen={setOpen}
         />
+      )}
+    </div>
+  );
+};
+
+interface IOrgLogo {
+  organisation: IOrganisation;
+  isEditable: boolean;
+  handleClick: any;
+  orgLogoFileData: any;
+}
+
+const OrgLogo: FC<IOrgLogo> = ({
+  organisation,
+  isEditable,
+  handleClick,
+  orgLogoFileData,
+}) => {
+  return (
+    <div>
+      {organisation.profileImage ? ( // checks for images from db
+        <div
+          className={styles.logo}
+          onClick={isEditable ? handleClick : () => {}}
+        >
+          <img src={orgLogoFileData && organisation.profileImage} alt="logo" />
+          {/* to show edit icon over image */}
+          {isEditable && (
+            <>
+              <img
+                alt="background"
+                src={Background}
+                className={styles.bgImage}
+              />
+              <div className={styles.centered}>
+                <EditIcon width={50} height={50} />
+              </div>
+            </>
+          )}
+        </div>
+      ) : orgLogoFileData ? ( // checks for locally uploaded images
+        <div className={styles.logo} onClick={handleClick}>
+          <img src={URL.createObjectURL(orgLogoFileData)} alt="logo" />
+          <img alt="background" src={Background} className={styles.bgImage} />
+          <div className={styles.centered}>
+            <EditIcon width={50} height={50} />
+          </div>
+        </div>
+      ) : (
+        // shows default image
+        <div className={styles['logo-svg']} onClick={handleClick}>
+          <Bitcoin width={100} height={100} />
+          {isEditable && (
+            <>
+              <img
+                alt="background"
+                src={Background}
+                className={styles.bgImageDefault}
+              />
+              <div className={styles.centeredEdit}>
+                <EditIcon width={50} height={50} />
+              </div>
+            </>
+          )}
+        </div>
       )}
     </div>
   );
