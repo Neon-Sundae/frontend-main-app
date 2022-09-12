@@ -63,7 +63,7 @@ const StepTwo: FC<StepTwoProps> = ({
       <div className={styles.nftsWrapper}>
         <h2>NFTs</h2>
         <div className={styles.nftsContainer}>
-          {nfts?.result.map((token: any) => {
+          {nfts?.result?.map((token: any) => {
             const metadata = getTokenMetadata(token);
             let ipfsHash = null;
             if (metadata.image) ipfsHash = metadata.image.slice(7);
