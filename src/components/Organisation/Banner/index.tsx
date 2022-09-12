@@ -90,8 +90,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
 
   const isFounder = () => {
-    if (user?.userId === organisation.organisationUser[0].userId) return true;
-    return false;
+    return user?.userId === organisation.organisationUser[0].userId;
   };
 
   const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
