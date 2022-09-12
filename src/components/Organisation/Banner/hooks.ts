@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
 import { handleError } from 'utils/handleUnAuthorization';
+import { handleApiErrors } from 'utils/handleApiErrors';
 
 interface IUpdateOrgSocials {
   linkedin: string;
@@ -83,15 +84,20 @@ const useUpdateOrgPic = (organisationId: number) => {
   const queryClient = useQueryClient();
   const accessToken = getAccessToken();
 
-  const updateOrgSocials = useMutation(
-    (formData: FormData) =>
-      fetch(`${config.ApiBaseUrl}/organisation/${organisationId}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: formData,
-      }),
+  const updateOrgPic = useMutation(
+    async (formData: FormData) => {
+      const response = await fetch(
+        `${config.ApiBaseUrl}/organisation/${organisationId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
+      await handleApiErrors(response);
+    },
     {
       retry: 1,
       onError: (error: any) => {
@@ -102,23 +108,27 @@ const useUpdateOrgPic = (organisationId: number) => {
       },
     }
   );
-
-  return updateOrgSocials;
+  return updateOrgPic;
 };
 
 const useUpdateOrgCoverPic = (organisationId: number) => {
   const queryClient = useQueryClient();
   const accessToken = getAccessToken();
 
-  const updateOrgSocials = useMutation(
-    (formData: FormData) =>
-      fetch(`${config.ApiBaseUrl}/organisation/${organisationId}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: formData,
-      }),
+  const updateOrgCoverPic = useMutation(
+    async (formData: FormData) => {
+      const response = await fetch(
+        `${config.ApiBaseUrl}/organisation/${organisationId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
+      await handleApiErrors(response);
+    },
     {
       retry: 1,
       onError: (error: any) => {
@@ -129,8 +139,7 @@ const useUpdateOrgCoverPic = (organisationId: number) => {
       },
     }
   );
-
-  return updateOrgSocials;
+  return updateOrgCoverPic;
 };
 
 export {
