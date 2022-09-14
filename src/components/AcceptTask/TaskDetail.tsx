@@ -12,6 +12,7 @@ import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
+import userImage from 'assets/images/profile/user-image.png';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileAttachmentCard from './FileAttachmetCard';
 import styles from './index.module.scss';
@@ -112,7 +113,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .map((item: any, index: number) =>
                   item.Profile.picture !== null ? (
                     <img
-                      src={item.Profile.picture}
+                      src={item.Profile.picture ?? userImage}
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
@@ -134,7 +135,12 @@ const TaskDetail: FC<ITaskDetail> = ({
                         key={index}
                       />
                     ) : (
-                      <div className={styles['builder-avatar']} key={index} />
+                      <img
+                        src={userImage}
+                        className={styles['builder-avatar']}
+                        alt=""
+                        key={index}
+                      />
                     )
                   )}
               </>

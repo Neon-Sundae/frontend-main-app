@@ -428,7 +428,7 @@ const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
-          src={elem.Profile.picture ? elem.Profile.picture : userImage}
+          src={elem.Profile.picture ?? userImage}
           alt=""
           className={styles['builder-avatar']}
         />
