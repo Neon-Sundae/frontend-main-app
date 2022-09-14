@@ -46,7 +46,7 @@ const TalentListItem: FC<ITalentListItem> = ({
     >
       <div className={styles.builder}>
         <div className={styles['builder-avatar']}>
-          <img src={data.Profile.picture ?? userImage} alt="" />
+          <img src={data.Profile.picture || userImage} alt="" />
         </div>
         <div className={styles['builder-name']}>{data?.Profile.user.name}</div>
       </div>

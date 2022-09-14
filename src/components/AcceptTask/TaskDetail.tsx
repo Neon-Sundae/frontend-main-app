@@ -113,7 +113,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .map((item: any, index: number) =>
                   item.Profile.picture !== null ? (
                     <img
-                      src={item.Profile.picture ?? userImage}
+                      src={item.Profile.picture || userImage}
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
