@@ -47,12 +47,12 @@
   @media (max-width: 1440px)  {
     grid-template-columns: repeat(auto-fill, 200px);
     width: 79vw;
-   
+    flex-basis: 35%;
   }
   @media (max-width: 1024px) {
     grid-template-columns: repeat(auto-fill, 180px);
     width: 80vw;
-    
+    flex-basis: 30%;
   }
   justify-content: space-between;
   grid-gap: 20px;
