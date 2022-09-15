@@ -41,7 +41,6 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       formData.append('name', orgName);
       formData.append('description', orgDesc);
       formData.append('userId', user.userId.toString());
-
       if (fileData) {
         formData.append('file', fileData.file);
       }
@@ -128,13 +127,13 @@ const StepModal: FC<IStepProps> = ({
     }
   };
 
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.target;
     setFileState(files);
   };
 
-  const handleDropChange = async (e: DragEvent<HTMLInputElement>) => {
+  const handleDropChange = (e: DragEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.dataTransfer;
     setFileState(files);

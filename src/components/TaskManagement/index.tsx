@@ -10,6 +10,7 @@
 import { FC, useEffect, useState, useMemo, useRef, MouseEvent } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import clsx from 'clsx';
 import userImage from 'assets/images/profile/user-image.png';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
@@ -46,7 +47,18 @@ const TaskManagement: FC<ITaskManagement> = ({
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const handleOpenModal = () => setOpen(true);
+
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const handleOpenModal = () => {
+    if (user?.walletId && user.walletId === project_founder) {
+      setOpen(true);
+    } else {
+      toast.error('Only founder can add the task');
+    }
+  };
+
+  console.log(project_founder);
 
   const toggleFilterMenu = () => setFilterOpen(p => !p);
 
@@ -416,7 +428,7 @@ const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
-          src={elem.Profile.picture ? elem.Profile.picture : userImage}
+          src={elem.Profile.picture || userImage}
           alt=""
           className={styles['builder-avatar']}
         />
