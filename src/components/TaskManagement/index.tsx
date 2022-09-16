@@ -58,8 +58,6 @@ const TaskManagement: FC<ITaskManagement> = ({
     }
   };
 
-  console.log(project_founder);
-
   const toggleFilterMenu = () => setFilterOpen(p => !p);
 
   return (
@@ -244,7 +242,6 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
               projectFounder={project_founder}
-              appliedBuilders={elements?.open[0]?.profileTask}
             />
           ))}
         </div>
@@ -292,7 +289,6 @@ const Column: FC<IColumn> = ({
   organisationName,
   setOpenTask,
   projectFounder,
-  appliedBuilders,
 }) => {
   return (
     <div className={styles['column-container']}>
@@ -309,7 +305,7 @@ const Column: FC<IColumn> = ({
                   organisationName={organisationName}
                   setOpenTask={setOpenTask}
                   projectFounder={projectFounder}
-                  appliedBuilders={appliedBuilders}
+                  appliedBuilders={item.profileTask}
                 />
               ))}
               {provided.placeholder}
@@ -429,7 +425,7 @@ const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
       {appliedBuilders.map(elem => (
         <img
           src={elem.Profile.picture || userImage}
-          alt=""
+          alt="User Avatar"
           className={styles['builder-avatar']}
         />
       ))}{' '}
