@@ -17,6 +17,7 @@ import TaskChecklistEdit from './TaskChecklistEdit';
 import FileAttachmentCard from './FileAttachmetCard';
 import styles from './index.module.scss';
 import { useCancelTask, useDeleteTask } from './hooks';
+ 
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
@@ -24,6 +25,7 @@ interface ITaskDetail {
   handleCommit: any;
   project_founder: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
+   
 }
 
 const TaskDetail: FC<ITaskDetail> = ({
@@ -37,7 +39,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   const builderTaskApply = useBuilderTaskApply();
   const { deleteTask } = useDeleteTask(setOpen);
   const [isCancel, setIsCancel] = useState(false);
-
+  const [taskEdit, setTaskEdit] = useState(false);
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -91,12 +93,16 @@ const TaskDetail: FC<ITaskDetail> = ({
     return null;
   };
 
+   
+ 
+
   return (
     <div>
       <div className={styles['avatar-container']}>
         <span className={styles['task-status-btn']}>
           {selectedTask?.status}
         </span>
+      
         {selectedTask?.profileTask.length > 0 && (
           <div
             className={styles.expanded}

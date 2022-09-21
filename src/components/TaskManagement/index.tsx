@@ -154,6 +154,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
 
   const [elements, setElements] = useState(projectTasks);
   const [openTask, setOpenTask] = useState(false);
+
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
   const [openCommitTask, setOpenCommitTask] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
