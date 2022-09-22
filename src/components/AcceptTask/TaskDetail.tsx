@@ -25,7 +25,6 @@ interface ITaskDetail {
   handleCommit: any;
   project_founder: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
-   
 }
 
 const TaskDetail: FC<ITaskDetail> = ({
@@ -103,7 +102,7 @@ const TaskDetail: FC<ITaskDetail> = ({
           {selectedTask?.status}
         </span>
       
-        {selectedTask?.profileTask.length > 0 && (
+        {selectedTask?.profileTask?.length > 0 && (
           <div
             className={styles.expanded}
             onClick={() => setViewTalentList(true)}
@@ -219,7 +218,7 @@ const TaskDetail: FC<ITaskDetail> = ({
         <>
           <div className={styles['project-description']}>
             <p>{selectedTask?.description}</p>
-            {selectedTask?.taskAttachment.length > 0 && (
+            {selectedTask?.taskAttachment?.length > 0 && (
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
                   (file: any, index: number) => (

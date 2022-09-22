@@ -1,45 +1,36 @@
-import { useMutation } from '@tanstack/react-query';
+import { Dispatch, SetStateAction } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import config from 'config';
-import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 import { getAccessToken } from 'utils/authFn';
+import toast from 'react-hot-toast';
 
-interface IUpdateTask {
-  name: string;
-  description: string;
-  estimatedDifficulty: number;
-  deliveryRepository: string;
-  price: number;
-  startDate: string;
-  dueDate: string;
-  // taskAttachment: any;
-  taskCheckList: any;
-  // flProjectCategory: {
-  //   flProjectCategoryId: 9;
-  //   categoryName: 'Dev';
-  //   percentageAllocation: 50;
-  //   percentageUsed: null;
-  // };
-}
-
-const useUpdateTask = (taskId: number) => {
+const useUpdateTask = (
+  taskId: number,
+  setOpen: Dispatch<SetStateAction<boolean>>
+) => {
+  const queryClient = useQueryClient();
   const accessToken = getAccessToken();
+
   const updateTask = useMutation(
-    async (payload: IUpdateTask) => {
-      const response = await fetch(`${config.ApiBaseUrl}/task/edit/${taskId}`, {
+    (formData: FormData) =>
+      fetch(`${config.ApiBaseUrl}/task/edit/${taskId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
-      });
-      await handleApiErrors(response);
-    },
+        body: formData,
+      }),
     {
       retry: 1,
       onError: (error: any) => {
         handleError({ error });
+        setOpen(false);
+      },
+      onSuccess: () => {
+        toast.success('Successfully Updated Task');
+        queryClient.invalidateQueries(['projectTasks']);
+        setOpen(false);
       },
     }
   );

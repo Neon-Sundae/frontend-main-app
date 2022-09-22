@@ -21,6 +21,7 @@ interface IAcceptTask {
   project_founder: string;
   project_name: string;
   handleCommit: any;
+  flProjectCategory: any;
 }
 
 const AcceptTask: FC<IAcceptTask> = ({
@@ -31,6 +32,7 @@ const AcceptTask: FC<IAcceptTask> = ({
   project_name,
   project_founder,
   handleCommit,
+  flProjectCategory,
 }) => {
   const [taskEdit, setTaskEdit] = useState(false);
   const dispatch = useDispatch();
@@ -63,7 +65,12 @@ const AcceptTask: FC<IAcceptTask> = ({
       padding="42px"
     >
       {taskEdit && (
-        <EditTask setTaskEdit={setTaskEdit} selectedTask={selectedTask} />
+        <EditTask
+          setTaskEdit={setTaskEdit}
+          selectedTask={selectedTask}
+          flProjectCategory={flProjectCategory}
+          setOpen={setOpen}
+        />
       )}
       {!taskEdit && (
         <div className={styles['assign-task-container']}>

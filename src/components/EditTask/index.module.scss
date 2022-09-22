@@ -20,6 +20,12 @@ label {
 
 }
 .inputField {
+
+  @media (max-width: 1440px)  {
+    width: 250.16px;
+        
+  }
+
   width: 283.16px;
   height: 39px;
   border:  0.56491px solid #FFFFFF;
@@ -45,7 +51,8 @@ label {
 
 }
 .taskEditDescription {
-  width: 594.29px;
+
+  
   border: 0.56491px solid #FFFFFF;
   background-color: transparent;
   border-radius: 5px;
@@ -88,6 +95,11 @@ label {
   font-size: 12px;
 }
 .attachments {
+  margin-top: 10px;
+  @media (max-width: 1440px)  {
+    width: 250.16px;
+        
+  }
   width: 283.16px;
   display: flex; 
  }
@@ -121,6 +133,10 @@ label {
   width: 200px;
 }
 .task-name-field {
+  @media (max-width: 1440px)  {
+    width: 250.16px;
+        
+  }
   background: #2d2d35;
   color: white;
   border: 0.56491px solid #FFFFFF;
@@ -143,7 +159,6 @@ label {
   }
 
   &::-webkit-calendar-picker-indicator {
-    background-color: white;
-    cursor: pointer;
+    display: none;
   }
 }

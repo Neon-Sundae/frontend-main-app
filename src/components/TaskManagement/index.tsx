@@ -37,12 +37,14 @@ interface ITaskManagement {
   project_name: string;
   project_founder: string;
   project_budget: number;
+  flProjectCategory?: any;
 }
 
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
   project_founder,
+  flProjectCategory,
 }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -83,6 +85,7 @@ const TaskManagement: FC<ITaskManagement> = ({
         project_budget={project_budget}
         project_name={project_name}
         project_founder={project_founder}
+        flProjectCategory={flProjectCategory}
       />
     </div>
   );
@@ -143,6 +146,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   project_budget,
   project_name,
   project_founder,
+  flProjectCategory,
 }) => {
   const dispatch = useDispatch();
 
@@ -256,6 +260,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             project_founder={project_founder}
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
+            flProjectCategory={flProjectCategory}
           />
         )}
         {openSelectBuilder && (
