@@ -28,12 +28,13 @@ const useUpdateTask = (
         setOpen(false);
       },
       onSuccess: () => {
+        queryClient.removeQueries(['projectTasks']);
         toast.success('Successfully Updated Task');
-        queryClient.invalidateQueries(['projectTasks']);
         setOpen(false);
       },
     }
   );
+
   return updateTask;
 };
 
