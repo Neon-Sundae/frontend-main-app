@@ -14,6 +14,8 @@ import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
+ 
+
 const BasicDetailsEdit: FC = () => {
   const { profile, xp } = useSelector((state: RootState) => state.profile);
   const profileId = profile?.profileId ? profile.profileId : 0;
@@ -71,13 +73,15 @@ const BasicDetailsEdit: FC = () => {
         name={name}
         setName={setName}
       />
-      <ExperiencePoints xp={xp} />
-      <ProfileAddressChain
-        name={name}
-        profileSmartContractId={profile?.profileSmartContractId}
-        walletId={user?.walletId}
-        title={title}
-      />
+      <div id="user-profile-mint">
+        <ExperiencePoints xp={xp} />
+        <ProfileAddressChain
+          name={name}
+          profileSmartContractId={profile?.profileSmartContractId}
+          walletId={user?.walletId}
+          title={title}
+        />
+      </div>
       <ProfileBio bio={bio || 'Add your bio'} setBio={setBio} />
       <SaveProfile handleSave={handleSave} />
     </>
@@ -121,6 +125,7 @@ const ProfileImage: FC<IProfileImage> = ({ picture, setPicture }) => {
     >
       <div className={styles['image-wrapper']}>
         <img
+          id="profile-edit-icon"
           alt="user"
           src={picture || userImage}
           className={styles.userImage}
@@ -173,7 +178,7 @@ interface IExperiencePoints {
 }
 const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
   return (
-    <div className={styles['experience-points']}>
+    <div id="user-xp" className={styles['experience-points']}>
       <span className={styles.value}>
         {xp} <span className={styles.label}>XP</span>
       </span>
@@ -208,6 +213,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
       profileSmartContractId === null ||
       profileSmartContractId === '' ? (
         <div
+          id="profile-address-container"
           className={styles['address-container']}
           style={{ cursor: 'pointer' }}
           onClick={() => createProfile(name, title, walletId)}
