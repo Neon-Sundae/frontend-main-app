@@ -3,9 +3,9 @@ import { FC, FormEvent, useState } from 'react';
 import { validateCreateProfile } from 'validations/auth';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab-light.svg';
 import { Background } from 'components/Login';
+import BaseBlob from 'components/BaseBlob';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
-import BaseBlob from 'components/BaseBlob';
 
 const FirstTimeUser: FC = () => {
   const [name, setName] = useState('');
@@ -17,9 +17,13 @@ const FirstTimeUser: FC = () => {
   });
 
   const createProfile = useCreateProfile();
-
+  const handleLocalStorage = () => {
+    window.localStorage.setItem('onboardStatus', 'started');
+    window.dispatchEvent(new Event('storage'));
+  };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    handleLocalStorage();
     if (validateCreateProfile(name, email, setError)) {
       createProfile({ name, email });
     }
