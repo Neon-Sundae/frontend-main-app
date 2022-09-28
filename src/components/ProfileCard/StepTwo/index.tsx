@@ -49,12 +49,17 @@ const StepTwo: FC<StepTwoProps> = ({
   const handleNFTClick = (tokenId: any) => {
     setSelectedNFTId(tokenId);
   };
+  const handleLocalStorage = () => {
+    window.localStorage.setItem('onboardStatus', 'partial');
+    window.dispatchEvent(new Event('storage'));
+  };
   return (
     <Modal
       onClose={() => {
         setStepOne(false);
         setStepTwo(false);
         setProfilePictureModal(false);
+        handleLocalStorage();
       }}
       width="550px"
       height="600px"
@@ -116,6 +121,7 @@ const StepTwo: FC<StepTwoProps> = ({
             setStepOne(false);
             setStepTwo(false);
             setProfilePictureModal(false);
+            handleLocalStorage();
           }}
         >
           Choose avatar

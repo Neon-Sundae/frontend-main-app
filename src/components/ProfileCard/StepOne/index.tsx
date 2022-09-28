@@ -9,11 +9,16 @@ interface StepOneProps {
 }
 
 const StepOne: FC<StepOneProps> = ({ setProfilePictureModal, setStepTwo }) => {
+  const handleLocalStorage = () => {
+    window.localStorage.setItem('onboardStatus', 'partial');
+    window.dispatchEvent(new Event('storage'));
+  };
   return (
     <Modal
       onClose={() => {
         setProfilePictureModal(false);
         setStepTwo(false);
+        handleLocalStorage();
       }}
       width="596px"
       height="550px"

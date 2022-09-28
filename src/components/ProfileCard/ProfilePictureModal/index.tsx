@@ -68,12 +68,16 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
       />
     );
   }
+  const handleLocalStorage = () => {
+    window.localStorage.setItem('onboardStatus', 'partial');
+    window.dispatchEvent(new Event('storage'));
+  };
+  const handleClose = () => {
+    handleLocalStorage();
+    setProfilePictureModal(false);
+  };
   return (
-    <Modal
-      onClose={() => setProfilePictureModal(false)}
-      width="550.24px"
-      height="600px"
-    >
+    <Modal onClose={() => handleClose()} width="550.24px" height="600px">
       <div className={styles.wrapper}>
         <img src={PromptImage} alt="Profile" className={styles.promptImg} />
         <div className={styles.promptText}>
