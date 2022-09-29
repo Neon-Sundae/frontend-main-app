@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
+import { toggleWalletDrawer } from 'actions/app';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
 import { ReactComponent as Pencil } from 'assets/illustrations/icons/pencil.svg';
 import styles from './index.module.scss';
@@ -17,7 +18,6 @@ import CreatePrjModalWithData from '../../StartPrjModal/CreatePrjModalWithData';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
-  budget: number;
   projectName: string;
   founderAddress: string;
   organisationName: string;
@@ -31,6 +31,8 @@ const Header: FC<IHeaderProps> = props => {
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
+  const toggle = useSelector((state: RootState) => state.app.toggle);
+
   const [showProjectFormModalWithData, setShowProjectFormModalWithData] =
     useState(false);
 
@@ -61,6 +63,10 @@ const Header: FC<IHeaderProps> = props => {
     }
   };
 
+  const handleToggle = () => {
+    dispatch(toggleWalletDrawer(!toggle));
+  };
+
   const handleEditButtonClick = () => {
     setShowProjectFormModalWithData(true);
   };
@@ -84,10 +90,7 @@ const Header: FC<IHeaderProps> = props => {
               Publish a Project
             </button>
           ) : (
-            <button
-              onClick={handlePublishProject}
-              className={styles.transparentBtn}
-            >
+            <button onClick={handleToggle} className={styles.transparentBtn}>
               Deposit funds
             </button>
           )}
