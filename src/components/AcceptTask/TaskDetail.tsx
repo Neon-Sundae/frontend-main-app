@@ -8,6 +8,8 @@ import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/categ
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
+import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
+import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
 import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
@@ -17,7 +19,6 @@ import TaskChecklistEdit from './TaskChecklistEdit';
 import FileAttachmentCard from './FileAttachmetCard';
 import styles from './index.module.scss';
 import { useCancelTask, useDeleteTask } from './hooks';
- 
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
@@ -92,8 +93,10 @@ const TaskDetail: FC<ITaskDetail> = ({
     return null;
   };
 
-   
- 
+  const reformatDate = (dateStr: string) => {
+    const dArr = dateStr.split('-'); // ex input: "2010-01-18"
+    return `${dArr[2]}/${dArr[1]}/${dArr[0].substring(0)}`; // ex output: "18/01/10"
+  };
 
   return (
     <div>
@@ -101,7 +104,7 @@ const TaskDetail: FC<ITaskDetail> = ({
         <span className={styles['task-status-btn']}>
           {selectedTask?.status}
         </span>
-      
+
         {selectedTask?.profileTask?.length > 0 && (
           <div
             className={styles.expanded}
@@ -208,6 +211,17 @@ const TaskDetail: FC<ITaskDetail> = ({
               Burned: {selectedTask?.fndrToken} &emsp;
               <CoinIcon width={20} height={20} />
             </div>
+          </div>
+        </div>
+        <div>
+          <div className={styles['project-detail-item']}>
+            <StartDate width={24} height={24} />
+            <div>Start Date:&nbsp; {reformatDate(selectedTask?.startDate)}</div>
+          </div>
+          <div className={styles['project-detail-item']}>
+            <EndDate width={24} height={24} />
+
+            <div>End Date:&nbsp; {reformatDate(selectedTask?.dueDate)}</div>
           </div>
         </div>
       </div>
