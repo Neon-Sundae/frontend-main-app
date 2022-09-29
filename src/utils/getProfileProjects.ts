@@ -16,6 +16,8 @@ const getProfileProjects = (responseData: any[]) => {
         taskCount,
         organisation: row.name,
         image: row.profileImage,
+        smartContractId: flProject.smartContractId,
+        type: 'project_contract',
       };
     });
 

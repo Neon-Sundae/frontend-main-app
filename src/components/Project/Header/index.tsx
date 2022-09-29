@@ -28,13 +28,13 @@ const Header: FC<IHeaderProps> = props => {
   const dispatch = useDispatch();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { selectedProjectAddress, isDeposit } = useSelector(
+  const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
   const [showProjectFormModalWithData, setShowProjectFormModalWithData] =
     useState(false);
 
-  const handleOpen = async () => {
+  const handlePublishProject = async () => {
     try {
       const web3 = getWeb3Instance();
       const profileManageContract = new web3.eth.Contract(
@@ -48,12 +48,7 @@ const Header: FC<IHeaderProps> = props => {
       if (profile_address !== '0x0000000000000000000000000000000000000000') {
         dispatch({
           type: GET_DEPLOY_STATE,
-          payload:
-            selectedProjectAddress !== ''
-              ? isDeposit
-                ? 'deposit_success'
-                : 'deposit'
-              : 'go_live',
+          payload: 'go_live',
         });
         props.setOpen(true);
       } else {
@@ -74,18 +69,28 @@ const Header: FC<IHeaderProps> = props => {
     if (walletId === props.organisationOwnerWalletId) return true;
     return false;
   };
-  console.log(isFounder());
+
   return (
     <div className={styles.container}>
       <div className={styles['project-info']}>
         <div className={styles['name-publish-btn-row']}>
           <p className={styles['project-name']}>{props.projectName}</p>
           {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() &&
-            selectedProjectAddress === '' && (
-              <button onClick={handleOpen} className={styles.transparentBtn}>
-                Publish a Project
-              </button>
-            )}
+          selectedProjectAddress === '' ? (
+            <button
+              onClick={handlePublishProject}
+              className={styles.transparentBtn}
+            >
+              Publish a Project
+            </button>
+          ) : (
+            <button
+              onClick={handlePublishProject}
+              className={styles.transparentBtn}
+            >
+              Deposit funds
+            </button>
+          )}
         </div>
         <div className={styles['org-edit-project-row']}>
           <span className={styles['by-org-name']}>

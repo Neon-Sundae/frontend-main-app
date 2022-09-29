@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import config from 'config';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { ReactComponent as BalanceIcon } from 'assets/illustrations/icons/projec
 import { ReactComponent as TimezoneIcon } from 'assets/illustrations/icons/project-timezone.svg';
 import { ReactComponent as MoneyIcon } from 'assets/illustrations/icons/money.svg';
 import { ReactComponent as ResourceIcon } from 'assets/illustrations/icons/resource.svg';
+import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
 import styles from './index.module.scss';
 
 interface DescriptionProps {
@@ -28,6 +29,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     flResources,
   } = props;
 
+  const [projectBalance, setProjectBalance] = useState(0);
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -37,6 +39,15 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
   const flResourcesStringJoined = flResources
     ?.map(resource => resource.title)
     .join(', ');
+
+  useEffect(() => {
+    (async () => {
+      if (selectedProjectAddress) {
+        const balance = await getUsdcBalance(selectedProjectAddress);
+        setProjectBalance(balance);
+      }
+    })();
+  }, [selectedProjectAddress]);
 
   const getSmartContractAddress = () => {
     if (selectedProjectAddress) {
@@ -112,7 +123,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
                   className={styles['row-value']}
                   title={`${(Number(budget) * 1.1).toFixed(2)} USDC`}
                 >
-                  {(Number(budget) * 1.1).toFixed(2)} USDC
+                  {projectBalance} USDC
                 </span>
               </span>
             </div>

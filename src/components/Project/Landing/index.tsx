@@ -27,7 +27,6 @@ const Landing: FC = () => {
   const { user, wallet_usdc_balance } = useSelector(
     (state: RootState) => state.user
   );
-  const userName = useSelector((state: RootState) => state.user.user?.name);
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -59,6 +58,7 @@ const Landing: FC = () => {
     if (organisation?.organisationUser[0]?.walletId) {
       getOnChainProject(create, organisation?.organisationUser[0]?.walletId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organisation]);
 
   return projectData ? (
@@ -91,8 +91,6 @@ const Landing: FC = () => {
           usdcBalance={wallet_usdc_balance}
           projectId={String(create)}
           budget={budget}
-          projectName={name}
-          projectDescription={description}
         />
       )}
       <Toaster />
