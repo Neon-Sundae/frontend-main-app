@@ -94,8 +94,9 @@ const TaskDetail: FC<ITaskDetail> = ({
   };
 
   const reformatDate = (dateStr: string) => {
-    const dArr = dateStr.split('-'); // ex input: "2010-01-18"
-    return `${dArr[2]}/${dArr[1]}/${dArr[0].substring(0)}`; // ex output: "18/01/10"
+    const dArr = dateStr?.split('-');
+    if (dArr) return `${dArr[2]}/${dArr[1]}/${dArr[0]?.substring(0)}`;
+    return null;
   };
 
   return (
@@ -156,7 +157,20 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
         )}
       </div>
-
+      <div className={styles['project-description']}>
+        <p> Skills:</p>
+        {selectedTask?.taskSkills?.length > 0 && (
+          <div className={styles['project-attachments']}>
+            {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
+              <FileAttachmentCard
+                key={index}
+                label="Wireframes v1.0"
+                skills={taskSkills.name}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <div className={styles['project-details']}>
         <div>
           <div className={styles['project-detail-item']}>
