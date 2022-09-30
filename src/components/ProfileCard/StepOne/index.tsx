@@ -1,6 +1,7 @@
 import { Oval } from 'react-loader-spinner';
 import Modal from 'components/Modal';
 import { FC } from 'react';
+import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 
 interface StepOneProps {
@@ -9,10 +10,6 @@ interface StepOneProps {
 }
 
 const StepOne: FC<StepOneProps> = ({ setProfilePictureModal, setStepTwo }) => {
-  const handleLocalStorage = () => {
-    window.localStorage.setItem('onboardStatus', 'partial');
-    window.dispatchEvent(new Event('storage'));
-  };
   return (
     <Modal
       onClose={() => {

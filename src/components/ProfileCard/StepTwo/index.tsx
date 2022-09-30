@@ -3,6 +3,7 @@ import Modal from 'components/Modal';
 import getRandomString from 'utils/getRandomString';
 import toast from 'react-hot-toast';
 import userImage from 'assets/images/profile/user-image.png';
+import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 
 interface StepTwoProps {
@@ -48,10 +49,6 @@ const StepTwo: FC<StepTwoProps> = ({
   };
   const handleNFTClick = (tokenId: any) => {
     setSelectedNFTId(tokenId);
-  };
-  const handleLocalStorage = () => {
-    window.localStorage.setItem('onboardStatus', 'partial');
-    window.dispatchEvent(new Event('storage'));
   };
   return (
     <Modal

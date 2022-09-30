@@ -3,9 +3,9 @@ import Modal from 'components/Modal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import PromptImage from 'assets/images/profile/prompt-img.png';
+import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 import { fetchNFTs } from './hooks';
-
 import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
 
@@ -68,10 +68,6 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
       />
     );
   }
-  const handleLocalStorage = () => {
-    window.localStorage.setItem('onboardStatus', 'partial');
-    window.dispatchEvent(new Event('storage'));
-  };
   const handleClose = () => {
     handleLocalStorage();
     setProfilePictureModal(false);

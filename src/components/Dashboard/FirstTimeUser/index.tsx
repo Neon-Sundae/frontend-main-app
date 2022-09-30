@@ -4,6 +4,7 @@ import { validateCreateProfile } from 'validations/auth';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab-light.svg';
 import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
+import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
 
@@ -17,10 +18,6 @@ const FirstTimeUser: FC = () => {
   });
 
   const createProfile = useCreateProfile();
-  const handleLocalStorage = () => {
-    window.localStorage.setItem('onboardStatus', 'started');
-    window.dispatchEvent(new Event('storage'));
-  };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleLocalStorage();
