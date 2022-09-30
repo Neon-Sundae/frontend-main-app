@@ -8,7 +8,7 @@ import TaskFileUpload, { IFile } from 'components/CreateTask/TaskFileUpload';
 import TaskChecklist, {
   IChecklistItem,
 } from 'components/CreateTask/TaskChecklist';
-import FileAttachmentCard from 'components/AcceptTask/FileAttachmetCard';
+import FileSkillsCard from 'components/AcceptTask/FileSkillsCard';
 import useUpdateTask from './hooks';
 import styles from './index.module.scss';
 
@@ -224,7 +224,7 @@ const EditTask: FC<IEditTask> = ({
           {selectedTask?.taskAttachment?.map((attachments: any) => {
             return (
               <div className={styles.attachments}>
-                <FileAttachmentCard
+                <FileSkillsCard
                   label={attachments.url.substring(
                     attachments.url.lastIndexOf('/') + 1,
                     attachments.url.length

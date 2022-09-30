@@ -11,7 +11,7 @@ interface Environment {
 
 const configs: Environment = {
   local: {
-    ApiBaseUrl: 'http://localhost:3001/local',
+    ApiBaseUrl: 'http://localhost:3001',
     AppDomain: 'http://localhost:3000',
     chainId: '0x61', //0x61 (for binance chain) 0x13881 for Mumbai testnet
     explorerURL: 'https://testnet.bscscan.com', //https://mumbai.polygonscan.com/
