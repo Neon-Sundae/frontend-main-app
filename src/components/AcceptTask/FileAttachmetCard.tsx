@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 
 interface IFileAttachmentCard {
   label: string;
-  skills: string;
+  skills?: string;
 }
 
 const FileAttachmentCard: FC<IFileAttachmentCard> = ({ label, skills }) => {
@@ -20,6 +20,10 @@ const FileAttachmentCard: FC<IFileAttachmentCard> = ({ label, skills }) => {
       <span>{skills ?? label}</span>
     </div>
   );
+};
+
+FileAttachmentCard.defaultProps = {
+  skills: '',
 };
 
 export default FileAttachmentCard;
