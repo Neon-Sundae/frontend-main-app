@@ -94,9 +94,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   };
 
   const reformatDate = (dateStr: string) => {
-    const dArr = dateStr?.split('-');
-    if (dArr) return `${dArr[2]}/${dArr[1]}/${dArr[0]?.substring(0)}`;
-    return null;
+    return new Date(dateStr).toLocaleDateString('en-GB');
   };
 
   return (
