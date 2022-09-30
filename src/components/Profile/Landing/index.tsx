@@ -30,7 +30,7 @@ const Landing: FC = () => {
     if (onboardStatus === 'started') {
       setTimeout(() => {
         tour.show('step1');
-      }, 500);
+      }, 1000);
     }
     if (onboardStatus === 'partial') {
       tour.show('step3');
@@ -61,7 +61,7 @@ const Landing: FC = () => {
           dispatch(editProfile(true));
           setTimeout(() => {
             return tour.next();
-          }, 100);
+          }, 1000);
         },
         text: 'Next',
       },

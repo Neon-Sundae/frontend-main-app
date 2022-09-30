@@ -74,7 +74,7 @@ const Landing: FC = () => {
     if (!tour.isActive()) {
       setTimeout(() => {
         tour.start();
-      }, 500);
+      }, 1000);
     }
   }
   if (data) {
