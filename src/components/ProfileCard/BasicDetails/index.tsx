@@ -18,7 +18,7 @@ const BasicDetails: FC = () => {
   const showEditIcon = () => {
     if (profileId && user) {
       if (user.userId === parseInt(profileId, 10)) {
-        return <EditIconContainer />;
+        return <EditIconContainer id="edit-icon" />;
       }
     }
 
@@ -37,13 +37,18 @@ const BasicDetails: FC = () => {
   );
 };
 
-const EditIconContainer: FC = () => {
+interface IEditContainer {
+  id: string;
+}
+
+const EditIconContainer: FC<IEditContainer> = ({ id }) => {
   const dispatch = useDispatch();
 
   const handleEdit = () => dispatch(editProfile(true));
 
   return (
     <EditIcon
+      id={id}
       width={50}
       height={50}
       className={styles['edit-icon']}
@@ -60,7 +65,7 @@ const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
-        <img alt="user" src={picture ? picture : userImage} />
+        <img alt="user" src={picture || userImage} />
       </div>
     </div>
   );

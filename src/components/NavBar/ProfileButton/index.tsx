@@ -59,6 +59,7 @@ const ProfileButton: FC = () => {
         <p className={styles['profile-text']}>Profile</p>
       </div>
       <div
+        id="navbar-wallet-information"
         className={styles.content}
         title="Wallet Information"
         onClick={handleOpen}

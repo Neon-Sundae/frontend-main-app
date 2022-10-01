@@ -18,4 +18,9 @@ const getItem = (key: string, type = 'none') => {
 
 const removeItem = (key: string): void => localStorage.removeItem(key);
 
-export { getItem, removeItem, setItem };
+const handleLocalStorage = () => {
+  window.localStorage.setItem('onboardStatus', 'started');
+  window.dispatchEvent(new Event('storage'));
+};
+
+export { getItem, removeItem, setItem, handleLocalStorage };

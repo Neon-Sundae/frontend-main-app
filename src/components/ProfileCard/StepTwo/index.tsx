@@ -3,6 +3,7 @@ import Modal from 'components/Modal';
 import getRandomString from 'utils/getRandomString';
 import toast from 'react-hot-toast';
 import userImage from 'assets/images/profile/user-image.png';
+import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 
 interface StepTwoProps {
@@ -55,6 +56,7 @@ const StepTwo: FC<StepTwoProps> = ({
         setStepOne(false);
         setStepTwo(false);
         setProfilePictureModal(false);
+        handleLocalStorage();
       }}
       width="550px"
       height="600px"
@@ -116,6 +118,7 @@ const StepTwo: FC<StepTwoProps> = ({
             setStepOne(false);
             setStepTwo(false);
             setProfilePictureModal(false);
+            handleLocalStorage();
           }}
         >
           Choose avatar
