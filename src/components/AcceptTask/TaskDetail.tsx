@@ -160,11 +160,13 @@ const TaskDetail: FC<ITaskDetail> = ({
         {selectedTask?.taskSkills?.length > 0 && (
           <div className={styles['project-attachments']}>
             {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
+
               <FileSkillsCard
                 key={index}
                 label="Wireframes v1.0"
                 skills={taskSkills.name}
               />
+
             ))}
           </div>
         )}
