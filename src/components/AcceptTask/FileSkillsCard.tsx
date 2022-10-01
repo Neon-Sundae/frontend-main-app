@@ -26,4 +26,4 @@ FileSkillsCard.defaultProps = {
   skills: '',
 };
 
-export default FileAttachmentCard;
+export default FileSkillsCard;
