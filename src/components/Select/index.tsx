@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-nested-ternary */
 import { FC } from 'react';
 import Select, { ActionMeta, SingleValue, StylesConfig } from 'react-select';
@@ -28,6 +29,7 @@ interface ComponentProps {
   borderColor?: string;
   borderRadius?: number;
   height?: number;
+  width?: string;
 }
 
 const SelectComponent: FC<ComponentProps> = ({
@@ -39,6 +41,7 @@ const SelectComponent: FC<ComponentProps> = ({
   borderColor,
   borderRadius,
   height,
+  width,
 }) => {
   const getSharedSelectProps = () => {
     return {
@@ -63,8 +66,8 @@ const SelectComponent: FC<ComponentProps> = ({
       borderWidth: 0.6,
       borderColor,
       borderRadius,
-      width: '100%',
-      // height,
+      width: width || '100%',
+      fontSize: 14,
       margin: '0 auto',
       padding: '0 10px',
       cursor: 'pointer',
@@ -93,7 +96,7 @@ const SelectComponent: FC<ComponentProps> = ({
         color: 'white',
         cursor: isDisabled ? 'not-allowed' : 'default',
         width: '100%',
-
+        fontSize: 14,
         ':active': {
           ...styles[':active'],
           backgroundColor: !isDisabled
@@ -109,7 +112,11 @@ const SelectComponent: FC<ComponentProps> = ({
         },
       };
     },
-    input: styles => ({ ...styles, backgroundColor: 'red', outline: 'none' }),
+    input: styles => ({
+      ...styles,
+      backgroundColor: 'red',
+      outline: 'none',
+    }),
     placeholder: styles => ({
       ...styles,
       color: '#fbfbfb',

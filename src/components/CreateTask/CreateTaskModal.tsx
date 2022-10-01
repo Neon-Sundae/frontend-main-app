@@ -141,7 +141,6 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
       const { value } = e.target;
       setState(value);
     };
-
   return (
     <Modal
       onClose={handleClose}

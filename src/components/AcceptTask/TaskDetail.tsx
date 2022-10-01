@@ -16,7 +16,7 @@ import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
 import userImage from 'assets/images/profile/user-image.png';
 import TaskChecklistEdit from './TaskChecklistEdit';
-import FileAttachmentCard from './FileAttachmetCard';
+import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
 import { useCancelTask, useDeleteTask } from './hooks';
 
@@ -160,7 +160,13 @@ const TaskDetail: FC<ITaskDetail> = ({
         {selectedTask?.taskSkills?.length > 0 && (
           <div className={styles['project-attachments']}>
             {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
-              <FileAttachmentCard key={index} label="Wireframes v1.0" />
+
+              <FileSkillsCard
+                key={index}
+                label="Wireframes v1.0"
+                skills={taskSkills.name}
+              />
+
             ))}
           </div>
         )}
@@ -244,7 +250,7 @@ const TaskDetail: FC<ITaskDetail> = ({
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
                   (file: any, index: number) => (
-                    <FileAttachmentCard key={index} label="Wireframes v1.0" />
+                    <FileSkillsCard key={index} label="Wireframes v1.0" />
                   )
                 )}
               </div>

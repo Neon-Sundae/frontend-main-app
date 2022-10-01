@@ -2,12 +2,12 @@ import { FC } from 'react';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 
-interface IFileAttachmentCard {
+interface IFileSkillsCard {
   label: string;
   skills?: string;
 }
 
-const FileAttachmentCard: FC<IFileAttachmentCard> = ({ label, skills }) => {
+const FileSkillsCard: FC<IFileSkillsCard> = ({ label, skills }) => {
   return (
     <div className={styles['file-attachment-card']}>
       {skills && <div />}
@@ -22,8 +22,8 @@ const FileAttachmentCard: FC<IFileAttachmentCard> = ({ label, skills }) => {
   );
 };
 
-FileAttachmentCard.defaultProps = {
+FileSkillsCard.defaultProps = {
   skills: '',
 };
 
-export default FileAttachmentCard;
+export default FileSkillsCard;
