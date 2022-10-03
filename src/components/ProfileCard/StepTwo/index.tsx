@@ -55,8 +55,8 @@ const StepTwo: FC<StepTwoProps> = ({
       onClose={() => {
         setStepOne(false);
         setStepTwo(false);
+        handleLocalStorage('partial');
         setProfilePictureModal(false);
-        handleLocalStorage();
       }}
       width="550px"
       height="600px"
@@ -118,7 +118,6 @@ const StepTwo: FC<StepTwoProps> = ({
             setStepOne(false);
             setStepTwo(false);
             setProfilePictureModal(false);
-            handleLocalStorage();
           }}
         >
           Choose avatar
