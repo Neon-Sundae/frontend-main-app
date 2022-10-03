@@ -39,7 +39,7 @@ const TourHomePage = () => {
         text: 'Click to continue',
       },
       {
-        text: '⏩',
+        text: '<span class="material-icons">keyboard_double_arrow_right</span>',
         classes: 'information-button',
       },
     ],

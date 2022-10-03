@@ -20,7 +20,7 @@ const FirstTimeUser: FC = () => {
   const createProfile = useCreateProfile();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleLocalStorage();
+    handleLocalStorage('started');
     if (validateCreateProfile(name, email, setError)) {
       createProfile({ name, email });
     }

@@ -69,8 +69,8 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
     );
   }
   const handleClose = () => {
-    handleLocalStorage();
     setProfilePictureModal(false);
+    handleLocalStorage('partial');
   };
   return (
     <Modal onClose={() => handleClose()} width="550.24px" height="600px">

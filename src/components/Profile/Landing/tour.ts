@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import Shepherd from 'shepherd.js';
 import { editProfile } from 'actions/profile';
+import { removeItem } from 'utils/localStorageFn';
 
 const TourProfilePage = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const TourProfilePage = () => {
         text: 'Next',
       },
       {
-        text: '⏩',
+        text: '<span class="material-icons">keyboard_double_arrow_right</span>',
         classes: 'information-button',
       },
     ],
@@ -63,7 +64,7 @@ const TourProfilePage = () => {
         text: 'Next',
       },
       {
-        text: '⏩',
+        text: '<span class="material-icons">keyboard_double_arrow_right</span>',
         classes: 'information-button',
       },
     ],
@@ -89,7 +90,7 @@ const TourProfilePage = () => {
         text: 'Next',
       },
       {
-        text: '⏩',
+        text: '<span class="material-icons">keyboard_double_arrow_right</span>',
         classes: 'information-button',
       },
     ],
@@ -110,15 +111,16 @@ const TourProfilePage = () => {
       },
       {
         action() {
+          dispatch(editProfile(true));
           document.getElementById('profile-address-container')?.click();
           setTimeout(() => {
             tour.show('step5');
-          }, 1500);
+          }, 1000);
         },
         text: 'Next',
       },
       {
-        text: '⏩',
+        text: '<span class="material-icons">keyboard_double_arrow_right</span>',
         classes: 'information-button',
       },
     ],
@@ -138,6 +140,7 @@ const TourProfilePage = () => {
       },
       {
         action() {
+          removeItem('onboardStorage');
           tour.complete();
         },
         text: 'Done',
@@ -150,7 +153,10 @@ const TourProfilePage = () => {
   const tourStep = (stepId: string) => {
     return tour.show(stepId);
   };
-  return { tourStep };
+  const tourStart = () => {
+    return tour.start();
+  };
+  return { tourStart, tourStep };
 };
 
 export default TourProfilePage;

@@ -13,9 +13,9 @@ const StepOne: FC<StepOneProps> = ({ setProfilePictureModal, setStepTwo }) => {
   return (
     <Modal
       onClose={() => {
+        handleLocalStorage('partial');
         setProfilePictureModal(false);
         setStepTwo(false);
-        handleLocalStorage();
       }}
       width="596px"
       height="550px"

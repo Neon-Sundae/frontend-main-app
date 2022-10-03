@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import bg from 'assets/illustrations/profile/bg.svg';
 import NavBar from 'components/NavBar';
 import ProfileCard from 'components/ProfileCard';
+import { removeItem } from 'utils/localStorageFn';
 import TourProfilePage from './tour';
 
 import styles from './index.module.scss';
@@ -13,25 +14,22 @@ const Landing: FC = () => {
   const [onboardStatus, setOnboardStatus] = useState(
     localStorage.getItem('onboardStatus')
   );
-
-  const { tourStep } = TourProfilePage();
-
+  const { tourStep, tourStart } = TourProfilePage();
   window.addEventListener('storage', () => {
     setOnboardStatus(localStorage.getItem('onboardStatus'));
   });
   useEffect(() => {
     if (onboardStatus === 'started') {
-      tourStep('step1');
+      setTimeout(() => {
+        tourStart();
+      }, 1000);
     }
     if (onboardStatus === 'partial') {
       tourStep('step3');
-      localStorage.removeItem('onboardStatus');
+      removeItem('onboardStatus');
     }
-    if (onboardStatus === 'minted') {
-      tourStep('step3');
-      localStorage.removeItem('onboardStatus');
-    }
-  }, [onboardStatus, tourStep]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onboardStatus]);
 
   const { profileId } = useParams();
   useFetchPublicProfile(profileId);
