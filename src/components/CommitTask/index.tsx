@@ -18,14 +18,13 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
   const { commitToTask, getFNDRBalance, pending, hash, fndrBalance } =
     useCommitToTask();
   const { selectedTask } = useSelector((state: RootState) => state.flProject);
-
   useEffect(() => {
     getFNDRBalance();
   }, []);
 
   return (
     <Modal onClose={handleClose}>
-      {fndrBalance >= 10 ? (
+      {fndrBalance >= import.meta.env.FNDR_TOKEN_AMOUNT ? (
         <div className={styles['commit-task-container']}>
           <h1>Commit to task</h1>
           {pending === 'initial' ? (
@@ -69,7 +68,11 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                  <a
+                    href={`${config.explorerURL}/tx/${hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
@@ -88,7 +91,11 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                  <a
+                    href={`${config.explorerURL}/tx/${hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
@@ -110,7 +117,11 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                  <a
+                    href={`${config.explorerURL}/tx/${hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
@@ -129,7 +140,11 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
                 </p>
               ) : (
                 <p>
-                  <a href={`${config.explorerURL}/tx/${hash}`} target="_blank">
+                  <a
+                    href={`${config.explorerURL}/tx/${hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <i className="material-icons">open_in_new</i>&nbsp;View on
                     Explorer
                   </a>
