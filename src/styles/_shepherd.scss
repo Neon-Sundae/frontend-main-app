@@ -8,12 +8,23 @@
   margin-right: 0.5rem;
   padding: 0.5rem 1.5rem;
   transition: all 0.5s ease;
-  background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+  background: linear-gradient(
+      94.63deg,
+      rgba(255, 255, 255, 0.16) 4.94%,
+      rgba(255, 255, 255, 0.04) 93.94%
+    ),
+    linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%);
   box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
   border-radius: 23px;
 }
 .shepherd-button:not(:disabled):hover {
-  background: #196fcc;
+  background: linear-gradient(
+    89.58deg,
+    #c6bbfb 2.95%,
+    #e59cf3 48.36%,
+    #ffb8d5 103.17%
+  );
+  // background: #196fcc;
   color: hsla(0, 0%, 100%, 0.75);
 }
 .shepherd-button.shepherd-button-secondary {
@@ -108,7 +119,7 @@
   }
 }
 .shepherd-element {
-  background: #1D1C23;
+  background: #1d1c23;
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   opacity: 0;
@@ -141,7 +152,7 @@
   z-index: -1;
 }
 .shepherd-arrow:before {
-  background: #1D1C23;
+  background: #1d1c23;
   content: '';
   transform: rotate(45deg);
 }
@@ -191,13 +202,24 @@
 }
 .information-button {
   background: none;
-	color: #fff;
-	border: none;
-	padding: 0;
-	font: inherit;
+  color: #fff;
+  border: none;
+  padding: 0;
+  font: inherit;
   width: 136px;
-	outline: inherit;
+  outline: inherit;
   all: unset;
-   
+  cursor: pointer;
 }
 
+.information-button:not(:disabled):hover {
+  background: none;
+  color: #fff;
+  border: none;
+  padding: 0;
+  font: inherit;
+  width: 136px;
+  outline: inherit;
+  all: unset;
+  cursor: pointer;
+}

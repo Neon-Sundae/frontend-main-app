@@ -29,7 +29,7 @@ const TourHomePage = () => {
     classes: 'shepherd-theme-custom',
     buttons: [
       {
-        text: '1/5',
+        text: '1/3',
         classes: 'information-button',
       },
       {
@@ -41,6 +41,9 @@ const TourHomePage = () => {
       {
         text: '<span class="material-icons">keyboard_double_arrow_right</span>',
         classes: 'information-button',
+        action() {
+          handleStepOne();
+        },
       },
     ],
   });

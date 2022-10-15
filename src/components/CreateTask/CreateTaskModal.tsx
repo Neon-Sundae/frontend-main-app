@@ -42,7 +42,7 @@ const difficultyData = [
   { label: <DifficultyRating level={2} title="Moderate" />, value: 2 },
   { label: <DifficultyRating level={3} title="Significant" />, value: 3 },
   { label: <DifficultyRating level={4} title="Advanced" />, value: 4 },
-  { label: <DifficultyRating level={5} title="Moderate" />, value: 5 },
+  { label: <DifficultyRating level={5} title="Intermediate" />, value: 5 },
 ];
 
 interface IProfileSkills {

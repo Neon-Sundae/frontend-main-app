@@ -1,5 +1,6 @@
 import { AbiItem } from 'web3-utils';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import profileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
 import { profileManageContractAddress, USDCAddress } from 'contracts/contracts';
@@ -14,6 +15,7 @@ import { updateProfileContractAddressAction } from 'actions/profile';
 
 const useProfileManage = () => {
   const dispatch = useDispatch();
+  const [deploying, setDeploying] = useState('mint');
   const userId = useSelector((state: RootState) => state.user.user?.userId);
 
   const accessToken = getAccessToken();
@@ -46,7 +48,15 @@ const useProfileManage = () => {
 
       await profileManageContract.methods
         .createProfile(USDCAddress, name, title)
-        .send({ from: address });
+        .send({ from: address })
+        .on('transactionHash', (hash: any) => {
+          setDeploying('deploying');
+          console.log(deploying);
+        })
+        .on('receipt', (receipt: any) => {
+          setDeploying('deploy_success');
+          console.log(deploying);
+        });
 
       const contractAddress = await profileManageContract.methods
         .getProfileContractAddress(address)
@@ -57,6 +67,7 @@ const useProfileManage = () => {
         payload: contractAddress,
       });
       await saveProfileContractAddress(contractAddress);
+      setDeploying('minted');
     } catch (err) {
       console.log(err);
     }
@@ -86,7 +97,7 @@ const useProfileManage = () => {
     }
   };
 
-  return { createProfile };
+  return { createProfile, deploying };
 };
 
 export default useProfileManage;
