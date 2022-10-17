@@ -30,7 +30,7 @@ const BasicDetails: FC = () => {
       <ProfileImage picture={profile?.picture} />
       <NameDesignation title={profile?.title} user={profile?.user} />
       <ExperiencePoints />
-      <ProfileAddressChain id="user-profile-mint" />
+      <ProfileAddressChain />
       <ProfileBio description={profile?.description} />
       {showEditIcon()}
     </>
