@@ -14,8 +14,6 @@ import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
- 
-
 const BasicDetailsEdit: FC = () => {
   const { profile, xp } = useSelector((state: RootState) => state.profile);
   const profileId = profile?.profileId ? profile.profileId : 0;
@@ -199,8 +197,6 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
   walletId,
   title,
 }) => {
-  const { createProfile } = useProfileManage();
-
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profileSmartContractId ?? '');
     toast.success('Copied!');
@@ -216,7 +212,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
           id="profile-address-container"
           className={styles['address-container']}
           style={{ cursor: 'pointer' }}
-          onClick={() => createProfile(name, title, walletId)}
+          onClick={() => toast.error('Save your edits to mint your profile')}
         >
           <span className="material-icons" style={{ color: '#FAA5B9' }}>
             close
@@ -233,7 +229,11 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
               profileSmartContractId.length
             )}
           </p>
-          <i className="material-icons-200" onClick={handleCopyAddress}>
+          <i
+            className="material-icons-200"
+            style={{ cursor: 'pointer' }}
+            onClick={handleCopyAddress}
+          >
             content_copy
           </i>
         </div>
