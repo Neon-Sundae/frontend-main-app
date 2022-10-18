@@ -37,6 +37,7 @@
     "react-select": "^5.3.2",
     "redux": "^4.2.0",
     "sass": "^1.52.1",
+    "shepherd.js": "^10.0.1",
     "vite-plugin-svgr": "^2.1.0",
     "vite-tsconfig-paths": "^3.4.1",
     "web-vitals": "^2.1.0",

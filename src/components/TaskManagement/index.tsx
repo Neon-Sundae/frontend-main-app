@@ -37,12 +37,14 @@ interface ITaskManagement {
   project_name: string;
   project_founder: string;
   project_budget: number;
+  flProjectCategory?: any;
 }
 
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
   project_founder,
+  flProjectCategory,
 }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -57,8 +59,6 @@ const TaskManagement: FC<ITaskManagement> = ({
       toast.error('Only founder can add the task');
     }
   };
-
-  console.log(project_founder);
 
   const toggleFilterMenu = () => setFilterOpen(p => !p);
 
@@ -85,6 +85,7 @@ const TaskManagement: FC<ITaskManagement> = ({
         project_budget={project_budget}
         project_name={project_name}
         project_founder={project_founder}
+        flProjectCategory={flProjectCategory}
       />
     </div>
   );
@@ -145,6 +146,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   project_budget,
   project_name,
   project_founder,
+  flProjectCategory,
 }) => {
   const dispatch = useDispatch();
 
@@ -156,6 +158,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
 
   const [elements, setElements] = useState(projectTasks);
   const [openTask, setOpenTask] = useState(false);
+
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
   const [openCommitTask, setOpenCommitTask] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -244,7 +247,6 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
               projectFounder={project_founder}
-              appliedBuilders={elements?.open[0]?.profileTask}
             />
           ))}
         </div>
@@ -258,6 +260,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             project_founder={project_founder}
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
+            flProjectCategory={flProjectCategory}
           />
         )}
         {openSelectBuilder && (
@@ -292,7 +295,6 @@ const Column: FC<IColumn> = ({
   organisationName,
   setOpenTask,
   projectFounder,
-  appliedBuilders,
 }) => {
   return (
     <div className={styles['column-container']}>
@@ -309,7 +311,7 @@ const Column: FC<IColumn> = ({
                   organisationName={organisationName}
                   setOpenTask={setOpenTask}
                   projectFounder={projectFounder}
-                  appliedBuilders={appliedBuilders}
+                  appliedBuilders={item.profileTask}
                 />
               ))}
               {provided.placeholder}
@@ -428,8 +430,8 @@ const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
-          src={elem.Profile.picture ? elem.Profile.picture : userImage}
-          alt=""
+          src={elem.Profile.picture || userImage}
+          alt="User Avatar"
           className={styles['builder-avatar']}
         />
       ))}{' '}

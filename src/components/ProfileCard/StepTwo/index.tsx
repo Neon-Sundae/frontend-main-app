@@ -3,6 +3,7 @@ import Modal from 'components/Modal';
 import getRandomString from 'utils/getRandomString';
 import toast from 'react-hot-toast';
 import userImage from 'assets/images/profile/user-image.png';
+import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 
 interface StepTwoProps {
@@ -54,6 +55,7 @@ const StepTwo: FC<StepTwoProps> = ({
       onClose={() => {
         setStepOne(false);
         setStepTwo(false);
+        handleLocalStorage('partial');
         setProfilePictureModal(false);
       }}
       width="550px"

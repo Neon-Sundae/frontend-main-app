@@ -8,12 +8,15 @@ import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/categ
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
+import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
+import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
 import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
+import userImage from 'assets/images/profile/user-image.png';
 import TaskChecklistEdit from './TaskChecklistEdit';
-import FileAttachmentCard from './FileAttachmetCard';
+import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
 import { useCancelTask, useDeleteTask } from './hooks';
 
@@ -36,7 +39,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   const builderTaskApply = useBuilderTaskApply();
   const { deleteTask } = useDeleteTask(setOpen);
   const [isCancel, setIsCancel] = useState(false);
-
+  const [taskEdit, setTaskEdit] = useState(false);
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -90,13 +93,18 @@ const TaskDetail: FC<ITaskDetail> = ({
     return null;
   };
 
+  const reformatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-GB');
+  };
+
   return (
     <div>
       <div className={styles['avatar-container']}>
         <span className={styles['task-status-btn']}>
           {selectedTask?.status}
         </span>
-        {selectedTask?.profileTask.length > 0 && (
+
+        {selectedTask?.profileTask?.length > 0 && (
           <div
             className={styles.expanded}
             onClick={() => setViewTalentList(true)}
@@ -112,7 +120,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .map((item: any, index: number) =>
                   item.Profile.picture !== null ? (
                     <img
-                      src={item.Profile.picture}
+                      src={item.Profile.picture || userImage}
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
@@ -134,7 +142,12 @@ const TaskDetail: FC<ITaskDetail> = ({
                         key={index}
                       />
                     ) : (
-                      <div className={styles['builder-avatar']} key={index} />
+                      <img
+                        src={userImage}
+                        className={styles['builder-avatar']}
+                        alt=""
+                        key={index}
+                      />
                     )
                   )}
               </>
@@ -142,7 +155,22 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
         )}
       </div>
+      <div className={styles['project-description']}>
+        <p> Skills:</p>
+        {selectedTask?.taskSkills?.length > 0 && (
+          <div className={styles['project-attachments']}>
+            {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
 
+              <FileSkillsCard
+                key={index}
+                label="Wireframes v1.0"
+                skills={taskSkills.name}
+              />
+
+            ))}
+          </div>
+        )}
+      </div>
       <div className={styles['project-details']}>
         <div>
           <div className={styles['project-detail-item']}>
@@ -199,6 +227,17 @@ const TaskDetail: FC<ITaskDetail> = ({
             </div>
           </div>
         </div>
+        <div>
+          <div className={styles['project-detail-item']}>
+            <StartDate width={24} height={24} />
+            <div>Start Date:&nbsp; {reformatDate(selectedTask?.startDate)}</div>
+          </div>
+          <div className={styles['project-detail-item']}>
+            <EndDate width={24} height={24} />
+
+            <div>End Date:&nbsp; {reformatDate(selectedTask?.dueDate)}</div>
+          </div>
+        </div>
       </div>
 
       {isCancel ? (
@@ -207,11 +246,11 @@ const TaskDetail: FC<ITaskDetail> = ({
         <>
           <div className={styles['project-description']}>
             <p>{selectedTask?.description}</p>
-            {selectedTask?.taskAttachment.length > 0 && (
+            {selectedTask?.taskAttachment?.length > 0 && (
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
                   (file: any, index: number) => (
-                    <FileAttachmentCard key={index} label="Wireframes v1.0" />
+                    <FileSkillsCard key={index} label="Wireframes v1.0" />
                   )
                 )}
               </div>

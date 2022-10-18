@@ -215,9 +215,8 @@ const EditProjectForm: FC<IEditProjectProps> = ({ onClose }) => {
                 defaultValue={formData.budget}
                 id="budget"
                 placeholder="Project Budget"
-                readOnly
               />
-              <input type="text" value="USDC" readOnly />
+              <input type="text" value="USDC" />
             </span>
           </span>
         </div>

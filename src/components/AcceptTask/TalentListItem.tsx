@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { useSelectBuilder } from './hooks';
 import styles from './index.module.scss';
+import userImage from 'assets/images/profile/user-image.png';
 
 interface ITalentListItem {
   handleApprove: any;
@@ -45,7 +46,7 @@ const TalentListItem: FC<ITalentListItem> = ({
     >
       <div className={styles.builder}>
         <div className={styles['builder-avatar']}>
-          <img src={data.Profile.picture} alt="" />
+          <img src={data.Profile.picture || userImage} alt="" />
         </div>
         <div className={styles['builder-name']}>{data?.Profile.user.name}</div>
       </div>

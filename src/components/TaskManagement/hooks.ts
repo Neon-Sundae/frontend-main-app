@@ -13,7 +13,6 @@ const useFetchProjectTasks = () => {
     (state: RootState) => state.flProject.categoryFilter
   );
   const { create } = useParams();
-
   const { data } = useQuery(
     ['projectTasks', categories],
     async ({ signal }) => {
