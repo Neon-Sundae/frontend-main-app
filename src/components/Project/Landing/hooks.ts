@@ -5,29 +5,29 @@ import { AbiItem } from 'web3-utils';
 import toast from 'react-hot-toast';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import { RootState } from 'reducers';
-import { projectManageContractAddress, USDCAddress } from 'contracts/contracts';
+import { USDCAddress } from 'contracts/contracts';
 import { GET_WALLET_USDC_BALANCE } from 'actions/user/types';
 import config from 'config';
-import { IProfileSmartContractApiResponse } from 'interfaces/profile';
-import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import ProjectManageAbi from 'contracts/abi/ProjectManage.sol/ProjectManage.json';
-import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import {
   GET_PROJECT_FOUNDER,
   GET_SELECTED_PROJECT_ADDRESS,
-  IS_DEPOSITED,
 } from 'actions/flProject/types';
 import { useQuery } from '@tanstack/react-query';
 import { handleError } from 'utils/handleUnAuthorization';
+import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
+import getAllProjects from 'utils/contractFns/getAllProjects';
+import checkProjectExist from 'utils/contractFns/checkProjectExist';
+import getFounderFromProject from 'utils/contractFns/getFounderFromProject';
 
 const useProject = () => {
-  const [deploying, setDeploying] = useState('go_live');
-
+  const web3 = getWeb3Instance();
+  const dispatch = useDispatch();
   const accessToken = getAccessToken();
 
-  const dispatch = useDispatch();
+  const [deploying, setDeploying] = useState('go_live');
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const { selectedProjectAddress } = useSelector(
@@ -36,13 +36,7 @@ const useProject = () => {
 
   const getUSDCBalance = async () => {
     try {
-      const web3 = getWeb3Instance();
-      const USDCContract = new web3.eth.Contract(
-        USDCAbi.abi as AbiItem[],
-        USDCAddress
-      );
-      let balance = await USDCContract.methods.balanceOf(walletId).call();
-      balance = Number(balance / Math.pow(10, 6)).toFixed(2);
+      const balance = await getUsdcBalance(walletId);
       dispatch({
         type: GET_WALLET_USDC_BALANCE,
         payload: balance,
@@ -54,14 +48,7 @@ const useProject = () => {
 
   const getOnChainProject = async (id: string | undefined, founder: string) => {
     try {
-      const web3 = getWeb3Instance();
-      const ProjectManageContract = new web3.eth.Contract(
-        ProjectManageAbi.abi as AbiItem[],
-        projectManageContractAddress
-      );
-      const result = await ProjectManageContract.methods
-        .getProjectContractAddresses(founder)
-        .call();
+      const result = await getAllProjects(founder);
 
       const address =
         result.filter(
@@ -83,16 +70,17 @@ const useProject = () => {
     }
   };
 
+  /**
+   * TODO Proxy
+   * replace project manage with project factory
+   */
   const publishProject = async (projectId: string) => {
-    const web3 = getWeb3Instance();
     const projectManageContract = new web3.eth.Contract(
       ProjectManageAbi.abi as AbiItem[],
       projectManageContractAddress
     );
 
-    const result = await projectManageContract.methods
-      .checkProjectExist(walletId, projectId)
-      .call();
+    const result = await checkProjectExist(walletId, projectId);
 
     if (result) {
       toast.error('Project already exist');
@@ -145,9 +133,7 @@ const useProject = () => {
           body: JSON.stringify(payload),
         }
       );
-      const json: IProfileSmartContractApiResponse = await handleApiErrors(
-        response
-      );
+      await handleApiErrors(response);
     } catch (err) {
       console.log(err);
     }
@@ -155,14 +141,7 @@ const useProject = () => {
 
   const fetchFounder = async (project_address: string) => {
     try {
-      const web3 = getWeb3Instance();
-      const projectManageContract = new web3.eth.Contract(
-        ProjectManageAbi.abi as AbiItem[],
-        projectManageContractAddress
-      );
-      const result = await projectManageContract.methods
-        .getFounderFromProjectAddress(project_address)
-        .call();
+      const result = await getFounderFromProject(project_address);
       dispatch({
         type: GET_PROJECT_FOUNDER,
         payload: result,

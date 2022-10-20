@@ -7,12 +7,8 @@ import config from 'config';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 import { getWeb3Instance } from 'utils/web3EventFn';
-import {
-  FNDRAddress,
-  taskContractAddress,
-  USDCAddress,
-} from 'contracts/contracts';
-import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
+import { FNDRAddress } from 'contracts/contracts';
+import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
 import { RootState } from 'reducers';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
@@ -22,6 +18,7 @@ import {
   SET_REJECTED_BUILDER,
 } from 'actions/flProject/types';
 import { useUpdateTaskStatus } from 'components/TaskManagement/hooks';
+import getFndrBalance from 'utils/contractFns/getFndrBalance';
 
 const useFetchTaskData = (taskId: number | undefined) => {
   const { data } = useQuery(
@@ -50,20 +47,6 @@ const useFetchTaskData = (taskId: number | undefined) => {
   return { taskData: data || null };
 };
 
-const useFetchTaskDataOnChain = async (tokenId: number | undefined) => {
-  try {
-    const web3 = getWeb3Instance();
-    const taskContract = new web3.eth.Contract(
-      TaskAbi.abi as AbiItem[],
-      taskContractAddress
-    );
-    const result = await taskContract.methods.getTaskById(tokenId).call();
-    // console.log(result);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const useSelectBuilder = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -86,6 +69,11 @@ const useSelectBuilder = () => {
       setPending('waiting');
       const web3 = getWeb3Instance();
 
+      /**
+       * TODO Proxy - Modify create task flow
+       * Should create Project Task at the time of publishing the project
+       * The projectTask address needs to be stored with project because it's used here
+       */
       const taskContract = new web3.eth.Contract(
         TaskAbi.abi as AbiItem[],
         taskContractAddress
@@ -103,6 +91,9 @@ const useSelectBuilder = () => {
         .send({ from: walletId });
       const tokenId = result.events.TaskCreated.returnValues.taskId;
 
+      /**
+       * TODO Proxy - No need to call this
+       */
       const projectContract = new web3.eth.Contract(
         ProjectAbi.abi as AbiItem[],
         projectAddress
@@ -213,12 +204,16 @@ const useCommitToTask = () => {
     try {
       const web3 = getWeb3Instance();
 
-      // TODO: change USDCAbi to FNDRAbi
+      /**
+       * TODO Proxy - Proxy changes required
+       * taskContractAddress to projectTask address because that's where tokens are being stored
+       * taskContractAddress to be replaced by projectTaskAddress because it's having task related methods
+       */
       const FNDRContract = new web3.eth.Contract(
-        USDCAbi.abi as AbiItem[],
+        FNDRAbi.abi as AbiItem[],
         FNDRAddress
       );
-      const balance = await FNDRContract.methods.balanceOf(walletId).call();
+      const balance = await getFndrBalance(walletId);
       if (balance >= web3.utils.toWei(String(amount), 'ether')) {
         FNDRContract.methods
           .approve(
@@ -265,13 +260,10 @@ const useCommitToTask = () => {
   };
 
   const getFNDRBalance = async () => {
+    const web3 = getWeb3Instance();
+
     try {
-      const web3 = getWeb3Instance();
-      const FNDRContract = new web3.eth.Contract(
-        USDCAbi.abi as AbiItem[],
-        USDCAddress
-      );
-      const balance = await FNDRContract.methods.balanceOf(walletId).call();
+      const balance = await getFndrBalance(walletId);
       setFNDRBalance(Number(web3.utils.fromWei(String(balance), 'ether')));
     } catch (err) {
       console.log(err);
@@ -314,9 +306,15 @@ const useUpdateTaskChecklist = (taskChecklistId: number) => {
   return updateTaskChecklist;
 };
 
+/**
+ * TODO - Proxy
+ * replace taskContractAddress with taskProjectAddress
+ */
 const useCancelTask = () => {
-  const updateTask = useUpdateTaskStatus();
+  const web3 = getWeb3Instance();
   const accessToken = getAccessToken();
+
+  const updateTask = useUpdateTaskStatus();
   const [success, setSuccess] = useState(false);
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
@@ -348,7 +346,6 @@ const useCancelTask = () => {
         await handleApiErrors(response);
         setSuccess(true);
       } else {
-        const web3 = getWeb3Instance();
         const taskContract = new web3.eth.Contract(
           TaskAbi.abi as AbiItem[],
           taskContractAddress
@@ -404,7 +401,6 @@ const useDeleteTask = (setOpen: Dispatch<SetStateAction<boolean>>) => {
 
 export {
   useFetchTaskData,
-  useFetchTaskDataOnChain,
   useSelectBuilder,
   useCommitToTask,
   useUpdateTaskChecklist,

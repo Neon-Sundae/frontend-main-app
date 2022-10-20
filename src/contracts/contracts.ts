@@ -1,20 +1,19 @@
-/* eslint-disable camelcase */
-export const profileManageContractAddress =
-  '0x1B86eddD01eb6190d7C5C09a984cA90F376B8e16'; // "0x7342b53d8ae9246C62e31c1Cc3AF4E6b5908F147";
-export const projectManageContractAddress =
-  '0x0959F860dc93Dd8580b2397fCd12685d5e8CECd2'; // "0x0D3C84fc2ff8B070bD3DA2A131c2B7d295282A47";
-export const taskContractAddress = '0x8e1E88Fb599324e06D83BEFD577b2709921cd8Da'; // "0x0Fa9395c94fCB9b002AC8589934eb58ef43bCD43";
-export const USDCAddress = '0x9CEfD3972d17eaf62eFef1Fbe7Eb22031cc8e4A3'; // "0xe11a86849d99f524cac3e7a0ec1241828e332c62"; // "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
-export const FNDRAddress = '0xe6fC6E68ED8Ab1f7B8f530d34d54DC8521c64947'; // "0xe11a86849d99f524cac3e7a0ec1241828e332c62"; // "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
-export const FL_Address = '0x4aae4342Bf18B07962f54D4a4437d5F0DAb8D0Ac'; // change to gnosis safe: matic:0x58C5e4E7eB9de5228FB1F89aBaD195ce02561A98
+export const profileImplementationAddress =
+  '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
+export const profileFactoryAddress =
+  '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6';
 
-// Mumbai Testnet
-/*
-export const profileManageContractAddress =
-  '0xBB2E9662D9aFC76Ad4Fcb8FB27B26ad1F58d702F'; //"0x7342b53d8ae9246C62e31c1Cc3AF4E6b5908F147";
-export const projectManageContractAddress =
-  '0x9529B7A416ec1DD470A71E2A8e968FFd5e669e12'; //"0x0D3C84fc2ff8B070bD3DA2A131c2B7d295282A47";
-export const taskContractAddress = '0xF085560529922f138d4478705C1485640c9e1c61'; //"0x0Fa9395c94fCB9b002AC8589934eb58ef43bCD43";
-export const USDCAddress = '0xe11A86849d99F524cAC3E7A0Ec1241828e332C62'; //"0xe11a86849d99f524cac3e7a0ec1241828e332c62"; // "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
-export const FNDRAddress = '0x67bEAD6e6d8e4C795512De691e84773030590021'; //"0xe11a86849d99f524cac3e7a0ec1241828e332c62"; // "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
-*/
+export const projectImplementationAddress =
+  '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318';
+export const projectFactoryAddress =
+  '0x610178dA211FEF7D417bC0e6FeD39F05609AD788';
+
+export const taskImplementationAddress =
+  '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e';
+export const taskFactoryAddress = '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0';
+
+export const USDCAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+
+export const FNDRAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+
+export const FLAddress = '0x4aae4342Bf18B07962f54D4a4437d5F0DAb8D0Ac';

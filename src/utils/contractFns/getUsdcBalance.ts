@@ -3,16 +3,23 @@ import { getWeb3Instance } from 'utils/web3EventFn';
 import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import { USDCAddress } from 'contracts/contracts';
 
-const getUsdcBalance = async (address: string) => {
-  const web3 = getWeb3Instance();
+const getUsdcBalance = async (address: string | undefined) => {
+  try {
+    if (!address) return 0;
 
-  const USDCContract = new web3.eth.Contract(
-    USDCAbi.abi as AbiItem[],
-    USDCAddress
-  );
-  const balance = await USDCContract.methods.balanceOf(address).call();
+    const web3 = getWeb3Instance();
 
-  return balance / 10 ** 6;
+    const USDCContract = new web3.eth.Contract(
+      USDCAbi.abi as AbiItem[],
+      USDCAddress
+    );
+    const balance = await USDCContract.methods.balanceOf(address).call();
+
+    return balance / 10 ** 6;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to get the USDC balance');
+  }
 };
 
 export default getUsdcBalance;

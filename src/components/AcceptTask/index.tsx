@@ -1,14 +1,13 @@
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
-import Modal from 'components/Modal';
-import styles from './index.module.scss';
-import TaskDetail from './TaskDetail';
-import TalentList from './TalentList';
-import { useFetchTaskData, useFetchTaskDataOnChain } from './hooks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
-import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
+import Modal from 'components/Modal';
+import { useFetchTaskData } from './hooks';
+import TaskDetail from './TaskDetail';
+import TalentList from './TalentList';
+import styles from './index.module.scss';
 
 interface IAcceptTask {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -45,9 +44,6 @@ const AcceptTask: FC<IAcceptTask> = ({
         type: GET_SELECTED_TASK,
         payload: taskData,
       });
-      if (taskData?.taskSmartContractId !== null) {
-        useFetchTaskDataOnChain(taskData.taskSmartContractId);
-      }
     }
   }, [taskData]);
 
