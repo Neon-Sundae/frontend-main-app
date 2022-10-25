@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 import { Dispatch, FC, SetStateAction, useState } from 'react';
+import config from 'config';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
 import { AbiItem } from 'web3-utils';
@@ -22,6 +23,7 @@ interface IHeaderProps {
   founderAddress: string;
   organisationName: string;
   organisationOwnerWalletId: string;
+  organisationId: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -78,6 +80,7 @@ const Header: FC<IHeaderProps> = props => {
 
   return (
     <div className={styles.container}>
+      {console.log(props)}
       <div className={styles['project-info']}>
         <div className={styles['name-publish-btn-row']}>
           <p className={styles['project-name']}>{props.projectName}</p>
@@ -90,16 +93,34 @@ const Header: FC<IHeaderProps> = props => {
               Publish a Project
             </button>
           ) : (
-            <button onClick={handleToggle} className={styles.transparentBtn}>
-              Deposit funds
-            </button>
+            <>
+              {props.founderAddress?.toLowerCase() ===
+              walletId?.toLowerCase() ? (
+                <button
+                  onClick={handleToggle}
+                  className={styles.transparentBtn}
+                >
+                  Deposit funds
+                </button>
+              ) : (
+                <div></div>
+              )}
+            </>
           )}
         </div>
         <div className={styles['org-edit-project-row']}>
           <span className={styles['by-org-name']}>
-            <p className={styles['founder-name']}>
-              by&nbsp;&nbsp;{props.organisationName}
-            </p>
+            <div
+              onClick={() =>
+                window.open(
+                  `${config.AppDomain}/organisation/${props.organisationId}`
+                )
+              }
+            >
+              <p className={styles['founder-name']}>
+                by&nbsp;&nbsp;{props.organisationName}
+              </p>
+            </div>
             {selectedProjectAddress && (
               <VerifiedIcon
                 className={styles['project-verified']}
