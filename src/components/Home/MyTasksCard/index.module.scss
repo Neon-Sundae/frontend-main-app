@@ -1,0 +1,135 @@
+.avatar-container {
+  z-index: 10;
+  display: flex;
+  margin-top: 5px;
+
+  .builder-avatar {
+    background-color: #d39bff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid white;
+    margin-left: -20px;
+
+    :last-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.card {
+  width: 95%;
+  height: 140px;
+  color: white;
+  background: linear-gradient(126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%);
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(40px);
+  /* Note: backdrop-filter has minimal browser support */
+
+  border-radius: 20px;
+  border: 0.44px solid rgba(211, 155, 255, 1);
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding: 10px 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  &>div,
+  &>h4 {
+    margin-bottom: 4px;
+  }
+}
+
+.category-action-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-category {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 400;
+  font-size: 10px;
+  padding: 2px 12px;
+
+  border: 0.7px solid #e0b9ff;
+  color: #e0b9ff;
+  border-radius: 20px;
+
+  max-width: 103px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+ 
+
+.avatar-image-wrapper {
+  width: 33px;
+  height: 33px;
+
+  &>img {
+    width: 110%;
+    height: 110%;
+  }
+}
+
+.task-name {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 16px;
+  color: white;
+}
+
+.task-organisation-name {
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 500;
+  font-size: 10px;
+  color: white;
+}
+
+.task-name,
+.task-organisation-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 180px;
+}
+
+.rating-price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-container {
+  display: flex;
+}
+
+.rating-star {
+  color: #fff1ac;
+  font-size: 18px;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+
+  &>div {
+    width: 18px;
+    height: 18px;
+  }
+
+  &>span {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 12px;
+    color: white;
+    margin-left: 7px;
+  }
+}
