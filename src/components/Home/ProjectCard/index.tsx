@@ -37,7 +37,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
         style={{ cursor: 'pointer' }}
       >
         <Card
-          className={styles['project-card']}
+          className={clsx(styles['project-card'], styles['glass-grid'])}
           showTransparentBg
           width={width}
         >
@@ -83,7 +83,12 @@ const ProjectCard: FC<ProjectCardProps> = ({
       }}
       style={{ cursor: 'pointer' }}
     >
-      <Card className={styles['project-card']} showTransparentBg width={width}>
+      <Card
+        className={styles['project-card']}
+        showTransparentBg
+        width={width}
+        location={location}
+      >
         <>
           <header>
             {orgImage ? (
@@ -123,6 +128,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 ProjectCard.defaultProps = {
   width: '215px',
   location: 'home',
+  orgImage: '',
 };
 
 export default ProjectCard;
