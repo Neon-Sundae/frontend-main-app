@@ -10,6 +10,8 @@ import Tasks from '../Tasks';
 import Banner from '../Banner';
 import Projects from '../Projects';
 import styles from './index.module.scss';
+import MyTasks from '../MyTasks';
+import MyProjects from '../MyProjects';
 
 const Landing: FC = () => {
   // const { offChainProfile } = useFetchOffChainProfile();
@@ -44,6 +46,12 @@ const Landing: FC = () => {
         <section className={styles.content}>
           <Projects />
           <Tasks data={data} />
+        </section>
+        <section className={styles.content}>
+          <MyTasks />
+        </section>
+        <section className={styles['my-projects-wrap']}>
+          <MyProjects />
         </section>
       </div>
     );
