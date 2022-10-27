@@ -1,0 +1,45 @@
+.my-tasks-container {
+  color: #fff;
+  width: 100%;
+  position: relative;
+
+  & h3 {
+    position: absolute;
+    left: 0;
+    bottom: 110%;
+    font-size: 21px;
+    font-family: var(--font-family-roboto-regular);
+  }
+}
+.my-tasks- {
+  display: flex;
+}
+
+.my-task-cards-wrapper {
+  display: flex;
+  overflow-x: auto;
+  padding: 25px 0;
+  & > div {
+    display: grid;
+    grid-template-columns: 280px;
+
+  }
+}
+
+.glass {
+  margin: auto;
+  padding: 25px;
+  background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.004) 12.11%, rgba(255, 255, 255, 0.001) 73.08%);
+  box-shadow: 0px 3.40709px 20.4425px -0.851771px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(17.0354px);
+  width: 100%;
+  border: 0.7px solid rgb(224, 185, 255);
+  border-radius: 17px;
+  min-height: 290px;
+  background: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+  backdrop-filter: blur(40px);
+  -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+  -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+  box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+}
