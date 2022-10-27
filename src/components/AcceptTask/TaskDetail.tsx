@@ -22,9 +22,9 @@ import { useCancelTask, useDeleteTask } from './hooks';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
-  project_name: string;
+  project_name?: string;
   handleCommit: any;
-  project_founder: string;
+  project_founder?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -160,13 +160,11 @@ const TaskDetail: FC<ITaskDetail> = ({
         {selectedTask?.taskSkills?.length > 0 && (
           <div className={styles['project-attachments']}>
             {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
-
               <FileSkillsCard
                 key={index}
                 label="Wireframes v1.0"
                 skills={taskSkills.name}
               />
-
             ))}
           </div>
         )}
@@ -285,6 +283,11 @@ const TaskDetail: FC<ITaskDetail> = ({
       )}
     </div>
   );
+};
+
+TaskDetail.defaultProps = {
+  project_founder: '',
+  project_name: '',
 };
 
 interface IFounderCancelTaskContainer {
