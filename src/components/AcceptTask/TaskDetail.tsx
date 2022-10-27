@@ -256,7 +256,7 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
-            {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
+            {project_founder?.toLowerCase() === walletId?.toLowerCase() ? (
               founderTaskAction()
             ) : (
               <>
