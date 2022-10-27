@@ -261,6 +261,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
             flProjectCategory={flProjectCategory}
+            editable
           />
         )}
         {openSelectBuilder && (
