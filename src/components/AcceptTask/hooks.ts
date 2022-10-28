@@ -91,13 +91,13 @@ const useSelectBuilder = () => {
         TaskAbi.abi as AbiItem[],
         taskContractAddress
       );
-      console.log(price * 10 ** 6);
+      console.log(price * Math.pow(10, 6));
       const result = await taskContract.methods
         .createTask(
           projectAddress,
           builderInfo?.Profile?.user?.walletId,
           taskName,
-          Number(price * 10 ** 6).toFixed(0),
+          Number(price * Math.pow(10, 6)).toFixed(0),
           xp,
           difficulty
         )
