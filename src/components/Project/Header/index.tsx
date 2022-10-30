@@ -80,7 +80,6 @@ const Header: FC<IHeaderProps> = props => {
 
   return (
     <div className={styles.container}>
-      {console.log(props)}
       <div className={styles['project-info']}>
         <div className={styles['name-publish-btn-row']}>
           <p className={styles['project-name']}>{props.projectName}</p>
@@ -93,7 +92,7 @@ const Header: FC<IHeaderProps> = props => {
               Publish a Project
             </button>
           ) : (
-            <>
+            <div>
               {props.founderAddress?.toLowerCase() ===
               walletId?.toLowerCase() ? (
                 <button
@@ -103,9 +102,9 @@ const Header: FC<IHeaderProps> = props => {
                   Deposit funds
                 </button>
               ) : (
-                <div></div>
+                <div />
               )}
-            </>
+            </div>
           )}
         </div>
         <div className={styles['org-edit-project-row']}>

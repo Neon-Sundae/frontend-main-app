@@ -15,12 +15,10 @@ import { handleApiErrors } from 'utils/handleApiErrors';
 interface IUpdateProfileDetailsParameters {
   userId?: number | undefined;
   profileId?: number | undefined;
-  name?: string;
-  title?: string;
-  description?: string;
+  name: string;
+  title: string;
+  description: string;
   picture?: string | null | undefined;
-  email?: string | null | undefined;
-  discordId?: string | null | undefined;
 }
 
 const useUpdateProfileDetails = () => {
@@ -32,8 +30,6 @@ const useUpdateProfileDetails = () => {
     title,
     description,
     picture,
-    email,
-    discordId,
   }: IUpdateProfileDetailsParameters) => {
     const accessToken = getAccessToken();
 
@@ -50,8 +46,6 @@ const useUpdateProfileDetails = () => {
             title,
             description,
             picture,
-            email,
-            discordId,
           };
           const response = await fetch(
             `${config.ApiBaseUrl}/user/updateUserAndProfile`,
