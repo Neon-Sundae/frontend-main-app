@@ -13,12 +13,14 @@ import { useQuery } from '@tanstack/react-query';
 import { handleApiErrors } from 'utils/handleApiErrors';
 
 interface IUpdateProfileDetailsParameters {
-  userId: number | undefined;
-  profileId: number | undefined;
-  name: string;
-  title: string;
-  description: string;
+  userId?: number | undefined;
+  profileId?: number | undefined;
+  name?: string;
+  title?: string;
+  description?: string;
   picture?: string | null | undefined;
+  email?: string | null | undefined;
+  discordId?: string | null | undefined;
 }
 
 const useUpdateProfileDetails = () => {
@@ -30,6 +32,8 @@ const useUpdateProfileDetails = () => {
     title,
     description,
     picture,
+    email,
+    discordId,
   }: IUpdateProfileDetailsParameters) => {
     const accessToken = getAccessToken();
 
@@ -46,6 +50,8 @@ const useUpdateProfileDetails = () => {
             title,
             description,
             picture,
+            email,
+            discordId,
           };
           const response = await fetch(
             `${config.ApiBaseUrl}/user/updateUserAndProfile`,

@@ -1,34 +1,46 @@
 import { IUser } from 'actions/user';
-import { UPDATE_USER, UPDATE_USER_NAME, GET_WALLET_ADDRESS, GET_WALLET_USDC_BALANCE } from 'actions/user/types';
+import {
+  UPDATE_USER,
+  UPDATE_USER_NAME,
+  GET_WALLET_ADDRESS,
+  GET_WALLET_USDC_BALANCE,
+  UPDATE_USER_DISCORD,
+} from 'actions/user/types';
 
 interface State {
   user: Partial<IUser> | undefined;
-  wallet_address: string,
-  wallet_usdc_balance: number
+  wallet_address: string;
+  wallet_usdc_balance: number;
+  discordId: string;
 }
 
 type Action =
   | {
-    type: typeof UPDATE_USER;
-    user: Partial<IUser>;
-  }
+      type: typeof UPDATE_USER;
+      user: Partial<IUser>;
+    }
   | {
-    type: typeof UPDATE_USER_NAME;
-    name: string;
-  }
+      type: typeof UPDATE_USER_NAME;
+      name: string;
+    }
   | {
-    type: typeof GET_WALLET_ADDRESS;
-    payload: string;
-  }
+      type: typeof GET_WALLET_ADDRESS;
+      payload: string;
+    }
   | {
-    type: typeof GET_WALLET_USDC_BALANCE;
-    payload: string;
-  };
+      type: typeof GET_WALLET_USDC_BALANCE;
+      payload: string;
+    }
+  | {
+      type: typeof UPDATE_USER_DISCORD;
+      discordId: string;
+    };
 
 const initialState: State = {
   user: undefined,
   wallet_address: '',
-  wallet_usdc_balance: 0
+  wallet_usdc_balance: 0,
+  discordId: '',
 };
 
 const user = (state = initialState, action: Action): State => {
@@ -55,6 +67,14 @@ const user = (state = initialState, action: Action): State => {
       return {
         ...state,
         wallet_usdc_balance: Number(action.payload),
+      };
+    case UPDATE_USER_DISCORD:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          discordId: action.discordId,
+        },
       };
     default:
       return { ...state };

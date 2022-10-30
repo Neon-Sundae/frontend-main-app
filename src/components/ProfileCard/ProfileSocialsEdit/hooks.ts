@@ -2,6 +2,7 @@ import {
   IUpdateProfileSocial,
   updateProfileSocialAction,
 } from 'actions/profile';
+import { updateUserDiscord, IUpdateUser } from 'actions/user';
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -77,4 +78,40 @@ const useUpdateProfileSocial = () => {
   return updateProfileSocial;
 };
 
-export default useUpdateProfileSocial;
+const useUpdateUserDiscordUserName = () => {
+  const dispatch = useDispatch();
+  const updateUserDiscordUName = ({ userId, discordId }: IUpdateUser) => {
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      const ac = new AbortController();
+      const { signal } = ac;
+      (async () => {
+        try {
+          const payload = {
+            discordId,
+          };
+          const response = await fetch(
+            `${config.ApiBaseUrl}/user/${Number(userId)}`,
+            {
+              signal,
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+          await handleApiErrors(response);
+          dispatch(updateUserDiscord(discordId));
+        } catch (err) {
+          console.log('err', err);
+          handleUnAuthorization(err);
+        }
+      })();
+    }
+  };
+  return updateUserDiscordUName;
+};
+
+export { useUpdateProfileSocial, useUpdateUserDiscordUserName };
