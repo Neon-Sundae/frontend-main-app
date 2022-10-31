@@ -10,6 +10,7 @@ import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carb
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
 import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
+import { ReactComponent as NinjaIcon } from 'assets/illustrations/icons/ninja.svg';
 import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
@@ -96,7 +97,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   const reformatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-GB');
   };
-
+  console.log('selectedTask', selectedTask?.taskSkills);
   return (
     <div>
       <div className={styles['avatar-container']}>
@@ -130,7 +131,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                   )
                 )
             ) : (
-              <>
+              <div>
                 {selectedTask?.profileTask
                   .slice(0, 5)
                   .map((item: any, index: number) =>
@@ -150,26 +151,34 @@ const TaskDetail: FC<ITaskDetail> = ({
                       />
                     )
                   )}
-              </>
+              </div>
             )}
           </div>
         )}
       </div>
       <div className={styles['project-description']}>
-        <p> Skills:</p>
-        {selectedTask?.taskSkills?.length > 0 && (
-          <div className={styles['project-attachments']}>
-            {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
-
-              <FileSkillsCard
-                key={index}
-                label="Wireframes v1.0"
-                skills={taskSkills.name}
-              />
-
-            ))}
+        <span className={styles['task-details-skills-inline']}>
+          <div>
+            <NinjaIcon width="24px" height="24px" />
+            <p>Skills Needed:</p>
           </div>
-        )}
+          {selectedTask?.taskSkills?.length > 0 && (
+            <div className={styles['project-attachments']}>
+              {selectedTask?.taskSkills?.map(
+                (taskSkill: any, index: number) => {
+                  console.log('taskSkill', taskSkill);
+                  return (
+                    <FileSkillsCard
+                      key={index}
+                      label="Wireframes v1.0"
+                      skills={taskSkill.name}
+                    />
+                  );
+                }
+              )}
+            </div>
+          )}{' '}
+        </span>
       </div>
       <div className={styles['project-details']}>
         <div>
