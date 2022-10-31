@@ -17,6 +17,7 @@ interface IEditTask {
   selectedTask: any;
   flProjectCategory: any;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  projectFounder: string;
 }
 
 const EditTask: FC<IEditTask> = ({
@@ -24,6 +25,7 @@ const EditTask: FC<IEditTask> = ({
   selectedTask,
   flProjectCategory,
   setOpen,
+  projectFounder,
 }) => {
   const normCategories = normalizeCategories(flProjectCategory);
   const [taskName, setTaskName] = useState('');
