@@ -13,6 +13,7 @@ import {
   USDCAddress,
 } from 'contracts/contracts';
 import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
+import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
 import { RootState } from 'reducers';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
@@ -215,7 +216,7 @@ const useCommitToTask = () => {
 
       // TODO: change USDCAbi to FNDRAbi
       const FNDRContract = new web3.eth.Contract(
-        USDCAbi.abi as AbiItem[],
+        FNDRAbi.abi as AbiItem[],
         FNDRAddress
       );
       const balance = await FNDRContract.methods.balanceOf(walletId).call();
@@ -268,8 +269,8 @@ const useCommitToTask = () => {
     try {
       const web3 = getWeb3Instance();
       const FNDRContract = new web3.eth.Contract(
-        USDCAbi.abi as AbiItem[],
-        USDCAddress
+        FNDRAbi.abi as AbiItem[],
+        FNDRAddress
       );
       const balance = await FNDRContract.methods.balanceOf(walletId).call();
       setFNDRBalance(Number(web3.utils.fromWei(String(balance), 'ether')));
