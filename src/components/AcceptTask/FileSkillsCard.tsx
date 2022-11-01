@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import styles from './index.module.scss';
 
 interface IFileSkillsCard {
-  label: string;
+  label?: string;
   skills?: string;
 }
 
@@ -16,14 +16,15 @@ const FileSkillsCard: FC<IFileSkillsCard> = ({ label, skills }) => {
           attachment
         </i>
       )}
-
-      <span>{skills ?? label}</span>
+      {skills && <span>{skills}</span>}
+      {label && <span>{label}</span>}
     </div>
   );
 };
 
 FileSkillsCard.defaultProps = {
   skills: '',
+  label: '',
 };
 
 export default FileSkillsCard;

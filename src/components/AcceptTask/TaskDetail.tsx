@@ -167,13 +167,7 @@ const TaskDetail: FC<ITaskDetail> = ({
               {selectedTask?.taskSkills?.map(
                 (taskSkill: any, index: number) => {
                   console.log('taskSkill', taskSkill);
-                  return (
-                    <FileSkillsCard
-                      key={index}
-                      label="Wireframes v1.0"
-                      skills={taskSkill.name}
-                    />
-                  );
+                  return <FileSkillsCard key={index} skills={taskSkill.name} />;
                 }
               )}
             </div>
@@ -258,9 +252,17 @@ const TaskDetail: FC<ITaskDetail> = ({
             {selectedTask?.taskAttachment?.length > 0 && (
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
-                  (file: any, index: number) => (
-                    <FileSkillsCard key={index} label="Wireframes v1.0" />
-                  )
+                  (file: any, index: number) => {
+                    console.log('file', file);
+                    return (
+                      <FileSkillsCard
+                        key={index}
+                        label={file.url
+                          .substr(file.url.lastIndexOf('/') + 1)
+                          .replace(/%20/g, ' ')}
+                      />
+                    );
+                  }
                 )}
               </div>
             )}
