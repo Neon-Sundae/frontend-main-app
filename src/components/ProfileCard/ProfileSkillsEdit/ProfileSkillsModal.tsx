@@ -70,6 +70,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
           value={selectedSkill}
           name="ProfileSkills"
           onSelectChange={handleSelectChange}
+          isMulti
         />
       </div>
       <div className={styles['profile-skill-modal-tag-container']}>

@@ -176,6 +176,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               borderColor={error.categoryError ? '#c0392b' : 'white'}
               borderRadius={10}
               height={50}
+              isMulti={false}
             />
           </div>
         </div>
@@ -200,6 +201,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               borderColor={error.difficultyError ? '#c0392b' : 'white'}
               borderRadius={10}
               height={50}
+              isMulti={false}
             />
           </div>
           <div className={styles['difficulty-price-container']}>
@@ -228,6 +230,8 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
           setSelectedSkill={setSelectedSkill}
           taskSkills={taskSkills}
           setTaskSkills={setTaskSkills}
+          showModal
+          isMulti
         />
         <div className={styles['create-task-form-row']}>
           <div

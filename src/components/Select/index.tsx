@@ -1,7 +1,12 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable no-nested-ternary */
 import { FC } from 'react';
-import Select, { ActionMeta, SingleValue, StylesConfig } from 'react-select';
+import Select, {
+  ActionMeta,
+  SingleValue,
+  MultiValue,
+  StylesConfig,
+} from 'react-select';
 
 export type Option =
   | {
@@ -15,21 +20,20 @@ export type Option =
   | {
       value: number;
       label: JSX.Element;
-    };
+    }
+  | { label: string; value: number };
 
 interface ComponentProps {
   options: Option[];
   placeholder: string;
   name: string;
-  onSelectChange: (
-    newValue: SingleValue<Option>,
-    actionMeta: ActionMeta<Option>
-  ) => void;
+  onSelectChange: (newValue: any, actionMeta: ActionMeta<Option>) => void;
   value: SingleValue<Option>;
   borderColor?: string;
   borderRadius?: number;
   height?: number;
   width?: string;
+  isMulti: boolean;
 }
 
 const SelectComponent: FC<ComponentProps> = ({
@@ -42,6 +46,7 @@ const SelectComponent: FC<ComponentProps> = ({
   borderRadius,
   height,
   width,
+  isMulti,
 }) => {
   const getSharedSelectProps = () => {
     return {
@@ -126,6 +131,28 @@ const SelectComponent: FC<ComponentProps> = ({
     }),
     singleValue: (styles, { data }) => ({ ...styles, color: 'white' }),
     indicatorSeparator: styles => ({ ...styles, display: 'none' }),
+    multiValue: (styles, { data }) => {
+      // const color = chroma(data.color);
+      return {
+        ...styles,
+        backgroundColor: 'none',
+      };
+    },
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: '#fff',
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: '#fff',
+      fonfontFamily: "'Roboto Flex', sans-serif",
+      fontSize: 14,
+
+      ':hover': {
+        // backgroundColor: data.color,
+        color: 'red',
+      },
+    }),
   };
 
   return (
@@ -137,7 +164,7 @@ const SelectComponent: FC<ComponentProps> = ({
       value={value}
       isSearchable={false}
       styles={customStyles}
-      isMulti={false}
+      isMulti={isMulti}
     />
   );
 };
