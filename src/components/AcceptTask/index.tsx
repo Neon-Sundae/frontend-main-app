@@ -64,7 +64,7 @@ const AcceptTask: FC<IAcceptTask> = ({
       width="clamp(20rem, 45vw, 45rem)"
       maxHeight="min(90%, 45rem)"
       overflowY="auto"
-      padding="42px"
+      padding="55px"
     >
       {taskEdit && (
         <EditTask

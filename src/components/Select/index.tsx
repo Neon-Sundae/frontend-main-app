@@ -140,14 +140,14 @@ const SelectComponent: FC<ComponentProps> = ({
     },
     multiValueLabel: (styles, { data }) => ({
       ...styles,
+      fontFamily: "'Roboto Flex', sans-serif",
+      fontSize: '14',
       color: '#fff',
     }),
     multiValueRemove: (styles, { data }) => ({
       ...styles,
       color: '#fff',
-      fonfontFamily: "'Roboto Flex', sans-serif",
-      fontSize: 14,
-
+      fontSize: '16',
       ':hover': {
         // backgroundColor: data.color,
         color: 'red',

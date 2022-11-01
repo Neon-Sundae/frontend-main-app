@@ -378,7 +378,7 @@
   border: 0.6px solid #e8e8e8;
   border-radius: 10px;
   padding: 5px 10px;
-
+  margin-bottom: 10px;
   &>i {
     font-size: 20px;
     transform: rotate(-36deg);
@@ -698,8 +698,9 @@
 }
 
 .edit-btn {
+  cursor: pointer;
   position: absolute;
-  right: 0;
+  right: 25px;
   text-transform: capitalize;
   font-family: var(--font-family-roboto-flex);
   font-weight: 400;

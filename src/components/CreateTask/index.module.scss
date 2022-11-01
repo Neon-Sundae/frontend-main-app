@@ -2,7 +2,6 @@ $error-color: #c0392b;
 
 .page-container {
   background-color: #242529;
- 
 }
 
 .create-task-title {
@@ -33,7 +32,7 @@ $error-color: #c0392b;
   outline: none;
   border-radius: 10px;
   padding: 0 15px;
-  
+
   font-family: var(--font-family-roboto-flex);
   font-weight: 100;
   font-size: 14px;
@@ -140,14 +139,14 @@ input[type='number']::-webkit-outer-spin-button {
   margin-bottom: 20px;
   // z-index: 1;
 
-  & > span {
+  &>span {
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
     font-size: 14px;
     margin-right: 15px;
   }
 
-  & > i {
+  &>i {
     font-size: 20px;
     cursor: pointer;
   }
@@ -156,7 +155,7 @@ input[type='number']::-webkit-outer-spin-button {
 .task-checklist-container {
   // z-index: 1;
   flex-grow: 1;
-  width: min(100%, 15rem);
+  width: 286px;
 }
 
 .add-more-btn {
@@ -169,8 +168,9 @@ input[type='number']::-webkit-outer-spin-button {
   align-items: center;
   padding: 0 10px;
   cursor: pointer;
+
   // z-index: 1;
-  & > i {
+  &>i {
     margin-left: 2px;
     font-size: 12px;
   }
@@ -183,14 +183,14 @@ input[type='number']::-webkit-outer-spin-button {
   margin-bottom: 20px;
   width: 100%;
 
-  & > span {
+  &>span {
     width: 14px;
     height: 14px;
     border: 0.56491px solid #FFFFFF;
     border-radius: 3px;
   }
 
-  & > input {
+  &>input {
     border: none;
     outline: none;
     background: transparent;
@@ -202,22 +202,25 @@ input[type='number']::-webkit-outer-spin-button {
     width: min(100%, 20rem);
   }
 
-  & > i {
+  &>i {
     color: white;
     font-size: 22px;
     cursor: pointer;
   }
 }
 
-.task-attachments-container {
-  // z-index: 1;
-  flex-grow: 1;
-  width: min(100%, 15rem);
+.create-task-form-row {
+  &>.task-attachments-container {
+    z-index: 1;
+    flex-grow: 1;
+    // width: min(100%, 15rem);
+    width: 265px;
+  }
 }
 
 .file-input-container {
   min-height: 120px;
-  width: min(30rem, 100%);
+  width: 100%;
   border: 0.56491px dashed #F5F5F5;
   border-radius: 4px;
   display: flex;
@@ -247,11 +250,11 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 10px;
   padding: 5px 10px;
 
-  & > i {
+  &>i {
     font-size: 20px;
   }
 
-  & > span {
+  &>span {
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
     font-size: 14px;
@@ -263,7 +266,7 @@ input[type='number']::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
 
-  & > span {
+  &>span {
     font-size: 14px;
   }
 }

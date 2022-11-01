@@ -138,8 +138,11 @@ const EditTask: FC<IEditTask> = ({
   };
   checkListData();
   return (
-    <>
+    <div className={styles['edit-modal-wrap']}>
       <h2 className={styles.editModalHead}>Edit Task</h2>
+      {/* FIXME: br no good! */}
+      <br />
+      <br />
       <div className={styles.showInColumn}>
         <span>
           <label htmlFor="taskName" className={styles.label}>
@@ -231,17 +234,18 @@ const EditTask: FC<IEditTask> = ({
           />
         </span>
       </div>
-
-      <TaskSkills
-        previouslySelectedSkills={previouslySelectedSkills}
-        setPreviouslySelectedSkills={setPreviouslySelectedSkills}
-        selectedSkill={selectedSkill}
-        setSelectedSkill={setSelectedSkill}
-        taskSkills={taskSkills}
-        setTaskSkills={setTaskSkills}
-        isMulti
-        showModal={false}
-      />
+      <div className={styles['skills-wrapper']}>
+        <TaskSkills
+          previouslySelectedSkills={previouslySelectedSkills}
+          setPreviouslySelectedSkills={setPreviouslySelectedSkills}
+          selectedSkill={selectedSkill}
+          setSelectedSkill={setSelectedSkill}
+          taskSkills={taskSkills}
+          setTaskSkills={setTaskSkills}
+          isMulti
+          showModal={false}
+        />
+      </div>
       <div className={styles.showInColumn}>
         <span>
           <label htmlFor="taskChecklist" className={styles.label} />
@@ -277,7 +281,7 @@ const EditTask: FC<IEditTask> = ({
           Save
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

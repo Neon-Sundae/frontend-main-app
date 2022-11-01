@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-nested-ternary */
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
@@ -54,7 +56,12 @@ const SelectBuilder: FC<ISelectBuilder> = ({
     }
   };
   return (
-    <Modal onClose={handleClose} width="550px" height="500px">
+    <Modal
+      onClose={handleClose}
+      width="550px"
+      height="500px"
+      padding="33px 55px"
+    >
       {pending === 'add_funds' ? (
         <DepositFundsToWallet />
       ) : (
@@ -73,24 +80,23 @@ const SelectBuilder: FC<ISelectBuilder> = ({
               ? 'Failed'
               : 'Select Builder'}
           </h1>
-       
+
           {pending === 'initial' ? (
             <>
-               <div className={styles['selected-builder-details']}>
-            <img
-              src={selectedBuilder.Profile.picture}
-              alt=""
-              width="70.51px"
-              height="70.51px"
-            />
-            <p>
-              <a href="#">{selectedBuilder.Profile.user.name} </a>
-              <br />
-              {selectedBuilder.Profile.title}
-            </p>
-          </div>
+              <div className={styles['selected-builder-details']}>
+                <img
+                  src={selectedBuilder.Profile.picture}
+                  alt=""
+                  width="70.51px"
+                  height="70.51px"
+                />
+                <p>
+                  <a href="#">{selectedBuilder.Profile.user.name} </a>
+                  <br />
+                  {selectedBuilder.Profile.title}
+                </p>
+              </div>
               <div>
-                
                 <div>
                   <span>Project Amount</span>
                   <span>

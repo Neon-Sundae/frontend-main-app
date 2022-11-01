@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -165,10 +166,9 @@ const TaskDetail: FC<ITaskDetail> = ({
           {selectedTask?.taskSkills?.length > 0 && (
             <div className={styles['project-attachments']}>
               {selectedTask?.taskSkills?.map(
-                (taskSkill: any, index: number) => {
-                  console.log('taskSkill', taskSkill);
-                  return <FileSkillsCard key={index} skills={taskSkill.name} />;
-                }
+                (taskSkill: any, index: number) => (
+                  <FileSkillsCard key={index} skills={taskSkill.name} />
+                )
               )}
             </div>
           )}{' '}
@@ -272,7 +272,7 @@ const TaskDetail: FC<ITaskDetail> = ({
             {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
               founderTaskAction()
             ) : (
-              <>
+              <div>
                 {selectedTask?.status === 'open' &&
                 selectedTask?.profileTask.filter(
                   (item: any) => item?.Profile?.user?.walletId === walletId
@@ -287,9 +287,9 @@ const TaskDetail: FC<ITaskDetail> = ({
                   ).length > 0 ? (
                   <button onClick={handleCommit}>Commit to task</button>
                 ) : (
-                  <></>
+                  <p> </p>
                 )}
-              </>
+              </div>
             )}
           </div>
         </>

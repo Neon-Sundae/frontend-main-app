@@ -231,7 +231,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
           taskSkills={taskSkills}
           setTaskSkills={setTaskSkills}
           showModal
-          isMulti
+          isMulti={false}
         />
         <div className={styles['create-task-form-row']}>
           <div
