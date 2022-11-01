@@ -144,11 +144,20 @@ label {
 .emptySpan{
   width: 200px;
 }
+
+ 
+ 
+
+
 .task-name-field {
   @media (max-width: 1440px)  {
     width: 250.16px;
         
   }
+  position: relative;
+  padding: 10px;
+  color-scheme: dark;
+
   background: #2d2d35;
   color: white;
   border: 0.56491px solid #FFFFFF;
@@ -171,9 +180,25 @@ label {
   }
 
   &::-webkit-calendar-picker-indicator {
-    display: none;
+    color: transparent;
+    background: none;
+    z-index: 1;
   }
 }
+.task-name-field:before {
+  color: transparent;
+  background: none;
+  display: block;
+  content: '📆';
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: #fff;
+  cursor: pointer;
+}
+
 .skills-wrapper {
   margin-top: 25px;
 }

@@ -25,7 +25,21 @@ $error-color: #c0392b;
   margin-bottom: 25px;
 }
 
+.task-name-field:before {
+  color: transparent;
+  background: none;
+  display: block;
+  content: '📆';
+  width: 15px;
+  height: 20px;
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: #fff;
+}
 .task-name-field {
+  position: relative;
+  padding: 10px;
   background: #2d2d35;
   color: white;
   border: 0.56491px solid #FFFFFF;
@@ -39,6 +53,7 @@ $error-color: #c0392b;
   height: 38px;
 
   flex-grow: 1;
+  color-scheme: dark;
 
   &::placeholder {
     font-family: var(--font-family-roboto-flex);
@@ -48,8 +63,11 @@ $error-color: #c0392b;
   }
 
   &::-webkit-calendar-picker-indicator {
-    background-color: white;
+    background-color: none;
     cursor: pointer;
+    color: transparent;
+    background: none;
+    z-index: 1;
   }
 
   &--error {
