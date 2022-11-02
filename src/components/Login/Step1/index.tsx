@@ -21,7 +21,7 @@ const Step1: FC = () => {
 
   return (
     <>
-      <h1 className={styles.title}>Welcome to Founders Lab!</h1>
+      <h1 className={styles.title}>Welcome to Neon Sundae!</h1>
       <p className={styles.subtitle}>connect your wallet to get started.</p>
       <IconButton
         handleClick={loginWithMetaMask}
