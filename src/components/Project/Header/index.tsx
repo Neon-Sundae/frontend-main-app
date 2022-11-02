@@ -4,6 +4,7 @@ import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
+import config from 'config';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
 import { toggleWalletDrawer } from 'actions/app';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
@@ -18,6 +19,7 @@ interface IHeaderProps {
   founderAddress: string;
   organisationName: string;
   organisationOwnerWalletId: string;
+  organisationId: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -79,16 +81,34 @@ const Header: FC<IHeaderProps> = props => {
               Publish a Project
             </button>
           ) : (
-            <button onClick={handleToggle} className={styles.transparentBtn}>
-              Deposit funds
-            </button>
+            <div>
+              {props.founderAddress?.toLowerCase() ===
+              walletId?.toLowerCase() ? (
+                <button
+                  onClick={handleToggle}
+                  className={styles.transparentBtn}
+                >
+                  Deposit funds
+                </button>
+              ) : (
+                <div />
+              )}
+            </div>
           )}
         </div>
         <div className={styles['org-edit-project-row']}>
           <span className={styles['by-org-name']}>
-            <p className={styles['founder-name']}>
-              by&nbsp;&nbsp;{props.organisationName}
-            </p>
+            <div
+              onClick={() =>
+                window.open(
+                  `${config.AppDomain}/organisation/${props.organisationId}`
+                )
+              }
+            >
+              <p className={styles['founder-name']}>
+                by&nbsp;&nbsp;{props.organisationName}
+              </p>
+            </div>
             {selectedProjectAddress && (
               <VerifiedIcon
                 className={styles['project-verified']}

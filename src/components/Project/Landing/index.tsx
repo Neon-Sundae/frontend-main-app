@@ -52,6 +52,7 @@ const Landing: FC = () => {
     preferredTimeZones,
     flResources,
     organisation,
+    organisationId,
   } = projectData;
 
   return projectData ? (
@@ -64,6 +65,7 @@ const Landing: FC = () => {
         founderAddress={organisation?.organisationUser[0]?.walletId}
         organisationName={organisation?.name}
         organisationOwnerWalletId={organisation?.organisationUser[0]?.walletId}
+        organisationId={organisationId}
       />
       <Description
         description={description}
