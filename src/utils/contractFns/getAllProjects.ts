@@ -14,6 +14,8 @@ const getAllProjects = async (
   try {
     const web3 = getWeb3Instance();
 
+    console.log('getting all projects from chain');
+
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
       projectFactoryAddress

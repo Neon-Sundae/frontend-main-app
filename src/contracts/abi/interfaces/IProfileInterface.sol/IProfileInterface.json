@@ -9,11 +9,6 @@
           "internalType": "uint256",
           "name": "_amount",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_projectTaskAddress",
-          "type": "address"
         }
       ],
       "name": "updateUSDCAmount",
@@ -27,11 +22,6 @@
           "internalType": "uint256",
           "name": "_xp",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_projectTaskAddress",
-          "type": "address"
         }
       ],
       "name": "updateXP",

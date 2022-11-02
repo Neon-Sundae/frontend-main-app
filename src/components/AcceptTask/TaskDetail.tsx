@@ -8,7 +8,7 @@ import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/categ
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
-import calculateTaskXP from 'utils/calculateTaskXp';
+import calculateTaskXP from 'utils/contractFns/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';

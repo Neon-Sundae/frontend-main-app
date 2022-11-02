@@ -9,13 +9,15 @@ const getFndrBalance = async (address: string | undefined) => {
 
     const web3 = getWeb3Instance();
 
+    console.log('Getting FNDR balance');
+
     const FndrContract = new web3.eth.Contract(
       FNDRAbi.abi as AbiItem[],
       FNDRAddress
     );
     const balance = await FndrContract.methods.balanceOf(address).call();
 
-    return balance / 10 ** 6;
+    return balance / 10 ** 4;
   } catch (error) {
     console.log(error);
     throw new Error('Failed to get the FNDR balance');

@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import { ethers } from 'ethers';
 import config from 'config';
 import { getAccessToken } from './authFn';
 import decodeToken from './decodeToken';
@@ -98,4 +99,9 @@ export const handleAccountsChanged = (accounts: any[]) => {
 export const getWeb3Instance = () => {
   const web3Instance = new Web3(Web3.givenProvider || 'http://localhost:8545');
   return web3Instance;
-}
+};
+
+export const getEthersInstance = () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  return provider;
+};

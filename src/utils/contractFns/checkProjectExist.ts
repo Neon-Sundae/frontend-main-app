@@ -12,15 +12,17 @@ const checkProjectExist = async (
 
     const web3 = getWeb3Instance();
 
+    console.log('check project exist on chain');
+
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
       projectFactoryAddress
     );
-    const projects = await ProjectFactory.methods
+    const exists = await ProjectFactory.methods
       .checkProjectExist(walletId, projectId)
       .call();
 
-    return projects;
+    return exists;
   } catch (error) {
     console.log(error);
     throw new Error('Failed to get the projects');

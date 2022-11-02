@@ -13,11 +13,11 @@ const getFounderFromProject = async (
       ProjectFactoryAbi.abi as AbiItem[],
       projectFactoryAddress
     );
-    const projects = await ProjectFactory.methods
+    const foundersAddress = await ProjectFactory.methods
       .getFounderFromProjectAddress(projectAddress)
       .call();
 
-    return projects;
+    return foundersAddress;
   } catch (error) {
     console.log(error);
     throw new Error('Failed to get the projects');

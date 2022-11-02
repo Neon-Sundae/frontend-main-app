@@ -15,6 +15,10 @@ const getUsdcBalance = async (address: string | undefined) => {
     );
     const balance = await USDCContract.methods.balanceOf(address).call();
 
+    // TODO - Instead of this, use ethers.utils.formatUnits(value, noOfDecimals)
+    // If the decimals is 18 then ethers.utils.formatEther(value)
+    // TODO - Important - Something opposite of the above function
+
     return balance / 10 ** 6;
   } catch (error) {
     console.log(error);

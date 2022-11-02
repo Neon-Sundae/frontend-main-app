@@ -1,8 +1,5 @@
-import { AbiItem } from 'web3-utils';
 import { fillProfileData, getUSDCBalance, getXP } from 'actions/profile';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWeb3Instance } from 'utils/web3EventFn';
-import profileAbi from 'contracts/abi/Profile.sol/Profile.json';
 import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
@@ -13,24 +10,16 @@ import { normalizeSkills } from 'utils/normalizeSkills';
 import { fillProfileSkillsData } from 'actions/skills';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
+import getProfileDetails from 'utils/contractFns/getProfileDetails';
 
 const useProfile = () => {
-  const web3 = getWeb3Instance();
   const dispatch = useDispatch();
 
-  /**
-   * TODO Proxy
-   * Need a check whether it's working or not
-   */
   const fetchOnChainProfileData = async (address: string) => {
     try {
       if (address !== '0x0000000000000000000000000000000000000000' && address) {
-        const contract = new web3.eth.Contract(
-          profileAbi.abi as AbiItem[],
-          address
-        );
-        const xp = await contract.methods.totalXp().call();
-        const usdc = await contract.methods.usdc().call();
+        const [, , , xp, usdc] = await getProfileDetails(address);
+
         dispatch(getXP(xp));
         dispatch(getUSDCBalance(usdc));
       }

@@ -1,8 +1,4 @@
-import { AbiItem } from 'web3-utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWeb3Instance } from 'utils/web3EventFn';
-import profileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
-import { USDCAddress } from 'contracts/contracts';
 import config from 'config';
 import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
 import { RootState } from 'reducers';
@@ -11,6 +7,7 @@ import { handleApiErrors } from 'utils/handleApiErrors';
 import toast from 'react-hot-toast';
 import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
+import createProfileContract from 'utils/contractFns/createProfileContract';
 
 const useProfileManage = () => {
   const dispatch = useDispatch();
@@ -18,22 +15,12 @@ const useProfileManage = () => {
 
   const accessToken = getAccessToken();
 
-  /**
-   * TODO Proxy
-   * Replace manage with factory
-   */
   const createProfile = async (
     name: string | null | undefined,
     title: string | null | undefined,
     address: string | undefined
   ) => {
     try {
-      const web3 = getWeb3Instance();
-      const profileManageContract = new web3.eth.Contract(
-        profileManageAbi.abi as AbiItem[],
-        profileManageContractAddress
-      );
-
       const isContractDeployed = await getProfileContractAddress(address);
 
       if (isContractDeployed !== '0x0000000000000000000000000000000000000000') {
@@ -41,14 +28,12 @@ const useProfileManage = () => {
         return;
       }
 
-      if (name === null || title === null) {
+      if (!name || !title) {
         toast.error('Profile name or title is empty.');
         return;
       }
 
-      await profileManageContract.methods
-        .createProfile(USDCAddress, name, title)
-        .send({ from: address });
+      await createProfileContract(address, name, title);
 
       const contractAddress = await getProfileContractAddress(address);
       console.log('Deployed profile contract address: ', contractAddress);
