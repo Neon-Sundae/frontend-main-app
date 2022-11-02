@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import createProfileContract from 'utils/contractFns/createProfileContract';
 import config from 'config';
 import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
 import { RootState } from 'reducers';
@@ -7,10 +9,10 @@ import { handleApiErrors } from 'utils/handleApiErrors';
 import toast from 'react-hot-toast';
 import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
-import createProfileContract from 'utils/contractFns/createProfileContract';
 
 const useProfileManage = () => {
   const dispatch = useDispatch();
+  const [deploying, setDeploying] = useState('mint');
   const userId = useSelector((state: RootState) => state.user.user?.userId);
 
   const accessToken = getAccessToken();
@@ -33,7 +35,13 @@ const useProfileManage = () => {
         return;
       }
 
-      await createProfileContract(address, name, title);
+      await createProfileContract(
+        address,
+        name,
+        title,
+        deploying,
+        setDeploying
+      );
 
       const contractAddress = await getProfileContractAddress(address);
       console.log('Deployed profile contract address: ', contractAddress);
@@ -42,6 +50,7 @@ const useProfileManage = () => {
         payload: contractAddress,
       });
       await saveProfileContractAddress(contractAddress);
+      setDeploying('minted');
     } catch (err) {
       console.log(err);
     }
@@ -71,7 +80,7 @@ const useProfileManage = () => {
     }
   };
 
-  return { createProfile };
+  return { createProfile, deploying };
 };
 
 export default useProfileManage;

@@ -1,0 +1,164 @@
+.taskEditContainer {
+ position: absolute;
+  
+}
+ 
+.editModalHead {
+  font-family: var(--font-family-roboto);
+  font-size: 25px;
+  margin-bottom: 15px;
+  display: inline;
+  color: #fff;
+}
+
+.inputField, .label {
+  display:block;
+  color: #fff;
+}
+label {
+  color: #fff;
+
+}
+.inputField {
+
+  @media (max-width: 1440px)  {
+    width: 250.16px;
+        
+  }
+
+  width: 283.16px;
+  height: 39px;
+  border:  0.56491px solid #FFFFFF;
+  border: 0.56491px solid #FFFFFF;
+  background-color: transparent;
+  border-radius: 5px;
+   font-family: var(--font-family-roboto-flex);
+  font-size: 14px;
+  padding: 10.31px 9.89px; 
+}
+.inputField::placeholder, .taskEditDescription::placeholder {
+  margin-left: 10px;
+  font-size: 14px;
+  font-family: var(--font-family-roboto-flex);
+  color: #FBFBFB;
+}
+.label {
+  margin-top: 25px;
+  margin-bottom: 10.25px;
+  font-size: 16px; 
+  font-family: var(--font-family-roboto-flex);
+  color: #fff;
+
+}
+.taskEditDescription {
+
+  
+  border: 0.56491px solid #FFFFFF;
+  background-color: transparent;
+  border-radius: 5px;
+  color: white;
+  font-family: var(--font-family-roboto-flex);
+  font-size: 15px;
+  width: 100%;
+  padding: 10.31px 9.89px;
+}
+.showInColumn {
+  display: flex;
+  justify-content: space-between;
+}
+.saveBtn {
+  border: 1px solid #d39bff;
+  background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+  box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+  width: 180px;
+  height: 55px;
+  backdrop-filter: blur(43.3229px);
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  border-radius: 26.8312px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  position: relative;
+  bottom: -25px;
+}
+.textEditBtnCenter {
+  
+  text-align: center;
+}
+.rating-star {
+  font-size: 12px;
+  margin-left: 5px;
+  color: #fbc579;
+}
+.material-icons {
+  font-size: 12px;
+}
+.attachments {
+  margin-top: 10px;
+  @media (max-width: 1440px)  {
+    width: 250.16px;
+        
+  }
+  width: 283.16px;
+  display: flex; 
+ }
+
+.addMoreBtn, .delBtn{
+  background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font-family: var(--font-family-roboto);
+  font-size: 11.3px;
+	cursor: pointer;
+  color: #fff;
+	outline: inherit;
+}
+ .delete-icon {
+  color: #fff;
+ }
+.checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0.938992px solid #FFFFFF;
+  width: 14.08px;
+  height: 14.08px;
+  border-radius: 2.81698px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.emptySpan{
+  width: 200px;
+}
+.task-name-field {
+  @media (max-width: 1440px)  {
+    width: 250.16px;
+        
+  }
+  background: #2d2d35;
+  color: white;
+  border: 0.56491px solid #FFFFFF;
+  outline: none;
+  border-radius: 10px;
+  padding: 0 15px;
+  width: 283.16px;
+  font-family: var(--font-family-roboto-flex);
+  font-weight: 100;
+  font-size: 14px;
+  height: 38px;
+
+  flex-grow: 1;
+
+  &::placeholder {
+    font-family: var(--font-family-roboto-flex);
+    color: #fbfbfb;
+    font-weight: 100;
+    font-size: 14px;
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+}

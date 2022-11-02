@@ -18,7 +18,7 @@ const BasicDetails: FC = () => {
   const showEditIcon = () => {
     if (profileId && user) {
       if (user.userId === parseInt(profileId, 10)) {
-        return <EditIconContainer />;
+        return <EditIconContainer id="edit-icon" />;
       }
     }
 
@@ -37,13 +37,18 @@ const BasicDetails: FC = () => {
   );
 };
 
-const EditIconContainer: FC = () => {
+interface IEditContainer {
+  id: string;
+}
+
+const EditIconContainer: FC<IEditContainer> = ({ id }) => {
   const dispatch = useDispatch();
 
   const handleEdit = () => dispatch(editProfile(true));
 
   return (
     <EditIcon
+      id={id}
       width={50}
       height={50}
       className={styles['edit-icon']}
@@ -60,7 +65,7 @@ const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
-        <img alt="user" src={picture ? picture : userImage} />
+        <img alt="user" src={picture || userImage} />
       </div>
     </div>
   );
@@ -101,21 +106,95 @@ const ProfileAddressChain = () => {
   const name = useSelector((state: RootState) => state.user.user?.name);
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
 
-  const { createProfile } = useProfileManage();
+  const { createProfile, deploying } = useProfileManage();
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profile?.profileSmartContractId ?? '');
     toast.success('Copied!');
   };
 
+  const renderByDeployingState = () => {
+    switch (deploying) {
+      case 'deploying':
+        return (
+          <div
+            className={styles['profile-address-chain']}
+            id="profile-address-chain"
+          >
+            <p className={styles['profile-address']}>
+              Minting...⏳ it takes some seconds
+            </p>
+          </div>
+        );
+      case 'deploy_success':
+        return (
+          <div
+            className={styles['profile-address-chain']}
+            id="profile-address-chain"
+          >
+            <p className={styles['profile-address']}>
+              Almost there...Fetching data
+            </p>
+          </div>
+        );
+      default:
+        return (
+          <div
+            className={styles['profile-address-chain']}
+            id="profile-address-chain"
+          >
+            {profile?.profileSmartContractId ===
+              '0x0000000000000000000000000000000000000000' ||
+            profile?.profileSmartContractId === null ||
+            profile?.profileSmartContractId === '' ? (
+              <div
+                className={styles['address-container']}
+                id="profile-address-container"
+                style={{ cursor: 'pointer' }}
+                onClick={() => createProfile(name, profile?.title, walletId)}
+              >
+                <span className="material-icons" style={{ color: '#FAA5B9' }}>
+                  close
+                </span>
+                <p className={styles['profile-address']}>Mint on Chain</p>
+                <div />
+              </div>
+            ) : (
+              <div className={styles['address-container']}>
+                <FoundersLabIcon width={28} height={28} />
+                <p className={styles['profile-address']}>
+                  {profile?.profileSmartContractId?.slice(0, 6)}...
+                  {profile?.profileSmartContractId?.slice(
+                    // eslint-disable-next-line no-unsafe-optional-chaining
+                    profile?.profileSmartContractId.length - 6,
+                    profile?.profileSmartContractId.length
+                  )}
+                </p>
+                <i
+                  className="material-icons-200"
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleCopyAddress}
+                >
+                  content_copy
+                </i>
+              </div>
+            )}
+          </div>
+        );
+    }
+  };
+
   return (
-    <div className={styles['profile-address-chain']}>
-      {profile?.profileSmartContractId ===
+    <div className={styles['profile-address-chain']} id="profile-address-chain">
+      {
+        renderByDeployingState()
+        /* {profile?.profileSmartContractId === 
         '0x0000000000000000000000000000000000000000' ||
       profile?.profileSmartContractId === null ||
       profile?.profileSmartContractId === '' ? (
         <div
           className={styles['address-container']}
+          id="profile-address-container"
           style={{ cursor: 'pointer' }}
           onClick={() => createProfile(name, profile?.title, walletId)}
         >
@@ -140,7 +219,8 @@ const ProfileAddressChain = () => {
             content_copy
           </i>
         </div>
-      )}
+      )} */
+      }
       <p className={styles['sync-text']}>
         Sync On Chain <i className="material-icons-200">sync</i>
       </p>

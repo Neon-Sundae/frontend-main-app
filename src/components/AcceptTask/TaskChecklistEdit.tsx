@@ -31,7 +31,7 @@ const TaskChecklistEdit: FC<ITaskChecklistEdit> = ({ selectedTask }) => {
 
   return (
     <div className={styles['project-check-list']}>
-      <p>Checklist: </p>
+      <p>Deliverables: </p>
       {selectedTask?.taskChecklist.map((item: any, index: number) => (
         <div
           key={item.taskChecklistId}

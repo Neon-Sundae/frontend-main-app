@@ -289,7 +289,7 @@ const OrgLogo: FC<IOrgLogo> = ({
           className={styles.logo}
           onClick={isEditable ? handleClick : () => {}}
         >
-          <img src={orgLogoFileData && organisation.profileImage} alt="logo" />
+          <img src={organisation && organisation.profileImage} alt="logo" />
           {/* to show edit icon over image */}
           {isEditable && (
             <>

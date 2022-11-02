@@ -4,7 +4,7 @@ interface IProjectCategories {
 }
 
 const normalizeCategories = (categories: IProjectCategories[]) => {
-  const data = categories.map(category => ({
+  const data = categories?.map(category => ({
     label: category.categoryName,
     value: category.flProjectCategoryId,
   }));

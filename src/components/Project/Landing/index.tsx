@@ -21,7 +21,6 @@ const Landing: FC = () => {
   const { create } = useParams();
   const { getUSDCBalance, fetchFounder } = useProject();
   const { projectData = {} } = useFetchProjects(create);
-
   const [open, setOpen] = useState(false);
 
   const { user, wallet_usdc_balance } = useSelector(
@@ -77,6 +76,7 @@ const Landing: FC = () => {
         project_budget={budget}
         project_name={name}
         project_founder={organisation?.organisationUser[0]?.walletId}
+        flProjectCategory={projectData.flProjectCategory}
       />
       {open && (
         <PublishProjectModal
