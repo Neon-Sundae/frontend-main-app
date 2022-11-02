@@ -83,8 +83,8 @@ interface INameDesignation {
 const NameDesignation: FC<INameDesignation> = ({ title, user }) => {
   return (
     <div className={styles['name-designation']}>
-      <h2 className={styles.name}>{user?.name ?? 'Rachel Green'}</h2>
-      <h5 className={styles.designation}>{title ?? 'Add title'}</h5>
+      <h2 className={styles.name}>{user?.name ?? ''}</h2>
+      <h5 className={styles.designation}>{title ?? ''}</h5>
     </div>
   );
 };
