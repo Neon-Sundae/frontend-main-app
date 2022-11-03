@@ -39,7 +39,7 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
     });
     if (user && user.userId)
       updateDiscordUserName({
-        userId: user?.userId,
+        userId: user.userId,
         discordId,
       });
   };

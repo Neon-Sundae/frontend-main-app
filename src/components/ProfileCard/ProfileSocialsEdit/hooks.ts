@@ -80,7 +80,8 @@ const useUpdateProfileSocial = () => {
 
 const useUpdateUserDiscordUserName = () => {
   const dispatch = useDispatch();
-  const updateUserDiscordUName = ({ userId, discordId }: IUpdateUser) => {
+  const user = useSelector((state: RootState) => state.user.user);
+  const updateUserDiscordUName = ({ discordId }: IUpdateUser) => {
     const accessToken = getAccessToken();
     if (accessToken) {
       const ac = new AbortController();
@@ -91,7 +92,7 @@ const useUpdateUserDiscordUserName = () => {
             discordId,
           };
           const response = await fetch(
-            `${config.ApiBaseUrl}/user/${Number(userId)}`,
+            `${config.ApiBaseUrl}/user/${Number(user && user.userId)}`,
             {
               signal,
               method: 'PATCH',
