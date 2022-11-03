@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import config from 'config';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
@@ -36,8 +36,7 @@ const DisconnectModal: FC<IDisconnectModal> = ({
     const formData = new FormData();
     if (email) {
       formData.append('email', email);
-      updateProfileDetails({
-        userId: user?.userId,
+      updateProfileDetails.mutate({
         email,
       });
     }
@@ -81,7 +80,9 @@ const DisconnectModal: FC<IDisconnectModal> = ({
           name="email"
           type="email"
           placeholder="email"
-          onChange={(e: any) => setEmail(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
           defaultValue={user?.email || ''}
           className={styles['disc-modal-email-field']}
         />

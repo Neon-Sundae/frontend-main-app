@@ -1,51 +1,46 @@
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
-import { handleUnAuthorization } from 'utils/handleUnAuthorization';
+import { handleError } from 'utils/handleUnAuthorization';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { updateUserEmail } from 'actions/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMutation } from '@tanstack/react-query';
+import { RootState } from 'reducers';
 
 interface IUpdateProfileDetailsParameters {
-  userId: number | undefined;
   email: string;
 }
 
 const useUpdateUserProfileEmail = () => {
   const dispatch = useDispatch();
-  const updateUserProfileEmail = ({
-    userId,
-    email,
-  }: IUpdateProfileDetailsParameters) => {
-    const accessToken = getAccessToken();
-
-    if (accessToken) {
-      const ac = new AbortController();
-      const { signal } = ac;
-
-      (async () => {
-        try {
-          const payload = {
-            email,
-          };
-          const response = await fetch(`${config.ApiBaseUrl}/user/${userId}`, {
-            signal,
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(payload),
-          });
-          await handleApiErrors(response);
-          dispatch(updateUserEmail(email));
-        } catch (err) {
-          console.log('err', err);
-          handleUnAuthorization(err);
+  const accessToken = getAccessToken();
+  const user = useSelector((state: RootState) => state.user.user);
+  const updateTaskChecklist = useMutation(
+    async (payload: IUpdateProfileDetailsParameters) => {
+      console.log(payload);
+      const response = await fetch(
+        `${config.ApiBaseUrl}/user/${user && user.userId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         }
-      })();
+      );
+      await handleApiErrors(response);
+      dispatch(updateUserEmail(payload.email));
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
     }
-  };
-  return updateUserProfileEmail;
+  );
+
+  return updateTaskChecklist;
 };
 
 export default useUpdateUserProfileEmail;
