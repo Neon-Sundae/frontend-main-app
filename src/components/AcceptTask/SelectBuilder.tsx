@@ -1,5 +1,6 @@
-/* eslint-disable camelcase */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-nested-ternary */
+/* eslint-disable camelcase */
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
@@ -26,9 +27,8 @@ const SelectBuilder: FC<ISelectBuilder> = ({
 }) => {
   const { selectBuilder, pending, setPending } = useSelectBuilder();
 
-  const { selectedProjectAddress, selectedTask, taskXP } = useSelector(
-    (state: RootState) => state.flProject
-  );
+  const { selectedProjectAddress, selectedTask, taskXP, projectTaskAddress } =
+    useSelector((state: RootState) => state.flProject);
 
   useEffect(() => {
     if (pending === 'confirmed') {
@@ -36,6 +36,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
         handleSuccess();
       }, 2000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pending]);
 
   const handleClose = () => setOpen(false);
@@ -49,7 +50,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
         selectedTask?.name,
         selectedTask?.price,
         taskXP,
-        selectedTask?.estimatedDifficulty
+        projectTaskAddress
       );
     } else {
       setPending('budget_exceed');

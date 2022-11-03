@@ -9,10 +9,10 @@ import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/categ
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
+import calculateTaskXP from 'utils/contractFns/calculateTaskXp';
 import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
 import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
 import { ReactComponent as NinjaIcon } from 'assets/illustrations/icons/ninja.svg';
-import calculateTaskXP from 'utils/calculateTaskXp';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
@@ -163,6 +163,7 @@ const TaskDetail: FC<ITaskDetail> = ({
             <NinjaIcon width="24px" height="24px" />
             <p>Skills Needed:</p>
           </div>
+
           {selectedTask?.taskSkills?.length > 0 && (
             <div className={styles['project-attachments']}>
               {selectedTask?.taskSkills?.map(
@@ -171,7 +172,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                 )
               )}
             </div>
-          )}{' '}
+          )}
         </span>
       </div>
       <div className={styles['project-details']}>

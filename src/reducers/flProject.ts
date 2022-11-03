@@ -8,6 +8,7 @@ import {
   SET_REJECTED_BUILDER,
   SET_ACCEPTED_BUILDER,
   SET_TASK_XP,
+  SET_PROJECT_TASK_ADDRESS,
 } from 'actions/flProject/types';
 
 interface State {
@@ -17,6 +18,7 @@ interface State {
   founder: string;
   selectedTask: any;
   taskXP: number;
+  projectTaskAddress: string;
 }
 
 type Action =
@@ -55,6 +57,10 @@ type Action =
   | {
       type: typeof SET_TASK_XP;
       payload: any;
+    }
+  | {
+      type: typeof SET_PROJECT_TASK_ADDRESS;
+      address: string;
     };
 
 const initialState: State = {
@@ -64,6 +70,7 @@ const initialState: State = {
   founder: '',
   selectedTask: null,
   taskXP: 0,
+  projectTaskAddress: '',
 };
 
 const flProject = (state = initialState, action: Action): State => {
@@ -121,6 +128,11 @@ const flProject = (state = initialState, action: Action): State => {
       return {
         ...state,
         taskXP: action.payload,
+      };
+    case SET_PROJECT_TASK_ADDRESS:
+      return {
+        ...state,
+        projectTaskAddress: action.address,
       };
     default:
       return { ...state };
