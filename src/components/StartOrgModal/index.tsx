@@ -11,6 +11,7 @@ import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import BaseModal from 'components/Home/BaseModal';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
+import clsx from 'clsx';
 import styles from './index.module.scss';
 import useCreateOrganisation from './hook';
 
@@ -108,6 +109,7 @@ const StepModal: FC<IStepProps> = ({
   setFileData,
   setInputChange,
 }) => {
+  console.log();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = (e: any) => {
@@ -143,7 +145,9 @@ const StepModal: FC<IStepProps> = ({
     e.preventDefault();
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setInputChange(event.target.value);
   };
 
@@ -155,42 +159,56 @@ const StepModal: FC<IStepProps> = ({
       onNext={onNext}
     >
       <section className={styles.content}>
-        <div
-          className={styles['file-input-container']}
-          onClick={handleClick}
-          onDrop={handleDropChange}
-          onDragOver={handleDragEvent}
-        >
-          {fileData ? (
-            <div className={styles['file-image-wrapper']}>
-              <img
-                src={URL.createObjectURL(fileData.file)}
-                alt="file"
-                className={styles.image}
-              />
+        {placeholder !== 'Enter short description' && (
+          <>
+            <div
+              className={styles['file-input-container']}
+              onClick={handleClick}
+              onDrop={handleDropChange}
+              onDragOver={handleDragEvent}
+            >
+              {fileData ? (
+                <div className={styles['file-image-wrapper']}>
+                  <img
+                    src={URL.createObjectURL(fileData.file)}
+                    alt="file"
+                    className={styles.image}
+                  />
+                </div>
+              ) : (
+                <Stroke height={30} width={30} />
+              )}
             </div>
-          ) : (
-            <Stroke height={30} width={30} />
-          )}
-        </div>
-        <input
-          ref={inputRef}
-          id="profileImage"
-          className={styles.attachments}
-          type="file"
-          accept="image/png, image/jpeg"
-          onDrop={handleDropChange}
-          onChange={handleFileChange}
-          onDragOver={handleDragEvent}
-        />
-
-        <input
-          type="text"
-          className={styles['create-organisation-modal']}
-          placeholder={placeholder}
-          required
-          onChange={handleInputChange}
-        />
+            <input
+              ref={inputRef}
+              id="profileImage"
+              className={styles.attachments}
+              type="file"
+              accept="image/png, image/jpeg"
+              onDrop={handleDropChange}
+              onChange={handleFileChange}
+              onDragOver={handleDragEvent}
+            />
+            <input
+              type="text"
+              className={styles['create-organisation-modal']}
+              placeholder={placeholder}
+              required
+              onChange={handleInputChange}
+            />
+          </>
+        )}
+        {placeholder === 'Enter short description' && (
+          <textarea
+            className={clsx(
+              styles['create-organisation-modal'],
+              styles['text-area-field']
+            )}
+            placeholder={placeholder}
+            required
+            onChange={handleInputChange}
+          />
+        )}
       </section>
     </BaseModal>
   );

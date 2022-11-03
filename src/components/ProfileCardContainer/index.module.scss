@@ -9,7 +9,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   &--is-editable {
     overflow-y: auto;
   }

@@ -2,7 +2,7 @@ import { FC, useEffect, useState, useRef } from 'react';
 import Modal from 'components/Modal';
 import getRandomString from 'utils/getRandomString';
 import toast from 'react-hot-toast';
-import userImage from 'assets/images/profile/user-image.png';
+import userImage from 'assets/images/profile/user-image.svg';
 import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 

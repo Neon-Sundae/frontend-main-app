@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
-import userImage from 'assets/images/profile/user-image.png';
+import userImage from 'assets/images/profile/user-image.svg';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';

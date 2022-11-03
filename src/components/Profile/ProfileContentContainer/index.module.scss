@@ -6,11 +6,11 @@
   border-radius: 30px;
   margin-left: 60px;
   padding: 54px 52px 60px 90px;
-  overflow: hidden;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
   @media (max-width: 1920px)  {
     height: 700px;
-    
+     
   }
   @media (max-width: 1680px)  {
     height: 690px;

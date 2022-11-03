@@ -64,6 +64,7 @@ export const customStyles: StylesConfig<Option> = {
   input: styles => ({
     ...styles,
     outline: 'none',
+    color: 'white',
   }),
   placeholder: styles => ({
     ...styles,

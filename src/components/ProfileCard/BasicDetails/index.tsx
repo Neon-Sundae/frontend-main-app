@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { editProfile } from 'actions/profile';
 import { RootState } from 'reducers';
-import userImage from 'assets/images/profile/user-image.png';
+import userImage from 'assets/images/profile/user-image.svg';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import styles from './index.module.scss';

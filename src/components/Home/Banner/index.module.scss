@@ -21,9 +21,14 @@
   
   display: flex;
   justify-content: space-between;
-  background-color: purple;
+   
   border-radius: 20px;
-  background: url('/src/assets/illustrations/home/banner-bg.png') center;
+  background: rgba(255, 255, 255, 0.3);
+    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+    backdrop-filter: blur(40px);
+    -webkit-box-shadow: 0px 0px 10px -3px rgb(0 0 0 / 66%);
+    -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    box-shadow: 0px 0px 10px -3px rgb(0 0 0 / 66%);
   border: 1px solid #d39bff;
   & .content {
     display: flex;

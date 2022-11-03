@@ -1,6 +1,6 @@
 import NavBar from 'components/NavBar';
 import { FC } from 'react';
-import bg from 'assets/illustrations/organisation/bg.svg';
+import bg from 'assets/illustrations/gradients/bg.png';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import useFetchOrganisation from './hooks';
