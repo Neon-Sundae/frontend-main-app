@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
-import ProfileImage from 'assets/images/profile/user-image.png';
 import { RootState } from 'reducers';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import DisconnectModal from './DisconnectModal';
 
@@ -17,7 +17,9 @@ const ProfileButton: FC = () => {
   );
 
   const pictureFunc = () => {
-    return navbarProfile?.image ? navbarProfile?.image : ProfileImage;
+    return navbarProfile?.image
+      ? navbarProfile?.image
+      : getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase());
   };
 
   const handleNavigation = () => {

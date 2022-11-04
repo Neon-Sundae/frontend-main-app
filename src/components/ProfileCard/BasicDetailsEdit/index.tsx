@@ -1,5 +1,4 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
-import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
@@ -9,6 +8,7 @@ import Background from 'assets/illustrations/profile/pp-bg.png';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { useMutation } from '@tanstack/react-query';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import useProfileManage from '../BasicDetails/hooks';
 import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
@@ -16,6 +16,7 @@ import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
   const { profile, xp } = useSelector((state: RootState) => state.profile);
+
   const profileId = profile?.profileId ? profile.profileId : 0;
   const user = useSelector((state: RootState) => state.user.user);
   const [name, setName] = useState(
@@ -104,6 +105,7 @@ interface IProfileImage {
 }
 
 const ProfileImage: FC<IProfileImage> = ({ picture, setPicture }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const [profilePictureModal, setProfilePictureModal] = useState(false);
   if (profilePictureModal) {
     return (
@@ -125,7 +127,9 @@ const ProfileImage: FC<IProfileImage> = ({ picture, setPicture }) => {
         <img
           id="profile-edit-icon"
           alt="user"
-          src={picture || userImage}
+          src={
+            picture || getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+          }
           className={styles.userImage}
         />
         <img alt="background" src={Background} className={styles.bgImage} />

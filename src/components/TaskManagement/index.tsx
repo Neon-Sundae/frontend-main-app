@@ -12,7 +12,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
-import userImage from 'assets/images/profile/user-image.png';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
@@ -370,7 +369,10 @@ const Card: FC<ICard> = ({
       default:
         return (
           <div className={styles['avatar-image-wrapper']}>
-            <img alt="user" src={userImage} />
+            <img
+              alt="user"
+              src={getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())}
+            />
           </div>
         );
     }
@@ -430,7 +432,10 @@ const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
-          src={elem.Profile.picture || userImage}
+          src={
+            elem.Profile.picture ||
+            getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+          }
           alt="User Avatar"
           className={styles['builder-avatar']}
         />

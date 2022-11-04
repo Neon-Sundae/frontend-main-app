@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +16,7 @@ import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.s
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
-import userImage from 'assets/images/profile/user-image.png';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
@@ -44,7 +46,7 @@ const TaskDetail: FC<ITaskDetail> = ({
     (state: RootState) => state.flProject
   );
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-
+  const { user } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     const getXP = async () => {
       const xp = await calculateTaskXP(
@@ -120,7 +122,10 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .map((item: any, index: number) =>
                   item.Profile.picture !== null ? (
                     <img
-                      src={item.Profile.picture || userImage}
+                      src={
+                        item.Profile.picture ||
+                        getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+                      }
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
@@ -143,7 +148,9 @@ const TaskDetail: FC<ITaskDetail> = ({
                       />
                     ) : (
                       <img
-                        src={userImage}
+                        src={getDefaultAvatarSrc(
+                          user?.name?.charAt(0).toUpperCase()
+                        )}
                         className={styles['builder-avatar']}
                         alt=""
                         key={index}
