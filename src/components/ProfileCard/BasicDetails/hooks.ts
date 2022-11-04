@@ -1,17 +1,14 @@
-import { AbiItem } from 'web3-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { getWeb3Instance } from 'utils/web3EventFn';
-import profileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
-import { profileManageContractAddress, USDCAddress } from 'contracts/contracts';
+import createProfileContract from 'utils/contractFns/createProfileContract';
 import config from 'config';
-// import { IProfileSmartContractApiResponse } from 'interfaces/profile';
 import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import toast from 'react-hot-toast';
 import { updateProfileContractAddressAction } from 'actions/profile';
+import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
 
 const useProfileManage = () => {
   const dispatch = useDispatch();
@@ -26,41 +23,27 @@ const useProfileManage = () => {
     address: string | undefined
   ) => {
     try {
-      const web3 = getWeb3Instance();
-      const profileManageContract = new web3.eth.Contract(
-        profileManageAbi.abi as AbiItem[],
-        profileManageContractAddress
-      );
-
-      const isContractDeployed = await profileManageContract.methods
-        .getProfileContractAddress(address)
-        .call();
+      const isContractDeployed = await getProfileContractAddress(address);
 
       if (isContractDeployed !== '0x0000000000000000000000000000000000000000') {
         await saveProfileContractAddress(isContractDeployed);
         return;
       }
 
-      if (name === null || title === null) {
+      if (!name || !title) {
         toast.error('Profile name or title is empty.');
         return;
       }
 
-      await profileManageContract.methods
-        .createProfile(USDCAddress, name, title)
-        .send({ from: address })
-        .on('transactionHash', (hash: any) => {
-          setDeploying('deploying');
-          console.log(deploying);
-        })
-        .on('receipt', (receipt: any) => {
-          setDeploying('deploy_success');
-          console.log(deploying);
-        });
+      await createProfileContract(
+        address,
+        name,
+        title,
+        deploying,
+        setDeploying
+      );
 
-      const contractAddress = await profileManageContract.methods
-        .getProfileContractAddress(address)
-        .call();
+      const contractAddress = await getProfileContractAddress(address);
       console.log('Deployed profile contract address: ', contractAddress);
       dispatch({
         type: GET_PROFILE_CONTRACT_ADDRESS,

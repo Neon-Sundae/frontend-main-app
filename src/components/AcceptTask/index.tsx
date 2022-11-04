@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
-import Modal from 'components/Modal';
+import clsx from 'clsx';
 import EditTask from 'components/EditTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import { RootState } from 'reducers';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
-import clsx from 'clsx';
-import { useFetchTaskData, useFetchTaskDataOnChain } from './hooks';
-import TalentList from './TalentList';
+import Modal from 'components/Modal';
+import { useFetchTaskData } from './hooks';
 import TaskDetail from './TaskDetail';
+import TalentList from './TalentList';
 import styles from './index.module.scss';
 
 interface IAcceptTask {
@@ -52,10 +52,6 @@ const AcceptTask: FC<IAcceptTask> = ({
         type: GET_SELECTED_TASK,
         payload: taskData,
       });
-      if (taskData?.taskSmartContractId !== null) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useFetchTaskDataOnChain(taskData.taskSmartContractId);
-      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskData]);

@@ -1,18 +1,15 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { getWeb3Instance } from 'utils/web3EventFn';
-import ProfileManageAbi from 'contracts/abi/ProfileManage.sol/ProfileManage.json';
-import { AbiItem } from 'web3-utils';
-import { profileManageContractAddress } from 'contracts/contracts';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
+import config from 'config';
 import { GET_DEPLOY_STATE } from 'actions/flProject/types';
 import { toggleWalletDrawer } from 'actions/app';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
 import { ReactComponent as Pencil } from 'assets/illustrations/icons/pencil.svg';
+import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
 import styles from './index.module.scss';
 import CreatePrjModalWithData from '../../StartPrjModal/CreatePrjModalWithData';
 
@@ -22,6 +19,7 @@ interface IHeaderProps {
   founderAddress: string;
   organisationName: string;
   organisationOwnerWalletId: string;
+  organisationId: string;
 }
 
 const Header: FC<IHeaderProps> = props => {
@@ -38,16 +36,9 @@ const Header: FC<IHeaderProps> = props => {
 
   const handlePublishProject = async () => {
     try {
-      const web3 = getWeb3Instance();
-      const profileManageContract = new web3.eth.Contract(
-        ProfileManageAbi.abi as AbiItem[],
-        profileManageContractAddress
-      );
-      const profile_address = await profileManageContract.methods
-        .getProfileContractAddress(walletId)
-        .call();
+      const profileAddress = await getProfileContractAddress(walletId);
 
-      if (profile_address !== '0x0000000000000000000000000000000000000000') {
+      if (profileAddress !== '0x0000000000000000000000000000000000000000') {
         dispatch({
           type: GET_DEPLOY_STATE,
           payload: 'go_live',
@@ -90,16 +81,34 @@ const Header: FC<IHeaderProps> = props => {
               Publish a Project
             </button>
           ) : (
-            <button onClick={handleToggle} className={styles.transparentBtn}>
-              Deposit funds
-            </button>
+            <div>
+              {props.founderAddress?.toLowerCase() ===
+              walletId?.toLowerCase() ? (
+                <button
+                  onClick={handleToggle}
+                  className={styles.transparentBtn}
+                >
+                  Deposit funds
+                </button>
+              ) : (
+                <div />
+              )}
+            </div>
           )}
         </div>
         <div className={styles['org-edit-project-row']}>
           <span className={styles['by-org-name']}>
-            <p className={styles['founder-name']}>
-              by&nbsp;&nbsp;{props.organisationName}
-            </p>
+            <div
+              onClick={() =>
+                window.open(
+                  `${config.AppDomain}/organisation/${props.organisationId}`
+                )
+              }
+            >
+              <p className={styles['founder-name']}>
+                by&nbsp;&nbsp;{props.organisationName}
+              </p>
+            </div>
             {selectedProjectAddress && (
               <VerifiedIcon
                 className={styles['project-verified']}

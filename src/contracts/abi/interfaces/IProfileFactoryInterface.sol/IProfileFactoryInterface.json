@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IProfileManageInterface",
-  "sourceName": "contracts/interfaces/IProfileManageInterface.sol",
+  "contractName": "IProfileFactoryInterface",
+  "sourceName": "contracts/interfaces/IProfileFactoryInterface.sol",
   "abi": [
     {
       "inputs": [
@@ -11,7 +11,7 @@
           "type": "address"
         }
       ],
-      "name": "getProfileContractAddress",
+      "name": "ownerToProfileAddress",
       "outputs": [
         {
           "internalType": "address",

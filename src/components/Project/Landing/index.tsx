@@ -19,7 +19,7 @@ const Landing: FC = () => {
   const accessToken = getAccessToken();
 
   const { create } = useParams();
-  const { getUSDCBalance, getOnChainProject, fetchFounder } = useProject();
+  const { getUSDCBalance, fetchFounder } = useProject();
   const { projectData = {} } = useFetchProjects(create);
   const [open, setOpen] = useState(false);
 
@@ -52,13 +52,8 @@ const Landing: FC = () => {
     preferredTimeZones,
     flResources,
     organisation,
+    organisationId,
   } = projectData;
-  useEffect(() => {
-    if (organisation?.organisationUser[0]?.walletId) {
-      getOnChainProject(create, organisation?.organisationUser[0]?.walletId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [organisation]);
 
   return projectData ? (
     <div className={styles.container}>
@@ -70,6 +65,7 @@ const Landing: FC = () => {
         founderAddress={organisation?.organisationUser[0]?.walletId}
         organisationName={organisation?.name}
         organisationOwnerWalletId={organisation?.organisationUser[0]?.walletId}
+        organisationId={organisationId}
       />
       <Description
         description={description}

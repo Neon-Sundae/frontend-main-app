@@ -24,7 +24,7 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
 
   return (
     <Modal onClose={handleClose}>
-      {fndrBalance >= import.meta.env.FNDR_TOKEN_AMOUNT ? (
+      {fndrBalance >= selectedTask?.fndrToken ? (
         <div className={styles['commit-task-container']}>
           <h1>Commit to task</h1>
           {pending === 'initial' ? (
