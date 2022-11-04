@@ -347,7 +347,7 @@ const Card: FC<ICard> = ({
     () => [...Array(item.estimatedDifficulty).keys()],
     []
   );
-
+  const user = useSelector((state: RootState) => state.user.user);
   const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
