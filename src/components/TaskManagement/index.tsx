@@ -26,6 +26,7 @@ import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
