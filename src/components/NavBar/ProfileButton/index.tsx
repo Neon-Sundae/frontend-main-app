@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
-import ProfileImage from 'assets/images/profile/user-image.png';
+import ProfileImage from 'assets/images/profile/user-image.svg';
 import { RootState } from 'reducers';
 import styles from './index.module.scss';
 import DisconnectModal from './DisconnectModal';

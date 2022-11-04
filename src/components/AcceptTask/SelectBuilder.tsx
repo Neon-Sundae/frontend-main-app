@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -34,6 +36,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
         handleSuccess();
       }, 2000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pending]);
 
   const handleClose = () => setOpen(false);
@@ -54,7 +57,12 @@ const SelectBuilder: FC<ISelectBuilder> = ({
     }
   };
   return (
-    <Modal onClose={handleClose} width="550px" height="500px">
+    <Modal
+      onClose={handleClose}
+      width="550px"
+      height="500px"
+      padding="33px 55px"
+    >
       {pending === 'add_funds' ? (
         <DepositFundsToWallet />
       ) : (

@@ -12,7 +12,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
-import userImage from 'assets/images/profile/user-image.png';
+import userImage from 'assets/images/profile/user-image.svg';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';

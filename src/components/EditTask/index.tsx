@@ -9,6 +9,8 @@ import TaskChecklist, {
   IChecklistItem,
 } from 'components/CreateTask/TaskChecklist';
 import FileSkillsCard from 'components/AcceptTask/FileSkillsCard';
+import TaskSkills from 'components/CreateTask/TaskSkills';
+import { normalizeSkills } from 'utils/normalizeSkills';
 import useUpdateTask from './hooks';
 import styles from './index.module.scss';
 
@@ -17,6 +19,7 @@ interface IEditTask {
   selectedTask: any;
   flProjectCategory: any;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  projectFounder: string;
 }
 
 const EditTask: FC<IEditTask> = ({
@@ -24,7 +27,9 @@ const EditTask: FC<IEditTask> = ({
   selectedTask,
   flProjectCategory,
   setOpen,
+  projectFounder,
 }) => {
+  const normTaskSkills = normalizeSkills(selectedTask.taskSkills);
   const normCategories = normalizeCategories(flProjectCategory);
   const [taskName, setTaskName] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<Option | null>(
@@ -46,6 +51,10 @@ const EditTask: FC<IEditTask> = ({
   const checklistItemArray: any[] = [];
   const [checklistItems, setChecklistItems] =
     useState<IChecklistItem[]>(checklistItemArray);
+  const [previouslySelectedSkills, setPreviouslySelectedSkills] =
+    useState<any>(normTaskSkills);
+  const [selectedSkill, setSelectedSkill] = useState<any>(normTaskSkills);
+  const [taskSkills, setTaskSkills] = useState<any[]>(normTaskSkills);
 
   const findPreSelectedOption: any = difficultyData?.filter(function (el) {
     if (el.value === selectedTask.estimatedDifficulty) return el;
@@ -61,6 +70,7 @@ const EditTask: FC<IEditTask> = ({
   const updateTask = useUpdateTask(selectedTask.taskId, setOpen);
 
   const handleSave = () => {
+    let newSkillsAdded = false;
     const formData = new FormData();
     formData.append('name', taskName || selectedTask.name);
     formData.set('description', taskDescription || selectedTask.description);
@@ -68,17 +78,32 @@ const EditTask: FC<IEditTask> = ({
     formData.append('startDate', taskStartDate || selectedTask.startDate);
     formData.append('dueDate', taskDueDate || selectedTask.dueDate);
     formData.append(
-      'categoryId',
-      selectedCategory?.value.toString() ||
-        selectedTask.flProjectCategory.flProjectCategoryId
-    );
-    formData.append(
       'estimatedDifficulty',
       selectedDifficulty?.value.toString() || selectedTask.estimatedDifficulty
     );
     checklistItems.forEach(item =>
       formData.append('checklist[]', JSON.stringify(item))
     );
+    taskSkills.forEach((el: any) => {
+      if (el.length) {
+        newSkillsAdded = true;
+      }
+    });
+    if (newSkillsAdded) {
+      taskSkills[taskSkills.length - 1]?.forEach((skill: any) =>
+        formData.append(
+          'skills[]',
+          JSON.stringify({ skillsId: skill.value, name: skill.label })
+        )
+      );
+    } else {
+      taskSkills?.forEach((skill: any) =>
+        formData.append(
+          'skills[]',
+          JSON.stringify({ skillsId: skill.value, name: skill.label })
+        )
+      );
+    }
     filesArray?.forEach(fileItem => formData.append('files[]', fileItem.file));
     updateTask.mutate(formData, selectedTask.taskId);
     setTaskEdit(false);
@@ -113,8 +138,11 @@ const EditTask: FC<IEditTask> = ({
   };
   checkListData();
   return (
-    <>
+    <div className={styles['edit-modal-wrap']}>
       <h2 className={styles.editModalHead}>Edit Task</h2>
+      {/* FIXME: br no good! */}
+      <br />
+      <br />
       <div className={styles.showInColumn}>
         <span>
           <label htmlFor="taskName" className={styles.label}>
@@ -138,6 +166,7 @@ const EditTask: FC<IEditTask> = ({
             name="TaskCategory"
             onSelectChange={handleCategoryChange}
             width="283.16px"
+            isMulti={false}
           />
         </span>
       </div>
@@ -190,6 +219,7 @@ const EditTask: FC<IEditTask> = ({
             name="TaskDifficulty"
             onSelectChange={handleDifficultyChange}
             width="283.16px"
+            isMulti={false}
           />
         </span>
         <span>
@@ -203,6 +233,18 @@ const EditTask: FC<IEditTask> = ({
             onChange={handleInputChange(setTaskPrice)}
           />
         </span>
+      </div>
+      <div className={styles['skills-wrapper']}>
+        <TaskSkills
+          previouslySelectedSkills={previouslySelectedSkills}
+          setPreviouslySelectedSkills={setPreviouslySelectedSkills}
+          selectedSkill={selectedSkill}
+          setSelectedSkill={setSelectedSkill}
+          taskSkills={taskSkills}
+          setTaskSkills={setTaskSkills}
+          isMulti
+          showModal={false}
+        />
       </div>
       <div className={styles.showInColumn}>
         <span>
@@ -225,10 +267,9 @@ const EditTask: FC<IEditTask> = ({
             return (
               <div className={styles.attachments}>
                 <FileSkillsCard
-                  label={attachments.url.substring(
-                    attachments.url.lastIndexOf('/') + 1,
-                    attachments.url.length
-                  )}
+                  label={attachments.url
+                    .substr(attachments.url.lastIndexOf('/') + 1)
+                    .replace(/%20/g, ' ')}
                 />
               </div>
             );
@@ -240,7 +281,7 @@ const EditTask: FC<IEditTask> = ({
           Save
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

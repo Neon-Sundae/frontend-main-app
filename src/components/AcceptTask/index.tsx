@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import EditTask from 'components/EditTask';
@@ -34,6 +35,7 @@ const AcceptTask: FC<IAcceptTask> = ({
   handleCommit,
   flProjectCategory,
 }) => {
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const [taskEdit, setTaskEdit] = useState(false);
   const dispatch = useDispatch();
 
@@ -44,7 +46,6 @@ const AcceptTask: FC<IAcceptTask> = ({
 
   useEffect(() => {
     if (taskData) {
-      console.log('>>>>>>>>>>>', taskData);
       dispatch({
         type: GET_SELECTED_TASK,
         payload: taskData,
@@ -53,13 +54,14 @@ const AcceptTask: FC<IAcceptTask> = ({
   }, [taskData]);
   const showEditTaskModal = () => setTaskEdit(true);
   const handleClose = () => setOpen(false);
+  const isFounder = () => walletId === project_founder;
   return (
     <Modal
       onClose={handleClose}
       width="clamp(20rem, 45vw, 45rem)"
       maxHeight="min(90%, 45rem)"
       overflowY="auto"
-      padding="42px"
+      padding="55px"
     >
       {taskEdit && (
         <EditTask
@@ -67,6 +69,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           selectedTask={selectedTask}
           flProjectCategory={flProjectCategory}
           setOpen={setOpen}
+          projectFounder={project_founder}
         />
       )}
       {!taskEdit && (
@@ -84,12 +87,15 @@ const AcceptTask: FC<IAcceptTask> = ({
           <h5 className={styles['founder-name']}>
             {selectedTask?.organisation?.name}
           </h5>
-          <button className={styles['edit-btn']} onClick={showEditTaskModal}>
-            edit task
-            <i className={clsx('material-icons', styles['pencil-icon'])}>
-              edit
-            </i>
-          </button>
+          {isFounder() && (
+            <button className={styles['edit-btn']} onClick={showEditTaskModal}>
+              edit task
+              <i className={clsx('material-icons', styles['pencil-icon'])}>
+                edit
+              </i>
+            </button>
+          )}
+
           {selectedTask?.taskSmartContractId && (
             <h5 className={styles['token-id']}>
               SmartContractId: #{selectedTask?.taskSmartContractId}

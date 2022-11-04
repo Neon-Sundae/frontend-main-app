@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab-light.svg';
+
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import WalletBalButton from './WalletBalButton';
 import ProfileButton from './ProfileButton';
 import styles from './index.module.scss';
@@ -9,9 +10,9 @@ const NavBar = () => {
 
   return (
     <nav className={styles.nav}>
-      <FoundersLabIcon
-        width={227}
-        height={29}
+      <NeonSundaeMainLogo
+        width={108.35}
+        height={72}
         onClick={() => navigate('/dashboard')}
         className={styles.logo}
       />

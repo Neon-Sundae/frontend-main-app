@@ -23,12 +23,14 @@ const ProfileSocialsEdit: FC = () => {
         className={styles['profile-socials-container']}
         onClick={handleOpenModal}
       >
+
         {profile?.linkedin && <LinkedinIcon width={40} height={40} />}
         {profile?.twitter && <TwitterIcon width={40} height={40} />}
         {profile?.instagram && <InstagramIcon width={40} height={40} />}
         {profile?.github && <GithubIcon width={40} height={40} />}
         {profile?.portfolio && <PortfolioIcon width={40} height={40} />}
         {user?.discordId && <DiscordIcon width={40} height={40} />}
+
         {!profile?.linkedin &&
           !profile?.twitter &&
           !profile?.instagram &&

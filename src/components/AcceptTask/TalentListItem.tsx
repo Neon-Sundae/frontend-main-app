@@ -2,9 +2,9 @@ import { FC, MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
+import userImage from 'assets/images/profile/user-image.svg';
 import { useSelectBuilder } from './hooks';
 import styles from './index.module.scss';
-import userImage from 'assets/images/profile/user-image.png';
 
 interface ITalentListItem {
   handleApprove: any;

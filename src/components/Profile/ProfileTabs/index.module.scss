@@ -1,20 +1,58 @@
 .profile-tab-header {
   display: flex;
 
-  & > .profile-tab-title {
+  &>.profile-tab-title {
     font-family: var(--font-family-roboto-flex);
     font-style: normal;
-font-weight: 400;
-font-size: 21px;
+    font-weight: 400;
+
     color: #a5a5a5;
     cursor: pointer;
     margin-right: 20px;
     z-index: 1;
 
+    @media (max-width: 1920px) {
+      font-size: 21px;
+
+    }
+
+    @media (max-width: 1680px) {
+
+      font-size: 21px;
+    }
+
+    @media (max-width: 1440px) {
+      font-size: 21px;
+
+    }
+
+    @media (max-width: 1024px) {
+      font-size: 17px;
+    }
+
     &--active {
       font-style: normal;
       font-weight: 600;
-      font-size: 21px;
+
+      @media (max-width: 1920px) {
+        font-size: 21px;
+
+      }
+
+      @media (max-width: 1680px) {
+
+        font-size: 21px;
+      }
+
+      @media (max-width: 1440px) {
+        font-size: 21px;
+
+      }
+
+      @media (max-width: 1024px) {
+        font-size: 17px;
+      }
+
       color: white;
     }
   }

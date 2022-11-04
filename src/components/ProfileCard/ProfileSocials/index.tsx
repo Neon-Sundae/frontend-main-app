@@ -15,6 +15,11 @@ const ProfileSocials: FC = () => {
   console.log('user', user);
   return (
     <div className={styles['profile-socials-container']}>
+      {profile?.linkedin && <LinkedinIcon width={25.36} height={25.36} />}
+      {profile?.twitter && <TwitterIcon width={25.36} height={25.36} />}
+      {profile?.instagram && <InstagramIcon width={25.36} height={25.36} />}
+      {profile?.github && <GithubIcon width={25.36} height={25.36} />}
+      {profile?.portfolio && <PortfolioIcon width={25.36} height={25.36} />}
       {profile?.linkedin && <LinkedinIcon width={40} height={40} />}
       {profile?.twitter && <TwitterIcon width={40} height={40} />}
       {profile?.instagram && <InstagramIcon width={40} height={40} />}

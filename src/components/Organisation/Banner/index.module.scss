@@ -1,7 +1,30 @@
 .container {
-  height: 293px;
+  height: 200px;
   overflow: hidden;
   position: relative;
+  border: 1px solid #d39bff;
+ 
+  margin: auto;
+  border-radius: 20px;
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.12) 12.11%,
+    rgba(255, 255, 255, 0.03) 73.08%
+  );
+  @media (max-width: 1920px)  {
+    width: 70%;
+    
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+    
+  }
+  @media (max-width: 1440px)  {
+    width: 80%;
+  }
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
 }
 
 .gradient {
@@ -9,8 +32,7 @@
   width: 100%;
   height: 100%;
   background-size: cover;
-  object-fit: cover;
-  background-color: rgba(255, 255, 255, 0.3);
+  object-fit: cover; 
   -webkit-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
