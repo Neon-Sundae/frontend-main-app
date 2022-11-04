@@ -20,7 +20,7 @@ const BasicDetailsEdit: FC = () => {
   const profileId = profile?.profileId ? profile.profileId : 0;
   const user = useSelector((state: RootState) => state.user.user);
   const [name, setName] = useState(
-    profile?.user?.name ? profile?.user.name : 'Rachel Green'
+    profile?.user?.name ? profile?.user.name : ''
   );
   const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
   const [bio, setBio] = useState(

@@ -15,7 +15,7 @@ const TourProfilePage = () => {
   tour.addStep({
     id: 'step1',
     arrow: true,
-    text: 'This is where you edit and set up<br />your profile. At Founders Lab we want you to flaunt 😏 your NFT<br />collections, so all profile pictures are NFTs!🧪',
+    text: 'This is where you edit and set up<br />your profile. At Neon Sundae we want you to flaunt 😏 your NFT<br />collections, so all profile pictures are NFTs!🧪',
     attachTo: {
       element: '#edit-icon',
       on: 'right',

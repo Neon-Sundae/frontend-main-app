@@ -13,6 +13,7 @@ import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.sv
 import calculateTaskXP from 'utils/contractFns/calculateTaskXp';
 import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
 import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
+import { ReactComponent as NinjaIcon } from 'assets/illustrations/icons/ninja.svg';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
@@ -98,7 +99,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   const reformatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-GB');
   };
-
+  console.log('selectedTask', selectedTask?.taskSkills);
   return (
     <div>
       <div className={styles['avatar-container']}>
@@ -135,7 +136,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                   )
                 )
             ) : (
-              <>
+              <div>
                 {selectedTask?.profileTask
                   .slice(0, 5)
                   .map((item: any, index: number) =>
@@ -157,24 +158,28 @@ const TaskDetail: FC<ITaskDetail> = ({
                       />
                     )
                   )}
-              </>
+              </div>
             )}
           </div>
         )}
       </div>
       <div className={styles['project-description']}>
-        <p> Skills:</p>
-        {selectedTask?.taskSkills?.length > 0 && (
-          <div className={styles['project-attachments']}>
-            {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
-              <FileSkillsCard
-                key={index}
-                label="Wireframes v1.0"
-                skills={taskSkills.name}
-              />
-            ))}
+        <span className={styles['task-details-skills-inline']}>
+          <div>
+            <NinjaIcon width="24px" height="24px" />
+            <p>Skills Needed:</p>
           </div>
-        )}
+
+          {selectedTask?.taskSkills?.length > 0 && (
+            <div className={styles['project-attachments']}>
+              {selectedTask?.taskSkills?.map(
+                (taskSkill: any, index: number) => (
+                  <FileSkillsCard key={index} skills={taskSkill.name} />
+                )
+              )}
+            </div>
+          )}
+        </span>
       </div>
       <div className={styles['project-details']}>
         <div>
@@ -254,9 +259,17 @@ const TaskDetail: FC<ITaskDetail> = ({
             {selectedTask?.taskAttachment?.length > 0 && (
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
-                  (file: any, index: number) => (
-                    <FileSkillsCard key={index} label="Wireframes v1.0" />
-                  )
+                  (file: any, index: number) => {
+                    console.log('file', file);
+                    return (
+                      <FileSkillsCard
+                        key={index}
+                        label={file.url
+                          .substr(file.url.lastIndexOf('/') + 1)
+                          .replace(/%20/g, ' ')}
+                      />
+                    );
+                  }
                 )}
               </div>
             )}
@@ -266,7 +279,7 @@ const TaskDetail: FC<ITaskDetail> = ({
             {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
               founderTaskAction()
             ) : (
-              <>
+              <div>
                 {selectedTask?.status === 'open' &&
                 selectedTask?.profileTask.filter(
                   (item: any) => item?.Profile?.user?.walletId === walletId
@@ -281,9 +294,9 @@ const TaskDetail: FC<ITaskDetail> = ({
                   ).length > 0 ? (
                   <button onClick={handleCommit}>Commit to task</button>
                 ) : (
-                  <></>
+                  <p> </p>
                 )}
-              </>
+              </div>
             )}
           </div>
         </>

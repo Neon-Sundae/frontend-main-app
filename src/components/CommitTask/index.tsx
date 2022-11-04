@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
@@ -23,7 +24,7 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
   }, []);
 
   return (
-    <Modal onClose={handleClose}>
+    <Modal onClose={handleClose} padding="33px 50px">
       {fndrBalance >= selectedTask?.fndrToken ? (
         <div className={styles['commit-task-container']}>
           <h1>Commit to task</h1>

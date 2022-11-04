@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';
 import BlurBlobs from 'components/BlurBlobs';
+import bg from 'assets/illustrations/gradients/bg.png';
 import TaskManagement from 'components/TaskManagement';
 import { useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -56,9 +57,12 @@ const Landing: FC = () => {
   } = projectData;
 
   return projectData ? (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }}
+    >
       <NavBar />
-      <BlurBlobs />
+      {/* <BlurBlobs /> */}
       <Header
         projectName={name}
         setOpen={val => setOpen(val)}

@@ -7,6 +7,7 @@ import useSetAppMetadata from 'hooks/useSetAppMetadata';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { useProfile } from 'components/Profile/Landing/hooks';
+import ErrorPage from 'containers/error';
 
 const Login = lazy(() => import('containers/login'));
 const Dashboard = lazy(() => import('containers/dashboard'));
@@ -102,6 +103,7 @@ const App = () => {
           />
           <Route path="/task/cancel/:identifier" element={<TaskCancel />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Suspense>
     </Router>
