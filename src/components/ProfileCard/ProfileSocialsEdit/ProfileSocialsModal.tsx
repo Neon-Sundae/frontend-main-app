@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import GradientBtn from 'components/GradientBtn';
 import styles from './index.module.scss';
-import useUpdateProfileSocial from './hooks';
+import { useUpdateProfileSocial, useUpdateUserDiscordUserName } from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -12,14 +12,17 @@ interface IProfileSkills {
 
 const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
   const profile = useSelector((state: RootState) => state.profile.profile);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const [portfolio, setPortfolio] = useState(profile?.portfolio ?? '');
   const [linkedin, setLinkedin] = useState(profile?.linkedin ?? '');
   const [twitter, setTwitter] = useState(profile?.twitter ?? '');
   const [instagram, setInstagram] = useState(profile?.instagram ?? '');
   const [github, setGithub] = useState(profile?.github ?? '');
+  const [discordId, setDiscordId] = useState(user?.discordId ?? '');
 
   const updateProfileSocial = useUpdateProfileSocial();
+  const updateDiscordUserName = useUpdateUserDiscordUserName();
 
   const handleClose = () => {
     setOpen(false);
@@ -34,6 +37,11 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
       github,
       setOpen,
     });
+    if (user && user.userId)
+      updateDiscordUserName({
+        userId: user.userId,
+        discordId,
+      });
   };
 
   return (
@@ -63,6 +71,11 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
         title="Website"
         value={portfolio}
         handleChange={e => setPortfolio(e.target.value)}
+      />
+      <SocialInput
+        title="Discord"
+        value={discordId}
+        handleChange={e => setDiscordId(e.target.value)}
       />
       <GradientBtn label="Save" onClick={handleSave} />
     </Modal>
