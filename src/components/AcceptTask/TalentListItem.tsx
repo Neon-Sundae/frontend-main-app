@@ -1,8 +1,9 @@
+/* eslint-disable camelcase */
 import { FC, MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
-import userImage from 'assets/images/profile/user-image.svg';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useSelectBuilder } from './hooks';
 import styles from './index.module.scss';
 
@@ -23,6 +24,7 @@ const TalentListItem: FC<ITalentListItem> = ({
   const { saveRejectedBuilder } = useSelectBuilder();
   const { founder } = useSelector((state: RootState) => state.flProject);
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const handleApproveFn = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
@@ -46,7 +48,13 @@ const TalentListItem: FC<ITalentListItem> = ({
     >
       <div className={styles.builder}>
         <div className={styles['builder-avatar']}>
-          <img src={data.Profile.picture || userImage} alt="" />
+          <img
+            src={
+              data.Profile.picture ||
+              getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+            }
+            alt=""
+          />
         </div>
         <div className={styles['builder-name']}>{data?.Profile.user.name}</div>
       </div>

@@ -2,8 +2,10 @@ import { FC, useEffect, useState, useRef } from 'react';
 import Modal from 'components/Modal';
 import getRandomString from 'utils/getRandomString';
 import toast from 'react-hot-toast';
-import userImage from 'assets/images/profile/user-image.svg';
 import { handleLocalStorage } from 'utils/localStorageFn';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
 interface StepTwoProps {
@@ -22,6 +24,7 @@ const StepTwo: FC<StepTwoProps> = ({
   picture,
   nfts,
 }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const [selectedNFTId, setSelectedNFTId] = useState('');
   useEffect(() => {
     const el = document.getElementById(selectedNFTId);
@@ -90,7 +93,7 @@ const StepTwo: FC<StepTwoProps> = ({
                   src={
                     ipfsHash
                       ? `https://gateway.ipfs.io/ipfs/${ipfsHash}`
-                      : userImage
+                      : getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
                   }
                   alt="NFT"
                 />

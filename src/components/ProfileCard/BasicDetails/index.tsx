@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { editProfile } from 'actions/profile';
 import { RootState } from 'reducers';
-import userImage from 'assets/images/profile/user-image.svg';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import useProfileManage from './hooks';
 
@@ -62,10 +62,16 @@ interface ProfileImageProps {
 }
 
 const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
-        <img alt="user" src={picture || userImage} />
+        <img
+          alt="user"
+          src={
+            picture || getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+          }
+        />
       </div>
     </div>
   );
