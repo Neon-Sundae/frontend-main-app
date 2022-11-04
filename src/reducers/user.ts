@@ -5,6 +5,7 @@ import {
   GET_WALLET_ADDRESS,
   GET_WALLET_USDC_BALANCE,
   UPDATE_USER_DISCORD,
+  UPDATE_USER_EMAIL,
 } from 'actions/user/types';
 
 interface State {
@@ -34,6 +35,10 @@ type Action =
   | {
       type: typeof UPDATE_USER_DISCORD;
       discordId: string;
+  } | {
+      type: typeof UPDATE_USER_EMAIL;
+      email: string;
+
     };
 
 const initialState: State = {
@@ -76,6 +81,17 @@ const user = (state = initialState, action: Action): State => {
           discordId: action.discordId,
         },
       };
+    case UPDATE_USER_EMAIL:
+      if (state.user) {
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            email: action.email,
+          },
+        };
+      }
+      return { ...state };
     default:
       return { ...state };
   }
