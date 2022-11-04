@@ -1,4 +1,4 @@
-import { UPDATE_USER, UPDATE_USER_NAME, UPDATE_USER_EMAIL } from './types';
+import { UPDATE_USER, UPDATE_USER_NAME, UPDATE_USER_EMAIL, UPDATE_USER_DISCORD } from './types';
 
 export interface IUser {
   userId: number;
@@ -8,6 +8,11 @@ export interface IUser {
   discordId: string | null;
   isFounder: boolean;
   nonce: string;
+}
+
+export interface IUpdateUser {
+  userId: number;
+  discordId: string;
 }
 
 export const updateUser = (user: Partial<IUser>) => ({
@@ -20,7 +25,13 @@ export const updateUserName = (name: string) => ({
   name,
 });
 
+ 
+export const updateUserDiscord = (discordId: string) => ({
+  type: UPDATE_USER_DISCORD,
+  discordId,
+ 
 export const updateUserEmail = (email: string) => ({
   type: UPDATE_USER_EMAIL,
   email,
+
 });
