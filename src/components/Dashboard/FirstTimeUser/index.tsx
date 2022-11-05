@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { FC, FormEvent, useState } from 'react';
 import { validateCreateProfile } from 'validations/auth';
-import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab-light.svg';
+import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
 import { handleLocalStorage } from 'utils/localStorageFn';
@@ -31,7 +31,11 @@ const FirstTimeUser: FC = () => {
       <Background />
       <div className={styles.LoginContainer}>
         <div className={styles.StepContainer}>
-          <FoundersLabIcon width={200} height={26} />
+          <NeonSundaeLogo
+            width={131}
+            height={100}
+            style={{ marginTop: '10px' }}
+          />
           <BaseBlob
             blobColor="rgba(247, 153, 255, 1)"
             width={270}

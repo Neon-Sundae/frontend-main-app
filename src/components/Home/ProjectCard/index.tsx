@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import Card from 'components/Card';
-import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
+import { ReactComponent as BrandImage } from 'assets/illustrations/icons/org-placeholder.svg';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { FC } from 'react';

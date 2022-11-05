@@ -16,4 +16,19 @@
   border-radius: 30px;
   padding: 5px 25px;
   margin: 0 14px 15px 14px;
+  @media (max-width: 1920px)  {
+    margin: 0 14px 15px 14px;
+    
+  }
+  @media (max-width: 1680px)  {
+     
+    margin: 0 14px 15px 14px;
+  }
+  @media (max-width: 1440px)  {
+    margin: 0 10px 10px 10px;
+        
+  }
+  @media (max-width: 1024px) {
+    margin: 0 7px 7px 7px;
+  }
 }

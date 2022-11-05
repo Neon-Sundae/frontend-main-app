@@ -5,6 +5,7 @@ import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
 import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
+import bg from 'assets/illustrations/gradients/bg.png';
 import TourHomePage from './tour';
 import Tasks from '../Tasks';
 import Banner from '../Banner';
@@ -39,7 +40,10 @@ const Landing: FC = () => {
   }
   if (data) {
     return (
-      <div className={styles.background}>
+      <div
+        className={styles.background}
+        style={{ backgroundImage: `url(${bg})`, backgroundSize: 'crop' }}
+      >
         <NavBar />
         <BlurBlobs />
         <Banner />

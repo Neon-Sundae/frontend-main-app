@@ -37,6 +37,7 @@ const AcceptTask: FC<IAcceptTask> = ({
   location,
   editable,
 }) => {
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const [taskEdit, setTaskEdit] = useState(false);
   const [modalLocation, setModalLocation] = useState(location);
   const dispatch = useDispatch();
@@ -58,13 +59,14 @@ const AcceptTask: FC<IAcceptTask> = ({
 
   const showEditTaskModal = () => setTaskEdit(true);
   const handleClose = () => setOpen(false);
+  const isFounder = () => walletId === project_founder;
   return (
     <Modal
       onClose={handleClose}
       width="clamp(20rem, 45vw, 45rem)"
       maxHeight="min(90%, 45rem)"
       overflowY="auto"
-      padding="42px"
+      padding="55px"
     >
       {taskEdit && (
         <EditTask
@@ -72,6 +74,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           selectedTask={selectedTask}
           flProjectCategory={flProjectCategory}
           setOpen={setOpen}
+          // projectFounder={project_founder}
         />
       )}
       {!taskEdit && (
@@ -89,7 +92,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           <h5 className={styles['founder-name']}>
             {selectedTask?.organisation?.name}
           </h5>
-          {editable && (
+          {editable && isFounder() && (
             <button className={styles['edit-btn']} onClick={showEditTaskModal}>
               edit task
               <i className={clsx('material-icons', styles['pencil-icon'])}>

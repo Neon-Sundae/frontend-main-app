@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { ActionMeta, SingleValue } from 'react-select';
+import { ActionMeta, MultiValue, SingleValue } from 'react-select';
 import Select, { Option } from 'components/Select';
 import { useFetchAppSkills } from 'components/ProfileCard/ProfileSkillsEdit/hooks';
 import styles from './index.module.scss';
@@ -10,6 +10,10 @@ interface ITaskSkills {
   setSelectedSkill: Dispatch<SetStateAction<Option | null>>;
   taskSkills: Option[];
   setTaskSkills: Dispatch<SetStateAction<Option[]>>;
+  previouslySelectedSkills?: any;
+  setPreviouslySelectedSkills?: any;
+  showModal: boolean;
+  isMulti: boolean;
 }
 
 const TaskSkills: FC<ITaskSkills> = ({
@@ -17,13 +21,18 @@ const TaskSkills: FC<ITaskSkills> = ({
   setSelectedSkill,
   taskSkills,
   setTaskSkills,
+  previouslySelectedSkills,
+  setPreviouslySelectedSkills,
+  showModal,
+  isMulti,
 }) => {
   const { appSkills } = useFetchAppSkills();
-
   const handleSelectChange = (
     newValue: SingleValue<Option>,
     action: ActionMeta<Option>
   ) => {
+    if (previouslySelectedSkills?.length !== 0)
+      setPreviouslySelectedSkills(null);
     if (newValue) {
       setSelectedSkill(newValue);
       setTaskSkills([...taskSkills, newValue]);
@@ -34,7 +43,7 @@ const TaskSkills: FC<ITaskSkills> = ({
     const newSkills = taskSkills.filter(x => x.value !== skillsId);
     setTaskSkills(newSkills);
   };
-
+  console.log(showModal);
   return (
     <div className={styles['task-skills-container']}>
       <h4 className={styles['difficulty-price-label']}>Skills Needed</h4>
@@ -47,17 +56,21 @@ const TaskSkills: FC<ITaskSkills> = ({
         borderColor="white"
         borderRadius={10}
         height={50}
+        isMulti={isMulti}
       />
-      <div className={styles['profile-skill-modal-tag-container']}>
-        {taskSkills.map(taskSkill => (
-          <SkillTag
-            key={taskSkill.value}
-            name={taskSkill.label}
-            skillsId={taskSkill.value}
-            handleRemove={handleSkillRemove}
-          />
-        ))}
-      </div>
+
+      {showModal && (
+        <div className={styles['profile-skill-modal-tag-container']}>
+          {taskSkills.map(taskSkill => (
+            <SkillTag
+              key={taskSkill.value}
+              name={taskSkill.label}
+              skillsId={taskSkill.value}
+              handleRemove={handleSkillRemove}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -81,6 +94,10 @@ const SkillTag: FC<ISkillTag> = ({ skillsId, name, handleRemove }) => {
       </i>
     </div>
   );
+};
+TaskSkills.defaultProps = {
+  previouslySelectedSkills: '',
+  setPreviouslySelectedSkills: '',
 };
 
 export default TaskSkills;

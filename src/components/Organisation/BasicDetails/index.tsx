@@ -4,7 +4,7 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
 import { IOrganisation } from 'interfaces/organisation';
-import ProfileImage from 'assets/images/profile/user-image.png';
+import ProfileImage from 'assets/images/profile/user-image.svg';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';

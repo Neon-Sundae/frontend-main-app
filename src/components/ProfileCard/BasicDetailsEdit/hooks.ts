@@ -13,8 +13,8 @@ import { useQuery } from '@tanstack/react-query';
 import { handleApiErrors } from 'utils/handleApiErrors';
 
 interface IUpdateProfileDetailsParameters {
-  userId: number | undefined;
-  profileId: number | undefined;
+  userId?: number | undefined;
+  profileId?: number | undefined;
   name: string;
   title: string;
   description: string;

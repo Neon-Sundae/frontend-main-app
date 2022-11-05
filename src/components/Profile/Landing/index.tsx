@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import bg from 'assets/illustrations/profile/bg.svg';
+import bg from 'assets/illustrations/gradients/bg.png';
 import NavBar from 'components/NavBar';
 import ProfileCard from 'components/ProfileCard';
 import { removeItem } from 'utils/localStorageFn';
@@ -35,7 +35,10 @@ const Landing: FC = () => {
   useFetchPublicProfile(profileId);
 
   return (
-    <div className={styles.container} style={{ backgroundImage: `url(${bg})` }}>
+    <div
+      className={styles.container}
+      style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }}
+    >
       <NavBar />
       <div className={styles['profile-card-content-container']}>
         <ProfileCard />
