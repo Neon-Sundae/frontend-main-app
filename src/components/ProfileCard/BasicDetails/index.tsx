@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -9,11 +9,13 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import useProfileManage from './hooks';
+import SocialShareModal from '../SocialShare';
 
 const BasicDetails: FC = () => {
   const { profileId } = useParams();
   const profile = useSelector((state: RootState) => state.profile.profile);
   const user = useSelector((state: RootState) => state.user.user);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const showEditIcon = () => {
     if (profileId && user) {
@@ -25,8 +27,20 @@ const BasicDetails: FC = () => {
     return null;
   };
 
+  const handleClose = () => {
+    setShareOpen(false);
+  };
+
+  const handleOpen = () => {
+    setShareOpen(true);
+  };
+
   return (
     <>
+      <div onClick={handleOpen}>
+        <p>Share me</p>
+      </div>
+      {shareOpen ? <SocialShareModal handleClose={handleClose} /> : null}
       <ProfileImage picture={profile?.picture} />
       <NameDesignation title={profile?.title} user={profile?.user} />
       <ExperiencePoints />
