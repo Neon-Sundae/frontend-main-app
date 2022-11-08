@@ -6,11 +6,14 @@ import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
 import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import bg from 'assets/illustrations/gradients/bg.png';
+import clsx from 'clsx';
 import TourHomePage from './tour';
 import Tasks from '../Tasks';
 import Banner from '../Banner';
 import Projects from '../Projects';
 import styles from './index.module.scss';
+import MyTasks from '../MyTasks';
+import MyProjects from '../MyProjects';
 
 const Landing: FC = () => {
   // const { offChainProfile } = useFetchOffChainProfile();
@@ -48,6 +51,12 @@ const Landing: FC = () => {
         <section className={styles.content}>
           <Projects />
           <Tasks data={data} />
+        </section>
+        <section className={clsx(styles.content, styles['my-tasks-wrap'])}>
+          <MyTasks />
+        </section>
+        <section className={styles['my-projects-wrap']}>
+          <MyProjects />
         </section>
       </div>
     );

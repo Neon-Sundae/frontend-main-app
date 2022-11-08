@@ -25,9 +25,9 @@ import { useCancelTask, useDeleteTask } from './hooks';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
-  project_name: string;
+  project_name?: string;
   handleCommit: any;
-  project_founder: string;
+  project_founder?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -99,7 +99,6 @@ const TaskDetail: FC<ITaskDetail> = ({
   const reformatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-GB');
   };
-  console.log('selectedTask', selectedTask?.taskSkills);
   return (
     <div>
       <div className={styles['avatar-container']}>
@@ -276,7 +275,7 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
-            {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
+            {project_founder?.toLowerCase() === walletId?.toLowerCase() ? (
               founderTaskAction()
             ) : (
               <div>
@@ -303,6 +302,11 @@ const TaskDetail: FC<ITaskDetail> = ({
       )}
     </div>
   );
+};
+
+TaskDetail.defaultProps = {
+  project_founder: '',
+  project_name: '',
 };
 
 interface IFounderCancelTaskContainer {

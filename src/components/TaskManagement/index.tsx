@@ -261,6 +261,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
             flProjectCategory={flProjectCategory}
+            editable
           />
         )}
         {openSelectBuilder && (
@@ -429,6 +430,7 @@ interface IAvatars {
 }
 
 const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
+  const user = useSelector((state: RootState) => state.user.user);
   return (
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (

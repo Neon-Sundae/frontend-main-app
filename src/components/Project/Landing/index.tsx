@@ -2,7 +2,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';
-import BlurBlobs from 'components/BlurBlobs';
 import bg from 'assets/illustrations/gradients/bg.png';
 import TaskManagement from 'components/TaskManagement';
 import { useParams } from 'react-router-dom';
@@ -62,7 +61,6 @@ const Landing: FC = () => {
       style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }}
     >
       <NavBar />
-      {/* <BlurBlobs /> */}
       <Header
         projectName={name}
         setOpen={val => setOpen(val)}
