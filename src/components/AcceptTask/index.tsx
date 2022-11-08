@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import EditTask from 'components/EditTask';
@@ -14,14 +15,14 @@ import styles from './index.module.scss';
 interface IAcceptTask {
   setOpen: Dispatch<SetStateAction<boolean>>;
   setViewComplete: Dispatch<SetStateAction<boolean>>;
-  taskId: number;
-  handleApprove: any;
-  selected: boolean;
-  selectedBuilder: any;
-  project_founder: string;
-  project_name: string;
-  handleCommit: any;
-  flProjectCategory: any;
+  taskId?: number;
+  handleApprove?: any;
+  project_founder?: string;
+  project_name?: string;
+  handleCommit?: any;
+  flProjectCategory?: any;
+  location?: string;
+  editable?: boolean;
 }
 
 const AcceptTask: FC<IAcceptTask> = ({
@@ -33,8 +34,12 @@ const AcceptTask: FC<IAcceptTask> = ({
   project_founder,
   handleCommit,
   flProjectCategory,
+  location,
+  editable,
 }) => {
+  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const [taskEdit, setTaskEdit] = useState(false);
+  const [modalLocation, setModalLocation] = useState(location);
   const dispatch = useDispatch();
 
   const { taskData } = useFetchTaskData(taskId);
@@ -44,22 +49,24 @@ const AcceptTask: FC<IAcceptTask> = ({
 
   useEffect(() => {
     if (taskData) {
-      console.log('>>>>>>>>>>>', taskData);
       dispatch({
         type: GET_SELECTED_TASK,
         payload: taskData,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskData]);
+
   const showEditTaskModal = () => setTaskEdit(true);
   const handleClose = () => setOpen(false);
+  const isFounder = () => walletId === project_founder;
   return (
     <Modal
       onClose={handleClose}
       width="clamp(20rem, 45vw, 45rem)"
       maxHeight="min(90%, 45rem)"
       overflowY="auto"
-      padding="42px"
+      padding="55px"
     >
       {taskEdit && (
         <EditTask
@@ -67,6 +74,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           selectedTask={selectedTask}
           flProjectCategory={flProjectCategory}
           setOpen={setOpen}
+          // projectFounder={project_founder}
         />
       )}
       {!taskEdit && (
@@ -84,12 +92,15 @@ const AcceptTask: FC<IAcceptTask> = ({
           <h5 className={styles['founder-name']}>
             {selectedTask?.organisation?.name}
           </h5>
-          <button className={styles['edit-btn']} onClick={showEditTaskModal}>
-            edit task
-            <i className={clsx('material-icons', styles['pencil-icon'])}>
-              edit
-            </i>
-          </button>
+          {editable && isFounder() && (
+            <button className={styles['edit-btn']} onClick={showEditTaskModal}>
+              edit task
+              <i className={clsx('material-icons', styles['pencil-icon'])}>
+                edit
+              </i>
+            </button>
+          )}
+
           {selectedTask?.taskSmartContractId && (
             <h5 className={styles['token-id']}>
               SmartContractId: #{selectedTask?.taskSmartContractId}
@@ -113,6 +124,17 @@ const AcceptTask: FC<IAcceptTask> = ({
       )}
     </Modal>
   );
+};
+
+AcceptTask.defaultProps = {
+  taskId: 0,
+  handleApprove: undefined,
+  project_founder: '',
+  project_name: '',
+  handleCommit: undefined,
+  flProjectCategory: undefined,
+  location: '',
+  editable: false,
 };
 
 export default AcceptTask;

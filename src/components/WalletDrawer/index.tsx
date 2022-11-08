@@ -88,7 +88,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
   };
 
   const toggleDepositState = () => {
-    if (selectedContract.type === 'profile_contract') {
+    if (selectedContract?.type === 'profile_contract') {
       toast.error('Cannot deposit to profile');
       return;
     }

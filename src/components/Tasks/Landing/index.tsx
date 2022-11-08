@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import bg from 'assets/illustrations/home/all-task-bg.svg';
+import bg from 'assets/illustrations/gradients/bg.png';
 import NavBar from 'components/NavBar';
 import styles from './index.module.scss';
 import AllTasks from '../AllTasks';

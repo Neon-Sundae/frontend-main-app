@@ -12,7 +12,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
-import userImage from 'assets/images/profile/user-image.png';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
@@ -27,6 +26,7 @@ import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
@@ -261,6 +261,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
             flProjectCategory={flProjectCategory}
+            editable
           />
         )}
         {openSelectBuilder && (
@@ -349,7 +350,7 @@ const Card: FC<ICard> = ({
     () => [...Array(item.estimatedDifficulty).keys()],
     []
   );
-
+  const user = useSelector((state: RootState) => state.user.user);
   const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
@@ -377,7 +378,10 @@ const Card: FC<ICard> = ({
       default:
         return (
           <div className={styles['avatar-image-wrapper']}>
-            <img alt="user" src={userImage} />
+            <img
+              alt="user"
+              src={getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())}
+            />
           </div>
         );
     }
@@ -433,11 +437,15 @@ interface IAvatars {
 }
 
 const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
+  const user = useSelector((state: RootState) => state.user.user);
   return (
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
-          src={elem.Profile.picture || userImage}
+          src={
+            elem.Profile.picture ||
+            getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+          }
           alt="User Avatar"
           className={styles['builder-avatar']}
         />

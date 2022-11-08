@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,10 +15,11 @@ import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.sv
 import calculateTaskXP from 'utils/contractFns/calculateTaskXp';
 import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
 import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
+import { ReactComponent as NinjaIcon } from 'assets/illustrations/icons/ninja.svg';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
-import userImage from 'assets/images/profile/user-image.png';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
@@ -24,9 +27,9 @@ import { useCancelTask, useDeleteTask } from './hooks';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
-  project_name: string;
+  project_name?: string;
   handleCommit: any;
-  project_founder: string;
+  project_founder?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -48,6 +51,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   );
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const profile = useSelector((state: RootState) => state.profile.profile);
+  const { user } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const getXP = async () => {
@@ -105,7 +109,6 @@ const TaskDetail: FC<ITaskDetail> = ({
   const reformatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-GB');
   };
-
   return (
     <div>
       <div className={styles['avatar-container']}>
@@ -129,7 +132,10 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .map((item: any, index: number) =>
                   item.Profile.picture !== null ? (
                     <img
-                      src={item.Profile.picture || userImage}
+                      src={
+                        item.Profile.picture ||
+                        getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+                      }
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
@@ -139,7 +145,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                   )
                 )
             ) : (
-              <>
+              <div>
                 {selectedTask?.profileTask
                   .slice(0, 5)
                   .map((item: any, index: number) =>
@@ -152,31 +158,37 @@ const TaskDetail: FC<ITaskDetail> = ({
                       />
                     ) : (
                       <img
-                        src={userImage}
+                        src={getDefaultAvatarSrc(
+                          user?.name?.charAt(0).toUpperCase()
+                        )}
                         className={styles['builder-avatar']}
                         alt=""
                         key={index}
                       />
                     )
                   )}
-              </>
+              </div>
             )}
           </div>
         )}
       </div>
       <div className={styles['project-description']}>
-        <p> Skills:</p>
-        {selectedTask?.taskSkills?.length > 0 && (
-          <div className={styles['project-attachments']}>
-            {selectedTask?.taskSkills?.map((taskSkills: any, index: number) => (
-              <FileSkillsCard
-                key={index}
-                label="Wireframes v1.0"
-                skills={taskSkills.name}
-              />
-            ))}
+        <span className={styles['task-details-skills-inline']}>
+          <div>
+            <NinjaIcon width="24px" height="24px" />
+            <p>Skills Needed:</p>
           </div>
-        )}
+
+          {selectedTask?.taskSkills?.length > 0 && (
+            <div className={styles['project-attachments']}>
+              {selectedTask?.taskSkills?.map(
+                (taskSkill: any, index: number) => (
+                  <FileSkillsCard key={index} skills={taskSkill.name} />
+                )
+              )}
+            </div>
+          )}
+        </span>
       </div>
       <div className={styles['project-details']}>
         <div>
@@ -256,19 +268,27 @@ const TaskDetail: FC<ITaskDetail> = ({
             {selectedTask?.taskAttachment?.length > 0 && (
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
-                  (file: any, index: number) => (
-                    <FileSkillsCard key={index} label="Wireframes v1.0" />
-                  )
+                  (file: any, index: number) => {
+                    console.log('file', file);
+                    return (
+                      <FileSkillsCard
+                        key={index}
+                        label={file.url
+                          .substr(file.url.lastIndexOf('/') + 1)
+                          .replace(/%20/g, ' ')}
+                      />
+                    );
+                  }
                 )}
               </div>
             )}
           </div>
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
-            {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
+            {project_founder?.toLowerCase() === walletId?.toLowerCase() ? (
               founderTaskAction()
             ) : (
-              <>
+              <div>
                 {selectedTask?.status === 'open' &&
                 selectedTask?.profileTask.filter(
                   (item: any) => item?.Profile?.user?.walletId === walletId
@@ -283,15 +303,20 @@ const TaskDetail: FC<ITaskDetail> = ({
                   ).length > 0 ? (
                   <button onClick={handleCommit}>Commit to task</button>
                 ) : (
-                  <></>
+                  <p> </p>
                 )}
-              </>
+              </div>
             )}
           </div>
         </>
       )}
     </div>
   );
+};
+
+TaskDetail.defaultProps = {
+  project_founder: '',
+  project_name: '',
 };
 
 interface IFounderCancelTaskContainer {

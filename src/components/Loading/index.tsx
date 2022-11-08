@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 const Loading: FC = () => {
-  return <p>Loading...</p>;
+  return null;
 };
 
 export default Loading;

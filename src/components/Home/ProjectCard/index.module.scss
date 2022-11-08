@@ -1,15 +1,13 @@
 .project-card {
   width: 190px;
-  max-height: 247px;
-
+  min-height: 247px;
   padding: 20px;
-
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
- 
+  justify-content: space-evenly;
   color: white;
   border: 0.7px solid rgb(211, 155, 255);
+
   & header {
     & .text--primary {
       margin-top: 6px;
@@ -23,7 +21,7 @@
       display: block;
       font-family: var(--font-family-roboto-flex);
       font-size: 10px;
-     
+
     }
   }
 
