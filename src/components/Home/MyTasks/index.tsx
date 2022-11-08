@@ -44,53 +44,46 @@ const MyTasks: FC = () => {
   const getFilteredProfileTasksData = () => {
     console.log('inside getFilteredProfileTasksData');
     if (selectedTab === 'all') getAllProfileTasks();
-    const getFilteredProfileTasks = data?.filter((d: any) => {
-      if (d && d.profileTask && d.profileTask.length > 0) {
-        return d.profileTask?.every((c: any) => {
-          if (c.applicationStatus === 'applied') {
-            setFilteredData(
-              _.filter(data, {
-                profileTask: [
-                  {
-                    Profile: { profileId: profile?.profileId },
-                    applicationStatus: 'applied',
-                  },
-                ],
-              })
-            );
-          }
-          if (c.applicationStatus === 'accepted') {
-            setFilteredData(
-              _.filter(data, {
-                profileTask: [
-                  {
-                    Profile: { profileId: profile?.profileId },
-                    applicationStatus: 'accepted',
-                  },
-                ],
-              })
-            );
-          }
-          if (d.status === 'in progress')
-            return (
-              d.status === selectedTab &&
-              c.Profile.profileId === profile?.profileId
-            );
-          if (d.status === 'in review')
-            return (
-              d.status === selectedTab &&
-              c.Profile.profileId === profile?.profileId
-            );
-          if (d.status === 'completed')
-            return (
-              d.status === selectedTab &&
-              c.Profile.profileId === profile?.profileId
-            );
-          return null;
+    const getFilteredProfileTasks = () => {
+      if (selectedTab === 'in progress') {
+        return _.filter(data, {
+          status: selectedTab,
+          profileTask: [
+            {
+              Profile: { profileId: profile?.profileId },
+            },
+          ],
         });
       }
-      return null;
-    });
+      if (selectedTab === 'in review') {
+        return _.filter(data, {
+          status: selectedTab,
+          profileTask: [
+            {
+              Profile: { profileId: profile?.profileId },
+            },
+          ],
+        });
+      }
+      if (selectedTab === 'completed') {
+        return _.filter(data, {
+          status: selectedTab,
+          profileTask: [
+            {
+              Profile: { profileId: profile?.profileId },
+            },
+          ],
+        });
+      }
+      return _.filter(data, {
+        profileTask: [
+          {
+            applicationStatus: selectedTab,
+            Profile: { profileId: profile?.profileId },
+          },
+        ],
+      });
+    };
     setFilteredData(getFilteredProfileTasks);
     return getFilteredProfileTasks;
   };
@@ -103,6 +96,7 @@ const MyTasks: FC = () => {
       />
     );
   }
+  console.log(selectedTab);
   return (
     <div className={styles['my-tasks-container']}>
       <h3>My Tasks</h3>
