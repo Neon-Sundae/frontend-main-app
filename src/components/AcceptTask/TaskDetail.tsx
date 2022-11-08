@@ -99,7 +99,6 @@ const TaskDetail: FC<ITaskDetail> = ({
   const reformatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-GB');
   };
-  console.log('selectedTask', selectedTask?.taskSkills);
   return (
     <div>
       <div className={styles['avatar-container']}>

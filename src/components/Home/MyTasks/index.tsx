@@ -42,7 +42,6 @@ const MyTasks: FC = () => {
   };
 
   const getFilteredProfileTasksData = () => {
-    console.log('inside getFilteredProfileTasksData');
     if (selectedTab === 'all') getAllProfileTasks();
     const getFilteredProfileTasks = () => {
       if (selectedTab === 'in progress') {
@@ -96,7 +95,6 @@ const MyTasks: FC = () => {
       />
     );
   }
-  console.log(selectedTab);
   return (
     <div className={styles['my-tasks-container']}>
       <h3>My Tasks</h3>
