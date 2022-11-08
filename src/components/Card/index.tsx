@@ -10,8 +10,8 @@ interface ComponentProps {
   height?: string;
   marginRight?: string;
   borderType?: string;
-  onClick?: any;
-  onfocus?: any;
+  onClick?: () => void;
+  onfocus?: () => void;
   location?: string;
 }
 
@@ -68,8 +68,8 @@ Card.defaultProps = {
   height: '',
   marginRight: '',
   borderType: '',
-  onClick: '',
-  onfocus: '',
+  onClick: () => null,
+  onfocus: () => null,
   location: '',
 };
 

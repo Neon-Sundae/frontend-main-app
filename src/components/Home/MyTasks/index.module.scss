@@ -2,13 +2,15 @@
   color: #fff;
   width: 100%;
   position: relative;
-
   & h3 {
     position: absolute;
     left: 0;
     bottom: 110%;
     font-size: 21px;
     font-family: var(--font-family-roboto-regular);
+  }
+  & p {
+    // padding: 0 10px;
   }
 }
 .my-tasks- {

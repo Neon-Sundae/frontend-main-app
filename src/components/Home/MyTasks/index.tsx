@@ -3,16 +3,19 @@ import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import _ from 'lodash';
 import MyTasksCard from '../MyTasksCard';
 import styles from './index.module.scss';
 import DashboardTabs from '../DashboardTabs';
 import MyTaskDetailModal from '../TaskDetailModal';
 
 const MyTasks: FC = () => {
+  const profile = useSelector((state: RootState) => state.profile.profile);
   const [selectedTab, setSelectedTab] = useState('all');
   const [selectedTaskId, setSelectedTaskId] = useState(0);
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
-
   useEffect(() => {
     getFilteredProfileTasksData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,20 +32,63 @@ const MyTasks: FC = () => {
       refetchOnWindowFocus: false,
     }
   );
+
   const [filteredData, setFilteredData] = useState(data);
 
-  const getAllProfileTasks = () =>
-    data?.filter((task: any) =>
-      Object.keys(task).some(() => task.profileTask?.length > 0)
-    );
+  const getAllProfileTasks = () => {
+    return _.filter(data, {
+      profileTask: [{ Profile: { profileId: profile?.profileId } }],
+    });
+  };
 
   const getFilteredProfileTasksData = () => {
+    console.log('inside getFilteredProfileTasksData');
     if (selectedTab === 'all') getAllProfileTasks();
     const getFilteredProfileTasks = data?.filter((d: any) => {
-      if (d && d.profileTask && d.profileTask.length > 0)
+      if (d && d.profileTask && d.profileTask.length > 0) {
         return d.profileTask?.every((c: any) => {
-          return c.applicationStatus === selectedTab;
+          if (c.applicationStatus === 'applied') {
+            setFilteredData(
+              _.filter(data, {
+                profileTask: [
+                  {
+                    Profile: { profileId: profile?.profileId },
+                    applicationStatus: 'applied',
+                  },
+                ],
+              })
+            );
+          }
+          if (c.applicationStatus === 'accepted') {
+            setFilteredData(
+              _.filter(data, {
+                profileTask: [
+                  {
+                    Profile: { profileId: profile?.profileId },
+                    applicationStatus: 'accepted',
+                  },
+                ],
+              })
+            );
+          }
+          if (d.status === 'in progress')
+            return (
+              d.status === selectedTab &&
+              c.Profile.profileId === profile?.profileId
+            );
+          if (d.status === 'in review')
+            return (
+              d.status === selectedTab &&
+              c.Profile.profileId === profile?.profileId
+            );
+          if (d.status === 'completed')
+            return (
+              d.status === selectedTab &&
+              c.Profile.profileId === profile?.profileId
+            );
+          return null;
         });
+      }
       return null;
     });
     setFilteredData(getFilteredProfileTasks);
@@ -53,6 +99,7 @@ const MyTasks: FC = () => {
       <MyTaskDetailModal
         selectedTaskId={selectedTaskId}
         setOpen={setOpenTaskDetail}
+        key={getRandomString(5)}
       />
     );
   }
@@ -78,14 +125,16 @@ const MyTasks: FC = () => {
               />
             ))}
           {selectedTab === 'all' &&
-            getAllProfileTasks()?.map((task: any) => (
-              <MyTasksCard
-                key={getRandomString(5)}
-                data={task}
-                setOpenTaskDetail={setOpenTaskDetail}
-                setSelectedTaskId={setSelectedTaskId}
-              />
-            ))}
+            getAllProfileTasks()?.map((task: any) => {
+              return (
+                <MyTasksCard
+                  key={getRandomString(5)}
+                  data={task}
+                  setOpenTaskDetail={setOpenTaskDetail}
+                  setSelectedTaskId={setSelectedTaskId}
+                />
+              );
+            })}
         </div>
       </div>
     </div>

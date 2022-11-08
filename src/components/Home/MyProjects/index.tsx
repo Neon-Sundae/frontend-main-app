@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Card from 'components/Card';
 import config from 'config';
+import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
@@ -10,7 +11,6 @@ import styles from './index.module.scss';
 
 const MyProjects = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
-  console.log('profile', profile?.profileId);
   const { data } = useQuery(
     ['myFlProjects'],
     () =>
@@ -22,18 +22,14 @@ const MyProjects = () => {
       refetchOnWindowFocus: false,
     }
   );
-  const getFilteredProfileTasksData = () => {
-    const getFilteredProfileTasks = data?.filter((d: any) => {
-      if (d && d.profileTask && d.profileTask.length > 0)
-        return d.profileTask?.every((c: any) => {
-          return c.Profile.profileId === profile?.profileId;
-        });
-      return null;
-    });
-    return getFilteredProfileTasks;
-  };
-  const filteredProjects = getFilteredProfileTasksData();
 
+  const getFilteredProfileTasksData = () => {
+    return _.filter(data, {
+      profileTask: [{ Profile: { profileId: profile?.profileId } }],
+    });
+  };
+
+  const filteredProjects = getFilteredProfileTasksData();
   const res = [
     ...new Map(
       filteredProjects?.map((o: any) => [
@@ -42,7 +38,6 @@ const MyProjects = () => {
       ])
     ).values(),
   ];
-
   return (
     <>
       <h2>My Projects</h2>

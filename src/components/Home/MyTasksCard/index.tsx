@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 import userImage from 'assets/images/profile/user-image.png';
@@ -20,7 +21,6 @@ const MyTasksCard: FC<ICard> = ({
 
   const difficultyArray = useMemo(
     () => [...Array(data.estimatedDifficulty).keys()],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -36,14 +36,12 @@ const MyTasksCard: FC<ICard> = ({
     setSelectedTaskId(data.taskId);
     setOpenTaskDetail(true);
   };
-
   return (
     <Card
       showTransparentBg
-      width="343px"
       height="145px"
       borderType="0.7px solid #e0b9ff"
-      marginRight="19px"
+      marginRight="39px"
       onClick={handleClick}
     >
       <div className={styles['category-action-container']}>
@@ -53,7 +51,9 @@ const MyTasksCard: FC<ICard> = ({
         {getTextOrAvatar()}
       </div>
       <h4 className={styles['task-name']}>{title}</h4>
-      <p className={styles['task-organisation-name']}>organization</p>
+      <p className={styles['task-organisation-name']}>
+        {data.flProjectCategory.flProject.organisation.name}
+      </p>
       <div className={styles['rating-price-container']}>
         <span className={styles['rating-container']}>
           {difficultyArray.map(n => (
@@ -79,7 +79,6 @@ interface IAvatars {
 }
 
 const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
-  console.log('appliedBuilders', appliedBuilders);
   return (
     <div className={styles['avatar-container']}>
       {appliedBuilders.map((elem: any) => (

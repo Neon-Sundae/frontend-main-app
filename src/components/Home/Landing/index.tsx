@@ -6,6 +6,7 @@ import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
 import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import bg from 'assets/illustrations/gradients/bg.png';
+import clsx from 'clsx';
 import TourHomePage from './tour';
 import Tasks from '../Tasks';
 import Banner from '../Banner';
@@ -51,7 +52,7 @@ const Landing: FC = () => {
           <Projects />
           <Tasks data={data} />
         </section>
-        <section className={styles.content}>
+        <section className={clsx(styles.content, styles['my-tasks-wrap'])}>
           <MyTasks />
         </section>
         <section className={styles['my-projects-wrap']}>
