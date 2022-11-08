@@ -40,7 +40,7 @@ const MyProjects = () => {
   ];
   return (
     <>
-      <h2>My Projects</h2>
+      <h2>Projects I have applied to</h2>
       <div className={styles['my-projects-container']}>
         <Card showTransparentBg location="my-projects">
           {res?.map((project: any) => (

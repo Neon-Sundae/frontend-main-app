@@ -97,7 +97,7 @@ const MyTasks: FC = () => {
   }
   return (
     <div className={styles['my-tasks-container']}>
-      <h3>My Tasks</h3>
+      <h3>My Ongoing Tasks</h3>
       <div className={styles.glass}>
         <div className={styles['my-tasks-']}>
           <DashboardTabs
