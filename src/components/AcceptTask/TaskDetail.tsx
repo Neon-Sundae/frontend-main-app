@@ -3,6 +3,8 @@
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import { ReactComponent as ProjectIcon } from 'assets/illustrations/icons/project.svg';
@@ -39,6 +41,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   setOpen,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const builderTaskApply = useBuilderTaskApply();
   const { deleteTask } = useDeleteTask(setOpen);
   const [isCancel, setIsCancel] = useState(false);
@@ -47,7 +50,9 @@ const TaskDetail: FC<ITaskDetail> = ({
     (state: RootState) => state.flProject
   );
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const profile = useSelector((state: RootState) => state.profile.profile);
   const { user } = useSelector((state: RootState) => state.user);
+
   useEffect(() => {
     const getXP = async () => {
       const xp = await calculateTaskXP(
@@ -65,11 +70,16 @@ const TaskDetail: FC<ITaskDetail> = ({
   }, [selectedTask]);
 
   const applyToTask = () => {
-    builderTaskApply.mutate({
-      taskId: selectedTask.taskId,
-    });
+    if (profile && profile.profileSmartContractId) {
+      builderTaskApply.mutate({
+        taskId: selectedTask.taskId,
+      });
 
-    setOpen(false);
+      setOpen(false);
+    } else {
+      toast.error('Please mint your profile');
+      navigate(`/profile/${profile?.profileId}`);
+    }
   };
 
   const founderTaskAction = () => {
