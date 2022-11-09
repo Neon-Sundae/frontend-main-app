@@ -26,7 +26,7 @@
       }
     }
 
-    &>button {
+    &> div >button {
       display: block;
       margin: 40px auto;
       cursor: pointer;
@@ -48,6 +48,7 @@
   &>button {
     display: flex;
     align-items: center;
+    
   }
 
   .founder-name {
