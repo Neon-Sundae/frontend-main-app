@@ -14,7 +14,12 @@ const Landing: FC = () => {
   return (
     <div
       className={styles['organisation-container']}
-      style={{ backgroundImage: `url(${bg})` }}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <Banner organisation={organisation} />

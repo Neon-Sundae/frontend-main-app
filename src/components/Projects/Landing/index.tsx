@@ -24,8 +24,13 @@ const Landing: FC = () => {
   if (error) return <div>Error...</div>;
   return (
     <div
-      className={styles['container']}
-      style={{ backgroundImage: `url(${bg})` }}
+      className={styles.container}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <AllProjects projectData={data} />
