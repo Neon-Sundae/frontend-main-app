@@ -27,6 +27,7 @@ import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import getRandomString from 'utils/getRandomString';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
@@ -430,19 +431,21 @@ interface IAvatars {
 }
 
 const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
-  const user = useSelector((state: RootState) => state.user.user);
   return (
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
           src={
             elem.Profile.picture ||
-            getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+            getDefaultAvatarSrc(
+              elem?.Profile?.user?.name?.charAt(0).toUpperCase()
+            )
           }
           alt="User Avatar"
           className={styles['builder-avatar']}
+          key={getRandomString(5)}
         />
-      ))}{' '}
+      ))}
     </div>
   );
 };

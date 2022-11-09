@@ -1,3 +1,6 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
@@ -47,7 +50,6 @@ const TaskDetail: FC<ITaskDetail> = ({
     (state: RootState) => state.flProject
   );
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { user } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     const getXP = async () => {
       const xp = await calculateTaskXP(
@@ -105,7 +107,6 @@ const TaskDetail: FC<ITaskDetail> = ({
         <span className={styles['task-status-btn']}>
           {selectedTask?.status}
         </span>
-
         {selectedTask?.profileTask?.length > 0 && (
           <div
             className={styles.expanded}
@@ -119,21 +120,33 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .filter(
                   (profile: any) => profile.applicationStatus === 'accepted'
                 )
-                .map((item: any, index: number) =>
-                  item.Profile.picture !== null ? (
+                .map((item: any, index: number) => {
+                  return item.Profile.picture !== null ? (
                     <img
                       src={
                         item.Profile.picture ||
-                        getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+                        getDefaultAvatarSrc(
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                        )
                       }
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
                     />
                   ) : (
-                    <div className={styles['builder-avatar']} key={index} />
-                  )
-                )
+                    <img
+                      src={
+                        item.Profile.picture ||
+                        getDefaultAvatarSrc(
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                        )
+                      }
+                      className={styles['builder-avatar']}
+                      alt=""
+                      key={index}
+                    />
+                  );
+                })
             ) : (
               <div>
                 {selectedTask?.profileTask
@@ -141,7 +154,12 @@ const TaskDetail: FC<ITaskDetail> = ({
                   .map((item: any, index: number) =>
                     item.Profile.picture !== null ? (
                       <img
-                        src={item.Profile.picture}
+                        src={
+                          item.Profile.picture ||
+                          getDefaultAvatarSrc(
+                            item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                          )
+                        }
                         className={styles['builder-avatar']}
                         alt=""
                         key={index}
@@ -149,7 +167,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                     ) : (
                       <img
                         src={getDefaultAvatarSrc(
-                          user?.name?.charAt(0).toUpperCase()
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
                         )}
                         className={styles['builder-avatar']}
                         alt=""
@@ -259,7 +277,6 @@ const TaskDetail: FC<ITaskDetail> = ({
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
                   (file: any, index: number) => {
-                    console.log('file', file);
                     return (
                       <FileSkillsCard
                         key={index}

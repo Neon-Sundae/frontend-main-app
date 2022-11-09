@@ -9,6 +9,7 @@ import { RootState } from 'reducers';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as CloseIcon } from 'assets/illustrations/icons/close-outlined.svg';
 import DepositFundsToWallet from 'components/Project/Modal/DepositFundsToWallet';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import { useSelectBuilder } from './hooks';
 
@@ -86,7 +87,14 @@ const SelectBuilder: FC<ISelectBuilder> = ({
             <>
               <div className={styles['selected-builder-details']}>
                 <img
-                  src={selectedBuilder.Profile.picture}
+                  src={
+                    selectedBuilder.Profile.picture ||
+                    getDefaultAvatarSrc(
+                      selectedBuilder?.Profile?.user?.name
+                        ?.charAt(0)
+                        .toUpperCase()
+                    )
+                  }
                   alt=""
                   width="70.51px"
                   height="70.51px"
@@ -123,13 +131,13 @@ const SelectBuilder: FC<ISelectBuilder> = ({
           ) : pending === 'waiting' ? (
             <div className={styles['accept-task-content']}>
               <Spinner />
-              <p>Waiting for confimation</p>
+              <p>Waiting for confirmation</p>
               <p>Confirm this transaction in your wallet</p>
             </div>
           ) : pending === 'confirmed' ? (
             <div className={styles['accept-task-content']}>
               <CheckIcon width={100} height={100} />
-              <p>Builder selected succesfully!</p>
+              <p>Builder selected successfully!</p>
               <p>We’ve sent Builder an update on email & Discord </p>
             </div>
           ) : pending === 'budget_exceed' ? (
