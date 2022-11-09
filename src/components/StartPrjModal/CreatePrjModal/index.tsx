@@ -1,4 +1,6 @@
 import { FC, useEffect, useState } from 'react';
+import { RootState } from 'reducers';
+import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
 import Select from 'react-select';
 import timezoneData from 'assets/data/timezones.json';
@@ -19,6 +21,9 @@ interface ICreatePrjProps {
 
 const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   const navigate = useNavigate();
+
+  const profile = useSelector((state: RootState) => state.profile.profile);
+
   const temp: any = [];
   useEffect(() => {
     if (!temp.length) {
@@ -205,25 +210,30 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   };
 
   const handleAddProject = (e: any) => {
-    if (error.message !== '') toast.error(error.message);
-    if (error.message === '') {
-    }
-    const temp: any = [];
-    setFormData((prevState: any) => {
-      prevState.flResources?.map((resource: any) => {
-        // find resource in temp array and if its not there add it
-        if (temp.indexOf({ title: resource }) === -1) {
-          temp.push({ title: resource });
-        }
+    if (profile && profile.profileSmartContractId) {
+      if (error.message !== '') toast.error(error.message);
+      if (error.message === '') {
+      }
+      const temp: any = [];
+      setFormData((prevState: any) => {
+        prevState.flResources?.map((resource: any) => {
+          // find resource in temp array and if its not there add it
+          if (temp.indexOf({ title: resource }) === -1) {
+            temp.push({ title: resource });
+          }
+        });
+        prevState.flResources = temp;
+        const isoDate = new Date(prevState.timeOfCompletion);
+        prevState.timeOfCompletion = isoDate.toISOString();
+        return {
+          ...prevState,
+        };
       });
-      prevState.flResources = temp;
-      const isoDate = new Date(prevState.timeOfCompletion);
-      prevState.timeOfCompletion = isoDate.toISOString();
-      return {
-        ...prevState,
-      };
-    });
-    setSubmit(true);
+      setSubmit(true);
+    } else {
+      toast.error('Please mint your profile');
+      navigate(`/profile/${profile?.profileId}`);
+    }
   };
   return (
     <>

@@ -9,7 +9,7 @@
 
 import { FC, useEffect, useState, useMemo, useRef, MouseEvent } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
@@ -342,7 +342,9 @@ const Card: FC<ICard> = ({
   projectFounder,
   appliedBuilders,
 }) => {
+  const navigate = useNavigate();
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const profile = useSelector((state: RootState) => state.profile.profile);
   const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
@@ -353,9 +355,14 @@ const Card: FC<ICard> = ({
   const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
-    builderTaskApply.mutate({
-      taskId: item.taskId,
-    });
+    if (profile && profile.profileSmartContractId) {
+      builderTaskApply.mutate({
+        taskId: item.taskId,
+      });
+    } else {
+      toast.error('Please mint your profile');
+      navigate(`/profile/${profile?.profileId}`);
+    }
   };
 
   const getTextOrAvatar = () => {

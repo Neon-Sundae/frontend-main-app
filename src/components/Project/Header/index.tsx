@@ -2,6 +2,7 @@
 /* eslint-disable no-nested-ternary */
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import config from 'config';
@@ -24,12 +25,14 @@ interface IHeaderProps {
 
 const Header: FC<IHeaderProps> = props => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
   const toggle = useSelector((state: RootState) => state.app.toggle);
+  const profile = useSelector((state: RootState) => state.profile.profile);
 
   const [showProjectFormModalWithData, setShowProjectFormModalWithData] =
     useState(false);
@@ -47,7 +50,7 @@ const Header: FC<IHeaderProps> = props => {
       } else {
         toast.error('Please mint your profile on chain');
         // TODO - Move to profile page
-        // navigate('/profile');
+        navigate(`/profile/${profile?.profileId}`);
       }
     } catch (err) {
       console.log(err);

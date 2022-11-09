@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
-import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import bg from 'assets/illustrations/gradients/bg.png';
 import clsx from 'clsx';
 import TourHomePage from './tour';
@@ -16,7 +15,6 @@ import MyTasks from '../MyTasks';
 import MyProjects from '../MyProjects';
 
 const Landing: FC = () => {
-  // const { offChainProfile } = useFetchOffChainProfile();
   const [checkOnboardStatus, setCheckOnboardStatus] = useState(
     localStorage.getItem('onboardStatus')
   );
