@@ -13,10 +13,10 @@ const TalentList: FC<ITalentList> = ({ setViewTalentList, handleApprove }) => {
   const { selectedTask } = useSelector((state: RootState) => state.flProject);
   return (
     <div className={styles['talent-list-container']}>
-      {selectedTask?.status !== 'open' &&
-        selectedTask?.profileTask.filter(
-          (profile: any) => profile?.applicationStatus === 'accepted'
-        ).length > 0 &&
+      {/* {selectedTask?.status !== 'open' && */}
+      {selectedTask?.profileTask.filter(
+        (profile: any) => profile?.applicationStatus === 'accepted'
+      ).length > 0 &&
         selectedTask?.profileTask
           .filter((profile: any) => profile?.applicationStatus === 'accepted')
           .map((item: any, index: number) => (

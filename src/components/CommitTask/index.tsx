@@ -32,18 +32,17 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
             <>
               <div>
                 <div>
-                  <span>Compensation</span>
+                  <span>Task Compensation</span>
                   <span>{selectedTask?.price} USDC</span>
                 </div>
                 <div>
-                  <span>FNDR Coin Required</span>
-                  <span>{selectedTask?.fndrToken} FNDR</span>
+                  <span>Neon Sundae Coins Required</span>
+                  <span>{selectedTask?.fndrToken} NEONS</span>
                 </div>
               </div>
               <p>
-                <span>
-                  *Your compensation will be unlocked after task completion
-                </span>
+                Your compensation will credited to your profile wallet after
+                task completion
                 {/* <span>Top Up Wallet +</span> */}
               </p>
               <button
@@ -60,7 +59,7 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
           ) : pending === 'approving' ? (
             <div className={styles['accept-task-content']}>
               <Spinner />
-              <p>Waiting for approving</p>
+              <p>Please give Access to your NEONS</p>
               <p>Confirm this transaction in your wallet</p>
               {hash === '' ? (
                 <p>
@@ -83,7 +82,7 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
           ) : pending === 'confirming' ? (
             <div className={styles['accept-task-content']}>
               <Spinner />
-              <p>Waiting for confimation</p>
+              <p>NEONS are being deposited!</p>
               <p>Confirm this transaction in your wallet</p>
               {hash === '' ? (
                 <p>
@@ -108,8 +107,8 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
               <CheckIcon width={100} height={100} />
               <p>Transaction has been confirmed</p>
               <p>
-                As you start working on the task, update the status to "In
-                progress"
+                You have commited to the task! Task is now{' '}
+                <span style={{ color: '#EC81F5' }}>In Progress</span>
               </p>
               {hash === '' ? (
                 <p>
@@ -132,8 +131,8 @@ const CommitTask: FC<ICommitTask> = ({ handleClose }) => {
           ) : (
             <div className={styles['accept-task-content']}>
               <CloseIcon width={120} height={120} />
-              <p>This Transaction has been failed</p>
-              <p>Confirm this transaction in your wallet</p>
+              <p>This Transaction has failed</p>
+              <p>Please check the blockexplorer for more details</p>
               {hash === '' ? (
                 <p>
                   <i className="material-icons">open_in_new</i>&nbsp;View on
