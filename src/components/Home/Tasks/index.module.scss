@@ -8,9 +8,15 @@
     flex-direction: column;
     justify-content: space-evenly;
     flex: 1;
+
     @media (max-width: 1024px) {
       justify-content: space-between;
       flex-direction: row;
+    }
+
+    &>div {
+      grid-template-columns: 280px;
+
     }
   }
 

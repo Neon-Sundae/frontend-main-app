@@ -1,0 +1,25 @@
+h2 {
+  color: #fff;
+  font-size: 21px;
+  font-family: var(--font-family-roboto-regular);
+  margin-bottom: 25px;
+}
+p{
+  font-size: 14px;
+  color: #fff;
+}
+.my-projects-container {
+  border: 0.7px solid rgb(211, 155, 255);
+  border-radius: 20px;
+  margin-bottom: 96px;
+  // min-height: 290px;
+  & div {
+    min-height: 247px;
+  }
+  & > div:nth-child(1) {
+    padding: 32px 40px;
+  } 
+  & > div:nth-child(2n) {
+    margin-right: 25px;
+  } 
+}
