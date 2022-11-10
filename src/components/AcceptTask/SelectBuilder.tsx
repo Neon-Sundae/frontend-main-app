@@ -13,7 +13,6 @@ import DepositFundsToWallet from 'components/Project/Modal/DepositFundsToWallet'
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import { useSelectBuilder } from './hooks';
-import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 
 interface ISelectBuilder {
   setOpen: Dispatch<SetStateAction<boolean>>;
