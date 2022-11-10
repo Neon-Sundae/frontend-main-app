@@ -5,18 +5,22 @@ import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg'
 import Card from 'components/Card';
 import MyTaskDetailModal from 'components/Home/TaskDetailModal';
 import getRandomString from 'utils/getRandomString';
+import _ from 'lodash';
 import styles from './index.module.scss';
 import useFetchUserTasks from './hooks';
 
 const Tasks = () => {
   const { data } = useFetchUserTasks();
 
+  const getCompletedUserTasks = () => {
+    console.log(data.data);
+    return _.filter(data.data, { taskStatus: 'completed' });
+  };
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
   if (data) {
     return (
       <div className={styles['tasks-container']}>
-        {data?.data?.map((d: any) => {
-          console.log('d', d);
+        {getCompletedUserTasks().map((d: any) => {
           return (
             <TaskCard
               key={d.taskId}
@@ -73,6 +77,7 @@ const TaskCard: FC<ITaskCard> = ({
         selectedTaskId={selectedTaskId}
         setOpen={setOpenTaskDetail}
         key={getRandomString(5)}
+        data={[]}
       />
     );
   }

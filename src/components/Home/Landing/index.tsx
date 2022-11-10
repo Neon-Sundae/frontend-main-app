@@ -41,7 +41,12 @@ const Landing: FC = () => {
     return (
       <div
         className={styles.background}
-        style={{ backgroundImage: `url(${bg})`, backgroundSize: 'crop' }}
+        style={{
+          backgroundImage: `url(${bg})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'space',
+          backgroundAttachment: 'fixed',
+        }}
       >
         <NavBar />
         <BlurBlobs />

@@ -10,9 +10,9 @@ import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.sv
 import { ReactComponent as CloseIcon } from 'assets/illustrations/icons/close-outlined.svg';
 import { ReactComponent as LockIcon } from 'assets/illustrations/icons/lock.svg';
 import DepositFundsToWallet from 'components/Project/Modal/DepositFundsToWallet';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import { useSelectBuilder } from './hooks';
-import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 
 interface ISelectBuilder {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -148,12 +148,14 @@ const SelectBuilder: FC<ISelectBuilder> = ({
           ) : pending === 'waiting' ? (
             <div className={styles['accept-task-content']}>
               <Spinner />
+
               <p>NFT is being created</p>
               <p>Confirm gas fee estimate in your wallet</p>
             </div>
           ) : pending === 'confirmed' ? (
             <div className={styles['accept-task-content']}>
               <CheckIcon width={100} height={100} />
+ 
               <p>The NFT has been minted!</p>
               <p>
                 Builder has been notified! Please wait for the builder to

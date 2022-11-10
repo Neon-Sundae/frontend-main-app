@@ -8,7 +8,12 @@ const Landing: FC = () => {
   return (
     <div
       className={styles['all-task-container']}
-      style={{ backgroundImage: `url(${bg})` }}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <AllTasks />

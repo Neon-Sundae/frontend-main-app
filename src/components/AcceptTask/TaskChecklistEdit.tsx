@@ -83,7 +83,6 @@ const ChecklistUrl: FC<IChecklistUrl> = ({ taskChecklistId, url }) => {
   const updateTaskChecklist = useUpdateTaskChecklist(taskChecklistId);
 
   const handleDebounceFn = (value: string) => {
-    console.log(value);
     let isCompleted = true;
 
     if (value === '') isCompleted = false;

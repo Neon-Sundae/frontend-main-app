@@ -7,6 +7,7 @@ import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import { RootState } from 'reducers';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
 import Modal from 'components/Modal';
+import _ from 'lodash';
 import { useFetchTaskData } from './hooks';
 import TaskDetail from './TaskDetail';
 import TalentList from './TalentList';
@@ -23,6 +24,7 @@ interface IAcceptTask {
   flProjectCategory?: any;
   location?: string;
   editable?: boolean;
+  data: any;
 }
 
 const AcceptTask: FC<IAcceptTask> = ({
@@ -36,10 +38,16 @@ const AcceptTask: FC<IAcceptTask> = ({
   flProjectCategory,
   location,
   editable,
+  data,
 }) => {
+  const filterDataForCurrentTask = () =>
+    _.filter(data, {
+      taskId,
+    });
+  const filteredData = filterDataForCurrentTask();
+
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const [taskEdit, setTaskEdit] = useState(false);
-  const [modalLocation, setModalLocation] = useState(location);
   const dispatch = useDispatch();
 
   const { taskData } = useFetchTaskData(taskId);
@@ -114,7 +122,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           ) : (
             <TaskDetail
               setViewTalentList={setViewTalentList}
-              project_name={project_name}
+              project_name={filteredData[0].flProjectCategory.flProject.name}
               handleCommit={handleCommit}
               project_founder={project_founder}
               setOpen={setOpen}
