@@ -1,0 +1,23 @@
+.dashboard-tabs-wrap {
+  .tab-btn {
+    text-transform: capitalize;
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 200;
+    font-size: 14.12px;
+    color: #99A1BD;
+    text-align: center;
+    width: max-content;
+    background: none;
+    box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+    backdrop-filter: blur(40px);
+    border: 0.5px solid #99A1BD;
+    border-radius: 17px;
+    padding: 7px 20px;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  .selected-btn {
+    border: 0.87px solid #fff;
+    color: #fff;
+  }
+}
