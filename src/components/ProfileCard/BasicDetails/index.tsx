@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, SetStateAction, Dispatch, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -6,6 +6,7 @@ import { editProfile } from 'actions/profile';
 import { RootState } from 'reducers';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
+import { ReactComponent as ShareIcon } from 'assets/illustrations/icons/share.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import useProfileManage from './hooks';
@@ -34,17 +35,19 @@ const BasicDetails: FC = () => {
   const handleOpen = () => {
     setShareOpen(true);
   };
-
   return (
     <>
-      <div onClick={handleOpen}>
-        <p>Share me</p>
-      </div>
+      <ShareIcon
+        onClick={handleOpen}
+        className={styles['share-icon']}
+        width={20}
+        height={20}
+      ></ShareIcon>
       {shareOpen ? <SocialShareModal handleClose={handleClose} /> : null}
       <ProfileImage picture={profile?.picture} />
       <NameDesignation title={profile?.title} user={profile?.user} />
       <ExperiencePoints />
-      <ProfileAddressChain />
+      <ProfileAddressChain setShare={val => setShareOpen(val)} />
       <ProfileBio description={profile?.description} />
       {showEditIcon()}
     </>
@@ -121,16 +124,30 @@ const ExperiencePoints = () => {
   );
 };
 
-const ProfileAddressChain = () => {
+interface IProfileAddressChain {
+  setShare: Dispatch<SetStateAction<boolean>>;
+  // handleOpen: () => void;
+}
+
+const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
   const profile = useSelector((state: RootState) => state.profile.profile);
   const name = useSelector((state: RootState) => state.user.user?.name);
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  useEffect(() => {
+    if (showShareModal) handleShareOpen();
+  }, [showShareModal]);
 
   const { createProfile, deploying } = useProfileManage();
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profile?.profileSmartContractId ?? '');
     toast.success('Copied!');
+  };
+
+  const handleShareOpen = () => {
+    setShare(true);
   };
 
   const renderByDeployingState = () => {
@@ -147,6 +164,7 @@ const ProfileAddressChain = () => {
           </div>
         );
       case 'deploy_success':
+        if (!showShareModal) setShowShareModal(true);
         return (
           <div
             className={styles['profile-address-chain']}

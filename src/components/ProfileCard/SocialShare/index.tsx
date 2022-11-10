@@ -18,11 +18,14 @@ const SocialShareModal: FC<ModalProps> = ({ handleClose }) => {
       width="700px"
       overflowY="auto"
       maxHeight="90vh"
-      title="Wuhoo! let's share on twitter"
+      title="Wuhoo! Share your minted Profile on Twitter"
     >
       <div className={styles['share-content-container']}>
         <div className={styles['promoText']}>
-          <p>Share on twitter and become eligible for $NEONS airdrop</p>
+          <p>
+            Share to your Twitter and stand a chance to be a part of our $NEONS
+            airdrop!
+          </p>
         </div>
 
         <div className={styles['tweet-preview']}>
@@ -40,7 +43,7 @@ const SocialShareModal: FC<ModalProps> = ({ handleClose }) => {
           className={styles['disc-modal-save-btn']}
           onClick={() =>
             window.open(
-              `https://twitter.com/intent/tweet?text=${text}&url=${'https://c87a-2404-e801-2003-2dd9-ed54-468d-e7c8-f833.ap.ngrok.io/profile/83'}%0d&hashtags=Web3,WAGMI,blockchain,futureofwork`
+              `https://twitter.com/intent/tweet?text=${text}&url=${config.AppDomain}%0d&hashtags=Web3,WAGMI,blockchain,futureofwork`
             )
           }
         >
