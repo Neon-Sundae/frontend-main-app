@@ -72,8 +72,14 @@ const TalentListItem: FC<ITalentListItem> = ({
               </span>
             </>
           )}
-        {data?.applicationStatus === 'accepted' && (
-          <span className={styles['selected-builder']}>selected</span>
+        {data?.applicationStatus === 'accepted' && task_status === 'open' && (
+          <span className={styles['selected-builder']}>Yet to Commit</span>
+        )}
+        {data?.applicationStatus === 'accepted' && task_status !== 'open' && (
+          <span className={styles['selected-builder']}>Selected</span>
+        )}
+        {data?.applicationStatus === 'rejected' && (
+          <span className={styles['selected-builder']}>Not Selected</span>
         )}
       </div>
     </div>

@@ -8,10 +8,12 @@ import Spinner from 'components/Project/Modal/Spinner';
 import { RootState } from 'reducers';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { ReactComponent as CloseIcon } from 'assets/illustrations/icons/close-outlined.svg';
+import { ReactComponent as LockIcon } from 'assets/illustrations/icons/lock.svg';
 import DepositFundsToWallet from 'components/Project/Modal/DepositFundsToWallet';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 import { useSelectBuilder } from './hooks';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 
 interface ISelectBuilder {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -35,7 +37,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
     if (pending === 'confirmed') {
       setTimeout(() => {
         handleSuccess();
-      }, 2000);
+      }, 3000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pending]);
@@ -105,53 +107,74 @@ const SelectBuilder: FC<ISelectBuilder> = ({
                   {selectedBuilder.Profile.title}
                 </p>
               </div>
-              <div>
+              <div style={{ marginTop: '3%' }}>
                 <div>
-                  <span>Project Amount</span>
-                  <span>
-                    {Number(Number(project_budget * 1.1).toFixed(4))} USDC
-                  </span>
-                </div>
-                <div>
-                  <span>Amount Required</span>
+                  <span>Builder Compensation</span>
                   <span>{selectedTask?.price} USDC</span>
                 </div>
+                <div>
+                  <span>Platform Fee</span>
+                  <span>5%</span>
+                </div>
+                <div className={styles['line']}></div>
+                <div>
+                  <span>Total Amount</span>
+                  <span>
+                    {selectedTask?.price + selectedTask?.price * 0.05} USDC
+                  </span>
+                </div>
               </div>
-              <p>
-                {Number(Number(project_budget * 1.1).toFixed(4)) >=
-                selectedTask?.price ? (
-                  <span>*Amount required to compensate builder</span>
-                ) : (
-                  <span>*Your wallet amount is to low</span>
-                )}
-                {/* <span>Top Up Wallet +</span> */}
+              <p className={styles['small-text']}>
+                This creates Non-Transferable NFTs. Amount Locked is not
+                withdrawable unless the builder agrees to cancel task. You will
+                need MATIC tokens.
               </p>
-              <button onClick={handleSelect}>Confirm</button>
+              <button
+                onClick={handleSelect}
+                style={{
+                  width: 'inherit',
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}
+              >
+                <LockIcon
+                  style={{ marginTop: '-22px', marginLeft: '-38px' }}
+                  width={90}
+                  height={90}
+                ></LockIcon>
+                <p>${selectedTask?.price + selectedTask?.price * 0.05} USDC </p>
+              </button>
             </>
           ) : pending === 'waiting' ? (
             <div className={styles['accept-task-content']}>
               <Spinner />
-              <p>Waiting for confirmation</p>
-              <p>Confirm this transaction in your wallet</p>
+
+              <p>NFT is being created</p>
+              <p>Confirm gas fee estimate in your wallet</p>
             </div>
           ) : pending === 'confirmed' ? (
             <div className={styles['accept-task-content']}>
               <CheckIcon width={100} height={100} />
-              <p>Builder selected successfully!</p>
-              <p>We’ve sent Builder an update on email & Discord </p>
+ 
+              <p>The NFT has been minted!</p>
+              <p>
+                Builder has been notified! Please wait for the builder to
+                commit.
+              </p>
             </div>
           ) : pending === 'budget_exceed' ? (
             <div className={styles['accept-task-content']}>
               <CloseIcon width={120} height={120} />
-              <p>This Transaction has been failed due to low balance</p>
+              <p>This Transaction has failed due to low balance</p>
               <p>Task cannot be deployed as it exceeds project budget </p>
               <button onClick={() => setPending('add_funds')}>Add Funds</button>
             </div>
           ) : (
             <div className={styles['accept-task-content']}>
               <CloseIcon width={120} height={120} />
-              <p>This Transaction has been failed</p>
-              <p>Confirm this transaction in your wallet </p>
+              <p>This Transaction has failed</p>
+              <p>Please try again or check your wallet for more information </p>
             </div>
           )}
         </div>
