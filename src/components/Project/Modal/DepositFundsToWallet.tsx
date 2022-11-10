@@ -15,8 +15,8 @@ const DepositFundsToWallet = () => {
           className={styles['wallet-item']}
           rel="noreferrer"
         >
-          <div>
-            <MoonPayIcon width={43} height={43} />
+          <div className={styles['icon-holder']}>
+            <MoonPayIcon width={43} height={43} style={{ marginTop: '3px' }} />
           </div>
           <div>
             <span>MoonPay</span>
@@ -28,8 +28,8 @@ const DepositFundsToWallet = () => {
           className={styles['wallet-item']}
           rel="noreferrer"
         >
-          <div>
-            <FtxIcon width={43} height={43} />
+          <div className={styles['icon-holder']}>
+            <FtxIcon width={43} height={43} style={{ marginTop: '3px' }} />
           </div>
           <div>
             <span>FTX</span>
@@ -41,16 +41,16 @@ const DepositFundsToWallet = () => {
           className={styles['wallet-item']}
           rel="noreferrer"
         >
-          <div>
-            <WyreIcon width={43} height={43} />
+          <div className={styles['icon-holder']}>
+            <WyreIcon width={43} height={43} style={{ marginTop: '3px' }} />
           </div>
           <div>
             <span>Wyre</span>
           </div>
         </a>
         <div className={styles['wallet-item']}>
-          <div>
-            <TransakIcon width={43} height={43} />
+          <div className={styles['icon-holder']}>
+            <TransakIcon width={43} height={43} style={{ marginTop: '3px' }} />
           </div>
           <div>
             <span>Transak</span>
