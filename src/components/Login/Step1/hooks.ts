@@ -125,6 +125,7 @@ const useWalletConnectLogin = () => {
       await walletConnectProvider.disconnect();
       console.log(accounts);
 
+      // TODO - Use testnet and mainnet chain ID check
       if (chainId !== 137) {
         throw new Error('Please change the network to Polygon');
       }
