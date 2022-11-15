@@ -198,7 +198,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               />
             ) : (
               <a
-                href={website ?? '#'}
+                href={`https://${website}` ?? '#'}
                 target="_blank"
                 rel="noreferrer"
                 className={styles['organisation-website']}
@@ -220,7 +220,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               <span className={styles['social-icon-container']}>
                 {organisation.linkedin ? (
                   <a
-                    href={`https://${organisation.linkedin}`}
+                    href={`${organisation.linkedin}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -229,7 +229,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                 ) : null}
                 {organisation.twitter ? (
                   <a
-                    href={`https://${organisation.twitter}`}
+                    href={`${organisation.twitter}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -238,7 +238,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                 ) : null}
                 {organisation.instagram ? (
                   <a
-                    href={`https://${organisation.twitter}`}
+                    href={`${organisation.twitter}`}
                     target="_blank"
                     rel="noreferrer"
                   >
