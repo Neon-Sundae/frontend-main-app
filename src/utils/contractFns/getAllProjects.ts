@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
-import { projectFactoryAddress } from 'contracts/contracts';
+import config from 'config';
 
 interface IProjectInfo {
   contractAddress: string;
@@ -18,7 +18,7 @@ const getAllProjects = async (
 
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
-      projectFactoryAddress
+      config.projectFactoryAddress
     );
     const projects = await ProjectFactory.methods
       .ownerToProfileAddress(founderAddress)

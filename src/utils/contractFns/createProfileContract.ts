@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileFactoryAbi from 'contracts/abi/ProfileFactory.sol/ProfileFactory.json';
-import { profileFactoryAddress, USDCAddress } from 'contracts/contracts';
+import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 
 const createProfileContract = async (
@@ -19,10 +19,10 @@ const createProfileContract = async (
 
     const ProfileFactory = new web3.eth.Contract(
       ProfileFactoryAbi.abi as AbiItem[],
-      profileFactoryAddress
+      config.profileFactoryAddress
     );
     await ProfileFactory.methods
-      .createProfile(USDCAddress, name, title)
+      .createProfile(config.USDCAddress, name, title)
       .send({ from: address })
       .on('transactionHash', (hash: any) => {
         setDeploying('deploying');

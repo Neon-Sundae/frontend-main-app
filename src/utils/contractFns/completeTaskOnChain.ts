@@ -4,7 +4,7 @@ import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import { Dispatch, SetStateAction } from 'react';
 import { UseMutationResult } from '@tanstack/react-query';
 import { IUpdateTaskStatus } from 'components/TaskManagement/hooks';
-import { taskFactoryAddress } from 'contracts/contracts';
+import config from 'config';
 
 interface ICompleteTaskOnChain {
   walletId: string | undefined;
@@ -36,7 +36,7 @@ const completeTaskOnChain = async ({
     );
 
     await TaskContract.methods
-      .completeTask(tokenId, taskFactoryAddress)
+      .completeTask(tokenId, config.taskFactoryAddress)
       .send({ from: walletId })
       .on('transactionHash', () => {
         setPending('confirming');

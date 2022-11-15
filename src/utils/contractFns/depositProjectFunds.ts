@@ -2,7 +2,7 @@ import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
-import { USDCAddress } from 'contracts/contracts';
+import config from 'config';
 import { SetStateAction, Dispatch } from 'react';
 import toast from 'react-hot-toast';
 
@@ -17,7 +17,7 @@ const depositProjectFunds = async (
 
   const USDCContract = new web3.eth.Contract(
     USDCAbi.abi as AbiItem[],
-    USDCAddress
+    config.USDCAddress
   );
 
   const ProjectContract = new web3.eth.Contract(
