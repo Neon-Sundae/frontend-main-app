@@ -18,7 +18,12 @@ export default function Error() {
   return (
     <div
       className={styles['error-404-container']}
-      style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <ErrorMessage message={message} errorCode={errorCode} />

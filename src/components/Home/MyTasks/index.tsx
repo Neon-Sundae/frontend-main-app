@@ -32,7 +32,6 @@ const MyTasks: FC = () => {
       refetchOnWindowFocus: false,
     }
   );
-
   const [filteredData, setFilteredData] = useState(data);
 
   const getAllProfileTasks = () => {
@@ -92,6 +91,7 @@ const MyTasks: FC = () => {
         selectedTaskId={selectedTaskId}
         setOpen={setOpenTaskDetail}
         key={getRandomString(5)}
+        data={data}
       />
     );
   }

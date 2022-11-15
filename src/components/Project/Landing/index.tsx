@@ -58,7 +58,12 @@ const Landing: FC = () => {
   return projectData ? (
     <div
       className={styles.container}
-      style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <Header

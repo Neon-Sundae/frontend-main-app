@@ -37,7 +37,12 @@ const Landing: FC = () => {
   return (
     <div
       className={styles.container}
-      style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <div className={styles['profile-card-content-container']}>

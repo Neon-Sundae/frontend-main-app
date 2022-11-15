@@ -139,7 +139,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                 )})`,
               }
             : {
-                backgroundImage: `url(${organisation.bannerImage ?? ''})`,
+                backgroundImage: `url(${organisation.bannerImage ?? gradient})`,
               }
         }
       />

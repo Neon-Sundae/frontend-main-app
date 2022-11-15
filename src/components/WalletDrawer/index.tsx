@@ -24,6 +24,7 @@ import withdrawProfileBalance from 'utils/contractFns/withdrawProfileBalance';
 import useFetchWalletProjects from './hooks';
 import styles from './index.module.scss';
 import { getContractAvailableBalance } from './_utils';
+import InteractionDiv from './interaction';
 
 interface IWalletDrawer {
   open: boolean;
@@ -360,6 +361,7 @@ const DepositStep2: FC<IDepositStep2> = ({
     isWithdraw ? projectBalance : 0
   );
   const [switchState, setSwitchState] = useState('off');
+  const [deployState, setDeploying] = useState('empty');
 
   const switchRef = useRef(null);
   const circleRef = useRef(null);
@@ -408,91 +410,183 @@ const DepositStep2: FC<IDepositStep2> = ({
 
   const handleSubmit = async () => {
     if (isProfile && selectedContract && userAddress) {
+      setDeploying('start');
       await withdrawProfileBalance(
         Number(amount),
         selectedContract.smartContractId,
-        userAddress
+        userAddress,
+        setDeploying
       );
     } else if (selectedContract && userAddress && !isWithdraw && !isProfile) {
+      setDeploying('start');
       await depositProjectFunds(
         Number(amount),
         selectedContract.smartContractId,
-        userAddress
+        userAddress,
+        setDeploying
       );
     } else if (selectedContract && userAddress && isWithdraw && !isProfile) {
+      setDeploying('start');
       await withdrawProjectBalance(
         Number(amount),
         selectedContract.smartContractId,
-        userAddress
+        userAddress,
+        setDeploying
       );
     }
   };
 
-  return (
-    <>
-      <div className={styles['action-header']}>
-        <h4>{isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}</h4>
-        {!isWithdraw && setCurrentState && (
-          <i
-            className={clsx('material-icons', styles['back-icon'])}
-            onClick={() => setCurrentState(1)}
-          >
-            arrow_back
-          </i>
-        )}
-        {isWithdraw && setDepositWithdrawState && (
-          <i
-            className="material-icons"
-            onClick={() => setDepositWithdrawState(null)}
-          >
-            close
-          </i>
-        )}
-      </div>
-      <div className={styles['deposit-field-container']}>
-        <div className={styles['deposit-field-header']}>
-          <div>
-            <p className={styles['deposit-field-header-text']}>
-              {isWithdraw ? 'Project Wallet Balance' : 'Token Wallet Balance'}
-            </p>
-            <p className={styles['deposit-field-header-balance']}>
-              {walletBalance} USDC
-            </p>
-          </div>
-          <USDCVariant1Icon width={40} height={40} />
-        </div>
-        <div className={styles['deposit-field-action']}>
-          <hr className={styles['upper-line']} />
-          <input
-            type="number"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
+  const renderByDeployingState = () => {
+    switch (deployState) {
+      case 'start':
+        return (
+          <InteractionDiv
+            message={
+              isWithdraw
+                ? 'Beginning Withdrawal'
+                : 'Please give permission to access your USDC'
+            }
+            title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
+            projectName={selectedContract.name}
+            successState={'no'}
+            bigMessage={
+              isWithdraw
+                ? 'Your funds are being withdrawn from'
+                : 'Your funds are being deposited in'
+            }
           />
-          <hr className={styles['bottom-line']} />
-        </div>
-        <div className={styles['deposit-set-max-row']}>
-          <span>Set Max</span>
-          <div
-            ref={switchRef}
-            className={styles['switch-container']}
-            style={{ width: SWITCH_WIDTH }}
-            onClick={handleClick}
-          >
-            <div
-              ref={circleRef}
-              className={styles['switch-circle']}
-              style={{ width: CIRCLE_WIDTH }}
-            />
-          </div>
-        </div>
-        <div className={styles['deposit-step-btn-row']}>
-          <button className={styles['deposit-step-btn']} onClick={handleSubmit}>
-            {isWithdraw ? 'Withdraw' : 'Deposit'}
-          </button>
-        </div>
-      </div>
-    </>
-  );
+        );
+      case 'give_usdc_permission':
+        return (
+          <InteractionDiv
+            message={'Transacting'}
+            title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
+            projectName={selectedContract.name}
+            successState={'no'}
+            bigMessage={
+              isWithdraw
+                ? 'Your funds are being withdrawn from'
+                : 'Your funds are being deposited in'
+            }
+          />
+        );
+      case 'usdc_success':
+        return (
+          <InteractionDiv
+            message={'Got it. Thanks! '}
+            title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
+            projectName={selectedContract.name}
+            successState={'no'}
+            bigMessage={
+              isWithdraw
+                ? 'Your funds are being withdrawn from'
+                : 'Your funds are being deposited in'
+            }
+          />
+        );
+      case 'deploying':
+        return (
+          <InteractionDiv
+            message={''}
+            title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
+            projectName={selectedContract.name}
+            successState={'no'}
+            bigMessage={
+              isWithdraw
+                ? 'Your funds are being withdrawn from'
+                : 'Your funds are being deposited in'
+            }
+          />
+        );
+      case 'deploy_success':
+        return (
+          <InteractionDiv
+            message={'Please Refresh your browser to reflect changes'}
+            title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
+            projectName={selectedContract.name}
+            successState={'success'}
+            bigMessage={
+              isWithdraw
+                ? 'Your funds have been withdrawn from'
+                : 'Your funds have been deposited in'
+            }
+          />
+        );
+      default:
+        return (
+          <>
+            <div className={styles['action-header']}>
+              <h4>{isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}</h4>
+              {!isWithdraw && setCurrentState && (
+                <i
+                  className={clsx('material-icons', styles['back-icon'])}
+                  onClick={() => setCurrentState(1)}
+                >
+                  arrow_back
+                </i>
+              )}
+              {isWithdraw && setDepositWithdrawState && (
+                <i
+                  className="material-icons"
+                  onClick={() => setDepositWithdrawState(null)}
+                >
+                  close
+                </i>
+              )}
+            </div>
+            <div className={styles['deposit-field-container']}>
+              <div className={styles['deposit-field-header']}>
+                <div>
+                  <p className={styles['deposit-field-header-text']}>
+                    {isWithdraw
+                      ? 'Project Wallet Balance'
+                      : 'Connected Wallet Balance'}
+                  </p>
+                  <p className={styles['deposit-field-header-balance']}>
+                    ${walletBalance.toLocaleString('en-US')} USDC
+                  </p>
+                </div>
+                <USDCVariant1Icon width={40} height={40} />
+              </div>
+              <div className={styles['deposit-field-action']}>
+                <hr className={styles['upper-line']} />
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={e => setAmount(e.target.value)}
+                />
+                <hr className={styles['bottom-line']} />
+              </div>
+              <div className={styles['deposit-set-max-row']}>
+                <span>Set Max</span>
+                <div
+                  ref={switchRef}
+                  className={styles['switch-container']}
+                  style={{ width: SWITCH_WIDTH }}
+                  onClick={handleClick}
+                >
+                  <div
+                    ref={circleRef}
+                    className={styles['switch-circle']}
+                    style={{ width: CIRCLE_WIDTH }}
+                  />
+                </div>
+              </div>
+              <div className={styles['deposit-step-btn-row']}>
+                <button
+                  className={styles['deposit-step-btn']}
+                  onClick={handleSubmit}
+                >
+                  {isWithdraw ? 'Withdraw' : 'Deposit'}
+                </button>
+              </div>
+            </div>
+          </>
+        );
+    }
+  };
+
+  return <>{renderByDeployingState()}</>;
 };
 
 DepositStep2.defaultProps = {

@@ -1,13 +1,14 @@
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Modal from 'components/Modal';
 import DepositFundsToWallet from './DepositFundsToWallet';
 import { useProject } from '../Landing/hooks';
 import styles from './index.module.scss';
 import Spinner from './Spinner';
+import { toggleWalletDrawer } from 'actions/app';
 
 interface IPublishProject {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -29,12 +30,20 @@ const PublishProjectModal: FC<IPublishProject> = ({
   );
   const [showTopUpModal, setShowTopUpModal] = useState(false);
 
+  const dispatch = useDispatch();
+  const toggle = useSelector((state: RootState) => state.app.toggle);
+
   useEffect(() => {
     setDeploying(deploy_state);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleToggle = () => {
+    dispatch(toggleWalletDrawer(!toggle));
     setOpen(false);
   };
 
@@ -61,7 +70,11 @@ const PublishProjectModal: FC<IPublishProject> = ({
         return <DeployingState />;
       case 'deploy_success':
         return (
-          <DeploySuccessState selectedProjectAddress={selectedProjectAddress} />
+          <DeploySuccessState
+            selectedProjectAddress={selectedProjectAddress}
+            onClose={handleClose}
+            walletToggle={handleToggle}
+          />
         );
       default:
         return null;
@@ -101,24 +114,34 @@ const GoLiveState: FC<IGoLiveState> = ({
     <>
       <div className={styles['publish-content']}>
         <div>
-          <span>Your Wallet Amount (USDC)</span>
-          <span>${usdcBalance.toLocaleString()} USDC</span>
-        </div>
-        <div>
           <span>Project Budget</span>
-          <span>${budget.toFixed(2).toLocaleString()}</span>
-        </div>
-        <div>
-          <span>Total To Deposit</span>
           <span>${budget} USDC</span>
         </div>
+        {/* <div>
+          <span>Wallet Balance</span>
+          <span>${usdcBalance} USDC</span>
+        </div> */}
+        <div>
+          <span>
+            Publishing your project means putting it on the blockchain. This
+            will allow buidlers from all over the world to apply to your tasks!
+          </span>
+        </div>
       </div>
-      <button
-        className={styles['publish-go-live']}
-        onClick={() => publishProject(projectId)}
-      >
-        Publish Project
-      </button>
+      <div className={styles['small-text']}>
+        <span>
+          Clicking publish project initiates Smart Contract creation. You will
+          need $MATIC tokens in the next step.
+        </span>
+      </div>
+      <div style={{ margin: '40px 141px' }}>
+        <button
+          className={styles['publish-go-live']}
+          onClick={() => publishProject(projectId)}
+        >
+          Publish Project
+        </button>
+      </div>
     </>
   );
 };
@@ -127,32 +150,48 @@ const DeployingState = () => {
   return (
     <div className={styles['publish-deploying-content']}>
       <Spinner />
-      <p>Deploying Contract</p>
-      <p>Check your wallet for any confirmations</p>
+      <p>Smart Contract is being created!</p>
+      <p>Confirm gas fee estimate in your wallet </p>
     </div>
   );
 };
 
 interface IDeploySuccessState {
   selectedProjectAddress: string;
+  onClose: () => void;
+  walletToggle: () => void;
 }
 
 const DeploySuccessState: FC<IDeploySuccessState> = ({
   selectedProjectAddress,
+  onClose,
+  walletToggle,
 }) => {
   return (
-    <div className={styles['publish-deploying-content']}>
-      <CheckIcon width={100} height={100} />
-      <p>Your project has been deployed! 🚀</p>
-      <p>
-        Your project&apos;s contract id: {selectedProjectAddress.slice(0, 10)}
-        ...
-        {selectedProjectAddress.slice(
-          selectedProjectAddress.length - 8,
-          selectedProjectAddress.length
-        )}
-      </p>
-    </div>
+    <>
+      <div className={styles['publish-deploying-content']}>
+        <CheckIcon width={100} height={100} />
+        <p>Your project is now live!</p>
+        <p>
+          Your project&apos;s smart contract id:{' '}
+          {selectedProjectAddress.slice(0, 10)}
+          ...
+          {selectedProjectAddress.slice(
+            selectedProjectAddress.length - 8,
+            selectedProjectAddress.length
+          )}
+        </p>
+      </div>
+      <div className={styles['publish-footer']}>
+        <button className={styles['publish-go-live']} onClick={walletToggle}>
+          Deposit Funds
+        </button>
+        <div onClick={onClose}>
+          {' '}
+          <p style={{ cursor: 'pointer' }}>I'll do it later</p>
+        </div>
+      </div>
+    </>
   );
 };
 

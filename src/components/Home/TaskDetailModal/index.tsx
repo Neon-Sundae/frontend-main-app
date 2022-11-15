@@ -5,11 +5,13 @@ import styles from './index.module.scss';
 interface IMyTaskDetailModal {
   selectedTaskId: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  data: any;
 }
 
 const MyTaskDetailModal: FC<IMyTaskDetailModal> = ({
   selectedTaskId,
   setOpen,
+  data,
 }) => {
   const [openTask, setOpenTask] = useState(false);
   const handleApprove = (item: any) => {
@@ -27,6 +29,7 @@ const MyTaskDetailModal: FC<IMyTaskDetailModal> = ({
         handleApprove={handleApprove}
         setOpen={setOpen}
         location="my tasks"
+        data={data}
       />
     </div>
   );
