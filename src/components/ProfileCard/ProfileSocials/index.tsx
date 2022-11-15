@@ -20,7 +20,7 @@ const ProfileSocials: FC = () => {
       <a href={`${profile?.twitter}`} target="_blank" rel="noreferrer">
         {profile?.twitter && <TwitterIcon width={25.36} height={25.36} />}
       </a>
-      <a href={`${profile?.github}`} target="_blank" rel="noreferrer">
+      <a href={`${profile?.instagram}`} target="_blank" rel="noreferrer">
         {profile?.instagram && <InstagramIcon width={25.36} height={25.36} />}
       </a>
       <a href={`${profile?.github}`} target="_blank" rel="noreferrer">
