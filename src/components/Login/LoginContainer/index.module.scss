@@ -1,7 +1,21 @@
 .LoginContainer {
   display: flex;
   justify-content: center;
-  padding: 80px 0;
+  @media (max-width: 1920px)  {
+    margin-top: 25vh;
+    
+  }
+  @media (max-width: 1680px)  {
+    margin-top: 25vh;
+    
+  }
+  @media (max-width: 1440px)  {
+    margin-top: 20vh;
+        
+  }
+  @media (max-width: 1024px) {
+    margin-top: 18vh;
+  }
 }
 
 .StepContainer {

@@ -20,7 +20,7 @@ const ProfileCardContainer: FC<IProfileCardContainer> = ({ children }) => {
         styles['profile-card-container'],
         isEditable && styles['profile-card-container--is-editable']
       )}
-      style={{ backgroundImage: `url(${gradient})` }}
+      style={{ backgroundImage: `url(${gradient})`, backgroundSize: 'cover' }}
     >
       {children}
     </div>

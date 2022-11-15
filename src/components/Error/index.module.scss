@@ -1,0 +1,24 @@
+.error-404-container {
+  background-color: #242529;
+  background-size: cover;
+  height: 100vh;
+}
+
+.error-message-wrap {
+  text-align: center;
+  margin-top: 7vh;
+  color: #fff;
+  font-family: var(--font-family-inter-regular);
+  font-weight: 400;
+  p:nth-child(1) {
+    font-size: 198.445px;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px;
+    margin-bottom: -40px;
+  }
+  p {
+    font-size: 40.4016px;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px;
+  }
+}

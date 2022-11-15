@@ -1,20 +1,33 @@
-import { ReactComponent as BrandImage } from 'assets/illustrations/task/task-dummy-1.svg';
-import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import clsx from 'clsx';
 import Card from 'components/Card';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
-import { useNavigate } from 'react-router-dom';
+import { ReactComponent as BrandImage } from 'assets/illustrations/task/task-dummy-1.svg';
+import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import styles from './index.module.scss';
 
 const TaskCard = (props: any) => {
   const { width, height, data, location } = props;
-  const builderTaskApply = useBuilderTaskApply();
+
   const navigate = useNavigate();
+  const profile = useSelector((state: RootState) => state.profile.profile);
+
+  const builderTaskApply = useBuilderTaskApply();
+
   const applyToTask = () => {
-    builderTaskApply.mutate({
-      taskId: data.taskId,
-    });
+    if (profile && profile.profileSmartContractId) {
+      builderTaskApply.mutate({
+        taskId: data.taskId,
+      });
+    } else {
+      toast.error('Please mint your profile');
+      navigate(`/profile/${profile?.profileId}`);
+    }
   };
+
   if (location === 'home') {
     return (
       <>
@@ -78,6 +91,7 @@ const TaskCard = (props: any) => {
       </>
     );
   }
+
   return (
     <>
       <Card

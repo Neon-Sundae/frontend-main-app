@@ -9,10 +9,9 @@
 
 import { FC, useEffect, useState, useMemo, useRef, MouseEvent } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
-import userImage from 'assets/images/profile/user-image.png';
 import { useFetchProjectCategories } from 'components/CreateTask/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
@@ -27,6 +26,8 @@ import { useFetchProjects } from 'components/Project/Landing/hooks';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import getRandomString from 'utils/getRandomString';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
@@ -37,12 +38,14 @@ interface ITaskManagement {
   project_name: string;
   project_founder: string;
   project_budget: number;
+  flProjectCategory?: any;
 }
 
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
   project_founder,
+  flProjectCategory,
 }) => {
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -57,8 +60,6 @@ const TaskManagement: FC<ITaskManagement> = ({
       toast.error('Only founder can add the task');
     }
   };
-
-  console.log(project_founder);
 
   const toggleFilterMenu = () => setFilterOpen(p => !p);
 
@@ -85,6 +86,7 @@ const TaskManagement: FC<ITaskManagement> = ({
         project_budget={project_budget}
         project_name={project_name}
         project_founder={project_founder}
+        flProjectCategory={flProjectCategory}
       />
     </div>
   );
@@ -145,6 +147,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
   project_budget,
   project_name,
   project_founder,
+  flProjectCategory,
 }) => {
   const dispatch = useDispatch();
 
@@ -156,6 +159,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
 
   const [elements, setElements] = useState(projectTasks);
   const [openTask, setOpenTask] = useState(false);
+
   const [openSelectBuilder, setOpenSelectBuilder] = useState(false);
   const [openCommitTask, setOpenCommitTask] = useState(false);
   const [openComplete, setOpenComplete] = useState(false);
@@ -244,7 +248,6 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
               projectFounder={project_founder}
-              appliedBuilders={elements?.open[0]?.profileTask}
             />
           ))}
         </div>
@@ -258,6 +261,8 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
             project_founder={project_founder}
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
+            flProjectCategory={flProjectCategory}
+            editable
           />
         )}
         {openSelectBuilder && (
@@ -292,7 +297,6 @@ const Column: FC<IColumn> = ({
   organisationName,
   setOpenTask,
   projectFounder,
-  appliedBuilders,
 }) => {
   return (
     <div className={styles['column-container']}>
@@ -309,7 +313,7 @@ const Column: FC<IColumn> = ({
                   organisationName={organisationName}
                   setOpenTask={setOpenTask}
                   projectFounder={projectFounder}
-                  appliedBuilders={appliedBuilders}
+                  appliedBuilders={item.profileTask}
                 />
               ))}
               {provided.placeholder}
@@ -338,20 +342,27 @@ const Card: FC<ICard> = ({
   projectFounder,
   appliedBuilders,
 }) => {
+  const navigate = useNavigate();
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const profile = useSelector((state: RootState) => state.profile.profile);
   const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
     () => [...Array(item.estimatedDifficulty).keys()],
     []
   );
-
+  const user = useSelector((state: RootState) => state.user.user);
   const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
-    builderTaskApply.mutate({
-      taskId: item.taskId,
-    });
+    if (profile && profile.profileSmartContractId) {
+      builderTaskApply.mutate({
+        taskId: item.taskId,
+      });
+    } else {
+      toast.error('Please mint your profile');
+      navigate(`/profile/${profile?.profileId}`);
+    }
   };
 
   const getTextOrAvatar = () => {
@@ -368,7 +379,10 @@ const Card: FC<ICard> = ({
       default:
         return (
           <div className={styles['avatar-image-wrapper']}>
-            <img alt="user" src={userImage} />
+            <img
+              alt="user"
+              src={getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())}
+            />
           </div>
         );
     }
@@ -428,11 +442,17 @@ const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
     <div className={styles['avatar-container']}>
       {appliedBuilders.map(elem => (
         <img
-          src={elem.Profile.picture || userImage}
-          alt=""
+          src={
+            elem.Profile.picture ||
+            getDefaultAvatarSrc(
+              elem?.Profile?.user?.name?.charAt(0).toUpperCase()
+            )
+          }
+          alt="User Avatar"
           className={styles['builder-avatar']}
+          key={getRandomString(5)}
         />
-      ))}{' '}
+      ))}
     </div>
   );
 };

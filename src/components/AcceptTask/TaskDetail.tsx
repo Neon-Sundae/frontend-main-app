@@ -1,6 +1,13 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import { ReactComponent as ProjectIcon } from 'assets/illustrations/icons/project.svg';
@@ -8,21 +15,24 @@ import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/categ
 import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
-import calculateTaskXP from 'utils/calculateTaskXp';
+import calculateTaskXP from 'utils/contractFns/calculateTaskXp';
+import { ReactComponent as StartDate } from 'assets/illustrations/icons/start-date.svg';
+import { ReactComponent as EndDate } from 'assets/illustrations/icons/end-date.svg';
+import { ReactComponent as NinjaIcon } from 'assets/illustrations/icons/ninja.svg';
 import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
-import userImage from 'assets/images/profile/user-image.png';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import TaskChecklistEdit from './TaskChecklistEdit';
-import FileAttachmentCard from './FileAttachmetCard';
+import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
 import { useCancelTask, useDeleteTask } from './hooks';
 
 interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
-  project_name: string;
+  project_name?: string;
   handleCommit: any;
-  project_founder: string;
+  project_founder?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -34,15 +44,17 @@ const TaskDetail: FC<ITaskDetail> = ({
   setOpen,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const builderTaskApply = useBuilderTaskApply();
   const { deleteTask } = useDeleteTask(setOpen);
   const [isCancel, setIsCancel] = useState(false);
-
+  const [taskEdit, setTaskEdit] = useState(false);
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
   );
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-
+  const profile = useSelector((state: RootState) => state.profile.profile);
+  const { user } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     const getXP = async () => {
       const xp = await calculateTaskXP(
@@ -60,11 +72,16 @@ const TaskDetail: FC<ITaskDetail> = ({
   }, [selectedTask]);
 
   const applyToTask = () => {
-    builderTaskApply.mutate({
-      taskId: selectedTask.taskId,
-    });
+    if (profile && profile.profileSmartContractId) {
+      builderTaskApply.mutate({
+        taskId: selectedTask.taskId,
+      });
 
-    setOpen(false);
+      setOpen(false);
+    } else {
+      toast.error('Please mint your profile');
+      navigate(`/profile/${profile?.profileId}`);
+    }
   };
 
   const founderTaskAction = () => {
@@ -91,13 +108,16 @@ const TaskDetail: FC<ITaskDetail> = ({
     return null;
   };
 
+  const reformatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-GB');
+  };
   return (
     <div>
       <div className={styles['avatar-container']}>
         <span className={styles['task-status-btn']}>
           {selectedTask?.status}
         </span>
-        {selectedTask?.profileTask.length > 0 && (
+        {selectedTask?.profileTask?.length > 0 && (
           <div
             className={styles.expanded}
             onClick={() => setViewTalentList(true)}
@@ -110,45 +130,84 @@ const TaskDetail: FC<ITaskDetail> = ({
                 .filter(
                   (profile: any) => profile.applicationStatus === 'accepted'
                 )
-                .map((item: any, index: number) =>
-                  item.Profile.picture !== null ? (
+                .map((item: any, index: number) => {
+                  return item.Profile.picture !== null ? (
                     <img
-                      src={item.Profile.picture || userImage}
+                      src={
+                        item.Profile.picture ||
+                        getDefaultAvatarSrc(
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                        )
+                      }
                       className={styles['builder-avatar']}
                       alt=""
                       key={index}
                     />
                   ) : (
-                    <div className={styles['builder-avatar']} key={index} />
-                  )
-                )
+                    <img
+                      src={
+                        item.Profile.picture ||
+                        getDefaultAvatarSrc(
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                        )
+                      }
+                      className={styles['builder-avatar']}
+                      alt=""
+                      key={index}
+                    />
+                  );
+                })
             ) : (
-              <>
+              <div>
                 {selectedTask?.profileTask
                   .slice(0, 5)
                   .map((item: any, index: number) =>
                     item.Profile.picture !== null ? (
                       <img
-                        src={item.Profile.picture}
+                        src={
+                          item.Profile.picture ||
+                          getDefaultAvatarSrc(
+                            item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                          )
+                        }
                         className={styles['builder-avatar']}
                         alt=""
                         key={index}
                       />
                     ) : (
                       <img
-                        src={userImage}
+                        src={getDefaultAvatarSrc(
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                        )}
                         className={styles['builder-avatar']}
                         alt=""
                         key={index}
                       />
                     )
                   )}
-              </>
+              </div>
             )}
           </div>
         )}
       </div>
+      <div className={styles['project-description']}>
+        <span className={styles['task-details-skills-inline']}>
+          <div>
+            <NinjaIcon width="24px" height="24px" />
+            <p>Skills Needed:</p>
+          </div>
 
+          {selectedTask?.taskSkills?.length > 0 && (
+            <div className={styles['project-attachments']}>
+              {selectedTask?.taskSkills?.map(
+                (taskSkill: any, index: number) => (
+                  <FileSkillsCard key={index} skills={taskSkill.name} />
+                )
+              )}
+            </div>
+          )}
+        </span>
+      </div>
       <div className={styles['project-details']}>
         <div>
           <div className={styles['project-detail-item']}>
@@ -205,6 +264,17 @@ const TaskDetail: FC<ITaskDetail> = ({
             </div>
           </div>
         </div>
+        <div>
+          <div className={styles['project-detail-item']}>
+            <StartDate width={24} height={24} />
+            <div>Start Date:&nbsp; {reformatDate(selectedTask?.startDate)}</div>
+          </div>
+          <div className={styles['project-detail-item']}>
+            <EndDate width={24} height={24} />
+
+            <div>End Date:&nbsp; {reformatDate(selectedTask?.dueDate)}</div>
+          </div>
+        </div>
       </div>
 
       {isCancel ? (
@@ -213,22 +283,29 @@ const TaskDetail: FC<ITaskDetail> = ({
         <>
           <div className={styles['project-description']}>
             <p>{selectedTask?.description}</p>
-            {selectedTask?.taskAttachment.length > 0 && (
+            {selectedTask?.taskAttachment?.length > 0 && (
               <div className={styles['project-attachments']}>
                 {selectedTask?.taskAttachment.map(
-                  (file: any, index: number) => (
-                    <FileAttachmentCard key={index} label="Wireframes v1.0" />
-                  )
+                  (file: any, index: number) => {
+                    return (
+                      <FileSkillsCard
+                        key={index}
+                        label={file.url
+                          .substr(file.url.lastIndexOf('/') + 1)
+                          .replace(/%20/g, ' ')}
+                      />
+                    );
+                  }
                 )}
               </div>
             )}
           </div>
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
-            {project_founder.toLowerCase() === walletId?.toLowerCase() ? (
+            {project_founder?.toLowerCase() === walletId?.toLowerCase() ? (
               founderTaskAction()
             ) : (
-              <>
+              <div>
                 {selectedTask?.status === 'open' &&
                 selectedTask?.profileTask.filter(
                   (item: any) => item?.Profile?.user?.walletId === walletId
@@ -243,15 +320,20 @@ const TaskDetail: FC<ITaskDetail> = ({
                   ).length > 0 ? (
                   <button onClick={handleCommit}>Commit to task</button>
                 ) : (
-                  <></>
+                  <p> </p>
                 )}
-              </>
+              </div>
             )}
           </div>
         </>
       )}
     </div>
   );
+};
+
+TaskDetail.defaultProps = {
+  project_founder: '',
+  project_name: '',
 };
 
 interface IFounderCancelTaskContainer {

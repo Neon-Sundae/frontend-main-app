@@ -1,0 +1,110 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IProjectFactoryInterface",
+  "sourceName": "contracts/interfaces/IProjectFactoryInterface.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "founder",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "name": "checkProjectExist",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_projectAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getFounderFromProjectAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getProjectContractAddresses",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "contractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "projectId",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct IProjectFactoryInterface.ProjectInfo[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "ownerToProjects",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "contractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "projectId",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct IProjectFactoryInterface.ProjectInfo[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

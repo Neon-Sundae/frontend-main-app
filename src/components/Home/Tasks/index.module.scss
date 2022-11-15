@@ -2,15 +2,21 @@
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  
+
   .tasks-cont {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     flex: 1;
+
     @media (max-width: 1024px) {
       justify-content: space-between;
       flex-direction: row;
+    }
+
+    &>div {
+      grid-template-columns: 280px;
+
     }
   }
 
@@ -31,7 +37,7 @@
     & span {
       font-size: 18px;
       line-height: 21px;
-      text-decoration: underline;
+      cursor: pointer;
     }
   }
 }

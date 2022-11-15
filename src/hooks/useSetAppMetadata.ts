@@ -13,6 +13,7 @@ import {
 const useSetAppMetadata = () => {
   const dispatch = useDispatch();
 
+  // TODO - Use multiple rpcs and chain ids, testnet and mainnet
   const provider = new WalletConnectProvider({
     rpc: {
       137: 'https://polygon-rpc.com',

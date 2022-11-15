@@ -11,35 +11,36 @@
   }
   & span {
     font-size: 18px;
-    text-decoration: underline;
+    cursor: pointer;
+    text-decoration: none;
   }
 }
 
 .projects-cont {
-  padding: 39px  !important;
-  display: flex  !important;
-  flex-direction: row  !important;
-  z-index: 1  !important;
-  margin: auto  !important;
-  justify-content: space-between !important;
-  @media (max-width: 1920px)  {
+  padding: 39px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  z-index: 1 !important;
+  margin: auto !important;
+  
+  
+  @media (max-width: 1920px) {
     width: 48vw;
+    gap: 7vw;
   }
-  @media (max-width: 1680px)  {
-    
+  @media (max-width: 1680px) {
     width: 45vw;
+    gap: 3vw;
   }
-  @media (max-width: 1440px)  {
-  
+  @media (max-width: 1440px) {
     width: 52vw;
+    gap: 3vw;
   }
-  
+
   @media (max-width: 1024px) {
     width: 100%;
+    gap: 9vw;
   }
-  
-  
-  
 }
 .border {
   width: auto;

@@ -5,7 +5,8 @@
   color: #FFFF;
   text-align: center;
   line-height: 31px;
-  margin: 70px 0 20px 0;
+  margin: 42px 0 20px 0;
+  z-index: 1;
 }
 
 .error-text {
@@ -22,6 +23,5 @@
   color: #FFFF;
   text-align: center;
   line-height: 23px;
-  // margin-top: 52px;
-  // margin: 78px 0;
+  z-index: 1;
 }

@@ -31,7 +31,19 @@
     width: 90%;
     margin: auto;
     position: relative;
-
+    @media (max-width: 1920px) {
+      width: 98%;
+    }
+    @media (max-width: 1680px) {
+      width: 90%;
+    }
+    @media (max-width: 1440px) {
+      width: 90%;
+    }
+  
+    @media (max-width: 1024px) {
+      width: 90%;
+    }
     .project-name {
       white-space: nowrap;
     }
@@ -48,6 +60,7 @@
     .by-org-name {
       display: flex;
       align-items: center;
+      cursor: pointer;
     }
 
     .founder-name,

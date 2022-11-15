@@ -1,5 +1,4 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
-import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
@@ -9,6 +8,7 @@ import Background from 'assets/illustrations/profile/pp-bg.png';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { useMutation } from '@tanstack/react-query';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import useProfileManage from '../BasicDetails/hooks';
 import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
@@ -16,10 +16,11 @@ import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
   const { profile, xp } = useSelector((state: RootState) => state.profile);
+
   const profileId = profile?.profileId ? profile.profileId : 0;
   const user = useSelector((state: RootState) => state.user.user);
   const [name, setName] = useState(
-    profile?.user?.name ? profile?.user.name : 'Rachel Green'
+    profile?.user?.name ? profile?.user.name : ''
   );
   const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
   const [bio, setBio] = useState(
@@ -71,13 +72,15 @@ const BasicDetailsEdit: FC = () => {
         name={name}
         setName={setName}
       />
-      <ExperiencePoints xp={xp} />
-      <ProfileAddressChain
-        name={name}
-        profileSmartContractId={profile?.profileSmartContractId}
-        walletId={user?.walletId}
-        title={title}
-      />
+      <div id="user-profile-mint">
+        <ExperiencePoints xp={xp} />
+        <ProfileAddressChain
+          name={name}
+          profileSmartContractId={profile?.profileSmartContractId}
+          walletId={user?.walletId}
+          title={title}
+        />
+      </div>
       <ProfileBio bio={bio || 'Add your bio'} setBio={setBio} />
       <SaveProfile handleSave={handleSave} />
     </>
@@ -102,6 +105,7 @@ interface IProfileImage {
 }
 
 const ProfileImage: FC<IProfileImage> = ({ picture, setPicture }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const [profilePictureModal, setProfilePictureModal] = useState(false);
   if (profilePictureModal) {
     return (
@@ -121,8 +125,11 @@ const ProfileImage: FC<IProfileImage> = ({ picture, setPicture }) => {
     >
       <div className={styles['image-wrapper']}>
         <img
+          id="profile-edit-icon"
           alt="user"
-          src={picture || userImage}
+          src={
+            picture || getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+          }
           className={styles.userImage}
         />
         <img alt="background" src={Background} className={styles.bgImage} />
@@ -173,7 +180,7 @@ interface IExperiencePoints {
 }
 const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
   return (
-    <div className={styles['experience-points']}>
+    <div id="user-xp" className={styles['experience-points']}>
       <span className={styles.value}>
         {xp} <span className={styles.label}>XP</span>
       </span>
@@ -194,8 +201,6 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
   walletId,
   title,
 }) => {
-  const { createProfile } = useProfileManage();
-
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profileSmartContractId ?? '');
     toast.success('Copied!');
@@ -208,9 +213,10 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
       profileSmartContractId === null ||
       profileSmartContractId === '' ? (
         <div
+          id="profile-address-container"
           className={styles['address-container']}
           style={{ cursor: 'pointer' }}
-          onClick={() => createProfile(name, title, walletId)}
+          onClick={() => toast.error('Save your edits to mint your profile')}
         >
           <span className="material-icons" style={{ color: '#FAA5B9' }}>
             close
@@ -227,7 +233,11 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({
               profileSmartContractId.length
             )}
           </p>
-          <i className="material-icons-200" onClick={handleCopyAddress}>
+          <i
+            className="material-icons-200"
+            style={{ cursor: 'pointer' }}
+            onClick={handleCopyAddress}
+          >
             content_copy
           </i>
         </div>

@@ -31,7 +31,7 @@ const TaskChecklistEdit: FC<ITaskChecklistEdit> = ({ selectedTask }) => {
 
   return (
     <div className={styles['project-check-list']}>
-      <p>Checklist: </p>
+      <p>Deliverables: </p>
       {selectedTask?.taskChecklist.map((item: any, index: number) => (
         <div
           key={item.taskChecklistId}
@@ -83,7 +83,6 @@ const ChecklistUrl: FC<IChecklistUrl> = ({ taskChecklistId, url }) => {
   const updateTaskChecklist = useUpdateTaskChecklist(taskChecklistId);
 
   const handleDebounceFn = (value: string) => {
-    console.log(value);
     let isCompleted = true;
 
     if (value === '') isCompleted = false;
