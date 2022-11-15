@@ -2,6 +2,8 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import Modal from 'components/Modal';
 import GradientBtn from 'components/GradientBtn';
 import { IOrganisation } from 'interfaces/organisation';
+import isValidUrl from 'utils/isValidUrl';
+import toast from 'react-hot-toast';
 import styles from './index.module.scss';
 import { useUpdateOrgSocials } from './hooks';
 
@@ -28,11 +30,18 @@ const OrganisationSocialModal: FC<IProfileSkills> = ({
   };
 
   const handleSave = () => {
-    updateOrgSocials.mutate({
-      linkedin,
-      instagram,
-      twitter,
-    });
+    if (
+      (twitter && !isValidUrl(twitter)) ||
+      (linkedin && !isValidUrl(linkedin)) ||
+      (instagram && !isValidUrl(instagram))
+    )
+      toast.error('Please input full url.');
+    else
+      updateOrgSocials.mutate({
+        linkedin,
+        instagram,
+        twitter,
+      });
   };
 
   return (

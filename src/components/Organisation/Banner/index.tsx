@@ -15,6 +15,7 @@ import { editOrganisation } from 'actions/organisation';
 import { RootState } from 'reducers';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
+import { Toaster } from 'react-hot-toast';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import {
@@ -121,6 +122,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
   return (
     <div className={styles.container}>
+      <Toaster />
       <input
         ref={inputRefCover}
         id="bannerImage"
