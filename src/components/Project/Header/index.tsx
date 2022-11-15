@@ -43,7 +43,6 @@ const Header: FC<IHeaderProps> = props => {
   const [showProjectFormModalWithData, setShowProjectFormModalWithData] =
     useState(false);
   const [currentProjectTasks, setCurrentProjectTasks] = useState<any[]>([]);
-  const [projectPeopleData, setProjectPeopleData] = useState<any[]>([]);
 
   const { refetch } = useQuery(
     ['userTasksData'],
@@ -117,7 +116,11 @@ const Header: FC<IHeaderProps> = props => {
     return false;
   };
   accumulatePeopleProjectData();
-  peopleCount = accumulatePeopleProjectData().length - 2;
+  peopleCount =
+    accumulatePeopleProjectData().length -
+    accumulatePeopleProjectData().length +
+    1;
+  console.log('peopleCount', peopleCount);
   return (
     <div className={styles.container} title="People involved in project">
       <div className={styles['project-info']}>
@@ -146,9 +149,11 @@ const Header: FC<IHeaderProps> = props => {
                       </div>
                     );
                   })}
-              <div>
-                <p>+{peopleCount}</p>
-              </div>
+              {accumulatePeopleProjectData().length > 0 && (
+                <div>
+                  <p>+{peopleCount}</p>
+                </div>
+              )}
             </div>
           </span>
           {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() &&
