@@ -9,6 +9,9 @@ interface ComponentProps {
   onNext: () => void;
   onClose: () => void;
   showBtn?: boolean;
+  disableButton?: boolean;
+  setDisableButton?: any;
+  buttonText?: string;
 }
 
 const BaseModal: FC<ComponentProps> = ({
@@ -17,6 +20,9 @@ const BaseModal: FC<ComponentProps> = ({
   onNext,
   onClose,
   showBtn,
+  disableButton,
+  setDisableButton,
+  buttonText,
 }) => {
   return (
     <>
@@ -33,8 +39,13 @@ const BaseModal: FC<ComponentProps> = ({
         </section>
         <footer className={styles.btnCont}>
           {showBtn ? (
-            <button type="button" onClick={onNext} className={styles.btn}>
-              Next
+            <button
+              type="button"
+              onClick={onNext}
+              className={styles.btn}
+              disabled={disableButton}
+            >
+              {buttonText}
             </button>
           ) : (
             ''
@@ -63,6 +74,13 @@ const ModalBlobs: FC = () => {
       />
     </>
   );
+};
+BaseModal.defaultProps = {
+  showBtn: false,
+  children: <p> </p>,
+  disableButton: false,
+  setDisableButton: null,
+  buttonText: 'Next',
 };
 
 export default BaseModal;

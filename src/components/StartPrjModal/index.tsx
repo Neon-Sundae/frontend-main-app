@@ -62,6 +62,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
             header="Choose an organisation"
             onNext={handleNext}
             showBtn
+            buttonText="Next"
           >
             <p className={styles.promptPara}>
               To Start a Project you need to choose an organisation
