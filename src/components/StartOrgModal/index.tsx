@@ -29,10 +29,8 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
   const [orgName, setOrgName] = useState('');
   const [orgDesc, setOrgDesc] = useState('');
   const [fileData, setFileData] = useState<IFile | null>(null);
-
+  const [disableButton, setDisableButton] = useState(false);
   const [showStepTwo, setShowStepTwo] = useState(false);
-
-  // const { createOrganisation } = useCreateOrg();
   const createOrganisation = useCreateOrganisation();
 
   const handleCreateOrganisation = () => {
@@ -58,7 +56,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
 
   const handleStepTwo = () => {
     if (orgDesc.trim().length === 0) return;
-
+    setDisableButton(true);
     handleCreateOrganisation();
   };
 
@@ -70,6 +68,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       placeholder="Enter organisation name"
       fileData={fileData}
       setFileData={setFileData}
+      buttonText="Next"
     />
   );
 
@@ -81,6 +80,9 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       placeholder="Enter short description"
       fileData={fileData}
       setFileData={setFileData}
+      disableButton={disableButton}
+      setDisableButton={setDisableButton}
+      buttonText="Create"
     />
   );
 
@@ -99,6 +101,9 @@ interface IStepProps {
   fileData: IFile | null;
   setFileData: Dispatch<SetStateAction<IFile | null>>;
   setInputChange: Dispatch<SetStateAction<string>>;
+  disableButton?: boolean;
+  setDisableButton?: any;
+  buttonText?: string;
 }
 
 const StepModal: FC<IStepProps> = ({
@@ -108,8 +113,10 @@ const StepModal: FC<IStepProps> = ({
   fileData,
   setFileData,
   setInputChange,
+  disableButton,
+  setDisableButton,
+  buttonText,
 }) => {
-  console.log();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = (e: any) => {
@@ -148,6 +155,7 @@ const StepModal: FC<IStepProps> = ({
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) => {
+    if (disableButton) setDisableButton(false);
     setInputChange(event.target.value);
   };
 
@@ -157,6 +165,8 @@ const StepModal: FC<IStepProps> = ({
       header="Start an organization"
       onClose={onClose}
       onNext={onNext}
+      disableButton={disableButton}
+      buttonText={buttonText}
     >
       <section className={styles.content}>
         {placeholder !== 'Enter short description' && (
@@ -212,6 +222,11 @@ const StepModal: FC<IStepProps> = ({
       </section>
     </BaseModal>
   );
+};
+StepModal.defaultProps = {
+  disableButton: false,
+  setDisableButton: '',
+  buttonText: 'Next',
 };
 
 export default StartOrgModal;

@@ -12,15 +12,26 @@ import styles from './index.module.scss';
 const ProfileSocials: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
   const user = useSelector((state: RootState) => state.user.user);
-  console.log('user', user);
   return (
     <div className={styles['profile-socials-container']}>
-      {profile?.linkedin && <LinkedinIcon width={25.36} height={25.36} />}
-      {profile?.twitter && <TwitterIcon width={25.36} height={25.36} />}
-      {profile?.instagram && <InstagramIcon width={25.36} height={25.36} />}
-      {profile?.github && <GithubIcon width={25.36} height={25.36} />}
-      {profile?.portfolio && <PortfolioIcon width={25.36} height={25.36} />}
-      {user?.discordId && <DiscordIcon width={25.36} height={25.36} />}
+      <a href={`${profile?.linkedin}`} target="_blank" rel="noreferrer">
+        {profile?.linkedin && <LinkedinIcon width={25.36} height={25.36} />}
+      </a>
+      <a href={`${profile?.twitter}`} target="_blank" rel="noreferrer">
+        {profile?.twitter && <TwitterIcon width={25.36} height={25.36} />}
+      </a>
+      <a href={`${profile?.instagram}`} target="_blank" rel="noreferrer">
+        {profile?.instagram && <InstagramIcon width={25.36} height={25.36} />}
+      </a>
+      <a href={`${profile?.github}`} target="_blank" rel="noreferrer">
+        {profile?.github && <GithubIcon width={25.36} height={25.36} />}
+      </a>
+      <a href={`${profile?.portfolio}`} target="_blank" rel="noreferrer">
+        {profile?.portfolio && <PortfolioIcon width={25.36} height={25.36} />}
+      </a>
+      <a href={`${user?.discordId}`} target="_blank" rel="noreferrer">
+        {user?.discordId && <DiscordIcon width={25.36} height={25.36} />}
+      </a>
     </div>
   );
 };

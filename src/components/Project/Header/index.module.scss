@@ -46,6 +46,7 @@
     }
     .project-name {
       white-space: nowrap;
+      width: fit-content;
     }
 
     .project-name {
@@ -55,6 +56,9 @@
       font-size: 29.82px;
       line-height: 42px;
       text-transform: capitalize;
+    }
+    .project-name::after{
+
     }
 
     .by-org-name {
@@ -161,4 +165,49 @@
   width: 100%;
   justify-content: space-between;
   margin-top: 20px;
+}
+.project-name-people-wrap {
+  display: flex;
+  width: fit-content;
+  .project-people-wrap {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    // position: absolute;
+    // left: 5%;
+    & > div {
+      background-color: #4F4453;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-left: -1vw;
+      & > p {
+        object-fit: cover;
+        width: 46px;
+        height: 46px;
+        text-align: center;
+        font-family: var(--font-family-roboto-regular);
+        margin-top: 14px;
+        margin-left: 2px;
+        font-size: 14px;
+     }
+    }
+    .project-people {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 0;
+      margin-left: -1vw;
+      & > img {
+        object-fit: cover;
+        width: 46px;
+        height: 46px;
+      }
+     
+    }
+    
+  }
+  
 }

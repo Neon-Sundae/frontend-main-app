@@ -122,7 +122,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           ) : (
             <TaskDetail
               setViewTalentList={setViewTalentList}
-              project_name={filteredData[0].flProjectCategory.flProject.name}
+              project_name={filteredData[0]?.flProjectCategory?.flProject?.name}
               handleCommit={handleCommit}
               project_founder={project_founder}
               setOpen={setOpen}
