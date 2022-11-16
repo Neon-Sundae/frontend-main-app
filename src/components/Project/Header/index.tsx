@@ -1,6 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-nested-ternary */
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
@@ -44,7 +52,7 @@ const Header: FC<IHeaderProps> = props => {
     useState(false);
   const [currentProjectTasks, setCurrentProjectTasks] = useState<any[]>([]);
 
-  const { refetch } = useQuery(
+  const { data, refetch } = useQuery(
     ['userTasksData'],
     () =>
       fetch(`${config.ApiBaseUrl}/task/all`, {
@@ -52,26 +60,10 @@ const Header: FC<IHeaderProps> = props => {
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       }).then(response => response.json()),
     {
-      enabled: false,
+      enabled: currentProjectTasks.length === 0,
       refetchOnWindowFocus: false,
     }
   );
-  useEffect(() => {
-    setTimeout(() => {
-      if (currentProjectTasks.length === 0)
-        refetch().then((res: any) => {
-          setCurrentProjectTasks(
-            _.filter(res.data, {
-              flProjectCategory: {
-                flProject: { flProjectId_uuid: projectUuid },
-              },
-            })
-          );
-        });
-    }, 1000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const accumulatePeopleProjectData = () => {
     let tempArray: any[] = [];
     currentProjectTasks.forEach((task: any) => {
@@ -82,6 +74,17 @@ const Header: FC<IHeaderProps> = props => {
     if (tempArray.length !== 0) tempArray = [...new Set(tempArray)];
     return tempArray;
   };
+  useEffect(() => {
+    if (data)
+      setCurrentProjectTasks(
+        _.filter(data, {
+          flProjectCategory: {
+            flProject: { flProjectId_uuid: projectUuid },
+          },
+        })
+      );
+    accumulatePeopleProjectData();
+  }, [data]);
 
   const handlePublishProject = async () => {
     try {
@@ -115,12 +118,11 @@ const Header: FC<IHeaderProps> = props => {
     if (walletId === props.organisationOwnerWalletId) return true;
     return false;
   };
-  accumulatePeopleProjectData();
-  peopleCount =
-    accumulatePeopleProjectData().length -
-    accumulatePeopleProjectData().length +
-    1;
-  console.log('peopleCount', peopleCount);
+  const peopleProjectDataCount = useMemo(
+    () => accumulatePeopleProjectData().length,
+    [currentProjectTasks]
+  );
+  peopleCount = peopleProjectDataCount - peopleProjectDataCount + 1;
   return (
     <div className={styles.container} title="People involved in project">
       <div className={styles['project-info']}>
@@ -128,7 +130,7 @@ const Header: FC<IHeaderProps> = props => {
           <span className={styles['project-name-people-wrap']}>
             <p className={styles['project-name']}>{props.projectName}</p>
             <div className={styles['project-people-wrap']}>
-              {accumulatePeopleProjectData() &&
+              {peopleProjectDataCount > 0 &&
                 accumulatePeopleProjectData()
                   .slice(0, 3)
                   .map((projectPerson: any) => {
@@ -149,7 +151,7 @@ const Header: FC<IHeaderProps> = props => {
                       </div>
                     );
                   })}
-              {accumulatePeopleProjectData().length > 0 && (
+              {peopleProjectDataCount > 0 && (
                 <div>
                   <p>+{peopleCount}</p>
                 </div>
