@@ -18,7 +18,6 @@ interface Configuration {
   taskFactoryAddress: string;
   USDCAddress: string;
   FNDRAddress: string;
-  FLAddress: string;
 }
 
 interface Environment {
