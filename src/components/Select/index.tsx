@@ -1,6 +1,12 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-nested-ternary */
 import { FC } from 'react';
-import Select, { ActionMeta, SingleValue, StylesConfig } from 'react-select';
+import Select, {
+  ActionMeta,
+  SingleValue,
+  MultiValue,
+  StylesConfig,
+} from 'react-select';
 
 export type Option =
   | {
@@ -14,20 +20,20 @@ export type Option =
   | {
       value: number;
       label: JSX.Element;
-    };
+    }
+  | { label: string; value: number };
 
 interface ComponentProps {
   options: Option[];
   placeholder: string;
   name: string;
-  onSelectChange: (
-    newValue: SingleValue<Option>,
-    actionMeta: ActionMeta<Option>
-  ) => void;
+  onSelectChange: (newValue: any, actionMeta: ActionMeta<Option>) => void;
   value: SingleValue<Option>;
   borderColor?: string;
   borderRadius?: number;
   height?: number;
+  width?: string;
+  isMulti: boolean;
 }
 
 const SelectComponent: FC<ComponentProps> = ({
@@ -39,6 +45,8 @@ const SelectComponent: FC<ComponentProps> = ({
   borderColor,
   borderRadius,
   height,
+  width,
+  isMulti,
 }) => {
   const getSharedSelectProps = () => {
     return {
@@ -63,8 +71,8 @@ const SelectComponent: FC<ComponentProps> = ({
       borderWidth: 0.6,
       borderColor,
       borderRadius,
-      width: '100%',
-      // height,
+      width: width || '100%',
+      fontSize: 14,
       margin: '0 auto',
       padding: '0 10px',
       cursor: 'pointer',
@@ -93,7 +101,7 @@ const SelectComponent: FC<ComponentProps> = ({
         color: 'white',
         cursor: isDisabled ? 'not-allowed' : 'default',
         width: '100%',
-
+        fontSize: 14,
         ':active': {
           ...styles[':active'],
           backgroundColor: !isDisabled
@@ -109,7 +117,11 @@ const SelectComponent: FC<ComponentProps> = ({
         },
       };
     },
-    input: styles => ({ ...styles, backgroundColor: 'red', outline: 'none' }),
+    input: styles => ({
+      ...styles,
+      backgroundColor: 'red',
+      outline: 'none',
+    }),
     placeholder: styles => ({
       ...styles,
       color: '#fbfbfb',
@@ -119,6 +131,28 @@ const SelectComponent: FC<ComponentProps> = ({
     }),
     singleValue: (styles, { data }) => ({ ...styles, color: 'white' }),
     indicatorSeparator: styles => ({ ...styles, display: 'none' }),
+    multiValue: (styles, { data }) => {
+      // const color = chroma(data.color);
+      return {
+        ...styles,
+        backgroundColor: 'none',
+      };
+    },
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      fontFamily: "'Roboto Flex', sans-serif",
+      fontSize: '14',
+      color: '#fff',
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: '#fff',
+      fontSize: '16',
+      ':hover': {
+        // backgroundColor: data.color,
+        color: 'red',
+      },
+    }),
   };
 
   return (
@@ -130,7 +164,7 @@ const SelectComponent: FC<ComponentProps> = ({
       value={value}
       isSearchable={false}
       styles={customStyles}
-      isMulti={false}
+      isMulti={isMulti}
     />
   );
 };

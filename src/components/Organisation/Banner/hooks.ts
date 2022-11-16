@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
 import { handleError } from 'utils/handleUnAuthorization';
+import { handleApiErrors } from 'utils/handleApiErrors';
 
 interface IUpdateOrgSocials {
   linkedin: string;
@@ -48,6 +49,7 @@ interface IUpdateOrg {
   description?: string | null;
   whitepaper?: string | null;
   website?: string | null;
+  file?: any;
 }
 
 const useUpdateOrganisation = (organisationId: number) => {
@@ -78,4 +80,71 @@ const useUpdateOrganisation = (organisationId: number) => {
   return updateOrgSocials;
 };
 
-export { useUpdateOrgSocials, useUpdateOrganisation };
+const useUpdateOrgPic = (organisationId: number) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const updateOrgPic = useMutation(
+    async (formData: FormData) => {
+      const response = await fetch(
+        `${config.ApiBaseUrl}/organisation/${organisationId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['organisation']);
+      },
+    }
+  );
+  return updateOrgPic;
+};
+
+const useUpdateOrgCoverPic = (organisationId: number) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const updateOrgCoverPic = useMutation(
+    async (formData: FormData) => {
+      const response = await fetch(
+        `${config.ApiBaseUrl}/organisation/${organisationId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['organisation']);
+      },
+    }
+  );
+  return updateOrgCoverPic;
+};
+
+export {
+  useUpdateOrgSocials,
+  useUpdateOrganisation,
+  useUpdateOrgPic,
+  useUpdateOrgCoverPic,
+};

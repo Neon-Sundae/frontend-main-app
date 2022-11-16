@@ -42,7 +42,7 @@ const difficultyData = [
   { label: <DifficultyRating level={2} title="Moderate" />, value: 2 },
   { label: <DifficultyRating level={3} title="Significant" />, value: 3 },
   { label: <DifficultyRating level={4} title="Advanced" />, value: 4 },
-  { label: <DifficultyRating level={5} title="Moderate" />, value: 5 },
+  { label: <DifficultyRating level={5} title="Intermediate" />, value: 5 },
 ];
 
 interface IProfileSkills {
@@ -141,7 +141,6 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
       const { value } = e.target;
       setState(value);
     };
-
   return (
     <Modal
       onClose={handleClose}
@@ -177,6 +176,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               borderColor={error.categoryError ? '#c0392b' : 'white'}
               borderRadius={10}
               height={50}
+              isMulti={false}
             />
           </div>
         </div>
@@ -201,6 +201,7 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
               borderColor={error.difficultyError ? '#c0392b' : 'white'}
               borderRadius={10}
               height={50}
+              isMulti={false}
             />
           </div>
           <div className={styles['difficulty-price-container']}>
@@ -229,6 +230,8 @@ const CreateTaskModal: FC<IProfileSkills> = ({ setOpen }) => {
           setSelectedSkill={setSelectedSkill}
           taskSkills={taskSkills}
           setTaskSkills={setTaskSkills}
+          showModal
+          isMulti={false}
         />
         <div className={styles['create-task-form-row']}>
           <div

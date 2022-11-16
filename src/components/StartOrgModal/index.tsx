@@ -11,6 +11,7 @@ import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import BaseModal from 'components/Home/BaseModal';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
+import clsx from 'clsx';
 import styles from './index.module.scss';
 import useCreateOrganisation from './hook';
 
@@ -28,10 +29,8 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
   const [orgName, setOrgName] = useState('');
   const [orgDesc, setOrgDesc] = useState('');
   const [fileData, setFileData] = useState<IFile | null>(null);
-
+  const [disableButton, setDisableButton] = useState(false);
   const [showStepTwo, setShowStepTwo] = useState(false);
-
-  // const { createOrganisation } = useCreateOrg();
   const createOrganisation = useCreateOrganisation();
 
   const handleCreateOrganisation = () => {
@@ -41,7 +40,6 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       formData.append('name', orgName);
       formData.append('description', orgDesc);
       formData.append('userId', user.userId.toString());
-
       if (fileData) {
         formData.append('file', fileData.file);
       }
@@ -58,7 +56,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
 
   const handleStepTwo = () => {
     if (orgDesc.trim().length === 0) return;
-
+    setDisableButton(true);
     handleCreateOrganisation();
   };
 
@@ -70,6 +68,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       placeholder="Enter organisation name"
       fileData={fileData}
       setFileData={setFileData}
+      buttonText="Next"
     />
   );
 
@@ -81,6 +80,9 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
       placeholder="Enter short description"
       fileData={fileData}
       setFileData={setFileData}
+      disableButton={disableButton}
+      setDisableButton={setDisableButton}
+      buttonText="Create"
     />
   );
 
@@ -99,6 +101,9 @@ interface IStepProps {
   fileData: IFile | null;
   setFileData: Dispatch<SetStateAction<IFile | null>>;
   setInputChange: Dispatch<SetStateAction<string>>;
+  disableButton?: boolean;
+  setDisableButton?: any;
+  buttonText?: string;
 }
 
 const StepModal: FC<IStepProps> = ({
@@ -108,6 +113,9 @@ const StepModal: FC<IStepProps> = ({
   fileData,
   setFileData,
   setInputChange,
+  disableButton,
+  setDisableButton,
+  buttonText,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -128,13 +136,13 @@ const StepModal: FC<IStepProps> = ({
     }
   };
 
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.target;
     setFileState(files);
   };
 
-  const handleDropChange = async (e: DragEvent<HTMLInputElement>) => {
+  const handleDropChange = (e: DragEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.dataTransfer;
     setFileState(files);
@@ -144,7 +152,10 @@ const StepModal: FC<IStepProps> = ({
     e.preventDefault();
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (disableButton) setDisableButton(false);
     setInputChange(event.target.value);
   };
 
@@ -154,47 +165,68 @@ const StepModal: FC<IStepProps> = ({
       header="Start an organization"
       onClose={onClose}
       onNext={onNext}
+      disableButton={disableButton}
+      buttonText={buttonText}
     >
       <section className={styles.content}>
-        <div
-          className={styles['file-input-container']}
-          onClick={handleClick}
-          onDrop={handleDropChange}
-          onDragOver={handleDragEvent}
-        >
-          {fileData ? (
-            <div className={styles['file-image-wrapper']}>
-              <img
-                src={URL.createObjectURL(fileData.file)}
-                alt="file"
-                className={styles.image}
-              />
+        {placeholder !== 'Enter short description' && (
+          <>
+            <div
+              className={styles['file-input-container']}
+              onClick={handleClick}
+              onDrop={handleDropChange}
+              onDragOver={handleDragEvent}
+            >
+              {fileData ? (
+                <div className={styles['file-image-wrapper']}>
+                  <img
+                    src={URL.createObjectURL(fileData.file)}
+                    alt="file"
+                    className={styles.image}
+                  />
+                </div>
+              ) : (
+                <Stroke height={30} width={30} />
+              )}
             </div>
-          ) : (
-            <Stroke height={30} width={30} />
-          )}
-        </div>
-        <input
-          ref={inputRef}
-          id="profileImage"
-          className={styles.attachments}
-          type="file"
-          accept="image/png, image/jpeg"
-          onDrop={handleDropChange}
-          onChange={handleFileChange}
-          onDragOver={handleDragEvent}
-        />
-
-        <input
-          type="text"
-          className={styles['create-organisation-modal']}
-          placeholder={placeholder}
-          required
-          onChange={handleInputChange}
-        />
+            <input
+              ref={inputRef}
+              id="profileImage"
+              className={styles.attachments}
+              type="file"
+              accept="image/png, image/jpeg"
+              onDrop={handleDropChange}
+              onChange={handleFileChange}
+              onDragOver={handleDragEvent}
+            />
+            <input
+              type="text"
+              className={styles['create-organisation-modal']}
+              placeholder={placeholder}
+              required
+              onChange={handleInputChange}
+            />
+          </>
+        )}
+        {placeholder === 'Enter short description' && (
+          <textarea
+            className={clsx(
+              styles['create-organisation-modal'],
+              styles['text-area-field']
+            )}
+            placeholder={placeholder}
+            required
+            onChange={handleInputChange}
+          />
+        )}
       </section>
     </BaseModal>
   );
+};
+StepModal.defaultProps = {
+  disableButton: false,
+  setDisableButton: '',
+  buttonText: 'Next',
 };
 
 export default StartOrgModal;

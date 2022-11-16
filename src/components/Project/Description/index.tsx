@@ -1,15 +1,22 @@
-import { FC } from 'react';
-import { ReactComponent as Money } from 'assets/illustrations/icons/money.svg';
-import { ReactComponent as Graph } from 'assets/illustrations/icons/graph.svg';
-import { ReactComponent as Time } from 'assets/illustrations/icons/time.svg';
-import { ReactComponent as Resource } from 'assets/illustrations/icons/resource.svg';
+import { FC, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import config from 'config';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import { ReactComponent as SmartContractIcon } from 'assets/illustrations/icons/project-smart-contract.svg';
+import { ReactComponent as TimelineIcon } from 'assets/illustrations/icons/project-timeline.svg';
+import { ReactComponent as BalanceIcon } from 'assets/illustrations/icons/project-balance.svg';
+import { ReactComponent as TimezoneIcon } from 'assets/illustrations/icons/project-timezone.svg';
+import { ReactComponent as MoneyIcon } from 'assets/illustrations/icons/money.svg';
+import { ReactComponent as ResourceIcon } from 'assets/illustrations/icons/resource.svg';
+import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
 import styles from './index.module.scss';
 
 interface DescriptionProps {
   description: string;
   budget: number;
   timeOfCompletion: string;
-  preferredTimeZones: string[];
+  preferredTimeZones: string;
   flResources: any[];
 }
 
@@ -21,45 +28,141 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     preferredTimeZones,
     flResources,
   } = props;
-  const dateToday = new Date();
-  const end = new Date(timeOfCompletion);
-  const days = Math.floor(
-    (end.getTime() - dateToday.getTime()) / (1000 * 60 * 60 * 24)
+
+  const [projectBalance, setProjectBalance] = useState(0);
+  const { selectedProjectAddress } = useSelector(
+    (state: RootState) => state.flProject
   );
+
+  const end = new Date(timeOfCompletion);
   const formattedEndDate = end.toLocaleDateString('en-GB');
   const flResourcesStringJoined = flResources
     ?.map(resource => resource.title)
     .join(', ');
+
+  useEffect(() => {
+    (async () => {
+      if (selectedProjectAddress) {
+        const balance = await getUsdcBalance(selectedProjectAddress);
+        setProjectBalance(balance);
+      }
+    })();
+  }, [selectedProjectAddress]);
+
+  const getSmartContractAddress = () => {
+    if (selectedProjectAddress) {
+      return `${selectedProjectAddress.slice(
+        0,
+        6
+      )}...${selectedProjectAddress.slice(selectedProjectAddress.length - 6)}`;
+    }
+    return '';
+  };
+
   return (
     <div className={styles.container}>
-      <span className={styles.projectContentHeading}>
-        <h4>Company Description</h4>
-        <h4>Project Details</h4>
-      </span>
       <div className={styles.wrap}>
-        <section className={styles.projectDescription}>
-          <p>{description}</p>
-        </section>
-        <section className={styles.projectDetails}>
-          <div className={styles.card}>
-            <span className={styles.inline}>
-              <Money /> &nbsp; &nbsp;
-              <p>Budget: {budget} USDC</p>
-            </span>
-            <span className={styles.inline}>
-              <Time /> &nbsp; &nbsp;
-              <p>Timeline: {formattedEndDate}</p>
-            </span>
-            <span className={styles.inline}>
-              <Graph /> &nbsp; &nbsp;
-              <p>Timezones: {preferredTimeZones}</p>
-            </span>
-            <span className={styles.inline}>
-              <Resource /> &nbsp; &nbsp;
-              <p>Looking For: {flResourcesStringJoined}</p>
-            </span>
+        <div className={styles.projectDetails}>
+          <h4>Project info</h4>
+
+          <div className={styles.row}>
+            <div>
+              <SmartContractIcon width={17} height={22} />
+              <span className={styles['row-label']}>
+                Smart Contract id: &nbsp;
+                {selectedProjectAddress ? (
+                  <a
+                    className={clsx(
+                      styles['row-value'],
+                      styles['smart-contract-value']
+                    )}
+                    href={`${config.explorerURL}/address/${selectedProjectAddress}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {getSmartContractAddress()}
+                  </a>
+                ) : (
+                  <span
+                    className={clsx(
+                      styles['row-value'],
+                      styles['smart-contract-value']
+                    )}
+                  >
+                    Not published
+                  </span>
+                )}{' '}
+                &nbsp;
+                {selectedProjectAddress && (
+                  <a
+                    href={`${config.explorerURL}/address/${selectedProjectAddress}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <i className="material-icons">open_in_new</i>
+                  </a>
+                )}
+              </span>
+            </div>
+            <div>
+              <TimelineIcon width={19} height={17} />
+              <span className={styles['row-label']}>
+                Timeline: &nbsp;
+                <span className={styles['row-value']} title={formattedEndDate}>
+                  {formattedEndDate}
+                </span>
+              </span>
+            </div>
           </div>
-        </section>
+          <div className={styles.row}>
+            <div>
+              <BalanceIcon width={19} height={19} />
+              <span className={styles['row-label']}>
+                Project Fund Balance: &nbsp;
+                <span
+                  className={styles['row-value']}
+                  title={`${(Number(budget) * 1.1).toFixed(2)} USDC`}
+                >
+                  {projectBalance} USDC
+                </span>
+              </span>
+            </div>
+            <div>
+              <TimezoneIcon width={19} height={19} />
+              <span className={styles['row-label']} title={preferredTimeZones}>
+                Timezones: &nbsp;
+                <span className={styles['row-value']}>
+                  {preferredTimeZones}
+                </span>
+              </span>
+            </div>
+          </div>
+          <div className={styles.row}>
+            <div>
+              <MoneyIcon width={19} height={19} />
+              <span className={styles['row-label']} title={`${budget} USDC`}>
+                Budget: &nbsp;
+                <span className={styles['row-value']}>{budget} USDC</span>
+              </span>
+            </div>
+            <div>
+              <ResourceIcon width={19} height={19} />
+              <span className={styles['row-label']}>
+                Looking for: &nbsp;
+                <span
+                  className={styles['row-value']}
+                  title={flResourcesStringJoined}
+                >
+                  {flResourcesStringJoined}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className={styles.projectDescription}>
+          <h4>Project Details</h4>
+          <p>{description}</p>
+        </div>
       </div>
     </div>
   );

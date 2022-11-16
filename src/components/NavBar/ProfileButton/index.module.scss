@@ -1,9 +1,9 @@
 .container {
   max-width: 254px;
   max-height: 69px;
-  background: #2d2d35;
-  border-radius: 20px;
-  padding: 10px 23px;
+  background: rgba(220, 220, 220, 0.1);
+  border-radius: 18.8px;
+  padding-left: 25px;
   display: flex;
   justify-content: space-evenly;
   cursor: pointer;
@@ -13,18 +13,27 @@
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    flex-direction: column;
 
     & > .image {
       overflow: hidden;
-      width: 51px;
-      height: 51px;
+      width: 38px;
+      height: 38px;
       border-radius: 30px;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
 
       > img {
         max-width: 100%;
         max-height: 100%;
       }
+    }
+
+    & .profile-text {
+      font-size: 12px;
+      color: white;
+      font-family: var(--font-family-roboto-light);
     }
   }
 
@@ -32,6 +41,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: #37383c;
+    padding: 15px 25px 15px 20px;
+    border-radius: 18.8px;
 
     & > .text {
       font-family: var(--font-family-inter-medium);
@@ -61,6 +73,19 @@
         cursor: pointer;
       }
     }
+
+    & .navbar-username {
+      font-size: 14.66px;
+      color: white;
+      font-family: var(--font-family-roboto-medium);
+    }
+
+    & .navbar-wallet-address {
+      font-size: 12.56px;
+      color: white;
+      font-family: var(--font-family-roboto-light);
+      letter-spacing: 1.05px;
+    }
   }
 }
 
@@ -83,4 +108,120 @@
   height: 7px;
   background-color: #aaf4d5;
   border-radius: 4px;
+}
+
+.disconnect-connected-text {
+  font-family: var(--font-family-roboto-regular);
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+.disconnect-content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 35px;
+  margin-bottom: 38px;
+
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+
+  & .disconnect-image-container {
+    width: 28px;
+    height: 28px;
+    margin-right: 15px;
+
+    & > img {
+      width: 100%;
+      height: 100%;
+      clip-path: circle();
+    }
+  }
+
+  & span {
+    font-family: var(--font-family-inter-roboto);
+    font-size: 18px;
+    color: white;
+  }
+
+  & > button {
+    border: 1.19px solid #EBA8D0;
+    outline: none;
+    border-radius: 8px;
+    width: 122.81px;
+    height: 31px;
+    text-transform: uppercase;
+    color: #FFBAE3;
+    font-family: var(--font-family-roboto-flex);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    background-color: transparent;
+    box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+  }
+}
+
+.disconnect-action-container {
+  display: flex;
+
+  & > .disconnect-copy-address {
+    
+    font-family: var(--font-family-inter-regular);
+    font-size: 16px;
+    display: flex;
+    margin-left: 9px;
+    margin-right: 19px;
+    
+  }
+
+  & > .disconnect-explorer {
+    color: #CECECE;
+    font-family: var(--font-family-inter-regular);
+    font-size: 16px;
+    display: flex;
+  }
+}
+.disc-modal-email-edit-wrap {
+  text-align: center;
+  &>p {
+    color: #fff;
+    text-align: left;
+    font-family: var(--font-family-roboto-flex);
+    margin-bottom: 10px;
+  }
+  &>.disc-modal-email-field {
+    border: 0.56491px solid #FFFFFF;
+      background-color: transparent;
+      border-radius: 5px;
+      color: white;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 14px;
+      font-weight: 400;
+      width: 100%;
+      padding: 10.31px 9.89px;
+      
+  }
+
+  &>.disc-modal-save-btn {
+    text-align: center;
+     
+    box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+    border-radius: 22px;
+    backdrop-filter: blur(40px); 
+    width: 180px;
+    height: 55px;
+    font-family: var(--font-family-roboto-regular);
+    font-size: 16px;
+    color: #fff;
+    border: 0.7px solid #ff9bfb;
+    background: linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%), linear-gradient(0deg, #e49df4, #e49df4), radial-gradient(116.97% 116.97% at 34.87% -2.72%, #ff9bfb 0%, #ffffff 100%), linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
+    cursor: pointer;
+    margin-top: 47px;
+  }
+  
 }

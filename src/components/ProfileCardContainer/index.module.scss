@@ -4,11 +4,29 @@
   border: 1px solid #414141;
   border-radius: 30px;
   padding: 30px 0;
-  margin-left: 50px;
-
+  // margin-left: 50px;
   position: relative;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   &--is-editable {
     overflow-y: auto;
+  }
+  @media (max-width: 1920px)  {
+    height: 700px;
+    padding: 30px 0;
+  }
+  @media (max-width: 1680px)  {
+    height: 690px;
+    padding: 21px 0;
+  }
+  @media (max-width: 1440px)  {
+    height: 620px;
+    padding: 25px 0;
+  }
+  @media (max-width: 1024px) {
+    height: 600px;
+    padding: 10px;
+
   }
 }

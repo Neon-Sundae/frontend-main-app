@@ -1,7 +1,9 @@
+/* eslint-disable camelcase */
 import { FC, MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useSelectBuilder } from './hooks';
 import styles from './index.module.scss';
 
@@ -37,7 +39,6 @@ const TalentListItem: FC<ITalentListItem> = ({
     navigate(`/profile/${data.profileId}`);
     navigate(0);
   };
-
   return (
     <div
       className={styles['talent-list-item-container']}
@@ -45,7 +46,15 @@ const TalentListItem: FC<ITalentListItem> = ({
     >
       <div className={styles.builder}>
         <div className={styles['builder-avatar']}>
-          <img src={data.Profile.picture} alt="" />
+          <img
+            src={
+              data.Profile.picture ||
+              getDefaultAvatarSrc(
+                data?.Profile?.user?.name?.charAt(0).toUpperCase()
+              )
+            }
+            alt=""
+          />
         </div>
         <div className={styles['builder-name']}>{data?.Profile.user.name}</div>
       </div>
@@ -63,8 +72,14 @@ const TalentListItem: FC<ITalentListItem> = ({
               </span>
             </>
           )}
-        {data?.applicationStatus === 'accepted' && (
-          <span className={styles['selected-builder']}>selected</span>
+        {data?.applicationStatus === 'accepted' && task_status === 'open' && (
+          <span className={styles['selected-builder']}>Yet to Commit</span>
+        )}
+        {data?.applicationStatus === 'accepted' && task_status !== 'open' && (
+          <span className={styles['selected-builder']}>Selected</span>
+        )}
+        {data?.applicationStatus === 'rejected' && (
+          <span className={styles['selected-builder']}>Not Selected</span>
         )}
       </div>
     </div>

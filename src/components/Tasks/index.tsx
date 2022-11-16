@@ -1,28 +1,41 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import clsx from 'clsx';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import Card from 'components/Card';
+import MyTaskDetailModal from 'components/Home/TaskDetailModal';
+import getRandomString from 'utils/getRandomString';
+import _ from 'lodash';
 import styles from './index.module.scss';
 import useFetchUserTasks from './hooks';
 
 const Tasks = () => {
   const { data } = useFetchUserTasks();
 
+  const getCompletedUserTasks = () =>
+    _.filter(data.data, { taskStatus: 'completed' });
+
+  const [openTaskDetail, setOpenTaskDetail] = useState(false);
   if (data) {
     return (
       <div className={styles['tasks-container']}>
-        {data?.data?.map((d: any) => (
-          <TaskCard
-            key={d.taskId}
-            title={d.title}
-            organisation={d.organisation}
-            estimatedDifficulty={d.estimatedDifficulty}
-            price={d.price}
-            organisationImage={d.organisationImage}
-            categoryName={d.categoryName}
-          />
-        ))}
+        {getCompletedUserTasks().map((d: any) => {
+          return (
+            <TaskCard
+              key={d.taskId}
+              title={d.title}
+              organisation={d.organisation}
+              estimatedDifficulty={d.estimatedDifficulty}
+              price={d.price}
+              organisationImage={d.organisationImage}
+              categoryName={d.categoryName}
+              setOpenTaskDetail={setOpenTaskDetail}
+              selectedTaskId={d.taskId}
+              openTaskDetail={openTaskDetail}
+              taskName={d.taskName}
+            />
+          );
+        })}
       </div>
     );
   }
@@ -36,6 +49,10 @@ interface ITaskCard {
   price: number;
   organisationImage: string;
   categoryName: string;
+  setOpenTaskDetail: any;
+  openTaskDetail: any;
+  selectedTaskId: any;
+  taskName: string;
 }
 
 const TaskCard: FC<ITaskCard> = ({
@@ -45,7 +62,24 @@ const TaskCard: FC<ITaskCard> = ({
   price,
   organisationImage,
   categoryName,
+  setOpenTaskDetail,
+  openTaskDetail,
+  selectedTaskId,
+  taskName,
 }) => {
+  const handleClick = () => {
+    setOpenTaskDetail(true);
+  };
+  if (openTaskDetail) {
+    return (
+      <MyTaskDetailModal
+        selectedTaskId={selectedTaskId}
+        setOpen={setOpenTaskDetail}
+        key={getRandomString(5)}
+        data={[]}
+      />
+    );
+  }
   return (
     <div className={styles.container}>
       <Card
@@ -54,6 +88,7 @@ const TaskCard: FC<ITaskCard> = ({
         width="100%"
         height="auto"
         borderType="0.7px solid rgb(224, 185, 255)"
+        onClick={() => handleClick()}
       >
         <div className={styles['task-card-content-container']}>
           <div className={styles['task-card-image-column']}>
@@ -70,7 +105,7 @@ const TaskCard: FC<ITaskCard> = ({
               <p className={styles['category-text']}>{categoryName}</p>
             </div>
 
-            <h4 className={styles['task-card-title']}>{title}</h4>
+            <h4 className={styles['task-card-title']}>{taskName}</h4>
             <p className={styles['task-card-organisation']}>{organisation}</p>
             <div className={styles['rating-price-row']}>
               <div>

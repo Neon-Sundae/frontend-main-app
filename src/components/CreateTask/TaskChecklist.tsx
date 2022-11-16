@@ -37,7 +37,7 @@ const TaskChecklist: FC<ITaskChecklist> = ({
 
   return (
     <div className={styles['task-checklist-container']}>
-      <h4 className={styles['difficulty-price-label']}>Checklist</h4>
+      <h4 className={styles['difficulty-price-label']}>Deliverables</h4>
       {checklistItems.map(item => (
         <ChecklistItemInput
           key={item.id}

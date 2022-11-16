@@ -3,11 +3,11 @@
   justify-content: center;
 
   .image-wrapper {
-    width: 110px;
-    height: 110px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
 
-    &>img {
+    & > img {
       width: 100%;
       height: 100%;
       border-radius: 50%;
@@ -19,6 +19,13 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  cursor: pointer;
+}
+
+.share-icon {
+  position: absolute;
+  top: 35px;
+  left: 27px;
   cursor: pointer;
 }
 
@@ -48,8 +55,18 @@
 .experience-points {
   display: flex;
   justify-content: center;
-  margin: 30px 0;
-
+  @media (max-width: 1920px) {
+    margin: 30px 0;
+  }
+  @media (max-width: 1680px) {
+    margin: 30px 0;
+  }
+  @media (max-width: 1440px) {
+    margin: 10px 0;
+  }
+  @media (max-width: 1024px) {
+    margin: 5px 0;
+  }
   .value {
     font-family: var(--font-family-roboto-slab-medium);
     font-weight: 500;
@@ -59,11 +76,13 @@
     .label {
       font-family: var(--font-family-roboto-bold);
       font-size: 23px;
-      background: -webkit-linear-gradient(298.19deg,
-          #ffbedf 27.52%,
-          #eac4ff 48.39%,
-          #ffc9af 69.27%,
-          #ffd9a0 94.32%);
+      background: -webkit-linear-gradient(
+        298.19deg,
+        #ffbedf 27.52%,
+        #eac4ff 48.39%,
+        #ffc9af 69.27%,
+        #ffd9a0 94.32%
+      );
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -75,7 +94,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  z-index: 1;
   .address-container {
     display: flex;
     justify-content: space-evenly;
@@ -83,7 +102,7 @@
     border: 1px solid white;
     border-radius: 15px;
     width: 291px;
-    height: 52px;
+    height: 40px;
     margin: 0 auto;
 
     .profile-address {
@@ -93,7 +112,7 @@
       color: white;
     }
 
-    &>i {
+    & > i {
       color: white;
     }
   }
@@ -105,10 +124,22 @@
     align-items: center;
     cursor: pointer;
     margin: 15px 0;
+    @media (max-width: 1920px) {
+      margin: 15px 0;
+    }
+    @media (max-width: 1680px) {
+      margin: 15px 0;
+    }
+    @media (max-width: 1440px) {
+      margin: 15px 0;
+    }
+    @media (max-width: 1024px) {
+      margin: 5px 0;
+    }
     font-weight: 300;
     font-size: 12px;
     line-height: 14px;
-    &>i {
+    & > i {
       color: white;
       margin-left: 5px;
     }
@@ -124,7 +155,8 @@
   text-align: center;
   max-width: 383px;
   margin: 0 auto;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   padding-left: 31.99px;
   padding-right: 31.99px;
+  height: auto;
 }

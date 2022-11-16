@@ -4,17 +4,26 @@ import styles from './index.module.scss';
 
 interface IFileAttachmentCard {
   label: string;
+  skills?: string;
 }
 
-const FileAttachmentCard: FC<IFileAttachmentCard> = ({ label }) => {
+const FileAttachmentCard: FC<IFileAttachmentCard> = ({ label, skills }) => {
   return (
     <div className={styles['file-attachment-card']}>
-      <i className={clsx('material-icons', styles['attachment-icon'])}>
-        attachment
-      </i>
-      <span>{label}</span>
+      {skills && <div />}
+      {!skills && (
+        <i className={clsx('material-icons', styles['attachment-icon'])}>
+          attachment
+        </i>
+      )}
+
+      <span>{skills ?? label}</span>
     </div>
   );
+};
+
+FileAttachmentCard.defaultProps = {
+  skills: '',
 };
 
 export default FileAttachmentCard;

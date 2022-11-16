@@ -43,8 +43,30 @@
     width: 82%;
     flex-direction: column;
   }
+  padding-bottom: 90px;
+ 
+}
+.my-tasks-wrap {
+  padding-bottom: 30px;
+ 
+}
+.my-projects-wrap {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  z-index: 1;
+  @media (max-width: 1920px)  {
+    width: 70%;
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+  }
   
-   
-
-  padding-bottom: 60px;
+  @media (max-width: 1440px)  {
+    width: 80%;
+  }
+  
+  @media (max-width: 1024px) {
+    width: 82%;
+  }
 }

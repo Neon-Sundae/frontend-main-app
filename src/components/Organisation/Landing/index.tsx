@@ -1,6 +1,6 @@
 import NavBar from 'components/NavBar';
 import { FC } from 'react';
-import bg from 'assets/illustrations/organisation/bg.svg';
+import bg from 'assets/illustrations/gradients/bg.png';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import useFetchOrganisation from './hooks';
@@ -10,14 +10,16 @@ import OrganisationProjects from '../OrganisationProjects';
 const Landing: FC = () => {
   const { organisation, isLoading } = useFetchOrganisation();
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
+  if (isLoading) return null;
   return (
     <div
       className={styles['organisation-container']}
-      style={{ backgroundImage: `url(${bg})` }}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
     >
       <NavBar />
       <Banner organisation={organisation} />

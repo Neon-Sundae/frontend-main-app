@@ -48,7 +48,7 @@ const ProfileTabs: FC = () => {
             )}
             onClick={() => handleClick('organisation')}
           >
-            Organisations
+            My Organisations
           </h3>
         )}
         {user?.isFounder && (
@@ -59,7 +59,7 @@ const ProfileTabs: FC = () => {
             )}
             onClick={() => setActiveState('project')}
           >
-            Projects
+            My Projects
           </h3>
         )}
         <h3
@@ -69,7 +69,7 @@ const ProfileTabs: FC = () => {
           )}
           onClick={() => setActiveState('task')}
         >
-          Tasks
+          Completed Tasks
         </h3>
         <h3
           className={clsx(

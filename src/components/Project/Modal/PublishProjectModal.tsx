@@ -1,23 +1,20 @@
 /* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
-import { ReactComponent as SugarIcon } from 'assets/illustrations/icons/sugar.svg';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Modal from 'components/Modal';
-import clsx from 'clsx';
 import DepositFundsToWallet from './DepositFundsToWallet';
 import { useProject } from '../Landing/hooks';
 import styles from './index.module.scss';
 import Spinner from './Spinner';
+import { toggleWalletDrawer } from 'actions/app';
 
 interface IPublishProject {
   setOpen: Dispatch<SetStateAction<boolean>>;
   usdcBalance: number;
   projectId: string;
   budget: number;
-  projectName: string;
-  projectDescription: string;
 }
 
 const PublishProjectModal: FC<IPublishProject> = ({
@@ -25,26 +22,18 @@ const PublishProjectModal: FC<IPublishProject> = ({
   usdcBalance,
   projectId,
   budget,
-  projectName,
-  projectDescription,
 }) => {
-  const {
-    getGasFeeToPublish,
-    publishProject,
-    depositFunds,
-    setDeploying,
-    deploying,
-    gasFee,
-  } = useProject();
+  const { publishProject, setDeploying, deploying } = useProject();
 
   const { selectedProjectAddress, deploy_state } = useSelector(
     (state: RootState) => state.flProject
   );
-
   const [showTopUpModal, setShowTopUpModal] = useState(false);
 
+  const dispatch = useDispatch();
+  const toggle = useSelector((state: RootState) => state.app.toggle);
+
   useEffect(() => {
-    getGasFeeToPublish();
     setDeploying(deploy_state);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -52,9 +41,12 @@ const PublishProjectModal: FC<IPublishProject> = ({
   const handleClose = () => {
     setOpen(false);
   };
-  const handleTopUpWallet = () => {
-    setShowTopUpModal(true);
+
+  const handleToggle = () => {
+    dispatch(toggleWalletDrawer(!toggle));
+    setOpen(false);
   };
+
   if (showTopUpModal) {
     return (
       <Modal onClose={handleClose} width="550px" height="500px">
@@ -62,152 +54,144 @@ const PublishProjectModal: FC<IPublishProject> = ({
       </Modal>
     );
   }
+
+  const renderByDeployingState = () => {
+    switch (deploying) {
+      case 'go_live':
+        return (
+          <GoLiveState
+            budget={budget}
+            projectId={projectId}
+            publishProject={publishProject}
+            usdcBalance={usdcBalance}
+          />
+        );
+      case 'deploying':
+        return <DeployingState />;
+      case 'deploy_success':
+        return (
+          <DeploySuccessState
+            selectedProjectAddress={selectedProjectAddress}
+            onClose={handleClose}
+            walletToggle={handleToggle}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <Modal onClose={handleClose} width="550px" height="500px">
       {usdcBalance >= Number(Number(budget * 1.1).toFixed(2)) ? (
         <>
           <h1 className={styles['publish-title']}>Publish your project</h1>
           <div className={styles['publish-content-wrapper']}>
-            {deploying === 'go_live' ? (
-              <>
-                <div className={styles['publish-content']}>
-                  <div>
-                    <span>Wallet Amount</span>
-                    <span>${usdcBalance} USDC</span>
-                  </div>
-                  <div>
-                    <span>Gas Fee</span>
-                    <span>$0.01 MATIC</span>
-                  </div>
-                  <div>
-                    <span>Deposit</span>
-                    <span>${Number(Number(budget * 1.1).toFixed(2))} USDC</span>
-                  </div>
-                </div>
-                <div className={styles['publish-info']}>
-                  {Number(usdcBalance) <
-                  Number(Number(budget * 1.1).toFixed(2)) ? (
-                    <span
-                      className={clsx(
-                        styles['font-size--small--low'],
-                        styles['']
-                      )}
-                    >
-                      *Your wallet amount is to low
-                    </span>
-                  ) : (
-                    <span className={styles['font-size--small--enough']}>
-                      *You can always withdraw
-                    </span>
-                  )}
-                  <span onClick={() => handleTopUpWallet()}>
-                    Top Up Wallet +
-                  </span>
-                </div>
-                <button
-                  className={styles['publish-go-live']}
-                  onClick={() =>
-                    publishProject(
-                      projectId,
-                      budget,
-                      projectName,
-                      projectDescription
-                    )
-                  }
-                >
-                  Go Live
-                </button>
-              </>
-            ) : deploying === 'deploying' ? (
-              <div className={styles['publish-deploying-content']}>
-                <Spinner />
-                <p>Deploying Contract</p>
-                <p>Confirm this transaction in your wallet</p>
-              </div>
-            ) : deploying === 'deploy_success' ? (
-              <div className={styles['publish-deploying-content']}>
-                <CheckIcon width={100} height={100} />
-                <p>This Transaction has been confirmed on mainnet</p>
-                <p>
-                  Your contract id: {selectedProjectAddress.slice(0, 10)}...
-                  {selectedProjectAddress.slice(
-                    selectedProjectAddress.length - 8,
-                    selectedProjectAddress.length
-                  )}
-                </p>
-              </div>
-            ) : deploying === 'deposit' ? (
-              <>
-                <div className={styles['publish-content']}>
-                  <div>
-                    <span>Wallet Amount</span>
-                    <span>${usdcBalance} USDC</span>
-                  </div>
-                  <div>
-                    <span>Gas Fee</span>
-                    <span>$0.01 MATIC</span>
-                  </div>
-                  <div>
-                    <span>Deposit</span>
-                    <span>${Number(Number(budget * 1.1).toFixed(2))} USDC</span>
-                  </div>
-                </div>
-                <div className={styles['publish-info']}>
-                  {Number(usdcBalance) <
-                  Number(Number(budget * 1.1).toFixed(2)) ? (
-                    <span
-                      className={clsx(
-                        styles['font-size--small--low'],
-                        styles['']
-                      )}
-                    >
-                      *Your wallet amount is to low
-                    </span>
-                  ) : (
-                    <span className={styles['font-size--small--enough']}>
-                      *You can always withdraw
-                    </span>
-                  )}
-                  <span
-                    className={styles['top-up-text']}
-                    onClick={() => handleTopUpWallet()}
-                  >
-                    Top Up Wallet +
-                  </span>
-                </div>
-                <button
-                  className={styles['publish-go-live']}
-                  onClick={() => depositFunds(budget)}
-                >
-                  Deposit
-                </button>
-              </>
-            ) : deploying === 'approving' ? (
-              <div className={styles['publish-deploying-content']}>
-                <Spinner />
-                <p>Waiting for approving</p>
-                <p>Confirm this transaction in your wallet</p>
-              </div>
-            ) : deploying === 'depositing' ? (
-              <div className={styles['publish-deploying-content']}>
-                <Spinner />
-                <p>Waiting for confirmation</p>
-                <p>Confirm this transaction in your wallet</p>
-              </div>
-            ) : deploying === 'deposit_success' ? (
-              <div className={styles['publish-deploying-content']}>
-                <SugarIcon width={100} height={100} />
-                <p>Your project is live!</p>
-              </div>
-            ) : (
-              <></>
-            )}
+            {renderByDeployingState()}
           </div>
         </>
       ) : (
         <DepositFundsToWallet />
       )}
     </Modal>
+  );
+};
+
+interface IGoLiveState {
+  budget: number;
+  projectId: string;
+  usdcBalance: number;
+  publishProject: (projectId: string) => Promise<void>;
+}
+
+const GoLiveState: FC<IGoLiveState> = ({
+  budget,
+  projectId,
+  usdcBalance,
+  publishProject,
+}) => {
+  return (
+    <>
+      <div className={styles['publish-content']}>
+        <div>
+          <span>Project Budget</span>
+          <span>${budget} USDC</span>
+        </div>
+        {/* <div>
+          <span>Wallet Balance</span>
+          <span>${usdcBalance} USDC</span>
+        </div> */}
+        <div>
+          <span>
+            Publishing your project means putting it on the blockchain. This
+            will allow buidlers from all over the world to apply to your tasks!
+          </span>
+        </div>
+      </div>
+      <div className={styles['small-text']}>
+        <span>
+          Clicking publish project initiates Smart Contract creation. You will
+          need $MATIC tokens in the next step.
+        </span>
+      </div>
+      <div style={{ margin: '40px 141px' }}>
+        <button
+          className={styles['publish-go-live']}
+          onClick={() => publishProject(projectId)}
+        >
+          Publish Project
+        </button>
+      </div>
+    </>
+  );
+};
+
+const DeployingState = () => {
+  return (
+    <div className={styles['publish-deploying-content']}>
+      <Spinner />
+      <p>Smart Contract is being created!</p>
+      <p>Confirm gas fee estimate in your wallet </p>
+    </div>
+  );
+};
+
+interface IDeploySuccessState {
+  selectedProjectAddress: string;
+  onClose: () => void;
+  walletToggle: () => void;
+}
+
+const DeploySuccessState: FC<IDeploySuccessState> = ({
+  selectedProjectAddress,
+  onClose,
+  walletToggle,
+}) => {
+  return (
+    <>
+      <div className={styles['publish-deploying-content']}>
+        <CheckIcon width={100} height={100} />
+        <p>Your project is now live!</p>
+        <p>
+          Your project&apos;s smart contract id:{' '}
+          {selectedProjectAddress.slice(0, 10)}
+          ...
+          {selectedProjectAddress.slice(
+            selectedProjectAddress.length - 8,
+            selectedProjectAddress.length
+          )}
+        </p>
+      </div>
+      <div className={styles['publish-footer']}>
+        <button className={styles['publish-go-live']} onClick={walletToggle}>
+          Deposit Funds
+        </button>
+        <div onClick={onClose}>
+          {' '}
+          <p style={{ cursor: 'pointer' }}>I'll do it later</p>
+        </div>
+      </div>
+    </>
   );
 };
 

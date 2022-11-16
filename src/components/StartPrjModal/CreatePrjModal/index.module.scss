@@ -84,12 +84,30 @@
   font-weight: 100;
   line-height: 16px;
   color: #fbfbfb;
+  color-scheme: dark;
 }
 .input[type='date'] {
-  cursor: pointer;
+  position: relative;
+  padding: 10px;
+
 }
-input[type='date']::-webkit-calendar-picker-indicator {
-  background-color: #fff;
+.input[type='date']::-webkit-calendar-picker-indicator {
+  color: transparent;
+  background: none;
+  z-index: 1;
+}
+.input[type='date']:before {
+  color: transparent;
+  background: none;
+  display: block;
+  content: '📆';
+  width: 15px;
+  height: 20px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: #fff;
+
 }
 //firefox disable arrows
 .input[type='number'] {

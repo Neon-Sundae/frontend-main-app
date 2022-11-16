@@ -2,39 +2,54 @@
   color: #fff;
   // display: flex;
   align-items: baseline;
-  
- 
-  @media (max-width: 1920px)  {
+
+  @media (max-width: 1920px) {
     width: 72%;
     margin-top: 3%;
   }
-  @media (max-width: 1680px)  {
+  @media (max-width: 1680px) {
     width: 78%;
     margin-top: 3%;
   }
-  @media (max-width: 1440px)  {
-  width: 88%;
-  margin-top: 3%;
+  @media (max-width: 1440px) {
+    width: 88%;
+    margin-top: 3%;
   }
-  
+
   @media (max-width: 1024px) {
     width: 90%;
     margin-top: 3%;
   }
-  
+
   margin: auto;
   z-index: 999;
 
   .project-info {
     display: flex;
+    flex-direction: column;
     align-items: baseline;
-    width: 89%;
+    width: 90%;
     margin: auto;
     position: relative;
+    @media (max-width: 1920px) {
+      width: 98%;
+    }
+    @media (max-width: 1680px) {
+      width: 90%;
+    }
+    @media (max-width: 1440px) {
+      width: 90%;
+    }
+  
+    @media (max-width: 1024px) {
+      width: 90%;
+    }
     .project-name {
       white-space: nowrap;
+      width: fit-content;
     }
-    .project-name > p {
+
+    .project-name {
       font-family: var(--font-family-roboto-regular);
       font-style: normal;
       font-weight: 600;
@@ -42,12 +57,20 @@
       line-height: 42px;
       text-transform: capitalize;
     }
+    .project-name::after{
+
+    }
+
+    .by-org-name {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
 
     .founder-name,
     .deposit-funds {
       font-family: var(--font-family-roboto-light);
       font-weight: 300;
-      margin-left: 25px;
       font-size: 19.8819px;
       line-height: 23px;
     }
@@ -55,57 +78,136 @@
     .project-verified {
       margin-left: 20px;
     }
+
     .transparentBtn {
-      
-      background: linear-gradient(126.59deg,
-          rgba(255, 255, 255, 0.12) 12.11%,
-          rgba(255, 255, 255, 0.03) 73.08%);
+      background: linear-gradient(
+        126.59deg,
+        rgba(255, 255, 255, 0.12) 12.11%,
+        rgba(255, 255, 255, 0.03) 73.08%
+      );
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       /* Note: backdrop-filter has minimal browser support */
-      border-radius: 23px;
-      width: 223px;
-      height: 55px;
+      border-radius: 14px;
+      width: 195px;
+      height: 42px;
       font-family: var(--font-family-roboto-regular);
-      font-size: 18.225px;
+      font-size: 16px;
       color: #fff;
-      border: .7px solid #FF9BFB;
-      background: linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%),
-      linear-gradient(0deg, #E49DF4, #E49DF4),
-      radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF9BFB 0%, #FFFFFF 100%)
-      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
-      ,
-      linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
-      font-weight: 400;
-      font-size: 18px;
+      border: 0.7px solid #ff9bfb;
+      background: linear-gradient(
+          89.58deg,
+          #c6bbfb 2.95%,
+          #e59cf3 48.36%,
+          #ffb8d5 103.17%
+        ),
+        linear-gradient(0deg, #e49df4, #e49df4),
+        radial-gradient(
+            116.97% 116.97% at 34.87% -2.72%,
+            #ff9bfb 0%,
+            #ffffff 100%
+          )
+          /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+        linear-gradient(
+          94.63deg,
+          rgba(255, 255, 255, 0.16) 4.94%,
+          rgba(255, 255, 255, 0.04) 93.94%
+        );
+      cursor: pointer;
     }
-    button {
-      background: linear-gradient(126.59deg,
-          rgba(255, 255, 255, 0.12) 12.11%,
-          rgba(255, 255, 255, 0.03) 73.08%);
+
+    .edit-project-btn {
+      background: linear-gradient(
+        126.59deg,
+        rgba(255, 255, 255, 0.12) 12.11%,
+        rgba(255, 255, 255, 0.03) 73.08%
+      );
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       font-family: var(--font-family-roboto-regular);
-      font-size: 18.225px;
+      font-size: 16px;
       /* Note: backdrop-filter has minimal browser support */
-      border-radius: 19.0534px;
-      width: 195.1px;
-      height: 52.3px;
+      border-radius: 14px;
+      width: 195px;
+      height: 42px;
       color: #fff;
-      border: .7px solid #FF9BFB;
+      border: 0.7px solid #ff9bfb;
       font-weight: 400;
-      margin-left: 52.94px;
+      cursor: pointer;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .buttonRight {
-      position: absolute;
-      right: 0;
+  }
+}
+
+.contract-address {
+  display: flex;
+  margin-left: 5.4%;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.explorer-icon {
+  color: white;
+}
+
+.name-publish-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.org-edit-project-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.project-name-people-wrap {
+  display: flex;
+  width: fit-content;
+  .project-people-wrap {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    // position: absolute;
+    // left: 5%;
+    & > div {
+      background-color: #4F4453;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-left: -1vw;
+      & > p {
+        object-fit: cover;
+        width: 46px;
+        height: 46px;
+        text-align: center;
+        font-family: var(--font-family-roboto-regular);
+        margin-top: 14px;
+        margin-left: 2px;
+        font-size: 14px;
+     }
     }
+    .project-people {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 0;
+      margin-left: -1vw;
+      & > img {
+        object-fit: cover;
+        width: 46px;
+        height: 46px;
+      }
+     
+    }
+    
   }
   
-  .contract-address {
-    display: flex;
-    margin-left: 5.4%;
-    font-size: 16px;
-    line-height: 28px;
-  }
 }

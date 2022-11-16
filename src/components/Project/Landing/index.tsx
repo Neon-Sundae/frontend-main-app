@@ -2,7 +2,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';
-import BlurBlobs from 'components/BlurBlobs';
+import bg from 'assets/illustrations/gradients/bg.png';
 import TaskManagement from 'components/TaskManagement';
 import { useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -19,15 +19,13 @@ const Landing: FC = () => {
   const accessToken = getAccessToken();
 
   const { create } = useParams();
-  const { getUSDCBalance, getOnChainProject, fetchFounder } = useProject();
+  const { getUSDCBalance, fetchFounder } = useProject();
   const { projectData = {} } = useFetchProjects(create);
-
   const [open, setOpen] = useState(false);
 
   const { user, wallet_usdc_balance } = useSelector(
     (state: RootState) => state.user
   );
-  const userName = useSelector((state: RootState) => state.user.user?.name);
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -54,24 +52,27 @@ const Landing: FC = () => {
     preferredTimeZones,
     flResources,
     organisation,
+    organisationId,
   } = projectData;
-  useEffect(() => {
-    if (organisation?.organisationUser[0]?.walletId) {
-      getOnChainProject(create, organisation?.organisationUser[0]?.walletId);
-    }
-  }, [organisation]);
 
   return projectData ? (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'space',
+        backgroundAttachment: 'fixed',
+      }}
+    >
       <NavBar />
-      <BlurBlobs />
       <Header
         projectName={name}
         setOpen={val => setOpen(val)}
-        budget={budget}
         founderAddress={organisation?.organisationUser[0]?.walletId}
         organisationName={organisation?.name}
         organisationOwnerWalletId={organisation?.organisationUser[0]?.walletId}
+        organisationId={organisationId}
       />
       <Description
         description={description}
@@ -84,6 +85,7 @@ const Landing: FC = () => {
         project_budget={budget}
         project_name={name}
         project_founder={organisation?.organisationUser[0]?.walletId}
+        flProjectCategory={projectData.flProjectCategory}
       />
       {open && (
         <PublishProjectModal
@@ -91,8 +93,6 @@ const Landing: FC = () => {
           usdcBalance={wallet_usdc_balance}
           projectId={String(create)}
           budget={budget}
-          projectName={name}
-          projectDescription={description}
         />
       )}
       <Toaster />

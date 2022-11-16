@@ -1,6 +1,7 @@
 .container {
   margin-top: 35.72px;
   margin-bottom: 25px;
+  cursor: pointer;
 }
 .wrapper {
   display: flex;
@@ -73,6 +74,11 @@
     font-size: 12px;
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
+
+    max-width: 103px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 

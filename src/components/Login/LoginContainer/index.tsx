@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { getAccessToken } from 'utils/authFn';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
-import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founders-lab-light.svg';
+import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
+import BaseBlob from 'components/BaseBlob';
 import Step1 from '../Step1';
 import Step2 from '../Step2';
 import styles from './index.module.scss';
-import BaseBlob from 'components/BaseBlob';
 
 const LoginContainer: FC = () => {
   const navigate = useNavigate();
@@ -35,10 +35,10 @@ const LoginContainer: FC = () => {
   return (
     <div className={styles.LoginContainer}>
       <div className={styles.StepContainer}>
-        <FoundersLabIcon
-          width={200}
-          height={26}
-          style={{ marginTop: '44px' }}
+        <NeonSundaeLogo
+          width={131}
+          height={100}
+          style={{ marginTop: '10px' }}
         />
         <BaseBlob
           blobColor="rgba(247, 153, 255, 1)"

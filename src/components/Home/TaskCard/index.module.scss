@@ -13,8 +13,6 @@
       cursor: pointer;
     }
   }
- 
-  
 }
 .content {
   width: 100%;
@@ -48,6 +46,11 @@
     font-size: 10px;
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 83px;
   }
 }
 .wrapContent {
@@ -59,7 +62,6 @@
     font-weight: 500;
     margin-bottom: 10px;
     text-transform: capitalize;
-
   }
   p {
     font-family: var(--font-family-roboto-flex);
@@ -68,7 +70,14 @@
     line-height: 12px;
     text-transform: capitalize;
     margin-bottom: 12px;
+  }
 
+  h4,
+  p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 180px;
   }
 }
 .col {
@@ -91,5 +100,9 @@
   height: 55px;
   object-fit: cover;
   border-radius: 50%;
+  cursor: pointer;
+}
+.svg {
+  height: auto;
   cursor: pointer;
 }
