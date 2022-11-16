@@ -1,5 +1,4 @@
-import Modal from 'components/Modal';
-import { FC, ReactElement } from 'react';
+import { FC } from 'react';
 import BaseBlob from 'components/BaseBlob';
 import styles from './index.module.scss';
 
@@ -10,7 +9,7 @@ interface ComponentProps {
   onClose: () => void;
   showBtn?: boolean;
   disableButton?: boolean;
-  setDisableButton?: any;
+
   buttonText?: string;
 }
 
@@ -21,7 +20,6 @@ const BaseModal: FC<ComponentProps> = ({
   onClose,
   showBtn,
   disableButton,
-  setDisableButton,
   buttonText,
 }) => {
   return (
@@ -77,9 +75,8 @@ const ModalBlobs: FC = () => {
 };
 BaseModal.defaultProps = {
   showBtn: false,
-  children: <p> </p>,
+  children: undefined,
   disableButton: false,
-  setDisableButton: null,
   buttonText: 'Next',
 };
 

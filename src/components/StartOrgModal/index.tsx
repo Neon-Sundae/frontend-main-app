@@ -166,7 +166,6 @@ const StepModal: FC<IStepProps> = ({
       onClose={onClose}
       onNext={onNext}
       disableButton={disableButton}
-      setDisableButton={setDisableButton}
       buttonText={buttonText}
     >
       <section className={styles.content}>
