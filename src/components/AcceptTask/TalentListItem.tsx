@@ -24,7 +24,6 @@ const TalentListItem: FC<ITalentListItem> = ({
   const { saveRejectedBuilder } = useSelectBuilder();
   const { founder } = useSelector((state: RootState) => state.flProject);
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const user = useSelector((state: RootState) => state.user.user);
 
   const handleApproveFn = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
@@ -40,7 +39,6 @@ const TalentListItem: FC<ITalentListItem> = ({
     navigate(`/profile/${data.profileId}`);
     navigate(0);
   };
-
   return (
     <div
       className={styles['talent-list-item-container']}
@@ -51,7 +49,9 @@ const TalentListItem: FC<ITalentListItem> = ({
           <img
             src={
               data.Profile.picture ||
-              getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+              getDefaultAvatarSrc(
+                data?.Profile?.user?.name?.charAt(0).toUpperCase()
+              )
             }
             alt=""
           />
@@ -72,8 +72,14 @@ const TalentListItem: FC<ITalentListItem> = ({
               </span>
             </>
           )}
-        {data?.applicationStatus === 'accepted' && (
-          <span className={styles['selected-builder']}>selected</span>
+        {data?.applicationStatus === 'accepted' && task_status === 'open' && (
+          <span className={styles['selected-builder']}>Yet to Commit</span>
+        )}
+        {data?.applicationStatus === 'accepted' && task_status !== 'open' && (
+          <span className={styles['selected-builder']}>Selected</span>
+        )}
+        {data?.applicationStatus === 'rejected' && (
+          <span className={styles['selected-builder']}>Not Selected</span>
         )}
       </div>
     </div>

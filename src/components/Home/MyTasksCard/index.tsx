@@ -4,6 +4,7 @@ import { FC, useMemo } from 'react';
 import userImage from 'assets/images/profile/user-image.png';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import Card from 'components/Card';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import styles from './index.module.scss';
 
 interface ICard {
@@ -78,18 +79,20 @@ interface IAvatars {
   appliedBuilders: any;
 }
 
-const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
-  return (
-    <div className={styles['avatar-container']}>
-      {appliedBuilders.map((elem: any) => (
-        <img
-          src={elem.Profile.picture || userImage}
-          alt="User Avatar"
-          className={styles['builder-avatar']}
-        />
-      ))}
-    </div>
-  );
-};
-
+const Avatars: FC<IAvatars> = ({ appliedBuilders }) => (
+  <div className={styles['avatar-container']}>
+    {appliedBuilders.map((elem: any) => (
+      <img
+        src={
+          elem.Profile.picture ||
+          getDefaultAvatarSrc(
+            elem?.Profile?.user?.name?.charAt(0).toUpperCase()
+          )
+        }
+        alt="User Avatar"
+        className={styles['builder-avatar']}
+      />
+    ))}
+  </div>
+);
 export default MyTasksCard;
