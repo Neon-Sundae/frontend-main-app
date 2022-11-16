@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
-import { FNDRAddress } from 'contracts/contracts';
+import config from 'config';
 
 const getFndrBalance = async (address: string | undefined) => {
   try {
@@ -13,7 +13,7 @@ const getFndrBalance = async (address: string | undefined) => {
 
     const FndrContract = new web3.eth.Contract(
       FNDRAbi.abi as AbiItem[],
-      FNDRAddress
+      config.FNDRAddress
     );
     const balance = await FndrContract.methods.balanceOf(address).call();
 

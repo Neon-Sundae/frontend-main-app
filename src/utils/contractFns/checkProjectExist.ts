@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
-import { projectFactoryAddress } from 'contracts/contracts';
+import config from 'config';
 
 const checkProjectExist = async (
   walletId: string | undefined,
@@ -16,7 +16,7 @@ const checkProjectExist = async (
 
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
-      projectFactoryAddress
+      config.projectFactoryAddress
     );
     const exists = await ProjectFactory.methods
       .checkProjectExist(walletId, projectId)

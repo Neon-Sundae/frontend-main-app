@@ -1,13 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import TaskFactoryAbi from 'contracts/abi/TaskFactory.sol/TaskFactory.json';
-import {
-  FNDRAddress,
-  profileFactoryAddress,
-  projectFactoryAddress,
-  taskFactoryAddress,
-  USDCAddress,
-} from 'contracts/contracts';
+import config from 'config';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { setProjectTaskContract } from 'actions/flProject';
@@ -30,15 +24,15 @@ const createProjectTaskContract = async ({
 
     const TaskFactory = new web3.eth.Contract(
       TaskFactoryAbi.abi as AbiItem[],
-      taskFactoryAddress
+      config.taskFactoryAddress
     );
 
     const result = await TaskFactory.methods
       .createProjectTask(
-        USDCAddress,
-        FNDRAddress,
-        profileFactoryAddress,
-        projectFactoryAddress,
+        config.USDCAddress,
+        config.FNDRAddress,
+        config.profileFactoryAddress,
+        config.projectFactoryAddress,
         projectAddress
       )
       .send({
