@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileFactoryAbi from 'contracts/abi/ProfileFactory.sol/ProfileFactory.json';
-import { profileFactoryAddress } from 'contracts/contracts';
+import config from 'config';
 
 const getProfileContractAddress = async (address: string | undefined) => {
   try {
@@ -11,7 +11,7 @@ const getProfileContractAddress = async (address: string | undefined) => {
 
     const ProfileFactory = new web3.eth.Contract(
       ProfileFactoryAbi.abi as AbiItem[],
-      profileFactoryAddress
+      config.profileFactoryAddress
     );
     const profileContractAddress = await ProfileFactory.methods
       .ownerToProfileAddress(address)

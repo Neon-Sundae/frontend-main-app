@@ -5,7 +5,7 @@ import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
 import { Dispatch, SetStateAction } from 'react';
 import { UseMutationResult } from '@tanstack/react-query';
 import { IUpdateTaskStatus } from 'components/TaskManagement/hooks';
-import { FNDRAddress } from 'contracts/contracts';
+import config from 'config';
 import toast from 'react-hot-toast';
 import { IProfile } from 'interfaces/profile';
 
@@ -55,7 +55,7 @@ const commitToTaskOnChain = async ({
 
     const FNDRContract = new web3.eth.Contract(
       FNDRAbi.abi as AbiItem[],
-      FNDRAddress
+      config.FNDRAddress
     );
     const balance = await FNDRContract.methods.balanceOf(walletId).call();
 

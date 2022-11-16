@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
-import { projectFactoryAddress, USDCAddress } from 'contracts/contracts';
+import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 import { AnyAction } from 'redux';
 import { GET_SELECTED_PROJECT_ADDRESS } from 'actions/flProject/types';
@@ -28,11 +28,11 @@ const createProjectContract = async ({
 
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
-      projectFactoryAddress
+      config.projectFactoryAddress
     );
 
     const result = await ProjectFactory.methods
-      .createProject(projectId, USDCAddress)
+      .createProject(projectId, config.USDCAddress)
       .send({ from: walletId })
       .on('transactionHash', () => {
         setDeploying('deploying');

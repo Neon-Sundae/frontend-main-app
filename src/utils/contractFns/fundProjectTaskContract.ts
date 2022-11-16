@@ -1,7 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
-import { taskFactoryAddress } from 'contracts/contracts';
+import config from 'config';
 import toast from 'react-hot-toast';
 
 const fundProjectTaskContract = async (
@@ -25,7 +25,7 @@ const fundProjectTaskContract = async (
     );
 
     await ProjectContract.methods
-      .fundProjectTask(taskFactoryAddress, projectAddress, fundAmount)
+      .fundProjectTask(config.taskFactoryAddress, projectAddress, fundAmount)
       .send({ from: walletId });
   } catch (error: any) {
     console.log(error);
