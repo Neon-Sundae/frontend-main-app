@@ -12,10 +12,9 @@ import useFetchUserTasks from './hooks';
 const Tasks = () => {
   const { data } = useFetchUserTasks();
 
-  const getCompletedUserTasks = () => {
-    console.log(data.data);
-    return _.filter(data.data, { taskStatus: 'completed' });
-  };
+  const getCompletedUserTasks = () =>
+    _.filter(data.data, { taskStatus: 'completed' });
+
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
   if (data) {
     return (
