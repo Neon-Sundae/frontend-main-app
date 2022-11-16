@@ -56,6 +56,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
 
   const handleStepTwo = () => {
     if (orgDesc.trim().length === 0) return;
+    setDisableButton(true);
     handleCreateOrganisation();
   };
 
