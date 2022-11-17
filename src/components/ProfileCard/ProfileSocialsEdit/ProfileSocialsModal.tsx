@@ -3,6 +3,8 @@ import Modal from 'components/Modal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import GradientBtn from 'components/GradientBtn';
+import isValidUrl from 'utils/isValidUrl';
+import toast from 'react-hot-toast';
 import styles from './index.module.scss';
 import { useUpdateProfileSocial, useUpdateUserDiscordUserName } from './hooks';
 
@@ -29,14 +31,23 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
   };
 
   const handleSave = () => {
-    updateProfileSocial({
-      portfolio,
-      linkedin,
-      twitter,
-      instagram,
-      github,
-      setOpen,
-    });
+    if (
+      (twitter && !isValidUrl(twitter)) ||
+      (linkedin && !isValidUrl(linkedin)) ||
+      (instagram && !isValidUrl(instagram)) ||
+      (portfolio && !isValidUrl(portfolio)) ||
+      (github && !isValidUrl(github))
+    )
+      toast.error('Please input full url.');
+    else
+      updateProfileSocial({
+        portfolio,
+        linkedin,
+        twitter,
+        instagram,
+        github,
+        setOpen,
+      });
     if (user && user.userId)
       updateDiscordUserName({
         userId: user.userId,

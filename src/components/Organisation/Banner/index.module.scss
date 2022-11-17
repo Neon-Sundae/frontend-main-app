@@ -121,7 +121,7 @@
   & > .social-icon-container {
     width: 150px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     &--edit {
       background: rgba(60, 60, 70, 0.5);

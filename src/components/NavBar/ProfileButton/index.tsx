@@ -71,7 +71,7 @@ const ProfileButton: FC = () => {
           {getFormattedWalletId()}
         </span>
         <div className={clsx(styles['text--secondary'], styles['text--align'])}>
-          <span>On-Chain Wallet</span>
+          <span>Connected Wallet</span>
           <WalletConnIndicator />
         </div>
       </div>
