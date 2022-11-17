@@ -37,7 +37,10 @@ const createTaskOnChain = async ({
       walletId,
       taskName,
       Number(price * 10 ** 6).toFixed(0),
-      xp
+      xp,
+      {
+        gasPrice: '50000000000',
+      }
     );
 
     const projectTaskTx = await result.wait();

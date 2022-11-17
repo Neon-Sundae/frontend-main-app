@@ -16,7 +16,10 @@ const withdrawProfileBalance = async (
 
   const ProfileContract = new web3.eth.Contract(
     ProfileAbi.abi as AbiItem[],
-    contractAddress
+    contractAddress,
+    {
+      gasPrice: '50000000000',
+    }
   );
 
   await ProfileContract.methods

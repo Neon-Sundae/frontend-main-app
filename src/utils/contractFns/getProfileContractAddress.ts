@@ -9,9 +9,14 @@ const getProfileContractAddress = async (address: string | undefined) => {
 
     const web3 = getWeb3Instance();
 
+    console.log('getting profile contract address');
+
     const ProfileFactory = new web3.eth.Contract(
       ProfileFactoryAbi.abi as AbiItem[],
-      config.profileFactoryAddress
+      config.profileFactoryAddress,
+      {
+        gasPrice: '50000000000',
+      }
     );
     const profileContractAddress = await ProfileFactory.methods
       .ownerToProfileAddress(address)
