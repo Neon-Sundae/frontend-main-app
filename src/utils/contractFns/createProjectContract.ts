@@ -28,7 +28,10 @@ const createProjectContract = async ({
 
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
-      config.projectFactoryAddress
+      config.projectFactoryAddress,
+      {
+        gasPrice: '50000000000',
+      }
     );
 
     const result = await ProjectFactory.methods

@@ -19,7 +19,10 @@ const createProfileContract = async (
 
     const ProfileFactory = new web3.eth.Contract(
       ProfileFactoryAbi.abi as AbiItem[],
-      config.profileFactoryAddress
+      config.profileFactoryAddress,
+      {
+        gasPrice: '50000000000',
+      }
     );
     await ProfileFactory.methods
       .createProfile(config.USDCAddress, name, title)
