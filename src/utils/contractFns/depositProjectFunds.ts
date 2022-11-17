@@ -17,12 +17,18 @@ const depositProjectFunds = async (
 
   const USDCContract = new web3.eth.Contract(
     USDCAbi.abi as AbiItem[],
-    config.USDCAddress
+    config.USDCAddress,
+    {
+      gasPrice: '50000000000',
+    }
   );
 
   const ProjectContract = new web3.eth.Contract(
     ProjectAbi.abi as AbiItem[],
-    contractAddress
+    contractAddress,
+    {
+      gasPrice: '50000000000',
+    }
   );
 
   await USDCContract.methods

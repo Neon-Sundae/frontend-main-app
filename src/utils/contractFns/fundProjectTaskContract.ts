@@ -21,7 +21,10 @@ const fundProjectTaskContract = async (
 
     const ProjectContract = new web3.eth.Contract(
       ProjectAbi.abi as AbiItem[],
-      projectAddress
+      projectAddress,
+      {
+        gasPrice: '50000000000',
+      }
     );
 
     await ProjectContract.methods
