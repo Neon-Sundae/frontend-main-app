@@ -21,7 +21,7 @@ const createProfileContract = async (
       ProfileFactoryAbi.abi as AbiItem[],
       config.profileFactoryAddress,
       {
-        gasPrice: '20000000000',
+        gasPrice: '50000000000',
       }
     );
     await ProfileFactory.methods
