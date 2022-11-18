@@ -23,7 +23,9 @@
   justify-content: space-between;
    
   border-radius: 20px;
-  background: url('/src/assets/illustrations/home/banner-bg.png') center;
+  background: url('/src/assets/illustrations/home/banner-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
   border: 1px solid #d39bff;
   & .content {
     display: flex;

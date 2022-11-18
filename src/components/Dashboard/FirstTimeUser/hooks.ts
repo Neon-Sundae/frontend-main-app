@@ -31,7 +31,7 @@ const useCreateProfile = () => {
           };
 
           const response = await fetch(
-            `${config.ApiBaseUrl}/user/${user?.userId}`,
+            `${config.ApiBaseUrl}/user/first-time/${user?.userId}`,
             {
               signal,
               method: 'PATCH',

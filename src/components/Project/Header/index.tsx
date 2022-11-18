@@ -124,7 +124,7 @@ const Header: FC<IHeaderProps> = props => {
   );
   peopleCount = peopleProjectDataCount - peopleProjectDataCount + 1;
   return (
-    <div className={styles.container} title="People involved in project">
+    <div className={styles.container}>
       <div className={styles['project-info']}>
         <div className={styles['name-publish-btn-row']}>
           <span className={styles['project-name-people-wrap']}>

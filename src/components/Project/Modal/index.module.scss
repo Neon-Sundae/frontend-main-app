@@ -16,6 +16,7 @@
 .d-flex {
   display: flex;
 }
+
 .deposit-bottom-text {
   font-family: var(--font-family-roboto-regular);
   font-style: normal;
@@ -24,6 +25,7 @@
   color: #fff !important;
   text-align: center;
 }
+
 .loader {
   display: block;
   margin: auto;
@@ -64,6 +66,7 @@
     cursor: pointer;
   }
 }
+
 .publish-info {
   span:nth-child(2) {
     font-family: var(--font-family-roboto-regular);
@@ -73,9 +76,11 @@
     cursor: pointer;
   }
 }
+
 .publish-content-wrapper {
   margin: 64px 0;
-  & > div {
+
+  &>div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -98,12 +103,12 @@
     display: block;
     // margin: 40px auto;
     cursor: pointer;
-    background: linear-gradient(
-        94.63deg,
-        rgba(255, 255, 255, 0.16) 4.94%,
-        rgba(255, 255, 255, 0.04) 93.94%
-      ),
-      linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%);
+    background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%),
+      linear-gradient(0deg, #E880FF, #E880FF),
+      radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+      ,
+      linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 155, 251, 0.2);
@@ -122,7 +127,7 @@
     border-radius: 30px;
     display: block !important;
 
-    & > div {
+    &>div {
       width: 100%;
       display: flex;
       align-items: center;
@@ -130,7 +135,7 @@
       color: white;
     }
 
-    & > div {
+    &>div {
       margin-top: 10px;
       margin-bottom: 20px;
     }
@@ -144,13 +149,13 @@
     text-align: center;
     padding: 25px;
 
-    & > p:nth-child(2) {
+    &>p:nth-child(2) {
       font-size: 26px;
       color: white !important;
       margin-top: 40px;
     }
 
-    & > p:nth-child(3) {
+    &>p:nth-child(3) {
       font-size: 18px;
       color: #b4b4b4 !important;
       margin-top: 20px;
@@ -170,6 +175,7 @@
   margin: 64px 0;
   width: 70%;
   margin: auto;
+
   .wallet-item {
     background: #2d2d35;
     border-radius: 10px;
@@ -180,23 +186,21 @@
     padding: 10px 32px;
     margin: 20px 0;
 
-    & > div {
+    &>div {
       width: 50%;
       text-align: center;
     }
-    & > div > svg {
-    }
+
+    &>div>svg {}
   }
 
   .deposit-top-up {
     display: block;
     margin: 40px auto;
     cursor: pointer;
-    background: linear-gradient(
-      126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%
-    );
+    background: linear-gradient(126.59deg,
+        rgba(255, 255, 255, 0.12) 12.11%,
+        rgba(255, 255, 255, 0.03) 73.08%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 155, 251, 0.2);
@@ -222,7 +226,7 @@
   // padding: 10px;
   margin: 15px 10px 10px 10px;
 
-  & > span {
+  &>span {
     font-size: 12px;
     font-family: 'Roboto Flex';
     font-style: normal;
@@ -246,7 +250,7 @@
   margin-left: 43px;
   margin-right: 99px;
 
-  & > p {
+  &>p {
     text-decoration: underline;
   }
 }
