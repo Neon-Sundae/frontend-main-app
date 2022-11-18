@@ -4,6 +4,12 @@ import ProfileFactoryAbi from 'contracts/abi/ProfileFactory.sol/ProfileFactory.j
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 
+function later(delay: number) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, delay);
+  });
+}
+
 const createProfileContract = async (
   address: string | undefined,
   name: string | undefined,
@@ -19,7 +25,10 @@ const createProfileContract = async (
 
     const ProfileFactory = new web3.eth.Contract(
       ProfileFactoryAbi.abi as AbiItem[],
-      config.profileFactoryAddress
+      config.profileFactoryAddress,
+      {
+        gasPrice: '50000000000',
+      }
     );
     await ProfileFactory.methods
       .createProfile(config.USDCAddress, name, title)
@@ -32,6 +41,8 @@ const createProfileContract = async (
         setDeploying('deploy_success');
         console.log(deploying);
       });
+
+    await later(3000);
   } catch (error) {
     console.log(error);
     throw new Error('Unable to create profile');

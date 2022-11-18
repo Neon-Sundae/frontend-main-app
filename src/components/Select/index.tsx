@@ -162,7 +162,6 @@ const SelectComponent: FC<ComponentProps> = ({
       maxMenuHeight={200}
       onChange={onSelectChange}
       value={value}
-      isSearchable={false}
       styles={customStyles}
       isMulti={isMulti}
     />

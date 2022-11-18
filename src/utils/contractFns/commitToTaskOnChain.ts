@@ -38,7 +38,6 @@ const commitToTaskOnChain = async ({
 
     const web3 = getWeb3Instance();
 
-    console.log('commit to task on chian');
     const payload = {
       walletId,
       selectedTask,
@@ -74,7 +73,10 @@ const commitToTaskOnChain = async ({
           setPending('confirming');
           const taskContract = new web3.eth.Contract(
             TaskAbi.abi as AbiItem[],
-            projectTaskContractAddress
+            projectTaskContractAddress,
+            {
+              gasPrice: '50000000000',
+            }
           );
           await taskContract.methods
             .commitToTask(

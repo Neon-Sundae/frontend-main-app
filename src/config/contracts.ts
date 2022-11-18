@@ -7,7 +7,6 @@ export const localContracts = {
   taskFactoryAddress: '0xeAd0a5e6303aB1c2f97E2234c42da3E7C296bD1B',
   USDCAddress: '0x9E5C360f315A1E23322bB330C9af87dde77ef7D9',
   FNDRAddress: '0x7d130Ce789803b5007994009E60984f8E10FE2Dc',
-  FLAddress: '0x4aae4342Bf18B07962f54D4a4437d5F0DAb8D0Ac',
 };
 
 export const devContracts = {
@@ -19,7 +18,6 @@ export const devContracts = {
   taskFactoryAddress: '0xeAd0a5e6303aB1c2f97E2234c42da3E7C296bD1B',
   USDCAddress: '0x9E5C360f315A1E23322bB330C9af87dde77ef7D9',
   FNDRAddress: '0x7d130Ce789803b5007994009E60984f8E10FE2Dc',
-  FLAddress: '0x4aae4342Bf18B07962f54D4a4437d5F0DAb8D0Ac',
 };
 
 export const testnetContracts = {
@@ -31,17 +29,15 @@ export const testnetContracts = {
   taskFactoryAddress: '0x517E4FcfF2903EC2886323Bf1Aa46448C6dF93C1',
   USDCAddress: '0x9Fde4d35C656e69cbb2bbCE6f87BE1021D26a7e3',
   FNDRAddress: '0xBE77B71FD0132605b711deAaDA1bFAF82bF44fb6',
-  FLAddress: '0xC0Ba3f0d6fce1cBf05c02A30afaB883ad006BEC1',
 };
 
 export const mainnetContracts = {
-  profileImplementationAddress: '0xf47f43D0955E608D6020Dc2F4f7110cE402cBc37',
-  profileFactoryAddress: '0x57fE39DfBCd7556f4F85f92Cc1461F4891c8d513',
-  projectImplementationAddress: '0x60D1Ca649AaD981aB4b2fbA3db57f0211d845bd3',
-  projectFactoryAddress: '0xF6288562D1061C72497D5058ed6C2773769646dE',
-  taskImplementationAddress: '0x2843E2D32347C5B75d7895c45Aa5B294b24B61C3',
-  taskFactoryAddress: '0xeAd0a5e6303aB1c2f97E2234c42da3E7C296bD1B',
-  USDCAddress: '0x9E5C360f315A1E23322bB330C9af87dde77ef7D9',
-  FNDRAddress: '0x7d130Ce789803b5007994009E60984f8E10FE2Dc',
-  FLAddress: '0x4aae4342Bf18B07962f54D4a4437d5F0DAb8D0Ac',
+  profileImplementationAddress: '0xf66fC930D14F70DA47bB50f4FF660CefD1512E21',
+  profileFactoryAddress: '0x664041C272776EC33651aDEf05Eb077834BbBADA',
+  projectImplementationAddress: '0x8ee66fd494AcB9a5c7de9D1F28077c72f9c1a311',
+  projectFactoryAddress: '0x8082266fF617bBe2ef642D54c424841Db88035Ec',
+  taskImplementationAddress: '0xBb77fFc052C55F8406A12a06e4573F5075D46404',
+  taskFactoryAddress: '0xDeB71C25a5A2c0d895FF24aD7B2A24aA38fC86Cc',
+  USDCAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+  FNDRAddress: '0xe8d8f862a95D9b44a6272a6F93Ea79e6B50E6691',
 };

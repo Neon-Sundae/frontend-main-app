@@ -18,7 +18,6 @@ interface Configuration {
   taskFactoryAddress: string;
   USDCAddress: string;
   FNDRAddress: string;
-  FLAddress: string;
 }
 
 interface Environment {
@@ -29,10 +28,11 @@ interface Environment {
  * Chain IDs
  * 0x61 (for binance chain)
  * 0x13881 for Mumbai testnet
+ * 0x89 for Polygon
  *
  * Explorer URLs
  * https://mumbai.polygonscan.com/
- * https://mumbai.polygonscan.com/
+ * https://polygonscan.com
  */
 
 const configs: Environment = {
@@ -58,8 +58,8 @@ const configs: Environment = {
     ...testnetContracts,
   },
   prod: {
-    ApiBaseUrl: '',
-    AppDomain: '',
+    ApiBaseUrl: 'https://api.neonsundae.xyz/production',
+    AppDomain: 'https://app.neonsundae.xyz',
     chainId: '0x89',
     explorerURL: 'https://polygonscan.com',
     ...mainnetContracts,

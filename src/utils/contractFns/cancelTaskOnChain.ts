@@ -22,7 +22,10 @@ const cancelTaskOnChain = async ({
 
     const TaskContract = new web3.eth.Contract(
       TaskAbi.abi as AbiItem[],
-      projectTaskAddress
+      projectTaskAddress,
+      {
+        gasPrice: '50000000000',
+      }
     );
     await TaskContract.methods
       .cancelTask(

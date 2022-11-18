@@ -15,6 +15,7 @@ import { editOrganisation } from 'actions/organisation';
 import { RootState } from 'reducers';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
+import { Toaster } from 'react-hot-toast';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import {
@@ -121,6 +122,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
   return (
     <div className={styles.container}>
+      <Toaster />
       <input
         ref={inputRefCover}
         id="bannerImage"
@@ -198,7 +200,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               />
             ) : (
               <a
-                href={website ?? '#'}
+                href={`https://${website}` ?? '#'}
                 target="_blank"
                 rel="noreferrer"
                 className={styles['organisation-website']}
@@ -220,7 +222,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               <span className={styles['social-icon-container']}>
                 {organisation.linkedin ? (
                   <a
-                    href={`https://${organisation.linkedin}`}
+                    href={`${organisation.linkedin}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -229,7 +231,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                 ) : null}
                 {organisation.twitter ? (
                   <a
-                    href={`https://${organisation.twitter}`}
+                    href={`${organisation.twitter}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -238,7 +240,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                 ) : null}
                 {organisation.instagram ? (
                   <a
-                    href={`https://${organisation.twitter}`}
+                    href={`${organisation.twitter}`}
                     target="_blank"
                     rel="noreferrer"
                   >
