@@ -28,7 +28,7 @@ const OnboardModal: FC<IOnboardModal> = ({
       <PlusPlus1 width={29} height={28.19} />
       <div className={styles['onboard-modal-wrap']}>
         <Hearts width={138} height={155.92} />
-        <h1 className={styles.heading}>Welcome {user && user.name}</h1>
+        <h1 className={styles.heading}>Welcome {user && user.name}!</h1>
         <p className={styles.text}>
           I&apos;m Andy, I will be helping you setup your Neon Sundae Profile
           and show you how the rest of the things are done!
