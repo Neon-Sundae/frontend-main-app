@@ -5,8 +5,19 @@ import StartPrjModal from 'components/StartPrjModal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import styles from './index.module.scss';
+import OnboardModal from '../OnboardModal';
 
-const Banner: FC = () => {
+interface IBanner {
+  showOnboardModal?: any;
+  setShowOnboardModal?: any;
+  tourStart?: any;
+}
+
+const Banner: FC<IBanner> = ({
+  showOnboardModal,
+  setShowOnboardModal,
+  tourStart,
+}) => {
   const userName = useSelector((state: RootState) => state.user.user?.name);
 
   const [showOrgModal, setShowOrgModal] = useState(false);
@@ -27,7 +38,6 @@ const Banner: FC = () => {
   const handlePrjModalClose = () => {
     setShowPrjModal(false);
   };
-
   return (
     <>
       <div className={clsx(styles.banner, styles.glass)}>
@@ -42,6 +52,12 @@ const Banner: FC = () => {
       </div>
       {showOrgModal && <StartOrgModal onClose={handleOrgModalClose} />}
       {showPrjModal && <StartPrjModal onClose={handlePrjModalClose} />}
+      {showOnboardModal && (
+        <OnboardModal
+          tourStart={tourStart}
+          setShowOnboardModal={setShowOnboardModal}
+        />
+      )}
     </>
   );
 };
@@ -62,6 +78,12 @@ const BannerBtn: FC<BannerBtnProps> = ({ title, onClick }) => {
       <span className={clsx('material-icons', styles.icon)}>trending_flat</span>
     </button>
   );
+};
+
+Banner.defaultProps = {
+  showOnboardModal: null,
+  setShowOnboardModal: null,
+  tourStart: null,
 };
 
 export default Banner;

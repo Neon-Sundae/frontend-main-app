@@ -47,13 +47,11 @@ const TourHomePage = () => {
       },
     ],
   });
-  const tourActive = () => {
-    return tour.isActive();
-  };
+
   const tourStart = () => {
     return tour.start();
   };
-  return { tourActive, tourStart };
+  return { tourStart };
 };
 
 export default TourHomePage;

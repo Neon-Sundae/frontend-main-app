@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, FC, useCallback, useState, useRef } from 'react';
-import gradient from 'assets/illustrations/organisation/gradient.svg';
+import gradient from 'assets/illustrations/organisation/gradient.png';
 import { ReactComponent as Instagram } from 'assets/illustrations/profile/instagram.svg';
 import { ReactComponent as Linkedin } from 'assets/illustrations/profile/linkedin.svg';
 import { ReactComponent as Twitter } from 'assets/illustrations/profile/twitter.svg';
@@ -142,6 +142,8 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               }
             : {
                 backgroundImage: `url(${organisation.bannerImage ?? gradient})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
               }
         }
       />
