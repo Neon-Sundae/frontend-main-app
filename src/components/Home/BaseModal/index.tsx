@@ -9,6 +9,7 @@ interface ComponentProps {
   onNext: () => void;
   onClose: () => void;
   showBtn?: boolean;
+  noCloseBtn?: boolean;
 }
 
 const BaseModal: FC<ComponentProps> = ({
@@ -17,14 +18,22 @@ const BaseModal: FC<ComponentProps> = ({
   onNext,
   onClose,
   showBtn,
+  noCloseBtn,
 }) => {
   return (
     <>
       <div className={styles.backdrop} />
       <div className={styles.overlay}>
-        <button type="button" onClick={onClose} className={styles['icon-cont']}>
-          <span className={`material-icons ${styles.icon}`}>close</span>
-        </button>
+        {!noCloseBtn && (
+          <button
+            type="button"
+            onClick={onClose}
+            className={styles['icon-cont']}
+          >
+            <span className={`material-icons ${styles.icon}`}>close</span>
+          </button>
+        )}
+
         <header className={styles.header}>
           <h3>{header}</h3>
         </header>

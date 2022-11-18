@@ -51,7 +51,7 @@ Modal.defaultProps = {
   padding: '33px',
 };
 
-const ModalBlobs: FC = () => {
+export const ModalBlobs: FC = () => {
   return (
     <>
       <BaseBlob
