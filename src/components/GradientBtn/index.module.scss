@@ -19,20 +19,18 @@
   color: white;
   text-align: center;
 
-  background: linear-gradient(
-    126.59deg,
-    rgba(255, 255, 255, 0.2) 12.11%,
-    rgba(255, 255, 255, 0.05) 73.08%
-  );
+  background: linear-gradient(126.59deg,
+      rgba(255, 255, 255, 0.2) 12.11%,
+      rgba(255, 255, 255, 0.05) 73.08%);
   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
   /* Note: backdrop-filter has minimal browser support */
   border: 1px solid #414141;
-  background: linear-gradient(
-      94.63deg,
-      rgba(255, 255, 255, 0.16) 4.94%,
-      rgba(255, 255, 255, 0.04) 93.94%
-    ),
-    linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%);
+  background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%),
+    linear-gradient(0deg, #E880FF, #E880FF),
+    radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ,
+    linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
   padding: 10px 18px;
 }

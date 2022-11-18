@@ -17,25 +17,23 @@
     justify-content: center;
     margin-top: 30px;
 
-    & > span {
+    &>span {
       display: flex;
 
-      & > span {
+      &>span {
         margin-left: 15px;
         text-decoration: underline;
       }
     }
 
-    &> div >button {
+    &>div>button {
 
       display: block;
       margin: 40px auto;
       cursor: pointer;
-      background: linear-gradient(
-        126.59deg,
-        rgba(255, 255, 255, 0.12) 12.11%,
-        rgba(255, 255, 255, 0.03) 73.08%
-      );
+      background: linear-gradient(126.59deg,
+          rgba(255, 255, 255, 0.12) 12.11%,
+          rgba(255, 255, 255, 0.03) 73.08%);
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       border: 1px solid rgba(255, 155, 251, 0.2);
@@ -48,10 +46,10 @@
     }
   }
 
-  & > button {
+  &>button {
     display: flex;
     align-items: center;
-    
+
   }
 
   .founder-name {
@@ -73,11 +71,9 @@
     margin-top: 20px;
 
     button {
-      background: linear-gradient(
-        126.59deg,
-        rgba(255, 255, 255, 0.12) 12.11%,
-        rgba(255, 255, 255, 0.03) 73.08%
-      );
+      background: linear-gradient(126.59deg,
+          rgba(255, 255, 255, 0.12) 12.11%,
+          rgba(255, 255, 255, 0.03) 73.08%);
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
       border: 1px solid #ffffff;
@@ -88,7 +84,7 @@
       color: #ffffff;
     }
 
-    & > div {
+    &>div {
       display: flex;
       margin-left: 100px;
     }
@@ -111,7 +107,7 @@
     padding: 15px;
     margin-top: 30px;
 
-    & > div {
+    &>div {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -128,12 +124,12 @@
       font-size: 16px;
       line-height: 19px;
 
-      & > div {
+      &>div {
         padding-left: 20px;
         display: flex;
         align-items: center;
 
-        & > span {
+        &>span {
           line-height: 23px;
         }
 
@@ -145,7 +141,7 @@
   }
 
   .project-description {
-    & > p {
+    &>p {
       font-family: var(--font-family-roboto-flex);
       font-style: normal;
       font-weight: 400;
@@ -156,7 +152,7 @@
   }
 
   .project-check-list {
-    & > p {
+    &>p {
       font-family: var(--font-family-roboto-regular);
       font-style: normal;
       font-weight: 500;
@@ -166,17 +162,19 @@
   }
 
   .project-description {
-    & > .task-details-skills-inline {
+    &>.task-details-skills-inline {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    & > .task-details-skills-inline > div:nth-child(1) {
+
+    &>.task-details-skills-inline>div:nth-child(1) {
       width: 200px;
       display: flex;
       align-items: center;
     }
-    & > .task-details-skills-inline > div:nth-child(1) > p {
+
+    &>.task-details-skills-inline>div:nth-child(1)>p {
       margin-left: 20px;
     }
   }
@@ -188,7 +186,7 @@
     padding: 15px 32px;
     margin-top: 30px;
 
-    & > .task-check-list-container {
+    &>.task-check-list-container {
       font-family: var(--font-family-roboto-regular);
       font-style: normal;
       font-weight: 300;
@@ -204,7 +202,7 @@
         display: flex;
         align-items: center;
 
-        & > .task-checklist-box {
+        &>.task-checklist-box {
           width: 14px;
           height: 14px;
           border: 1px solid white;
@@ -223,7 +221,7 @@
           font-size: 14px;
         }
 
-        & > span {
+        &>span {
           margin: 0 20px;
           font-size: 16px;
           font-family: var(--font-family-roboto-flex);
@@ -232,7 +230,7 @@
           cursor: pointer;
         }
 
-        & > svg {
+        &>svg {
           cursor: pointer;
         }
       }
@@ -241,14 +239,14 @@
     .project-attachments {
       padding: 10px 20px;
 
-      & > div {
+      &>div {
         margin-right: 10px;
       }
     }
   }
 
   .talent-list-container {
-    & > h3 {
+    &>h3 {
       margin-top: 30px;
       margin-bottom: 30px;
     }
@@ -273,7 +271,7 @@
           border: 1px solid white;
           cursor: pointer;
 
-          & > img {
+          &>img {
             object-fit: cover;
             width: 36px;
             height: 36px;
@@ -348,11 +346,9 @@
       display: block;
       margin: 40px auto;
       cursor: pointer;
-      background: linear-gradient(
-        126.59deg,
-        rgba(255, 255, 255, 0.12) 12.11%,
-        rgba(255, 255, 255, 0.03) 73.08%
-      );
+      background: linear-gradient(126.59deg,
+          rgba(255, 255, 255, 0.12) 12.11%,
+          rgba(255, 255, 255, 0.03) 73.08%);
 
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
@@ -376,12 +372,13 @@
   border-radius: 10px;
   padding: 5px 10px;
   margin-bottom: 10px;
-  & > i {
+
+  &>i {
     font-size: 20px;
     transform: rotate(-36deg);
   }
 
-  & > span {
+  &>span {
     font-family: var(--font-family-roboto-flex);
     font-weight: 400;
     font-size: 14px;
@@ -400,7 +397,7 @@
     align-items: center;
     margin-top: 1%;
 
-    & > p {
+    &>p {
       font-family: var(--font-family-roboto-flex);
       font-style: normal;
       font-weight: 300;
@@ -409,25 +406,25 @@
       margin-left: 3%;
     }
 
-    & > p > a {
+    &>p>a {
       color: #fff;
       font-weight: 600;
       font-family: var(--font-family-roboto-flex);
       font-size: 19.4217px;
     }
 
-    & > img {
+    &>img {
       border-radius: 50%;
     }
   }
 
-  & > div {
+  &>div {
     background: #2d2d35;
     border-radius: 30px;
     padding: 20px;
     margin-top: 12%;
 
-    & > div {
+    &>div {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -435,34 +432,34 @@
     }
   }
 
-  & > h1 {
+  &>h1 {
     margin-left: 5%;
     font-size: 25px;
   }
 
-  & > p {
+  &>p {
     margin: 0 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 16px;
 
-    & > span:nth-child(1) {
+    &>span:nth-child(1) {
       color: #c4c4c4;
       font-size: 12px;
     }
   }
 
-  & > button {
+  &>button {
     display: block;
     margin: 25px auto;
     cursor: pointer;
-    background: linear-gradient(
-        94.63deg,
-        rgba(255, 255, 255, 0.16) 4.94%,
-        rgba(255, 255, 255, 0.04) 93.94%
-      ),
-      linear-gradient(89.58deg, #c6bbfb 2.95%, #e59cf3 48.36%, #ffb8d5 103.17%);
+    background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%),
+      linear-gradient(0deg, #E880FF, #E880FF),
+      radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+      ,
+      linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 155, 251, 0.2);
@@ -485,40 +482,38 @@
   text-align: center;
   padding: 40px;
 
-  & > p:nth-child(2) {
+  &>p:nth-child(2) {
     font-size: 26px;
     color: white !important;
     margin-top: 40px;
   }
 
-  & > p:nth-child(3) {
+  &>p:nth-child(3) {
     font-size: 14px;
     color: #b4b4b4 !important;
     margin-top: 20px;
   }
 
-  & > p:nth-child(4) {
+  &>p:nth-child(4) {
     display: flex;
     justify-content: center;
     color: #848484;
     font-size: 16px;
     margin-top: 40px;
 
-    & > a {
+    &>a {
       display: flex;
       color: #848484;
     }
   }
 
-  & > button {
+  &>button {
     display: block;
     margin: 40px auto;
     cursor: pointer;
-    background: linear-gradient(
-      126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%
-    );
+    background: linear-gradient(126.59deg,
+        rgba(255, 255, 255, 0.12) 12.11%,
+        rgba(255, 255, 255, 0.03) 73.08%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 155, 251, 0.2);
@@ -535,13 +530,13 @@
   color: white;
   padding: 20px;
 
-  & > div {
+  &>div {
     background: #2d2d35;
     border-radius: 30px;
     margin: 30px 0px 15px 0px;
     padding: 30px;
 
-    & > div {
+    &>div {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -550,11 +545,11 @@
     }
   }
 
-  & > p {
+  &>p {
     display: flex;
     justify-content: space-between;
 
-    & > span:nth-child(1) {
+    &>span:nth-child(1) {
       width: 60%;
       font-size: 14px;
       line-height: 16px;
@@ -563,15 +558,13 @@
     }
   }
 
-  & > button {
+  &>button {
     display: block;
     margin: 40px auto;
     cursor: pointer;
-    background: linear-gradient(
-      126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%
-    );
+    background: linear-gradient(126.59deg,
+        rgba(255, 255, 255, 0.12) 12.11%,
+        rgba(255, 255, 255, 0.03) 73.08%);
     box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 155, 251, 0.2);
@@ -604,23 +597,23 @@
   padding: 15px;
   margin-top: 30px;
 
-  & > svg {
+  &>svg {
     display: block;
     margin: auto;
     margin-top: 30px;
   }
 
-  & > div {
+  &>div {
     width: 60%;
     margin: auto;
 
-    & > p {
+    &>p {
       text-align: center;
       margin-top: 20px;
     }
   }
 
-  & > p {
+  &>p {
     text-align: center;
     margin-top: 20px;
     font-size: 22px;
@@ -634,26 +627,20 @@
     .go_back {
       padding: 10px 20px;
       color: white;
-      background: linear-gradient(
-          94.63deg,
+      background: linear-gradient(94.63deg,
           rgba(255, 255, 255, 0.16) 4.94%,
-          rgba(255, 255, 255, 0.04) 93.94%
-        ),
-        linear-gradient(
-          89.58deg,
+          rgba(255, 255, 255, 0.04) 93.94%),
+        linear-gradient(89.58deg,
           #c6bbfb 2.95%,
           #e59cf3 48.36%,
-          #ffb8d5 103.17%
-        );
+          #ffb8d5 103.17%);
       box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
       border-radius: 23px;
       border: 0.94px solid;
       border-image-source: linear-gradient(0deg, #e49df4, #e49df4),
-        radial-gradient(
-          116.97% 116.97% at 34.87% -2.72%,
+        radial-gradient(116.97% 116.97% at 34.87% -2.72%,
           #ff9bfb 0%,
-          #ffffff 100%
-        );
+          #ffffff 100%);
       border: 1px solid #e49df4;
       cursor: pointer;
     }
@@ -661,11 +648,9 @@
     .proceed {
       padding: 10px 20px;
       color: white;
-      background: linear-gradient(
-        94.3deg,
-        rgba(255, 255, 255, 0.12) 8.58%,
-        rgba(255, 255, 255, 0.03) 96.04%
-      );
+      background: linear-gradient(94.3deg,
+          rgba(255, 255, 255, 0.12) 8.58%,
+          rgba(255, 255, 255, 0.03) 96.04%);
       box-shadow: 0px 4px 4px rgba(68, 68, 68, 0.5);
       backdrop-filter: blur(64.767px);
       border-radius: 23px;
@@ -673,11 +658,11 @@
       cursor: pointer;
     }
 
-    & > button:nth-child(1) {
+    &>button:nth-child(1) {
       margin-left: 0 !important;
     }
 
-    & > button:nth-child(2) {
+    &>button:nth-child(2) {
       margin-left: 50px;
     }
   }
@@ -692,11 +677,9 @@
   text-align: center;
   width: max-content;
 
-  background: linear-gradient(
-    126.59deg,
-    rgba(255, 255, 255, 0.4) 12.11%,
-    rgba(255, 255, 255, 0.1) 73.08%
-  );
+  background: linear-gradient(126.59deg,
+      rgba(255, 255, 255, 0.4) 12.11%,
+      rgba(255, 255, 255, 0.1) 73.08%);
   box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
   backdrop-filter: blur(40px);
   border: 0.5px solid white;

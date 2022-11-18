@@ -259,8 +259,8 @@ const TaskDetail: FC<ITaskDetail> = ({
           <div className={styles['project-detail-item']}>
             <i className="material-icons">local_fire_department</i>
             <div>
-              Burned: {selectedTask?.fndrToken} &emsp;
-              <CoinIcon width={20} height={20} />
+              Burned: {selectedTask?.fndrToken} NEONS
+              {/* <CoinIcon width={20} height={20} /> */}
             </div>
           </div>
         </div>
