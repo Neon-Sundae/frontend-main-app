@@ -228,7 +228,7 @@ const EditTask: FC<IEditTask> = ({
           </label>
           <input
             id="taskPrice"
-            defaultValue={`${selectedTask.price} USDC`}
+            defaultValue={`${selectedTask.price}`}
             className={styles.inputField}
             onChange={handleInputChange(setTaskPrice)}
           />

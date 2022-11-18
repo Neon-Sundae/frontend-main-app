@@ -30,8 +30,8 @@ const OnboardModal: FC<IOnboardModal> = ({
         <Hearts width={138} height={155.92} />
         <h1 className={styles.heading}>Welcome {user && user.name}!</h1>
         <p className={styles.text}>
-          I&apos;m Andy, I will be helping you setup your Neon Sundae Profile
-          and show you how the rest of the things are done!
+          I&apos;m 🍦, I will be helping you setup your Neon Sundae Profile show
+          you how the rest of the things are done!
         </p>
         <button onClick={() => handleClick()}>
           Let&apos;s Start &nbsp;
