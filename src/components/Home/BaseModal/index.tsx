@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import BaseBlob from 'components/BaseBlob';
+import clsx from 'clsx';
 import styles from './index.module.scss';
 
 interface ComponentProps {
@@ -8,8 +9,8 @@ interface ComponentProps {
   onNext: () => void;
   onClose: () => void;
   showBtn?: boolean;
+  noCloseBtn?: boolean;
   disableButton?: boolean;
-
   buttonText?: string;
 }
 
@@ -19,6 +20,7 @@ const BaseModal: FC<ComponentProps> = ({
   onNext,
   onClose,
   showBtn,
+  noCloseBtn,
   disableButton,
   buttonText,
 }) => {
@@ -26,9 +28,16 @@ const BaseModal: FC<ComponentProps> = ({
     <>
       <div className={styles.backdrop} />
       <div className={styles.overlay}>
-        <button type="button" onClick={onClose} className={styles['icon-cont']}>
-          <span className={`material-icons ${styles.icon}`}>close</span>
-        </button>
+        {!noCloseBtn && (
+          <button
+            type="button"
+            onClick={onClose}
+            className={styles['icon-cont']}
+          >
+            <span className={clsx('material-icons', styles.icon)}>close</span>
+          </button>
+        )}
+
         <header className={styles.header}>
           <h3>{header}</h3>
         </header>

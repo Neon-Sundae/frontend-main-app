@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
-import gradient from 'assets/illustrations/profile/gradient.svg';
+import gradient from 'assets/illustrations/profile/gradient.png';
 import styles from './index.module.scss';
 
 interface IProfileCardContainer {

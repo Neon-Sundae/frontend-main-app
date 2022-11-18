@@ -119,7 +119,6 @@ const SelectComponent: FC<ComponentProps> = ({
     },
     input: styles => ({
       ...styles,
-      backgroundColor: 'red',
       outline: 'none',
     }),
     placeholder: styles => ({

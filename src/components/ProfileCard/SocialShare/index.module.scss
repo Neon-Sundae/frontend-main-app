@@ -6,7 +6,7 @@
   flex-direction: column;
   justify-content: center;
 
-  & > div {
+  &>div {
     display: flex;
     // align-items: center;
   }
@@ -30,19 +30,12 @@
   font-size: 16px;
   color: #fff;
   border: 0.7px solid #ff9bfb;
-  background: linear-gradient(
-      89.58deg,
-      #c6bbfb 2.95%,
-      #e59cf3 48.36%,
-      #ffb8d5 103.17%
-    ),
-    linear-gradient(0deg, #e49df4, #e49df4),
-    radial-gradient(116.97% 116.97% at 34.87% -2.72%, #ff9bfb 0%, #ffffff 100%),
-    linear-gradient(
-      94.63deg,
-      rgba(255, 255, 255, 0.16) 4.94%,
-      rgba(255, 255, 255, 0.04) 93.94%
-    );
+  background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%),
+    linear-gradient(0deg, #E880FF, #E880FF),
+    radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ,
+    linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
   cursor: pointer;
   margin-top: 47px;
 }
@@ -64,6 +57,7 @@
   border-style: solid;
   border-radius: 23px;
 }
+
 .tweet-icon-preview {
   margin-right: 10px;
   margin-left: -6px;
@@ -82,6 +76,7 @@
   padding-left: 15px;
   margin-bottom: 20px;
 }
+
 .tweet-group {
   display: flex;
   flex-direction: row;
