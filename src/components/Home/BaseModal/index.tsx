@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import BaseBlob from 'components/BaseBlob';
+import clsx from 'clsx';
 import styles from './index.module.scss';
 
 interface ComponentProps {
@@ -33,7 +34,7 @@ const BaseModal: FC<ComponentProps> = ({
             onClick={onClose}
             className={styles['icon-cont']}
           >
-            <span className={`material-icons ${styles.icon}`}>close</span>
+            <span className={clsx('material-icons', styles.icon)}>close</span>
           </button>
         )}
 
