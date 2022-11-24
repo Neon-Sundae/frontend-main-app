@@ -35,7 +35,7 @@ To install and run the project, navigate to the root project directory and run
 - `npm i`
 - `npm run dev`
 
-## Support Founder's Lab 💖
+## Support Neon Sundae 💖
 
 ### Contributing
 
