@@ -16,6 +16,7 @@ import { RootState } from 'reducers';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
+import StartPrjModal from 'components/StartPrjModal';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import {
@@ -23,6 +24,7 @@ import {
   useUpdateOrgPic,
   useUpdateOrgCoverPic,
 } from './hooks';
+import BannerBtn from '../../Home/Banner';
 
 interface IBanner {
   organisation: IOrganisation;
@@ -40,6 +42,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [open, setOpen] = useState(false);
   const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
+  const [showPrjModal, setShowPrjModal] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
   const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
   const updateCoverOrgPicture = useUpdateOrgCoverPic(
@@ -120,6 +123,8 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       if (inputRefCover.current) inputRefCover.current.click();
     }
   };
+  const handleStartProject = () => setShowPrjModal(true);
+  const handleListAJob = () => {};
   return (
     <div className={styles.container}>
       <Toaster />
@@ -261,14 +266,18 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             </button>
           )}
         </div>
+        <div className={styles[`buttons-container`]}>
+          <button onClick={() => handleStartProject()}>Start A Project</button>
+          <button onClick={() => handleListAJob()}>List A Job</button>
+        </div>
       </div>
-
       {open && (
         <OrganisationSocialModal
           organisation={organisation}
           setOpen={setOpen}
         />
       )}
+      {showPrjModal && <StartPrjModal onClose={() => setShowPrjModal(false)} />}
     </div>
   );
 };

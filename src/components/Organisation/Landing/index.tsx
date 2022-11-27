@@ -9,7 +9,6 @@ import OrganisationProjects from '../OrganisationProjects';
 
 const Landing: FC = () => {
   const { organisation, isLoading } = useFetchOrganisation();
-
   if (isLoading) return null;
   return (
     <div

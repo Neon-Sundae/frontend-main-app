@@ -24,22 +24,33 @@
     z-index: 2;
 
     $border: 1px;
-    border: solid $border#E49DF4; /* !importanté */
+    border: solid $border#E49DF4;
+    /* !importanté */
     border-radius: 23px;
 
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
     font-size: 18px;
     text-align: center;
-
-    background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #C6BBFB 2.95%, #E59CF3 48.36%, #FFB8D5 103.17%);
+    background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%),
+      linear-gradient(0deg, #E880FF, #E880FF),
+      radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+      ,
+      linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
+    border: 0.72px solid;
+    border-image-source: linear-gradient(0deg, #E880FF, #E880FF),
+      radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
     box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
     border-radius: 22px;
     backdrop-filter: blur(40px);
     -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
     -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
-     
+
   }
+
   .btn:disabled {
     border: none;
     background: grey;
