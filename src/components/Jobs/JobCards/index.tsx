@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
 import { FC } from 'react';
@@ -5,11 +6,21 @@ import styles from './index.module.scss';
 
 interface IJobCards {
   orgName: string;
+  jobId_uuid: string;
+  handleJobCardSelect: (jobId_uuid: string) => void;
 }
 
-const JobCards: FC<IJobCards> = ({ orgName }) => {
+const JobCards: FC<IJobCards> = ({
+  orgName,
+  jobId_uuid,
+  handleJobCardSelect,
+}) => {
+  const handleClick = () => {
+    handleJobCardSelect(jobId_uuid);
+  };
+
   return (
-    <div className={styles['job-card-wrap']}>
+    <div className={styles['job-card-wrap']} onClick={handleClick}>
       <BrandImage
         width="72px"
         height="72px"

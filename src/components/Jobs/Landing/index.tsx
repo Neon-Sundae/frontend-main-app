@@ -23,24 +23,96 @@ const JobsLanding = () => {
       <NavBar />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
+          <JobCards
+            orgName={orgName}
+            jobId_uuid=""
+            handleJobCardSelect={a => {}}
+          />
         </div>
         <div className={styles['jobs-card-details-wrap']}>
           <JobDetails orgName={orgName} />
