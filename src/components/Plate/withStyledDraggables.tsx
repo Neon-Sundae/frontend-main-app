@@ -17,7 +17,6 @@ import {
   ELEMENT_UL,
   withDraggables,
 } from '@udecode/plate';
-import clsx from 'clsx';
 
 const styles = {
   grabber: { fontSize: 12 },
@@ -76,9 +75,8 @@ export const withStyledDraggables = (components: any) => {
         return (
           <Tippy {...grabberTooltipProps}>
             <button type="button" className="drag-button">
-              <i className={clsx('material-icons', styles['drag_indicator'])}>
-                attachment
-              </i>
+              {/* <DragIndicator style={styles.dragButton} /> */}
+              😮
             </button>
           </Tippy>
         );
@@ -158,4 +156,3 @@ export const withStyledDraggables = (components: any) => {
     },
   ]);
 };
-

@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import config from 'config';
-import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Select, { Option } from 'components/Select';
 import { SingleValue } from 'react-select';
+import clsx from 'clsx';
 import styles from './index.module.scss';
 import JobDescriptionEdit from '../JobDescriptionEdit/index';
 
@@ -15,9 +15,9 @@ interface IJobDetails {
   orgName: string;
 }
 const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
+  { value: 'full time', label: 'Full Time' },
+  { value: 'part time', label: 'Part Time' },
+  { value: 'contract', label: 'Contract' },
 ];
 const currencyOptions = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -46,9 +46,10 @@ const JobDetails: FC<IJobDetails> = ({ orgName }) => {
     }
   };
 
-  const handleCurrencyChange = (newValue: SingleValue<Option>) => {
-    if (newValue) {
-      setSelectedCurrency(newValue);
+  const handleCurrencyChange = (e: any) => {
+    if (e) {
+      console.log(e);
+      // setSelectedCurrency(e.value);
     }
   };
 
@@ -84,11 +85,28 @@ const JobDetails: FC<IJobDetails> = ({ orgName }) => {
       },
     }
   );
-
+  console.log('editorVal', editorVal);
   return (
     <>
-      <input placeholder="Job Title" />
-      <h3>{orgName}</h3>
+      <span className={styles['inline-job-title']}>
+        <input
+          placeholder="Job Title here"
+          className={styles[`job-title-it`]}
+        />
+        <span className={styles['inline-job-status-label']}>
+          <p>Active</p>
+          <input
+            type="checkbox"
+            id="toggle"
+            className={clsx(styles.checkbox, styles['job-active-checkbox'])}
+          />
+          <label htmlFor="toggle" className={styles.switch}>
+            {' '}
+          </label>
+        </span>
+      </span>
+
+      <h3 className={styles[`job-org-name`]}>{orgName}</h3>
       <span className={styles[`job-details-data-wrap`]}>
         <Select
           options={options}
@@ -100,36 +118,43 @@ const JobDetails: FC<IJobDetails> = ({ orgName }) => {
           height={50}
           isMulti={false}
         />
-        <input placeholder="Location" />
-        <span className={styles['inline-job-salary']}>
-          <label htmlFor="salaryRange">
-            Salary
-            <input placeholder="Min" id="salaryRange" />
-            <input placeholder="Max" />
-            <Select
-              options={currencyOptions}
-              placeholder="USD"
-              value={selectedCurrency}
-              name="TaskCategory"
-              onSelectChange={handleCurrencyChange}
-              borderRadius={10}
-              height={50}
-              isMulti={false}
-            />
-          </label>
-        </span>
-
-        <span>
-          <p>Remote allowed</p>
+        <Select
+          options={currencyOptions}
+          placeholder="Location"
+          value={selectedCurrency}
+          name="TaskCategory"
+          onSelectChange={handleCurrencyChange}
+          borderRadius={10}
+          height={50}
+          isMulti={false}
+        />
+        <span className={styles[`remote-check-job`]}>
+          <p>Remote</p>
           <input type="checkbox" id="toggle" className={styles.checkbox} />
           <label htmlFor="toggle" className={styles.switch}>
             {' '}
           </label>
         </span>
       </span>
+      <span className={styles['inline-job-salary']}>
+        <input placeholder="Min Salary" id="salaryRange" />
+        <input placeholder="Max Salary" />
+        <Select
+          options={currencyOptions}
+          placeholder="USD"
+          value={selectedCurrency}
+          name="TaskCategory"
+          onSelectChange={handleCurrencyChange}
+          borderRadius={10}
+          height={50}
+          isMulti={false}
+        />
+      </span>
+
       <JobDescriptionEdit setEditorVal={setEditorVal} />
       <button className={styles[`publish-job-btn`]}>Publish</button>
       <button className={styles[`cancel-job-btn`]}>Cancel</button>
+      <button className={styles[`cancel-job-btn`]}>Delete</button>
       {/* <button onClick={() => updateJobEntry()}>Do it!</button>   */}
     </>
   );

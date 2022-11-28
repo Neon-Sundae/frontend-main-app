@@ -7,13 +7,15 @@ import {
   createUnderlinePlugin,
   createListPlugin,
   Plate,
+  PlateProvider,
 } from '@udecode/plate';
-import { FC } from 'react';
+import { FC, useMemo, useRef } from 'react';
+import BasicElementToolbarButtons from 'components/Plate/BasicElementToolbarButtons';
+import Toolbar from 'components/Plate/Toolbar';
 import { editableProps } from '../../Plate/editableProps';
 import { MyValue } from '../../Plate/plateTypes';
 import BasicElementsValue from '../../Plate/basicElementsValue';
 import plateUI from '../../Plate/plateUI';
-import MarkBalloonToolbar from '../../Plate/MarkBalloonToolbar';
 import styles from './index.module.scss';
 
 interface JobDescriptionEditProps {
@@ -21,35 +23,44 @@ interface JobDescriptionEditProps {
 }
 
 const JobDescriptionEdit: FC<JobDescriptionEditProps> = ({ setEditorVal }) => {
-  const plugins = createPlugins<MyValue>(
-    [
-      createParagraphPlugin(),
-      createHeadingPlugin(),
-      createBoldPlugin(),
-      createItalicPlugin(),
-      createUnderlinePlugin(),
-      createListPlugin(),
-    ],
-    {
-      components: plateUI,
-    }
+  const containerRef = useRef(null);
+  const plugins = useMemo(
+    () =>
+      createPlugins<MyValue>(
+        [
+          createParagraphPlugin(),
+          createHeadingPlugin(),
+          createBoldPlugin(),
+          createItalicPlugin(),
+          createUnderlinePlugin(),
+          createListPlugin(),
+        ],
+        {
+          components: plateUI,
+        }
+      ),
+    []
   );
+
   const handleChange = (val: any) => {
     setEditorVal(val);
   };
 
   return (
-    <div className={styles['plate-editor-wrap']}>
-      <Plate<MyValue>
-        editableProps={editableProps}
-        initialValue={[...BasicElementsValue]}
+    <div ref={containerRef} className={styles['plate-editor-wrap']}>
+      <PlateProvider<MyValue>
+        initialValue={BasicElementsValue}
         plugins={plugins}
-        onChange={newValue => {
-          handleChange(newValue);
-        }}
+        onChange={handleChange}
       >
-        <MarkBalloonToolbar />
-      </Plate>
+        <Toolbar>
+          <BasicElementToolbarButtons />
+        </Toolbar>
+
+        <div ref={containerRef}>
+          <Plate editableProps={editableProps} />
+        </div>
+      </PlateProvider>
     </div>
   );
 };

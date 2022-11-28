@@ -1,0 +1,62 @@
+html {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
+}
+
+body {
+  margin: 0;
+}
+
+td {
+  border: 1px solid;
+}
+
+[data-slate-editor] {
+  // padding: 0 25px;
+  position: relative;
+  height: 296px;
+  overflow-y: scroll;
+}
+
+.slate-HeadingToolbar {
+  // padding: 17px 60px !important;
+  // position: fixed !important;
+  // background: white !important;
+  z-index: 1000;
+  border-bottom: 0 !important;
+  padding: 0 !important; 
+  margin: 0 !important;
+}
+
+.tippy-box[data-theme~='tomato'] {
+  background-color: tomato;
+  color: yellow;
+}
+
+.slate-selection-area {
+  background: #4f90f22d;
+  border: 1px solid red;
+}
+
+.drag-button {
+  overflow: hidden;
+  padding: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border-style: none;
+  cursor: pointer;
+  outline: 0;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+.MuiSvgIcon-root {
+  font-size: 18px !important;
+}
+ 
+// .slate-p, .slate-li, .slate-ul, .slate-h1, .slate-h2, .slate-bold, .slate-italic {
+//   padding: 0 !important; 
+//   margin: 0 !important;
+//   border: 0 !important;
+//   font-family: var(--font-family-roboto-flex) !important;
+// }
