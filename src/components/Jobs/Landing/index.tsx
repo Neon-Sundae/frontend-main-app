@@ -28,19 +28,6 @@ const JobsLanding = () => {
           <JobCards orgName={orgName} />
           <JobCards orgName={orgName} />
           <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
-          <JobCards orgName={orgName} />
         </div>
         <div className={styles['jobs-card-details-wrap']}>
           <JobDetails orgName={orgName} />

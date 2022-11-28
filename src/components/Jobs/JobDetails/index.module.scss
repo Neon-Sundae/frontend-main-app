@@ -1,20 +1,104 @@
-.job-details-data-wrap {
+.inline-job-title {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  .inline-job-salary {
-    display: flex;
-    border: 2px solid red;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.inline-job-status-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &>p {
+    margin-right: 10px;
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 14px;
   }
 }
 
-.publish-job-btn, .cancel-job-btn {
+.job-title-it {
+  background: transparent;
+  border: none;
+  font-size: 25px;
+  color: #fff;
+  font-family: var(--font-family-roboto-regular);
+
+  min-width: 100px;
+}
+
+.job-title-it::placeholder {
+  color: #fff;
+  opacity: .9;
+}
+
+.job-title-it:focus {
+  outline: none;
+}
+
+
+.job-org-name {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: var(--font-family-roboto-regular);
+  text-transform: capitalize;
+  color: #FFFFFF;
+  margin-bottom: 15px;
+}
+
+
+.job-details-data-wrap {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  align-items: center;
+
+  &>div {
+    margin-right: 21px;
+  }
+
+  &>.remote-check-job {
+    display: flex;
+
+    &>p {
+      margin-right: 10px;
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+}
+
+.inline-job-salary {
+  display: flex;
+  justify-items: left;
+  justify-content: flex-start;
+  position: relative;
+  &>input {
+    margin-right: 21px;
+    background: transparent;
+    border: 1px solid #fff;
+    background: transparent;
+    border-radius: 10px;
+  }
+  &>input::placeholder {
+    padding: 0 20px;
+    color: #fff;
+  }
+}
+
+.publish-job-btn,
+.cancel-job-btn {
   cursor: pointer;
   color: white;
   font-family: var(--font-family-roboto-regular);
   font-size: 16px;
- 
 }
+
 .publish-job-btn {
   border: solid 0.72px #E49DF4;
   background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%), linear-gradient(0deg, #E880FF, #E880FF), radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%), linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
@@ -27,6 +111,7 @@
   width: 153.91px;
   height: 42px;
 }
+
 .cancel-job-btn {
   border: solid 0.72px #E49DF4;
   width: 113px;
@@ -38,9 +123,9 @@
   backdrop-filter: blur(17.0354px);
   /* Note: backdrop-filter has minimal browser support */
   border-radius: 15px;
-  margin-left:  20.09px;
+  margin-left: 20.09px;
 }
- 
+
 // toggle switch css
 .switch {
   position: relative;
