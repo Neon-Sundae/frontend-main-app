@@ -1,10 +1,13 @@
 /* eslint-disable camelcase */
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
+import { useNavigate } from 'react-router-dom';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useFetchJobs = (organisationId: string | null) => {
+  const navigate = useNavigate();
+
   const { data } = useQuery(
     ['all_jobs'],
     async () => {
@@ -20,6 +23,7 @@ const useFetchJobs = (organisationId: string | null) => {
         },
       });
       const json = await handleApiErrors(response);
+      if (json.length === 0) throw new Error('Not Found');
       return json;
     },
     {
@@ -27,6 +31,10 @@ const useFetchJobs = (organisationId: string | null) => {
       retry: 1,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
+        if (error.message === 'Not Found') {
+          navigate('/404');
+        }
+
         handleError({
           error,
           explicitMessage: 'Unable to fetch jobs',
@@ -38,6 +46,8 @@ const useFetchJobs = (organisationId: string | null) => {
 };
 
 const useFetchJobDetail = (jobId_uuid: string | null) => {
+  const navigate = useNavigate();
+
   const { data, isLoading } = useQuery(
     [jobId_uuid],
     async () => {
@@ -54,6 +64,10 @@ const useFetchJobDetail = (jobId_uuid: string | null) => {
       retry: 1,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
+        if (error.message === 'Not Found') {
+          navigate('/404');
+        }
+
         handleError({
           error,
           explicitMessage: 'Unable to fetch job details',
