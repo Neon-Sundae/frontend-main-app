@@ -22,9 +22,9 @@ td {
   // padding: 17px 60px !important;
   // position: fixed !important;
   // background: white !important;
-  z-index: 1000;
+  // z-index: 1;
   border-bottom: 0 !important;
-  padding: 0 !important; 
+  padding: 0 !important;
   margin: 0 !important;
 }
 
@@ -53,10 +53,17 @@ td {
 .MuiSvgIcon-root {
   font-size: 18px !important;
 }
- 
-// .slate-p, .slate-li, .slate-ul, .slate-h1, .slate-h2, .slate-bold, .slate-italic {
-//   padding: 0 !important; 
-//   margin: 0 !important;
-//   border: 0 !important;
-//   font-family: var(--font-family-roboto-flex) !important;
-// }
+
+.slate-h1 {
+  font-family: var(--font-family-roboto-regular);
+  font-size: 26px;
+}
+.slate-h2 {
+  font-family: var(--font-family-roboto-regular);
+  font-size: 21px;
+}
+
+.slate-p {
+  font-family: var(--font-family-roboto-flex);
+  font-size: 16px;
+}

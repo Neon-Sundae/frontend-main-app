@@ -8,6 +8,8 @@ import {
   createListPlugin,
   Plate,
   PlateProvider,
+  serializeHtml,
+  useEditorState,
 } from '@udecode/plate';
 import { FC, useMemo, useRef } from 'react';
 import BasicElementToolbarButtons from 'components/Plate/BasicElementToolbarButtons';
@@ -45,7 +47,6 @@ const JobDescriptionEdit: FC<JobDescriptionEditProps> = ({ setEditorVal }) => {
   const handleChange = (val: any) => {
     setEditorVal(val);
   };
-
   return (
     <div ref={containerRef} className={styles['plate-editor-wrap']}>
       <PlateProvider<MyValue>
@@ -58,11 +59,26 @@ const JobDescriptionEdit: FC<JobDescriptionEditProps> = ({ setEditorVal }) => {
         </Toolbar>
 
         <div ref={containerRef}>
-          <Plate editableProps={editableProps} />
+          <Plate editableProps={editableProps}>
+            <Serialized setEditorVal={setEditorVal} />
+          </Plate>
         </div>
       </PlateProvider>
     </div>
   );
+};
+
+interface ISerializedProps {
+  setEditorVal: any;
+}
+
+const Serialized: FC<ISerializedProps> = ({ setEditorVal }) => {
+  const editor = useEditorState();
+  const html = serializeHtml(editor, {
+    nodes: editor.children,
+  });
+  setEditorVal(html);
+  return <p> </p>;
 };
 
 export default JobDescriptionEdit;
