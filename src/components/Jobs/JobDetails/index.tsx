@@ -126,21 +126,18 @@ const JobDetails: FC<IJobDetails> = ({
       },
     }
   );
-
   const handleJobTitleChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
     }));
   };
-
   const handleJobStatusChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
     }));
   };
-
   const handleRemoteToggle = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
@@ -199,7 +196,7 @@ const JobDetails: FC<IJobDetails> = ({
             type="checkbox"
             id="toggle"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
-            onChange={e => handleJobStatusChange(e)}  
+            onChange={e => handleJobStatusChange(e)}
           />
           <label htmlFor="toggle" className={styles.switch}>
             {' '}

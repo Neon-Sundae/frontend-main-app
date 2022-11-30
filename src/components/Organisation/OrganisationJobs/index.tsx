@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import JobCards from 'components/Jobs/JobCards';
 import styles from './index.module.scss';
 
-const OrganisationJobs = () => {
+const OrganisationJobs: FC = () => {
   return (
     <div className={styles['organisation-jobs-wrap']}>
       <h3>Jobs Listed</h3>
@@ -13,8 +14,8 @@ const OrganisationJobs = () => {
         salaryMax={100000}
         currency="USD"
         jobUuid=""
-        handleCardClick={() => {}}
         selectedJobUuid={undefined}
+        handleCardClick={() => {}}
       />
       <JobCards
         orgName="org name"
@@ -23,8 +24,8 @@ const OrganisationJobs = () => {
         salaryMax={100000}
         currency="USD"
         jobUuid=""
-        handleCardClick={() => {}}
         selectedJobUuid={undefined}
+        handleCardClick={() => {}}
       />
     </div>
   );
