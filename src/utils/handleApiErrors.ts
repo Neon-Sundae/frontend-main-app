@@ -7,6 +7,9 @@ const handleApiErrors = async (response: Response) => {
       throw new Error('Server error');
     } else if (response.status === 404) {
       throw new Error('Not Found');
+    } else if (response.status === 400) {
+      const json = await response.json();
+      throw new Error(json.message);
     }
   }
 

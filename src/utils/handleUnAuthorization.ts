@@ -32,5 +32,12 @@ export const handleError = ({ error, explicitMessage }: IHandleError) => {
     } else {
       toast.error('Something went wrong');
     }
+  } else {
+    console.log(error.message);
+    if (explicitMessage) {
+      toast.error(explicitMessage);
+    } else {
+      toast.error(error.message);
+    }
   }
 };

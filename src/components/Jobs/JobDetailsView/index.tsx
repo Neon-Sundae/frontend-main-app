@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import { FC } from 'react';
-import { useFetchJobDetail } from '../AllJobs/hook';
+import ReactHtmlParser from 'react-html-parser';
+import { useFetchJobDetail } from '../AllJobs/hooks';
+import useApplyToJob from './hooks';
+import styles from './index.module.scss';
 
 interface IJobDetailsView {
   jobId_uuid: string | null;
@@ -8,11 +11,14 @@ interface IJobDetailsView {
 
 const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   const { data, isLoading } = useFetchJobDetail(jobId_uuid);
+  const applyToJob = useApplyToJob();
 
   if (jobId_uuid === null) {
     return (
-      <div>
-        <h1 style={{ color: 'white' }}>Nothing selected</h1>
+      <div className={styles['job-detail-view']}>
+        <h1 className={styles['job-detail-view--no-selection']}>
+          Nothing selected
+        </h1>
       </div>
     );
   }
@@ -21,9 +27,44 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
     return null;
   }
 
+  const sanitizeHtml = () => {
+    if (data.description)
+      return JSON.parse(data.description)?.split('\\')?.join('');
+    return null;
+  };
+
+  const handleApply = () => {
+    applyToJob.mutate({ jobId_uuid: data.jobId_uuid });
+  };
+
   return (
-    <div>
-      <h1 style={{ color: 'white' }}>{data.title}</h1>
+    <div className={styles['job-detail-view']}>
+      <h1>{data.title}</h1>
+      <h2>{data.organisation.name}</h2>
+      <span className={styles['inline-job-details']}>
+        <p>💻 {data.role}</p>
+        <p>📍 {data.location}</p>
+        <p>
+          💰 {data.salaryMin}-{data.salaryMax} {data.currency}
+        </p>
+        <p>🌏 {data.isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
+      </span>
+
+      <div className={styles['job-view-description']}>
+        {ReactHtmlParser(sanitizeHtml())}
+      </div>
+
+      <div className={styles['job-detail-apply-group']}>
+        <button
+          className={styles['job-detail-apply-button']}
+          onClick={handleApply}
+        >
+          Apply
+        </button>
+        <p className={styles['job-detail-note']}>
+          * When you apply you agree to use your email for interview purposes
+        </p>
+      </div>
     </div>
   );
 };

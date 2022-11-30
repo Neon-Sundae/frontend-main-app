@@ -66,15 +66,3 @@ JobCards.defaultProps = {
 };
 
 export default JobCards;
-
-{
-  /* jobId_uuid,
-  handleJobCardSelect,
-}) => {
-  const handleClick = () => {
-    handleJobCardSelect(jobId_uuid);
-  };
-
-  return (
-    <div className={styles['job-card-wrap']} onClick={handleClick}> */
-}
