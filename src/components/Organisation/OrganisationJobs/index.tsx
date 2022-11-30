@@ -13,9 +13,7 @@ const OrganisationJobs = () => {
         salaryMax={100000}
         currency="USD"
         jobUuid=""
-        setShowView={undefined}
-        setShowCreate={undefined}
-        setSelectedJobUuid={undefined}
+        handleCardClick={() => {}}
         selectedJobUuid={undefined}
       />
       <JobCards
@@ -25,9 +23,7 @@ const OrganisationJobs = () => {
         salaryMax={100000}
         currency="USD"
         jobUuid=""
-        setShowView={undefined}
-        setShowCreate={undefined}
-        setSelectedJobUuid={undefined}
+        handleCardClick={() => {}}
         selectedJobUuid={undefined}
       />
     </div>
