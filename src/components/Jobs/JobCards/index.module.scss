@@ -11,6 +11,17 @@
   width: 404px;
   position: relative;
   padding: 0 22px;
+  cursor: pointer;
+
+  .org-image {
+    overflow: hidden;
+    width: 51px;
+    height: 51px;
+    border-radius: 30px;
+    cursor: pointer;
+    object-fit: cover;
+  }
+
   .job-card-left {
     display: flex;
     flex-direction: column;

@@ -31,14 +31,14 @@ const AllJobsLanding = () => {
       <NavBar />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
-          {data?.map((job: any) => (
+          {/* {data?.map((job: any) => (
             <JobCards
               key={job.jobId_uuid}
               orgName={orgName}
-              jobId_uuid={job.jobId_uuid}
-              handleJobCardSelect={handleJobCardSelect}
+              jobUuid={job.jobId_uuid}
+              // handleJobCardSelect={handleJobCardSelect}
             />
-          ))}
+          ))} */}
         </div>
         <div className={styles['jobs-card-details-wrap']}>
           <JobDetailsView jobId_uuid={searchParams.get('job')} />

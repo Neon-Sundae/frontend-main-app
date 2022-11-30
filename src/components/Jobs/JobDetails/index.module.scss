@@ -24,7 +24,6 @@
   font-size: 25px;
   color: #fff;
   font-family: var(--font-family-roboto-regular);
-
   min-width: 100px;
 }
 
@@ -84,9 +83,11 @@
     border: 1px solid #fff;
     background: transparent;
     border-radius: 10px;
+    color: #fff;
+    padding: 0 15px;
   }
   &>input::placeholder {
-    padding: 0 20px;
+    padding: 0 1px;
     color: #fff;
   }
 }
