@@ -17,6 +17,7 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import {
@@ -24,13 +25,13 @@ import {
   useUpdateOrgPic,
   useUpdateOrgCoverPic,
 } from './hooks';
-import BannerBtn from '../../Home/Banner';
 
 interface IBanner {
   organisation: IOrganisation;
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -124,7 +125,9 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     }
   };
   const handleStartProject = () => setShowPrjModal(true);
-  const handleListAJob = () => {};
+  const handleListAJob = () => {
+    navigate(`/organisation/1/jobs/all`);
+  };
   return (
     <div className={styles.container}>
       <Toaster />
@@ -267,8 +270,30 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           )}
         </div>
         <div className={styles[`buttons-container`]}>
-          <button onClick={() => handleStartProject()}>Start A Project</button>
-          <button onClick={() => handleListAJob()}>List A Job</button>
+          <button
+            type="button"
+            className={clsx(styles.bannerBtn, styles.glass)}
+            onClick={() => handleStartProject()}
+          >
+            <span className={styles.title}>
+              <p>Start A Project</p>
+            </span>
+            <span className={clsx('material-icons', styles.icon)}>
+              trending_flat
+            </span>
+          </button>
+          <button
+            type="button"
+            className={clsx(styles.bannerBtn, styles.glass)}
+            onClick={() => handleListAJob()}
+          >
+            <span className={styles.title}>
+              <p>List A Job</p>
+            </span>
+            <span className={clsx('material-icons', styles.icon)}>
+              trending_flat
+            </span>
+          </button>
         </div>
       </div>
       {open && (

@@ -1,4 +1,5 @@
 .job-card-wrap {
+  color: #A9A9A9;
   border: 0.42px solid #D39BFF;
   border-radius: 16.94px;
   display: flex;
@@ -8,7 +9,7 @@
   background: #FF78FA;
   background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
   height: 110px;
-  width: 404px;
+  width: 350px;
   position: relative;
   padding: 0 22px;
   cursor: pointer;
@@ -21,16 +22,19 @@
     cursor: pointer;
     object-fit: cover;
   }
-
+  .job-card-left-active {
+    color: #fff !important;
+  }
+  
   .job-card-left {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: absolute;
     height: 62px;
-    left: 25%;
-
-    p {
+    left: 29%;
+   
+    h3 {
       font-family: var(--font-family-roboto-flex);
       font-weight: 500;
       font-size: 14px;

@@ -1,12 +1,6 @@
-/* eslint-disable camelcase */
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useQuery } from '@tanstack/react-query';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
-import config from 'config';
-import { FC, useEffect, useRef, useState } from 'react';
-import { getAccessToken } from 'utils/authFn';
-
+import { FC } from 'react';
 import styles from './index.module.scss';
 
 interface IJobCards {
@@ -16,10 +10,8 @@ interface IJobCards {
   salaryMax: number;
   currency: string;
   jobUuid: string;
-  setJobData: any;
-  setShowView: any;
-  setShowCreate: any;
-  setSelectedJobUuid: any;
+  selectedJobUuid?: any;
+  handleCardClick: any;
 }
 
 const JobCards: FC<IJobCards> = ({
@@ -29,41 +21,21 @@ const JobCards: FC<IJobCards> = ({
   salaryMax,
   currency,
   jobUuid,
-  setJobData,
-  setShowView,
-  setShowCreate,
-  setSelectedJobUuid,
+  selectedJobUuid,
+  handleCardClick,
 }) => {
-  const { data: individualJobData, refetch } = useQuery(
-    ['individualJob'],
-    () =>
-      fetch(`${config.ApiBaseUrl}/job/${jobUuid}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      enabled: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-  useEffect(() => {
-    setJobData(individualJobData);
-  }, [individualJobData]);
-  const cardRef = useRef(null);
-  const handleCardClick = () => {
-    if (cardRef && cardRef.current) {
-      // refetch();
-      setShowCreate(false);
-      setShowView(true);
-      setSelectedJobUuid(jobUuid);
-    }
+  const handleClick = () => {
+    handleCardClick(jobUuid);
   };
 
   return (
     <div
-      className={styles['job-card-wrap']}
-      onClick={() => handleCardClick()}
-      ref={cardRef}
+      onClick={handleClick}
+      className={clsx(
+        styles['job-card-wrap'],
+        selectedJobUuid === jobUuid && styles['job-card-left-active']
+      )}
+      style={{ color: selectedJobUuid === jobUuid ? '#fff' : '#A9A9A9' }}
     >
       {/* TODO: use org image here! */}
       <BrandImage
@@ -74,7 +46,7 @@ const JobCards: FC<IJobCards> = ({
         }}
       />
       <div className={styles['job-card-left']}>
-        <p>{title}</p>
+        <h3>{title}</h3>
         <p>{orgName}</p>
         <p>
           💰 {salaryMin} to {salaryMax} {currency}
@@ -88,6 +60,11 @@ const JobCards: FC<IJobCards> = ({
     </div>
   );
 };
+
+JobCards.defaultProps = {
+  selectedJobUuid: undefined,
+};
+
 export default JobCards;
 
 {

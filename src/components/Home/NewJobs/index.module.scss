@@ -1,0 +1,32 @@
+.new-jobs-wrap {
+  color: #fff;
+  width: 80%;
+  margin: auto;
+  height: 280px;
+  cursor: pointer;
+
+  &>.new-jobs-head {
+    display: flex;
+    justify-content: space-between;
+
+    &>h2,
+    &>h3 {
+      font-family: var(--font-family-roboto-regular);
+    }
+
+    &>h2 {
+      font-size: 21px;
+    }
+
+    &>h3 {
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 1;
+    }
+  }
+
+  &>.job-card-wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+}
