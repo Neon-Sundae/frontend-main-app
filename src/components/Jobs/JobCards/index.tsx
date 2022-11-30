@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
-import { FC, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { FC } from 'react';
 import styles from './index.module.scss';
 
 interface IJobCards {
@@ -12,10 +10,8 @@ interface IJobCards {
   salaryMax: number;
   currency: string;
   jobUuid: string;
-  setShowView: any;
-  setShowCreate: any;
-  setSelectedJobUuid: any;
-  selectedJobUuid: any;
+  selectedJobUuid?: any;
+  handleCardClick: any;
 }
 
 const JobCards: FC<IJobCards> = ({
@@ -25,30 +21,21 @@ const JobCards: FC<IJobCards> = ({
   salaryMax,
   currency,
   jobUuid,
-  setShowView,
-  setShowCreate,
-  setSelectedJobUuid,
   selectedJobUuid,
+  handleCardClick,
 }) => {
-  const [jobIdParam, setJobIdParam] = useSearchParams();
-  const cardRef = useRef(null);
-
-  // TODO: highlight job card on selecting!
-  const handleCardClick = () => {
-    setJobIdParam(selectedJobUuid);
-    if (selectedJobUuid) setShowView(true);
-    const jobCard: any = cardRef.current;
-    jobCard.style.color = '#fff';
-    setShowCreate(false);
-    setShowView(true);
-    setSelectedJobUuid(jobUuid);
+  const handleClick = () => {
+    handleCardClick(jobUuid);
   };
 
   return (
     <div
-      className={styles['job-card-wrap']}
-      onClick={() => handleCardClick()}
-      ref={cardRef}
+      onClick={handleClick}
+      className={clsx(
+        styles['job-card-wrap'],
+        selectedJobUuid === jobUuid && styles['job-card-left-active']
+      )}
+      style={{ color: selectedJobUuid === jobUuid ? '#fff' : '#A9A9A9' }}
     >
       {/* TODO: use org image here! */}
       <BrandImage
@@ -59,7 +46,7 @@ const JobCards: FC<IJobCards> = ({
         }}
       />
       <div className={styles['job-card-left']}>
-        <p>{title}</p>
+        <h3>{title}</h3>
         <p>{orgName}</p>
         <p>
           💰 {salaryMin} to {salaryMax} {currency}
@@ -72,6 +59,10 @@ const JobCards: FC<IJobCards> = ({
       </div>
     </div>
   );
+};
+
+JobCards.defaultProps = {
+  selectedJobUuid: undefined,
 };
 
 export default JobCards;

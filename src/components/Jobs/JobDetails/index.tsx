@@ -185,12 +185,13 @@ const JobDetails: FC<IJobDetails> = ({
     );
 
   return (
-    <>
+    <form onSubmit={() => createJobEntry()}>
       <span className={styles['inline-job-title']}>
         <input
           placeholder="Job Title here"
           className={styles[`job-title-it`]}
           onChange={e => handleJobTitleChange(e)}
+          required
         />
         <span className={styles['inline-job-status-label']}>
           <p>Active</p>
@@ -198,7 +199,7 @@ const JobDetails: FC<IJobDetails> = ({
             type="checkbox"
             id="toggle"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
-            onChange={e => handleJobStatusChange(e)}
+            onChange={e => handleJobStatusChange(e)}  
           />
           <label htmlFor="toggle" className={styles.switch}>
             {' '}
@@ -246,10 +247,12 @@ const JobDetails: FC<IJobDetails> = ({
           placeholder="Min Salary"
           id="salaryRange"
           onChange={e => handleMinSalaryChange(e)}
+          required
         />
         <input
           placeholder="Max Salary"
           onChange={e => handleMaxSalaryChange(e)}
+          required
         />
         <Select
           options={currencyOptions}
@@ -263,12 +266,11 @@ const JobDetails: FC<IJobDetails> = ({
         />
       </span>
       <JobDescriptionEdit setEditorVal={setEditorVal} />
-      <button
+      <input
         className={styles[`publish-job-btn`]}
-        onClick={() => createJobEntry()}
-      >
-        Publish
-      </button>
+        type="submit"
+        value="Publish"
+      />
       <button
         className={styles[`cancel-job-btn`]}
         onClick={() => {
@@ -278,7 +280,7 @@ const JobDetails: FC<IJobDetails> = ({
       >
         Cancel
       </button>
-    </>
+    </form>
   );
 };
 

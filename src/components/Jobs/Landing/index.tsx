@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import config from 'config';
 import { useQuery } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
-import getRandomString from 'utils/getRandomString';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
@@ -45,12 +44,19 @@ const JobsLanding = () => {
   const { organisation, isLoading } = useFetchOrganisation();
 
   if (isLoading) return null;
-
+  // TODO: profileImage
   const { name: orgName, profileImage } = organisation;
 
   const handleCreate = () => {
     setShowCreate(true);
     setShowView(false);
+  };
+
+  const jobCardClicked = (jobUuid: string) => {
+    if (selectedJobUuid) setShowView(true);
+    setShowCreate(false);
+    setShowView(true);
+    setSelectedJobUuid(jobUuid);
   };
 
   if (isFetching) return null;
@@ -90,12 +96,10 @@ const JobsLanding = () => {
                 salaryMin={d.salaryMin}
                 salaryMax={d.salaryMax}
                 currency={d.currency}
-                key={getRandomString(5)}
+                key={d.jobId_uuid}
                 jobUuid={d.jobId_uuid}
-                setShowView={setShowView}
-                setShowCreate={setShowCreate}
-                setSelectedJobUuid={setSelectedJobUuid}
                 selectedJobUuid={selectedJobUuid}
+                handleCardClick={jobCardClicked}
               />
             );
           })}
@@ -121,7 +125,7 @@ const JobsLanding = () => {
                   salaryMin={d.salaryMin}
                   salaryMax={d.salaryMax}
                   currency={d.currency}
-                  key={getRandomString(5)}
+                  key={d.jobId_uuid}
                   jobUuid={d.jobId_uuid}
                   location={d.location}
                   role={d.role}
