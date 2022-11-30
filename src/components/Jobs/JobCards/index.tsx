@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useQuery } from '@tanstack/react-query';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
-import config from 'config';
-import { FC, useEffect, useRef, useState } from 'react';
-import { getAccessToken } from 'utils/authFn';
-
+import { FC, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styles from './index.module.scss';
 
 interface IJobCards {
@@ -15,10 +12,10 @@ interface IJobCards {
   salaryMax: number;
   currency: string;
   jobUuid: string;
-  setJobData: any;
   setShowView: any;
   setShowCreate: any;
   setSelectedJobUuid: any;
+  selectedJobUuid: any;
 }
 
 const JobCards: FC<IJobCards> = ({
@@ -28,35 +25,25 @@ const JobCards: FC<IJobCards> = ({
   salaryMax,
   currency,
   jobUuid,
-  setJobData,
   setShowView,
   setShowCreate,
   setSelectedJobUuid,
+  selectedJobUuid,
 }) => {
-  const { data: individualJobData, refetch } = useQuery(
-    ['individualJob'],
-    () =>
-      fetch(`${config.ApiBaseUrl}/job/${jobUuid}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      enabled: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-  useEffect(() => {
-    setJobData(individualJobData);
-  }, [individualJobData]);
+  const [jobIdParam, setJobIdParam] = useSearchParams();
   const cardRef = useRef(null);
+
+  // TODO: highlight job card on selecting!
   const handleCardClick = () => {
-    if (cardRef && cardRef.current) {
-      // refetch();
-      setShowCreate(false);
-      setShowView(true);
-      setSelectedJobUuid(jobUuid);
-    }
+    setJobIdParam(selectedJobUuid);
+    if (selectedJobUuid) setShowView(true);
+    const jobCard: any = cardRef.current;
+    jobCard.style.color = '#fff';
+    setShowCreate(false);
+    setShowView(true);
+    setSelectedJobUuid(jobUuid);
   };
+
   return (
     <div
       className={styles['job-card-wrap']}
@@ -86,4 +73,5 @@ const JobCards: FC<IJobCards> = ({
     </div>
   );
 };
+
 export default JobCards;

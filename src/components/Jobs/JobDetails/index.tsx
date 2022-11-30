@@ -1,11 +1,10 @@
+/* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import config from 'config';
 import { useParams } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import Select, { Option } from 'components/Select';
 import clsx from 'clsx';
 import countries from 'assets/data/countries.json';
@@ -17,16 +16,30 @@ interface IJobDetails {
   orgName: string;
   refetch: any;
   setShowCreate: any;
+  jobEntryData?: any;
+  setShowView: any;
+  selectedJobUuid: string;
+  setSelectedJobUuid: any;
 }
+
 const jobTypeOptions = [
   { value: 'full time', label: 'Full Time ' },
   { value: 'part time', label: 'Part Time' },
   { value: 'contract', label: 'Contract' },
 ];
 
-const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
+const JobDetails: FC<IJobDetails> = ({
+  orgName,
+  refetch,
+  setShowCreate,
+  jobEntryData,
+  setShowView,
+  selectedJobUuid,
+  setSelectedJobUuid,
+}) => {
   const temp: any = [];
   const tempCurrencies: any = [];
+
   useEffect(() => {
     if (!temp.length) {
       countries.forEach(country => {
@@ -42,13 +55,13 @@ const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
       setCurrencyOptions(tempCurrencies);
     }
   }, []);
+
   const [selectedLocationOptions, setSelectedLocationOptions] = useState<any>(
     []
   );
   const [currencyOptions, setCurrencyOptions] = useState<any>([]);
   const [selectedLocation, setSelectedLocation] = useState<any>([]);
   const [selectedJobType, setSelectedJobType] = useState<any>([]);
-  const walletId = useSelector((state: RootState) => state);
   const { orgId } = useParams();
   const [editorVal, setEditorVal] = useState([
     {
@@ -72,22 +85,8 @@ const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
     status: '',
     organisationId: '',
   });
-  const [inputValue, setInputValue] = useState('');
 
-  // const handleCategoryChange = (newValue: SingleValue<Option>) => {
-  //   if (newValue) {
-  //     setSelectedCategory(newValue);
-  //   }
-  // };
-
-  const handleCurrencyChange = (e: any) => {
-    if (e) {
-      console.log(e);
-      // setSelectedCurrency(e.value);
-    }
-  };
-
-  const { mutate: updateJobEntry } = useMutation(
+  const { mutate: createJobEntry } = useMutation(
     async () => {
       return fetch(`${config.ApiBaseUrl}/job`, {
         method: 'POST',
@@ -103,16 +102,22 @@ const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
           currency: selectedCurrency?.label,
           role: selectedJobType.label,
           location: selectedLocation.label,
-          isRemote: true,
+          isRemote: jobListingData.isRemote === 'true',
           status: jobListingData.status,
           organisationId: Number(orgId),
           salaryType: 'annual',
         }),
-      });
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          const { jobId_uuid } = data;
+          setSelectedJobUuid(jobId_uuid);
+        });
     },
     {
-      onSuccess: (res: any) => {
-        console.log('success', res);
+      onSuccess: () => {
         setShowCreate(false);
         refetch();
       },
@@ -121,37 +126,64 @@ const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
       },
     }
   );
-  const handleJobTitleChange = e => {
-    setJobListingData(prevState => ({
+
+  const handleJobTitleChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
     }));
   };
-  const handleJobStatusChange = e => {
-    setJobListingData(prevState => ({
+
+  const handleJobStatusChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
     }));
   };
-  const handleRemoteToggle = e => {
-    setJobListingData(prevState => ({
+
+  const handleRemoteToggle = (e: any) => {
+    setJobListingData((prevState: any) => ({
       ...prevState,
       isRemote: e.target.checked ? 'true' : 'false',
     }));
   };
 
-  const handleMinSalaryChange = e => {
-    setJobListingData(prevState => ({
+  const handleMinSalaryChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
       ...prevState,
       salaryMin: e.target.value,
     }));
   };
-  const handleMaxSalaryChange = e => {
-    setJobListingData(prevState => ({
+  const handleMaxSalaryChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
       ...prevState,
       salaryMax: e.target.value,
     }));
   };
+
+  if (jobEntryData)
+    return (
+      <JobDetailsEdit
+        jobEntryData={jobEntryData}
+        selectedJobType={selectedJobType}
+        setSelectedJobType={setSelectedJobType}
+        selectedLocationOptions={selectedLocationOptions}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        handleRemoteToggle={handleRemoteToggle}
+        handleMinSalaryChange={handleMinSalaryChange}
+        handleMaxSalaryChange={handleMaxSalaryChange}
+        currencyOptions={currencyOptions}
+        selectedCurrency={selectedCurrency}
+        setSelectedCurrency={setSelectedCurrency}
+        setEditorVal={setEditorVal}
+        setShowCreate={setShowCreate}
+        setShowView={setShowView}
+        selectedJobUuid={selectedJobUuid}
+        refetch={refetch}
+      />
+    );
+
   return (
     <>
       <span className={styles['inline-job-title']}>
@@ -173,7 +205,6 @@ const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
           </label>
         </span>
       </span>
-
       <h3 className={styles[`job-org-name`]}>{orgName}</h3>
       <span className={styles[`job-details-data-wrap`]}>
         <Select
@@ -234,18 +265,236 @@ const JobDetails: FC<IJobDetails> = ({ orgName, refetch, setShowCreate }) => {
       <JobDescriptionEdit setEditorVal={setEditorVal} />
       <button
         className={styles[`publish-job-btn`]}
-        onClick={() => updateJobEntry()}
+        onClick={() => createJobEntry()}
       >
         Publish
       </button>
       <button
         className={styles[`cancel-job-btn`]}
-        onClick={() => setShowCreate(false)}
+        onClick={() => {
+          setShowCreate(false);
+          setShowView(false);
+        }}
       >
         Cancel
       </button>
     </>
   );
+};
+
+interface IJobDetailsEdit {
+  jobEntryData: any;
+  selectedJobType: any;
+  setSelectedJobType: any;
+  selectedLocationOptions: any;
+  selectedLocation: any;
+  setSelectedLocation: any;
+  handleRemoteToggle: any;
+  handleMinSalaryChange: any;
+  handleMaxSalaryChange: any;
+  currencyOptions: any;
+  selectedCurrency: any;
+  setSelectedCurrency: any;
+  setEditorVal: any;
+  setShowCreate: any;
+  setShowView: any;
+  selectedJobUuid: string;
+  refetch: any;
+}
+
+const JobDetailsEdit: FC<IJobDetailsEdit> = ({
+  jobEntryData,
+  selectedJobType,
+  setSelectedJobType,
+  selectedLocationOptions,
+  selectedLocation,
+  setSelectedLocation,
+  handleRemoteToggle,
+  handleMinSalaryChange,
+  handleMaxSalaryChange,
+  currencyOptions,
+  selectedCurrency,
+  setSelectedCurrency,
+  setEditorVal,
+  setShowCreate,
+  setShowView,
+  selectedJobUuid,
+  refetch,
+}) => {
+  useEffect(() => {
+    setSelectedJobType({ value: jobEntryData.role, label: jobEntryData.role });
+    setSelectedLocation({
+      value: jobEntryData.location,
+      label: jobEntryData.location,
+    });
+    setSelectedCurrency({
+      value: jobEntryData.currency,
+      label: jobEntryData.currency,
+    });
+  }, []);
+
+  const { mutate: deleteJobEntry } = useMutation(
+    async () => {
+      return fetch(`${config.ApiBaseUrl}/job/${selectedJobUuid}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    },
+    {
+      onSuccess: () => {
+        setShowCreate(false);
+        setShowView(false);
+        refetch();
+      },
+      onError: (err: any) => {
+        console.log('err', err);
+      },
+    }
+  );
+
+  const [jobListingData, setJobListingData] = useState<any>({
+    title: jobEntryData.title,
+    salaryMin: '',
+    salaryMax: '',
+    currency: '',
+    role: selectedJobType.label,
+    location: selectedLocation.label,
+    isRemote: jobEntryData.isRemote,
+    status: jobEntryData.jobStatus,
+    organisationId: '',
+  });
+
+  const handleJobTitleChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
+      ...prevState,
+      title: e.target.value,
+    }));
+  };
+
+  const handleJobStatusChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
+      ...prevState,
+      status: e.target.checked ? 'active' : 'inactive',
+    }));
+  };
+
+  const handleCancelBtn = () => {
+    setShowCreate(false);
+    setShowView(false);
+  };
+
+  return (
+    <>
+      <span className={styles['inline-job-title']}>
+        <input
+          placeholder="Job Title here"
+          className={styles[`job-title-it`]}
+          onChange={e => handleJobTitleChange(e)}
+          defaultValue={jobListingData.title}
+        />
+        <span className={styles['inline-job-status-label']}>
+          <p>Active</p>
+          <input
+            type="checkbox"
+            id="toggle"
+            className={clsx(styles.checkbox, styles['job-active-checkbox'])}
+            checked={jobListingData.status === 'active'}
+            onChange={e => handleJobStatusChange(e)}
+          />
+          <label htmlFor="toggle" className={styles.switch}>
+            {' '}
+          </label>
+        </span>
+      </span>
+      <h3 className={styles[`job-org-name`]}>{jobEntryData.orgName}</h3>
+      <span className={styles[`job-details-data-wrap`]}>
+        <Select
+          options={jobTypeOptions ?? []}
+          placeholder="Job Type"
+          value={selectedJobType}
+          name="Job type"
+          onSelectChange={newVal => setSelectedJobType(newVal)}
+          borderRadius={10}
+          height={50}
+          isMulti={false}
+        />
+        <Select
+          options={selectedLocationOptions ?? []}
+          placeholder="Location"
+          value={selectedLocation}
+          onSelectChange={newVal => setSelectedLocation(newVal)}
+          name="Location"
+          borderRadius={10}
+          height={50}
+          width="250px"
+          isMulti={false}
+        />
+        <span className={styles[`remote-check-job`]}>
+          <p>Remote</p>
+          <input
+            type="checkbox"
+            id="remoteToggle"
+            className={styles.checkbox}
+            checked={jobListingData.isRemote === true}
+            onChange={e => handleRemoteToggle(e)}
+          />
+          <label htmlFor="remoteToggle" className={styles.switch}>
+            {' '}
+          </label>
+        </span>
+      </span>
+      <span className={styles['inline-job-salary']}>
+        <input
+          placeholder="Min Salary"
+          id="salaryRange"
+          defaultValue={jobEntryData.salaryMin}
+          onChange={e => handleMinSalaryChange(e)}
+        />
+        <input
+          placeholder="Max Salary"
+          defaultValue={jobEntryData.salaryMax}
+          onChange={e => handleMaxSalaryChange(e)}
+        />
+        <Select
+          options={currencyOptions}
+          placeholder="USD"
+          value={selectedCurrency}
+          name="Currency"
+          onSelectChange={newVal => setSelectedCurrency(newVal)}
+          borderRadius={10}
+          height={50}
+          isMulti={false}
+        />
+      </span>
+      <JobDescriptionEdit setEditorVal={setEditorVal} />
+      <button
+        className={styles[`publish-job-btn`]}
+        // onClick={() => updateJobEntry()}
+      >
+        Update
+      </button>
+
+      <button
+        className={styles[`cancel-job-btn`]}
+        onClick={() => handleCancelBtn()}
+      >
+        Cancel
+      </button>
+      <button
+        className={styles[`cancel-job-btn`]}
+        onClick={() => deleteJobEntry()}
+      >
+        Delete
+      </button>
+    </>
+  );
+};
+
+JobDetails.defaultProps = {
+  jobEntryData: null,
 };
 
 export default JobDetails;

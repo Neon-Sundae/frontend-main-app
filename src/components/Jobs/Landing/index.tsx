@@ -5,7 +5,9 @@ import config from 'config';
 import { useQuery } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { Toaster } from 'react-hot-toast';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
@@ -13,10 +15,15 @@ import useFetchOrganisation from '../../Organisation/Landing/hooks';
 import JobView from '../JobView';
 
 const JobsLanding = () => {
-  const [jobData, setJobData] = useState<any>(null);
-  const [showCreate, setShowCreate] = useState(false);
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
+
+  useEffect(() => {
+    setShowView(true);
+  }, [selectedJobUuid]);
+
+  const [showCreate, setShowCreate] = useState(false);
   const [showView, setShowView] = useState(false);
+
   const {
     data,
     refetch,
@@ -33,16 +40,19 @@ const JobsLanding = () => {
       refetchOnWindowFocus: false,
     }
   );
+
   const { orgId } = useParams();
   const { organisation, isLoading } = useFetchOrganisation();
+
   if (isLoading) return null;
+
   const { name: orgName, profileImage } = organisation;
-  console.log('showCreate', showCreate);
-  console.log('showView', showView);
+
   const handleCreate = () => {
     setShowCreate(true);
     setShowView(false);
   };
+
   if (isFetching) return null;
   if (loading) return null;
 
@@ -57,9 +67,22 @@ const JobsLanding = () => {
       }}
     >
       <NavBar />
+      <Toaster />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
-          {data.map(d => {
+          <div className={styles['job-create-btn-wrap']}>
+            <button
+              onClick={() => {
+                handleCreate();
+              }}
+              className={styles['create-job-btn']}
+            >
+              Add new
+              <i className={clsx('material-icons', styles['add-icon'])}>add</i>
+            </button>
+          </div>
+
+          {data.map((d: any) => {
             return (
               <JobCards
                 title={d.title}
@@ -69,10 +92,10 @@ const JobsLanding = () => {
                 currency={d.currency}
                 key={getRandomString(5)}
                 jobUuid={d.jobId_uuid}
-                setJobData={setJobData}
                 setShowView={setShowView}
                 setShowCreate={setShowCreate}
                 setSelectedJobUuid={setSelectedJobUuid}
+                selectedJobUuid={selectedJobUuid}
               />
             );
           })}
@@ -83,12 +106,14 @@ const JobsLanding = () => {
               orgName={orgName}
               refetch={refetch}
               setShowCreate={setShowCreate}
+              setShowView={setShowView}
+              selectedJobUuid={selectedJobUuid}
+              setSelectedJobUuid={setSelectedJobUuid}
             />
           )}
           {!showCreate &&
             showView &&
-            data.map(d => {
-              console.log(d);
+            data.map((d: any) => {
               return (
                 <JobView
                   title={d.title}
@@ -106,39 +131,12 @@ const JobsLanding = () => {
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
                   selectedJobUuid={selectedJobUuid}
+                  jobStatus={d.status}
+                  orgId={Number(orgId)}
+                  setSelectedJobUuid={setSelectedJobUuid}
                 />
               );
             })}
-          {/* {!showCreate && showView && (
-            <JobView
-              title={jobData && jobData.title}
-              orgName={orgName}
-              salaryMin={jobData && jobData.salaryMin}
-              salaryMax={jobData && jobData.salaryMax}
-              currency={jobData && jobData.currency}
-              key={getRandomString(5)}
-              jobUuid={jobData && jobData.jobId_uuid}
-              location={jobData && jobData.location}
-              role={jobData && jobData.role}
-              isRemote={jobData && jobData.isRemote}
-              description={jobData && jobData.description}
-              refetch={refetch}
-              setShowCreate={setShowCreate}
-              setShowView={setShowView}
-            />
-          )} */}
-          {!showCreate && !showView && (
-            <span>
-              <p> Select a job listing or create one here</p>
-              <button
-                onClick={() => {
-                  handleCreate();
-                }}
-              >
-                create
-              </button>
-            </span>
-          )}
         </div>
       </div>
     </div>
