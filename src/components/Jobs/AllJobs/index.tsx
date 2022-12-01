@@ -37,6 +37,7 @@ const AllJobsLanding = () => {
               jobUuid={job.jobId_uuid}
               currency={job.currency}
               orgName={job.organisation.name}
+              orgImage={job.organisation.profileImage}
               salaryMin={job.salaryMin}
               salaryMax={job.salaryMax}
               title={job.title}

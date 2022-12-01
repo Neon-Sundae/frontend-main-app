@@ -1,32 +1,43 @@
+/* eslint-disable camelcase */
 import { FC } from 'react';
 import JobCards from 'components/Jobs/JobCards';
+import { useNavigate } from 'react-router-dom';
+import useFetchOrgJobsByLimit from 'hooks/useFetchOrgJobsByLimit';
 import styles from './index.module.scss';
 
-const OrganisationJobs: FC = () => {
+interface IOrganisationJobs {
+  organisationId: number;
+}
+
+const OrganisationJobs: FC<IOrganisationJobs> = ({ organisationId }) => {
+  const navigate = useNavigate();
+  const { data, isLoading } = useFetchOrgJobsByLimit(organisationId, 2);
+
+  const handleCardClick = (jobId_uuid: string) => {
+    navigate(`/organisation/${organisationId}/jobs/all`);
+  };
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <div className={styles['organisation-jobs-wrap']}>
       <h3>Jobs Listed</h3>
-      {/* TODO: map through lists */}
-      <JobCards
-        orgName="org name"
-        title="full stack"
-        salaryMin={10000}
-        salaryMax={100000}
-        currency="USD"
-        jobUuid=""
-        selectedJobUuid={undefined}
-        handleCardClick={() => {}}
-      />
-      <JobCards
-        orgName="org name"
-        title="full stack"
-        salaryMin={10000}
-        salaryMax={100000}
-        currency="USD"
-        jobUuid=""
-        selectedJobUuid={undefined}
-        handleCardClick={() => {}}
-      />
+      {data?.map((job: any) => (
+        <JobCards
+          key={job.jobId_uuid}
+          orgName={job.organisation.name}
+          orgImage={job.organisation.profileImage}
+          title={job.title}
+          salaryMin={job.salaryMin}
+          salaryMax={job.salaryMax}
+          currency={job.currency}
+          jobUuid={job.jobId_uuid}
+          selectedJobUuid={job.jobId_uuid}
+          handleCardClick={() => handleCardClick(job.jobId_uuid)}
+        />
+      ))}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 
 interface IJobCards {
   orgName: string;
+  orgImage: string | null | undefined;
   title: string;
   salaryMin: number;
   salaryMax: number;
@@ -16,6 +17,7 @@ interface IJobCards {
 
 const JobCards: FC<IJobCards> = ({
   orgName,
+  orgImage,
   title,
   salaryMin,
   salaryMax,
@@ -37,14 +39,19 @@ const JobCards: FC<IJobCards> = ({
       )}
       style={{ color: selectedJobUuid === jobUuid ? '#fff' : '#A9A9A9' }}
     >
-      {/* TODO: use org image here! */}
-      <BrandImage
-        width="72px"
-        height="72px"
-        style={{
-          borderRadius: '50%',
-        }}
-      />
+      {orgImage ? (
+        <div className={styles['job-card-org-image-wrapper']}>
+          <img src={orgImage} alt="organisation-logo" />
+        </div>
+      ) : (
+        <BrandImage
+          width="72px"
+          height="72px"
+          style={{
+            borderRadius: '50%',
+          }}
+        />
+      )}
       <div className={styles['job-card-left']}>
         <h3>{title}</h3>
         <p>{orgName}</p>
