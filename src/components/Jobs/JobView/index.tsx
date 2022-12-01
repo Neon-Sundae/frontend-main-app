@@ -1,10 +1,10 @@
 import config from 'config';
 import { FC, useState } from 'react';
-import ReactHtmlParser from 'react-html-parser';
 import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import ReactHtmlParser from 'react-html-parser';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -26,6 +26,8 @@ interface IJobView {
   jobStatus: string;
   orgId: number;
   setSelectedJobUuid: any;
+  editorVal: any;
+  setEditorVal: any;
 }
 
 const JobView: FC<IJobView> = ({
@@ -46,14 +48,11 @@ const JobView: FC<IJobView> = ({
   setSelectedJobUuid,
   jobStatus,
   orgId,
+  setEditorVal,
+  editorVal,
 }) => {
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
-
-  const sanitizeHtml = () => {
-    if (description) return JSON.parse(description)?.split('\\')?.join('');
-    return null;
-  };
 
   const editJobEntry = () => {
     setEditJobListing(true);
@@ -88,6 +87,8 @@ const JobView: FC<IJobView> = ({
             selectedJobUuid={selectedJobUuid}
             jobStatus={jobStatus}
             setSelectedJobUuid={setSelectedJobUuid}
+            editorVal={editorVal}
+            setEditorVal={setEditorVal}
           />
         )}
         {!editJobListing && (
@@ -132,7 +133,7 @@ const JobView: FC<IJobView> = ({
             />
             {!showJobApplicants && (
               <div className={styles['job-view-description']}>
-                {ReactHtmlParser(sanitizeHtml())}
+                {ReactHtmlParser(description)}
               </div>
             )}
           </>

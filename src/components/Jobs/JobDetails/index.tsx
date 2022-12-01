@@ -10,8 +10,13 @@ import clsx from 'clsx';
 import countries from 'assets/data/countries.json';
 import currencies from 'assets/data/currency.json';
 import styles from './index.module.scss';
-import JobDescriptionEdit from '../JobDescriptionEdit/index';
+import JobDescriptionEdit from '../JobDescriptionEdit';
 
+const jobTypeOptions = [
+  { label: 'Full Time', value: 'Full Time' },
+  { label: 'Part Time', value: 'Part Time' },
+  { label: 'Contract', value: 'Contract' },
+];
 interface IJobDetails {
   orgName: string;
   refetch: any;
@@ -20,13 +25,9 @@ interface IJobDetails {
   setShowView: any;
   selectedJobUuid: string;
   setSelectedJobUuid: any;
+  setEditorVal: any;
+  editorVal: any;
 }
-
-const jobTypeOptions = [
-  { value: 'full time', label: 'Full Time ' },
-  { value: 'part time', label: 'Part Time' },
-  { value: 'contract', label: 'Contract' },
-];
 
 const JobDetails: FC<IJobDetails> = ({
   orgName,
@@ -36,10 +37,13 @@ const JobDetails: FC<IJobDetails> = ({
   setShowView,
   selectedJobUuid,
   setSelectedJobUuid,
+  setEditorVal,
+  editorVal,
 }) => {
   const temp: any = [];
   const tempCurrencies: any = [];
-
+  console.log('setEditorVal <<<<<<<', setEditorVal);
+  console.log('setShowView', setShowView);
   useEffect(() => {
     if (!temp.length) {
       countries.forEach(country => {
@@ -63,15 +67,6 @@ const JobDetails: FC<IJobDetails> = ({
   const [selectedLocation, setSelectedLocation] = useState<any>([]);
   const [selectedJobType, setSelectedJobType] = useState<any>([]);
   const { orgId } = useParams();
-  const [editorVal, setEditorVal] = useState([
-    {
-      children: [
-        {
-          text: '',
-        },
-      ],
-    },
-  ]);
 
   const [selectedCurrency, setSelectedCurrency] = useState<Option | null>(null);
   const [jobListingData, setJobListingData] = useState<any>({
@@ -178,9 +173,9 @@ const JobDetails: FC<IJobDetails> = ({
         setShowView={setShowView}
         selectedJobUuid={selectedJobUuid}
         refetch={refetch}
+        editorVal={editorVal}
       />
     );
-
   return (
     <form onSubmit={() => createJobEntry()}>
       <span className={styles['inline-job-title']}>
@@ -262,7 +257,7 @@ const JobDetails: FC<IJobDetails> = ({
           isMulti={false}
         />
       </span>
-      <JobDescriptionEdit setEditorVal={setEditorVal} />
+      <JobDescriptionEdit setEditorVal={setEditorVal} editorVal={editorVal} />
       <input
         className={styles[`publish-job-btn`]}
         type="submit"
@@ -299,6 +294,7 @@ interface IJobDetailsEdit {
   setShowView: any;
   selectedJobUuid: string;
   refetch: any;
+  editorVal: any;
 }
 
 const JobDetailsEdit: FC<IJobDetailsEdit> = ({
@@ -319,7 +315,9 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   setShowView,
   selectedJobUuid,
   refetch,
+  editorVal,
 }) => {
+  console.log(jobEntryData.description, 'jobEntryData.description');
   useEffect(() => {
     setSelectedJobType({ value: jobEntryData.role, label: jobEntryData.role });
     setSelectedLocation({
@@ -330,6 +328,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       value: jobEntryData.currency,
       label: jobEntryData.currency,
     });
+    setEditorVal(jobEntryData.description);
   }, []);
 
   const { mutate: deleteJobEntry } = useMutation(
@@ -468,7 +467,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
           isMulti={false}
         />
       </span>
-      <JobDescriptionEdit setEditorVal={setEditorVal} />
+      <JobDescriptionEdit setEditorVal={setEditorVal} editorVal={editorVal} />
       <button
         className={styles[`publish-job-btn`]}
         // onClick={() => updateJobEntry()}
