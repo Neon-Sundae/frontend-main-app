@@ -25,8 +25,6 @@ interface IJobDetails {
   setShowView: any;
   selectedJobUuid: string;
   setSelectedJobUuid: any;
-  setEditorVal: any;
-  editorVal: any;
 }
 
 const JobDetails: FC<IJobDetails> = ({
@@ -37,13 +35,12 @@ const JobDetails: FC<IJobDetails> = ({
   setShowView,
   selectedJobUuid,
   setSelectedJobUuid,
-  setEditorVal,
-  editorVal,
 }) => {
   const temp: any = [];
   const tempCurrencies: any = [];
-  console.log('setEditorVal <<<<<<<', setEditorVal);
-  console.log('setShowView', setShowView);
+
+  const [editorVal, setEditorVal] = useState('');
+
   useEffect(() => {
     if (!temp.length) {
       countries.forEach(country => {
@@ -91,7 +88,7 @@ const JobDetails: FC<IJobDetails> = ({
         },
         body: JSON.stringify({
           title: jobListingData.title,
-          description: JSON.stringify(editorVal),
+          description: editorVal,
           salaryMin: jobListingData.salaryMin,
           salaryMax: jobListingData.salaryMax,
           currency: selectedCurrency?.label,
@@ -162,9 +159,6 @@ const JobDetails: FC<IJobDetails> = ({
         selectedLocationOptions={selectedLocationOptions}
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
-        handleRemoteToggle={handleRemoteToggle}
-        handleMinSalaryChange={handleMinSalaryChange}
-        handleMaxSalaryChange={handleMaxSalaryChange}
         currencyOptions={currencyOptions}
         selectedCurrency={selectedCurrency}
         setSelectedCurrency={setSelectedCurrency}
@@ -189,11 +183,11 @@ const JobDetails: FC<IJobDetails> = ({
           <p>Active</p>
           <input
             type="checkbox"
-            id="toggle"
+            id="toggleTwo"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
             onChange={e => handleJobStatusChange(e)}
           />
-          <label htmlFor="toggle" className={styles.switch}>
+          <label htmlFor="toggleTwo" className={styles.switch}>
             {' '}
           </label>
         </span>
@@ -225,11 +219,11 @@ const JobDetails: FC<IJobDetails> = ({
           <p>Remote</p>
           <input
             type="checkbox"
-            id="remoteToggle"
+            id="remoteToggleTwo"
             className={styles.checkbox}
             onChange={e => handleRemoteToggle(e)}
           />
-          <label htmlFor="remoteToggle" className={styles.switch}>
+          <label htmlFor="remoteToggleTwo" className={styles.switch}>
             {' '}
           </label>
         </span>
@@ -283,9 +277,6 @@ interface IJobDetailsEdit {
   selectedLocationOptions: any;
   selectedLocation: any;
   setSelectedLocation: any;
-  handleRemoteToggle: any;
-  handleMinSalaryChange: any;
-  handleMaxSalaryChange: any;
   currencyOptions: any;
   selectedCurrency: any;
   setSelectedCurrency: any;
@@ -304,9 +295,6 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   selectedLocationOptions,
   selectedLocation,
   setSelectedLocation,
-  handleRemoteToggle,
-  handleMinSalaryChange,
-  handleMaxSalaryChange,
   currencyOptions,
   selectedCurrency,
   setSelectedCurrency,
@@ -317,6 +305,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   refetch,
   editorVal,
 }) => {
+  const { orgId } = useParams();
   useEffect(() => {
     setSelectedJobType({ value: jobEntryData.role, label: jobEntryData.role });
     setSelectedLocation({
@@ -378,54 +367,68 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     }));
   };
 
+  const handleRemoteToggle = (e: any) => {
+    setJobListingData((prevState: any) => ({
+      ...prevState,
+      isRemote: e.target.checked ? 'true' : 'false',
+    }));
+  };
+  const handleMinSalaryChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
+      ...prevState,
+      salaryMin: e.target.value,
+    }));
+  };
+  const handleMaxSalaryChange = (e: any) => {
+    setJobListingData((prevState: any) => ({
+      ...prevState,
+      salaryMax: e.target.value,
+    }));
+  };
   const handleCancelBtn = () => {
     setShowCreate(false);
     setShowView(false);
   };
-  const updateJobEntry = () => {
-    console.log(JSON.stringify(editorVal));
+  const updateJobEntryFunc = () => {
+    updateJobEntryMut();
   };
-  // const { mutate: updateJobEntry } = useMutation(
-  //   async () => {
-  //     return fetch(`${config.ApiBaseUrl}/job`, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${getAccessToken()}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         title: jobListingData.title,
-  //         description: JSON.stringify(editorVal),
-  //         salaryMin: jobListingData.salaryMin,
-  //         salaryMax: jobListingData.salaryMax,
-  //         currency: selectedCurrency?.label,
-  //         role: selectedJobType.label,
-  //         location: selectedLocation.label,
-  //         isRemote: jobListingData.isRemote === 'true',
-  //         status: jobListingData.status,
-  //         organisationId: Number(orgId),
-  //         salaryType: 'annual',
-  //       }),
-  //     })
-  //       .then(function (response) {
-  //         return response.json();
-  //       })
-  //       .then(function (data) {
-  //         const { jobId_uuid } = data;
-  //         setSelectedJobUuid(jobId_uuid);
-  //       });
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       setShowCreate(false);
-  //       refetch();
-  //     },
-  //     onError: (err: any) => {
-  //       console.log('err', err);
-  //     },
-  //   }
-  // );
-
+  const { mutate: updateJobEntryMut } = useMutation(
+    async () => {
+      return fetch(`${config.ApiBaseUrl}/job/${selectedJobUuid}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: jobListingData.title,
+          description: editorVal,
+          salaryMin: jobEntryData.salaryMin
+            ? jobEntryData.salaryMin
+            : jobListingData.salaryMin,
+          salaryMax: jobEntryData.salaryMax
+            ? jobEntryData.salaryMax
+            : jobListingData.salaryMax,
+          currency: selectedCurrency?.label,
+          role: selectedJobType.label,
+          location: selectedLocation.label,
+          isRemote: jobListingData.isRemote === 'true',
+          status: jobListingData.status,
+          organisationId: Number(orgId),
+          salaryType: 'annual',
+        }),
+      });
+    },
+    {
+      onSuccess: () => {
+        setShowCreate(false);
+        refetch();
+      },
+      onError: (err: any) => {
+        console.log('err', err);
+      },
+    }
+  );
   return (
     <>
       <span className={styles['inline-job-title']}>
@@ -439,12 +442,12 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
           <p>Active</p>
           <input
             type="checkbox"
-            id="toggle"
+            id="toggleThree"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
             checked={jobListingData.status === 'active'}
             onChange={e => handleJobStatusChange(e)}
           />
-          <label htmlFor="toggle" className={styles.switch}>
+          <label htmlFor="toggleThree" className={styles.switch}>
             {' '}
           </label>
         </span>
@@ -476,12 +479,12 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
           <p>Remote</p>
           <input
             type="checkbox"
-            id="remoteToggle"
+            id="remoteToggleThree"
             className={styles.checkbox}
-            checked={jobListingData.isRemote === true}
+            checked={jobEntryData.isRemote === true}
             onChange={e => handleRemoteToggle(e)}
           />
-          <label htmlFor="remoteToggle" className={styles.switch}>
+          <label htmlFor="remoteToggleThree" className={styles.switch}>
             {' '}
           </label>
         </span>
@@ -512,7 +515,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       <JobDescriptionEdit setEditorVal={setEditorVal} editorVal={editorVal} />
       <button
         className={styles[`publish-job-btn`]}
-        onClick={() => updateJobEntry()}
+        onClick={() => updateJobEntryFunc()}
       >
         Update
       </button>

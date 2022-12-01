@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import styles from './index.module.scss';
 
@@ -11,18 +11,19 @@ const JobDescriptionEdit: FC<JobDescriptionEditProps> = ({
   setEditorVal,
   editorVal,
 }) => {
-  const [value, setValue] = useState('');
-  const setValFunc = () => {
+  useEffect(() => {
+    setTextVal(editorVal);
+  }, [editorVal]);
+
+  const [textVal, setTextVal] = useState(editorVal);
+  const setValFunc = (value: string) => {
     setEditorVal(value);
-    setValue(value);
+    setTextVal(value);
   };
-  // eslint-disable-next-line no-param-reassign
-  editorVal = value;
-  console.log(editorVal);
-  console.log(value);
+
   return (
     <div className={styles['quill-editor-wrap']}>
-      <ReactQuill theme="snow" value={value} onChange={setValue} />
+      <ReactQuill theme="snow" value={textVal} onChange={setValFunc} />
     </div>
   );
 };

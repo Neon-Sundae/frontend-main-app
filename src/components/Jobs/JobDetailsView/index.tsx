@@ -45,7 +45,7 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
       </span>
 
       <div className={styles['job-view-description']}>
-        {ReactHtmlParser(data.description.slice(1, -1))}
+        {ReactHtmlParser(data.description)}
       </div>
 
       <div className={styles['job-detail-apply-group']}>

@@ -28,8 +28,6 @@ interface IJobView {
   jobStatus: string;
   orgId: number;
   setSelectedJobUuid: any;
-  editorVal: any;
-  setEditorVal: any;
 }
 
 const JobView: FC<IJobView> = ({
@@ -50,12 +48,12 @@ const JobView: FC<IJobView> = ({
   setSelectedJobUuid,
   jobStatus,
   orgId,
-  setEditorVal,
-  editorVal,
 }) => {
+  console.log(description);
   const payload = { jobId_uuid: selectedJobUuid };
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
+  const [JobApplicantsData, setShowJobApplicantsData] = useState(null);
 
   const { mutate: fetchJobApplicants } = useMutation(
     async () => {
@@ -66,12 +64,17 @@ const JobView: FC<IJobView> = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-      });
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          setShowJobApplicantsData(data);
+        });
     },
     {
       onSuccess: () => {
-        // setShowCreate(false);
-        // refetch();
+        // Do nothing
       },
       onError: (err: any) => {
         console.log('err', err);
@@ -81,7 +84,6 @@ const JobView: FC<IJobView> = ({
 
   const editJobEntry = () => {
     setEditJobListing(true);
-    fetchJobApplicants();
   };
 
   const generateShareLink = () => {
@@ -92,6 +94,7 @@ const JobView: FC<IJobView> = ({
   };
   const onClick = () => {
     console.log('click');
+    fetchJobApplicants();
     setShowJobApplicants(true);
   };
   if (selectedJobUuid === jobUuid) {
@@ -116,8 +119,6 @@ const JobView: FC<IJobView> = ({
             selectedJobUuid={selectedJobUuid}
             jobStatus={jobStatus}
             setSelectedJobUuid={setSelectedJobUuid}
-            editorVal={editorVal}
-            setEditorVal={setEditorVal}
           />
         )}
         {!editJobListing && (
@@ -160,6 +161,7 @@ const JobView: FC<IJobView> = ({
               setShowJobApplicants={setShowJobApplicants}
               showJobApplicants={showJobApplicants}
               onClick={onClick}
+              JobApplicantsData={JobApplicantsData}
             />
             {!showJobApplicants && (
               <div className={styles['job-view-description']}>
@@ -178,35 +180,34 @@ interface IJobApplicants {
   setShowJobApplicants: any;
   showJobApplicants: any;
   onClick: any;
+  JobApplicantsData: any;
 }
 
 const JobApplicants: FC<IJobApplicants> = ({
   setShowJobApplicants,
   showJobApplicants,
   onClick,
+  JobApplicantsData,
 }) => {
   return (
     <>
       <div className={styles['job-list-people-wrap']} onClick={onClick}>
         <div className={styles['job-list-people']} key={getRandomString(5)}>
-          {!showJobApplicants && (
-            <>
-              {/* TODO: map these job people */}
-              <div className={styles['job-people']} key={getRandomString(5)}>
-                <img src={getDefaultAvatarSrc('A')} alt="" />
-              </div>
-              <div className={styles['job-people']} key={getRandomString(5)}>
-                <img src={getDefaultAvatarSrc('A')} alt="" />
-              </div>
-              <div className={styles['job-people']} key={getRandomString(5)}>
-                <img src={getDefaultAvatarSrc('A')} alt="" />
-              </div>
-              {/* TODO: write a func to get people count */}
-              <div>
-                <p>+{1000}</p>
-              </div>
-            </>
-          )}
+          {!showJobApplicants &&
+            JobApplicantsData.map((item: any) => (
+              <>
+                {' '}
+                <div className={styles['job-people']} key={getRandomString(5)}>
+                  <img
+                    src={getDefaultAvatarSrc(item.Profile.user.name)}
+                    alt=""
+                  />
+                </div>
+                <div>
+                  <p>+{JobApplicantsData.length}</p>
+                </div>
+              </>
+            ))}
         </div>
       </div>
 

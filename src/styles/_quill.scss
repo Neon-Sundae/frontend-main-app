@@ -6,7 +6,7 @@
  */
  .ql-container {
   box-sizing: border-box;
-  font-family: var(--font-family-roboto-flex);
+  font-family: var(--font-family-roboto);
   font-size: 16px;
   height: 100%;
   margin: 0px;
@@ -359,10 +359,10 @@
   color: #93f;
 }
 .ql-editor .ql-font-serif {
-  font-family: Georgia, Times New Roman, serif;
+  font-family: var(--font-family-roboto);
 }
 .ql-editor .ql-font-monospace {
-  font-family: Monaco, Courier New, monospace;
+  font-family: var(--font-family-roboto);
 }
 .ql-editor .ql-size-small {
   font-size: 0.75em;
@@ -818,10 +818,10 @@
   content: 'Monospace';
 }
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
-  font-family: Georgia, Times New Roman, serif;
+  font-family: var(--font-family-roboto);
 }
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
-  font-family: Monaco, Courier New, monospace;
+  font-family: var(--font-family-roboto);
 }
 .ql-snow .ql-picker.ql-size {
   width: 98px;
@@ -860,8 +860,11 @@
 .ql-toolbar.ql-snow {
   // border: 1px solid #ccc;
   box-sizing: border-box;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: var(--c);
   padding: 8px;
+}
+.ql-formats:last-child {
+  display: none;
 }
 .ql-toolbar.ql-snow .ql-formats {
   margin-right: 15px;
@@ -878,6 +881,8 @@
   border-color: #ccc;
 }
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  background: black;
+  opacity: .9;
   border-color: #ccc;
 }
 .ql-toolbar.ql-snow .ql-color-picker .ql-picker-item.ql-selected,
