@@ -7,6 +7,8 @@ import { getAccessToken } from 'utils/authFn';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
@@ -14,6 +16,7 @@ import useFetchOrganisation from '../../Organisation/Landing/hooks';
 import JobView from '../JobView';
 
 const JobsLanding = () => {
+  const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
   useEffect(() => {
     setShowView(true);
@@ -41,6 +44,9 @@ const JobsLanding = () => {
 
   const { orgId } = useParams();
   const { organisation, isLoading } = useFetchOrganisation();
+  const isFounder = () => {
+    return userId === organisation.organisationUser[0].userId;
+  };
 
   if (isLoading) return null;
   const { name: orgName, profileImage } = organisation;
@@ -73,17 +79,21 @@ const JobsLanding = () => {
       <Toaster />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
-          <div className={styles['job-create-btn-wrap']}>
-            <button
-              onClick={() => {
-                handleCreate();
-              }}
-              className={styles['create-job-btn']}
-            >
-              Add new
-              <i className={clsx('material-icons', styles['add-icon'])}>add</i>
-            </button>
-          </div>
+          {isFounder() && (
+            <div className={styles['job-create-btn-wrap']}>
+              <button
+                onClick={() => {
+                  handleCreate();
+                }}
+                className={styles['create-job-btn']}
+              >
+                Add new
+                <i className={clsx('material-icons', styles['add-icon'])}>
+                  add
+                </i>
+              </button>
+            </div>
+          )}
 
           {data.map((d: any) => {
             return (

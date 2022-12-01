@@ -49,11 +49,10 @@ const JobView: FC<IJobView> = ({
   jobStatus,
   orgId,
 }) => {
-  console.log(description);
   const payload = { jobId_uuid: selectedJobUuid };
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
-  const [JobApplicantsData, setShowJobApplicantsData] = useState(null);
+  const [JobApplicantsData, setJobApplicantsData] = useState([]);
 
   const { mutate: fetchJobApplicants } = useMutation(
     async () => {
@@ -69,7 +68,7 @@ const JobView: FC<IJobView> = ({
           return response.json();
         })
         .then(function (data) {
-          setShowJobApplicantsData(data);
+          setJobApplicantsData(data);
         });
     },
     {
@@ -223,34 +222,17 @@ const JobApplicants: FC<IJobApplicants> = ({
             <p>Applicants</p>
           </span>
           {/* TODO: map job applicants */}
-          <div className={styles['job-applicants-view']}>
-            <img src={getDefaultAvatarSrc('A')} alt="" />
-            <p>Person name</p>
-            <p>Person Title</p>
-            <p>person@email.com</p>
-          </div>
-          <hr />
-          <div className={styles['job-applicants-view']}>
-            <img src={getDefaultAvatarSrc('A')} alt="" />
-            <p>Person name</p>
-            <p>Person Title</p>
-            <p>person@email.com</p>
-          </div>
-          <hr />
-          <div className={styles['job-applicants-view']}>
-            <img src={getDefaultAvatarSrc('A')} alt="" />
-            <p>Person name</p>
-            <p>Person Title</p>
-            <p>person@email.com</p>
-          </div>
-          <hr />
-          <div className={styles['job-applicants-view']}>
-            <img src={getDefaultAvatarSrc('A')} alt="" />
-            <p>Person name</p>
-            <p>Person Title</p>
-            <p>person@email.com</p>
-          </div>
-          <hr />
+          {JobApplicantsData.map((item: any) => (
+            <>
+              <div className={styles['job-applicants-view']}>
+                <img src={getDefaultAvatarSrc('A')} alt="" />
+                <p>{item.Profile.user.name}</p>
+                <p>Person Title</p>
+                <p>person@email.com</p>
+              </div>
+              <hr />
+            </>
+          ))}
         </div>
       )}
     </>

@@ -269,32 +269,35 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             </button>
           )}
         </div>
-        <div className={styles[`buttons-container`]}>
-          <button
-            type="button"
-            className={clsx(styles.bannerBtn, styles.glass)}
-            onClick={() => handleStartProject()}
-          >
-            <span className={styles.title}>
-              <p>Start A Project</p>
-            </span>
-            <span className={clsx('material-icons', styles.icon)}>
-              trending_flat
-            </span>
-          </button>
-          <button
-            type="button"
-            className={clsx(styles.bannerBtn, styles.glass)}
-            onClick={() => handleListAJob()}
-          >
-            <span className={styles.title}>
-              <p>List A Job</p>
-            </span>
-            <span className={clsx('material-icons', styles.icon)}>
-              trending_flat
-            </span>
-          </button>
-        </div>
+        {isFounder() && (
+          <div className={styles[`buttons-container`]}>
+            <button
+              type="button"
+              className={clsx(styles.bannerBtn, styles.glass)}
+              onClick={() => handleStartProject()}
+            >
+              <span className={styles.title}>
+                <p>Start A Project</p>
+              </span>
+              <span className={clsx('material-icons', styles.icon)}>
+                trending_flat
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className={clsx(styles.bannerBtn, styles.glass)}
+              onClick={() => handleListAJob()}
+            >
+              <span className={styles.title}>
+                <p>List A Job</p>
+              </span>
+              <span className={clsx('material-icons', styles.icon)}>
+                trending_flat
+              </span>
+            </button>
+          </div>
+        )}
       </div>
       {open && (
         <OrganisationSocialModal
