@@ -14,7 +14,7 @@ const OrganisationJobs: FC<IOrganisationJobs> = ({ organisationId }) => {
   const { data, isLoading } = useFetchOrgJobsByLimit(organisationId, 2);
 
   const handleCardClick = (jobId_uuid: string) => {
-    navigate(`/organisation/${organisationId}/jobs/all`);
+    navigate(`/jobs/all?organisation=${organisationId}&job=${jobId_uuid}`);
   };
 
   if (isLoading) {
