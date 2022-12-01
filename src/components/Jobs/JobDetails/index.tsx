@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import countries from 'assets/data/countries.json';
 import currencies from 'assets/data/currency.json';
 import styles from './index.module.scss';
-import JobDescriptionEdit from '../JobDescriptionEdit/index';
+import JobDescriptionEdit from '../JobDescriptionEdit';
 
 interface IJobDetails {
   orgName: string;

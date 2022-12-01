@@ -73,10 +73,6 @@ import {
   usePlateStates,
   WithOverride,
 } from '@udecode/plate';
-// import {
-//   ELEMENT_EXCALIDRAW,
-//   TExcalidrawElement,
-// } from '@udecode/plate-ui-excalidraw';
 import { CSSProperties } from 'styled-components';
 
 /**
@@ -190,39 +186,9 @@ export interface MyBlockquoteElement extends MyBlockElement {
   children: MyInlineChildren;
 }
 
-export interface MyCodeBlockElement extends MyBlockElement {
-  type: typeof ELEMENT_CODE_BLOCK;
-  children: MyCodeLineElement[];
-}
-
 export interface MyCodeLineElement extends TElement {
   type: typeof ELEMENT_CODE_LINE;
   children: PlainText[];
-}
-
-export interface MyTableElement extends TTableElement, MyBlockElement {
-  type: typeof ELEMENT_TABLE;
-  children: MyTableRowElement[];
-}
-
-export interface MyTableRowElement extends TElement {
-  type: typeof ELEMENT_TR;
-  children: MyTableCellElement[];
-}
-
-export interface MyTableCellElement extends TElement {
-  type: typeof ELEMENT_TD;
-  children: MyNestableBlock[];
-}
-
-export interface MyBulletedListElement extends TElement, MyBlockElement {
-  type: typeof ELEMENT_UL;
-  children: MyListItemElement[];
-}
-
-export interface MyNumberedListElement extends TElement, MyBlockElement {
-  type: typeof ELEMENT_OL;
-  children: MyListItemElement[];
 }
 
 export interface MyListItemElement extends TElement, MyBlockElement {
@@ -230,23 +196,9 @@ export interface MyListItemElement extends TElement, MyBlockElement {
   children: MyInlineChildren;
 }
 
-export interface MyTodoListElement
-  extends TTodoListItemElement,
-    MyBlockElement {
-  type: typeof ELEMENT_TODO_LI;
-  children: MyInlineChildren;
-}
-
-export interface MyImageElement extends TImageElement, MyBlockElement {
-  type: typeof ELEMENT_IMAGE;
-  children: [EmptyText];
-}
-
-export interface MyMediaEmbedElement
-  extends TMediaEmbedElement,
-    MyBlockElement {
-  type: typeof ELEMENT_MEDIA_EMBED;
-  children: [EmptyText];
+export interface MyBulletedListElement extends TElement, MyBlockElement {
+  type: typeof ELEMENT_UL;
+  children: MyListItemElement[];
 }
 
 export interface MyHrElement extends MyBlockElement {
@@ -254,35 +206,19 @@ export interface MyHrElement extends MyBlockElement {
   children: [EmptyText];
 }
 
-// export interface MyExcalidrawElement
-//   extends TExcalidrawElement,
-//     MyBlockElement {
-//   type: typeof ELEMENT_EXCALIDRAW;
-//   children: [EmptyText];
-// }
-
 export type MyNestableBlock = MyParagraphElement;
-
-export type MyBlock = Exclude<MyElement, MyInlineElement>;
-export type MyBlockEntry = TNodeEntry<MyBlock>;
-
 export type MyRootBlock =
   | MyParagraphElement
   | MyH1Element
   | MyH2Element
   | MyH3Element
   | MyBlockquoteElement
-  | MyCodeBlockElement
-  | MyTableElement
   | MyBulletedListElement
-  | MyNumberedListElement
-  | MyTodoListElement
-  | MyImageElement
-  | MyMediaEmbedElement
   | MyHrElement;
-// | MyExcalidrawElement;
-
 export type MyValue = MyRootBlock[];
+export type MyElement = EElement<MyValue>;
+export type MyBlock = Exclude<MyElement, MyInlineElement>;
+export type MyBlockEntry = TNodeEntry<MyBlock>;
 
 /**
  * Editor types
@@ -292,7 +228,7 @@ export type MyEditor = PlateEditor<MyValue> & { isDragging?: boolean };
 export type MyReactEditor = TReactEditor<MyValue>;
 export type MyNode = ENode<MyValue>;
 export type MyNodeEntry = ENodeEntry<MyValue>;
-export type MyElement = EElement<MyValue>;
+
 export type MyElementEntry = EElementEntry<MyValue>;
 export type MyText = EText<MyValue>;
 export type MyTextEntry = ETextEntry<MyValue>;

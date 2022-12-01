@@ -77,7 +77,7 @@ const Serialized: FC<ISerializedProps> = ({ setEditorVal }) => {
   const html = serializeHtml(editor, {
     nodes: editor.children,
   });
-  setEditorVal(html);
+  setEditorVal(editor.children);
   return <p> </p>;
 };
 

@@ -1,6 +1,6 @@
 import config from 'config';
 import { FC, useState } from 'react';
-import ReactHtmlParser from 'react-html-parser';
+// import { ReactHtmlParser, parse } from 'react-html-parser';
 import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
@@ -49,11 +49,16 @@ const JobView: FC<IJobView> = ({
 }) => {
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
+  const [parsedHtml, setParsedHtml] = useState(null);
+  const dataJson = JSON.parse(description);
+  // const htmlll = parse(dataJson);
+  console.log(dataJson);
+  // console.log(parse(dataJson));
+  // const sanitizeHtml = () => {
+  //   if (description) return JSON.parse(description)?.split('\\')?.join('');
 
-  const sanitizeHtml = () => {
-    if (description) return JSON.parse(description)?.split('\\')?.join('');
-    return null;
-  };
+  //   return null;
+  // };
 
   const editJobEntry = () => {
     setEditJobListing(true);
@@ -131,9 +136,7 @@ const JobView: FC<IJobView> = ({
               showJobApplicants={showJobApplicants}
             />
             {!showJobApplicants && (
-              <div className={styles['job-view-description']}>
-                {ReactHtmlParser(sanitizeHtml())}
-              </div>
+              <div className={styles['job-view-description']}>{parsedHtml}</div>
             )}
           </>
         )}
