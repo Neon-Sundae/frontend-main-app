@@ -4,7 +4,7 @@ import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import ReactHtmlParser from 'react-html-parser';
+import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useMutation } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
 import styles from './index.module.scss';
@@ -162,7 +162,7 @@ const JobView: FC<IJobView> = ({
             />
             {!showJobApplicants && (
               <div className={styles['job-view-description']}>
-                {description ? ReactHtmlParser(description) : 'N/A'}
+                {description ? convertHtmlToReact(description) : 'N/A'}
               </div>
             )}
           </>
