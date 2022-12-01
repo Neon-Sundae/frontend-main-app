@@ -126,7 +126,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
   const handleStartProject = () => setShowPrjModal(true);
   const handleListAJob = () => {
-    navigate(`/organisation/1/jobs/all`);
+    navigate(`/organisation/${organisation.organisationId}/jobs/all`);
   };
   return (
     <div className={styles.container}>
