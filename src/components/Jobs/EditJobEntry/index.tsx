@@ -18,6 +18,8 @@ interface IEditJobEntry {
   selectedJobUuid: any;
   jobStatus: string;
   setSelectedJobUuid: any;
+  setEditorVal: any;
+  editorVal: any;
 }
 
 const EditJobEntry: FC<IEditJobEntry> = ({
@@ -37,6 +39,8 @@ const EditJobEntry: FC<IEditJobEntry> = ({
   selectedJobUuid,
   jobStatus,
   setSelectedJobUuid,
+  setEditorVal,
+  editorVal,
 }) => {
   const jobEntryData = {
     orgName,
@@ -67,6 +71,8 @@ const EditJobEntry: FC<IEditJobEntry> = ({
         setShowView={setShowView}
         selectedJobUuid={selectedJobUuid}
         setSelectedJobUuid={setSelectedJobUuid}
+        setEditorVal={setEditorVal}
+        editorVal={editorVal}
       />
     </div>
   );

@@ -1,10 +1,10 @@
 import config from 'config';
 import { FC, useState } from 'react';
-// import { ReactHtmlParser, parse } from 'react-html-parser';
 import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import ReactHtmlParser from 'react-html-parser';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -26,6 +26,8 @@ interface IJobView {
   jobStatus: string;
   orgId: number;
   setSelectedJobUuid: any;
+  editorVal: any;
+  setEditorVal: any;
 }
 
 const JobView: FC<IJobView> = ({
@@ -46,19 +48,11 @@ const JobView: FC<IJobView> = ({
   setSelectedJobUuid,
   jobStatus,
   orgId,
+  setEditorVal,
+  editorVal,
 }) => {
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
-  const [parsedHtml, setParsedHtml] = useState(null);
-  const dataJson = JSON.parse(description);
-  // const htmlll = parse(dataJson);
-  console.log(dataJson);
-  // console.log(parse(dataJson));
-  // const sanitizeHtml = () => {
-  //   if (description) return JSON.parse(description)?.split('\\')?.join('');
-
-  //   return null;
-  // };
 
   const editJobEntry = () => {
     setEditJobListing(true);
@@ -93,6 +87,8 @@ const JobView: FC<IJobView> = ({
             selectedJobUuid={selectedJobUuid}
             jobStatus={jobStatus}
             setSelectedJobUuid={setSelectedJobUuid}
+            editorVal={editorVal}
+            setEditorVal={setEditorVal}
           />
         )}
         {!editJobListing && (
@@ -136,7 +132,9 @@ const JobView: FC<IJobView> = ({
               showJobApplicants={showJobApplicants}
             />
             {!showJobApplicants && (
-              <div className={styles['job-view-description']}>{parsedHtml}</div>
+              <div className={styles['job-view-description']}>
+                {ReactHtmlParser(description)}
+              </div>
             )}
           </>
         )}
