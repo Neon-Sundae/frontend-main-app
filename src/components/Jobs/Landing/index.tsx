@@ -15,6 +15,7 @@ import JobView from '../JobView';
 
 const JobsLanding = () => {
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
+  const [editorVal, setEditorVal] = useState('');
 
   useEffect(() => {
     setShowView(true);
@@ -61,7 +62,7 @@ const JobsLanding = () => {
 
   if (isFetching) return null;
   if (loading) return null;
-
+  console.log(editorVal);
   return (
     <div
       className={styles.container}
@@ -114,6 +115,8 @@ const JobsLanding = () => {
               setShowView={setShowView}
               selectedJobUuid={selectedJobUuid}
               setSelectedJobUuid={setSelectedJobUuid}
+              setEditorVal={setEditorVal}
+              editorVal={editorVal}
             />
           )}
           {!showCreate &&
@@ -139,6 +142,8 @@ const JobsLanding = () => {
                   jobStatus={d.status}
                   orgId={Number(orgId)}
                   setSelectedJobUuid={setSelectedJobUuid}
+                  editorVal={editorVal}
+                  setEditorVal={setEditorVal}
                 />
               );
             })}
