@@ -30,10 +30,6 @@ const useFetchOrgJobsByLimit = (organisationId: number, limit: number) => {
       retry: 1,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
-        if (error.message === 'Not Found') {
-          navigate('/404');
-        }
-
         handleError({
           error,
           explicitMessage: 'Unable to fetch jobs',
