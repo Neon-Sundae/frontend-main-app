@@ -162,7 +162,7 @@ const JobView: FC<IJobView> = ({
             />
             {!showJobApplicants && (
               <div className={styles['job-view-description']}>
-                {ReactHtmlParser(description)}
+                {description ? ReactHtmlParser(description) : 'N/A'}
               </div>
             )}
           </>
