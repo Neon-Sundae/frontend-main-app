@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { FC } from 'react';
-import ReactHtmlParser from 'react-html-parser';
+import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useFetchJobDetail } from '../AllJobs/hooks';
 import useApplyToJob from './hooks';
 import styles from './index.module.scss';
@@ -45,7 +45,7 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
       </span>
 
       <div className={styles['job-view-description']}>
-        {data.description ? ReactHtmlParser(data.description) : 'N/A'}
+        {data.description ? convertHtmlToReact(data.description) : 'N/A'}
       </div>
 
       <div className={styles['job-detail-apply-group']}>
