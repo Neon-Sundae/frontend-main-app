@@ -86,9 +86,7 @@ const JobView: FC<IJobView> = ({
   };
 
   const generateShareLink = () => {
-    navigator.clipboard.writeText(
-      `${config.AppDomain}/organisation/${orgId}/jobs/all?${jobUuid}`
-    );
+    navigator.clipboard.writeText(`${config.AppDomain}/jobs/all?${jobUuid}`);
     toast.success('Copied to clipboard!');
   };
   const onClick = () => {
