@@ -121,21 +121,18 @@ const JobDetails: FC<IJobDetails> = ({
       },
     }
   );
-
   const handleJobTitleChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
     }));
   };
-
   const handleJobStatusChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
     }));
   };
-
   const handleRemoteToggle = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,

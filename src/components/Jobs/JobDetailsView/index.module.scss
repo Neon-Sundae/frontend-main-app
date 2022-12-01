@@ -1,0 +1,77 @@
+.job-detail-view {
+  &--no-selection {
+    text-align: center;
+  }
+
+  & > h1 {
+    font-family: var(--font-family-roboto-regular);
+    font-size: 25px;
+  }
+
+  & > h2 {
+    font-family: var(--font-family-roboto-regular);
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  .inline-job-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-family: var(--font-family-roboto-regular);
+    font-size: 16px;
+  }
+
+  .job-view-description {
+    height: 290px;
+    margin-top: 15px;
+  }
+
+  .job-detail-apply-button {
+    border: solid 0.72px #e49df4;
+    background: linear-gradient(
+        93.25deg,
+        #bb84f0 4.05%,
+        #ff94e6 63.65%,
+        #ffa3c8 99.41%
+      ),
+      linear-gradient(0deg, #e880ff, #e880ff),
+      radial-gradient(
+        116.97% 116.97% at 34.87% -2.72%,
+        #ff8bfa 0%,
+        #ffffff 100%
+      ),
+      linear-gradient(
+        94.63deg,
+        rgba(255, 255, 255, 0.16) 4.94%,
+        rgba(255, 255, 255, 0.04) 93.94%
+      );
+    border-image-source: linear-gradient(0deg, #e880ff, #e880ff),
+      radial-gradient(
+        116.97% 116.97% at 34.87% -2.72%,
+        #ff8bfa 0%,
+        #ffffff 100%
+      );
+    border-radius: 16.8px;
+    box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+    backdrop-filter: blur(40px);
+    -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    width: 153.91px;
+    height: 42px;
+    cursor: pointer;
+    color: white;
+    font-size: 13.75px;
+    letter-spacing: 2%;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 400;
+  }
+
+  .job-detail-note {
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
+    font-size: 12px;
+    color: #b4b4b4;
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,51 @@
+.container {
+  background-color: #242529;
+  padding-bottom: 55px;
+  background-size: cover;
+  color: #fff;
+  overflow-y: hidden;
+
+  .job-cards-all-wrap {
+    width: 72%;
+    margin: auto;
+    height: 80vh;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .jobs-cards-wrap {
+    overflow-y: scroll;
+    position: relative;
+    .job-create-btn-wrap {
+      display: flex;
+      align-items: baseline;
+      justify-content: end;
+      .create-job-btn {
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 15px;
+        border: 1px solid #d3d3d3;
+        border-radius: 16px;
+        padding: 0 15px;
+        font-family: var(--font-family-roboto-regular);
+        font-size: 13.75px;
+        border: 1px solid #d3d3d3;
+        border-radius: 16px;
+        background: none;
+        width: 115px;
+        height: 38px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .jobs-cards-wrap > div:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  .jobs-card-details-wrap {
+    width: 55%;
+  }
+}
