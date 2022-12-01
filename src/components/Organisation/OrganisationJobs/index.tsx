@@ -14,7 +14,7 @@ const OrganisationJobs: FC<IOrganisationJobs> = ({ organisationId }) => {
   const { data, isLoading } = useFetchOrgJobsByLimit(organisationId, 2);
 
   const handleCardClick = (jobId_uuid: string) => {
-    navigate(`/organisation/${organisationId}/jobs/all?job=${jobId_uuid}`);
+    navigate(`/organisation/${organisationId}/jobs/all`);
   };
 
   if (isLoading) {
@@ -34,7 +34,7 @@ const OrganisationJobs: FC<IOrganisationJobs> = ({ organisationId }) => {
           salaryMax={job.salaryMax}
           currency={job.currency}
           jobUuid={job.jobId_uuid}
-          selectedJobUuid={undefined}
+          selectedJobUuid={job.jobId_uuid}
           handleCardClick={() => handleCardClick(job.jobId_uuid)}
         />
       ))}
