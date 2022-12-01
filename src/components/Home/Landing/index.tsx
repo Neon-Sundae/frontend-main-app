@@ -14,6 +14,7 @@ import Projects from '../Projects';
 import styles from './index.module.scss';
 import MyTasks from '../MyTasks';
 import MyProjects from '../MyProjects';
+import NewJobs from '../NewJobs';
 
 const Landing: FC = () => {
   const [checkOnboardStatus, setCheckOnboardStatus] = useState(
@@ -61,6 +62,9 @@ const Landing: FC = () => {
         <section className={styles.content}>
           <Projects />
           <Tasks data={data} />
+        </section>
+        <section>
+          <NewJobs />
         </section>
         <section className={clsx(styles.content, styles['my-tasks-wrap'])}>
           <MyTasks />

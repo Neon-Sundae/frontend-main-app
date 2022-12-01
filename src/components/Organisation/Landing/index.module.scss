@@ -1,4 +1,13 @@
 .organisation-container {
   background-color: #242529;
   background-size: cover;
+  height: 150vh;
+  
+  &>.organisation-project-jobs-wrap {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 35px;
+  }
 }

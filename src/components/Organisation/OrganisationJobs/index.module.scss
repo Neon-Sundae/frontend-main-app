@@ -1,0 +1,15 @@
+.organisation-jobs-wrap {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  &>h3 {
+    font-family: var(--font-family-roboto-flex);
+    font-size: 27px;
+    margin-bottom: 15px;
+  }
+  &>div {
+    color: #fff;
+  }
+}

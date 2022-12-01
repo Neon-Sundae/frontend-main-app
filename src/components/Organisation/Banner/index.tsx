@@ -16,6 +16,8 @@ import { RootState } from 'reducers';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
+import StartPrjModal from 'components/StartPrjModal';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import {
@@ -29,6 +31,7 @@ interface IBanner {
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -40,6 +43,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [open, setOpen] = useState(false);
   const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
+  const [showPrjModal, setShowPrjModal] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
   const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
   const updateCoverOrgPicture = useUpdateOrgCoverPic(
@@ -119,6 +123,10 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     if (isEditable) {
       if (inputRefCover.current) inputRefCover.current.click();
     }
+  };
+  const handleStartProject = () => setShowPrjModal(true);
+  const handleListAJob = () => {
+    navigate(`/organisation/1/jobs/all`);
   };
   return (
     <div className={styles.container}>
@@ -261,14 +269,43 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             </button>
           )}
         </div>
-      </div>
+        {isFounder() && (
+          <div className={styles[`buttons-container`]}>
+            <button
+              type="button"
+              className={clsx(styles.bannerBtn, styles.glass)}
+              onClick={() => handleStartProject()}
+            >
+              <span className={styles.title}>
+                <p>Start A Project</p>
+              </span>
+              <span className={clsx('material-icons', styles.icon)}>
+                trending_flat
+              </span>
+            </button>
 
+            <button
+              type="button"
+              className={clsx(styles.bannerBtn, styles.glass)}
+              onClick={() => handleListAJob()}
+            >
+              <span className={styles.title}>
+                <p>List A Job</p>
+              </span>
+              <span className={clsx('material-icons', styles.icon)}>
+                trending_flat
+              </span>
+            </button>
+          </div>
+        )}
+      </div>
       {open && (
         <OrganisationSocialModal
           organisation={organisation}
           setOpen={setOpen}
         />
       )}
+      {showPrjModal && <StartPrjModal onClose={() => setShowPrjModal(false)} />}
     </div>
   );
 };
