@@ -26,7 +26,7 @@ const Landing: FC = () => {
       <BasicDetails organisation={organisation} />
       <div className={styles['organisation-project-jobs-wrap']}>
         <OrganisationProjects organisation={organisation} />
-        <OrganisationJobs />
+        <OrganisationJobs organisationId={organisation.organisationId} />
       </div>
     </div>
   );

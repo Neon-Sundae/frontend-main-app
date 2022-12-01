@@ -93,6 +93,7 @@ const JobsLanding = () => {
               <JobCards
                 title={d.title}
                 orgName={orgName}
+                orgImage={profileImage}
                 salaryMin={d.salaryMin}
                 salaryMax={d.salaryMax}
                 currency={d.currency}
