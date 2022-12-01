@@ -27,11 +27,13 @@
     font-family: var(--font-family-roboto-regular);
     font-size: 16px;
     cursor: pointer;
+    & > .pencil-icon, .share-icon {
+      font-size: 16px !important;
+      margin-left: 5px;
+    }
   }
 
-  .material-icons {
-    font-size: 16px !important;
-  }
+ 
 
   &>h1 {
     font-family: var(--font-family-roboto-regular);
@@ -55,6 +57,7 @@
   &>.job-view-description {
     height: 290px;
     margin-top: 15px;
+    overflow-y: scroll;
   }
 }
 

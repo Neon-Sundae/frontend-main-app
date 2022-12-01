@@ -317,7 +317,6 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   refetch,
   editorVal,
 }) => {
-  console.log(jobEntryData.description, 'jobEntryData.description');
   useEffect(() => {
     setSelectedJobType({ value: jobEntryData.role, label: jobEntryData.role });
     setSelectedLocation({
@@ -383,6 +382,49 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     setShowCreate(false);
     setShowView(false);
   };
+  const updateJobEntry = () => {
+    console.log(JSON.stringify(editorVal));
+  };
+  // const { mutate: updateJobEntry } = useMutation(
+  //   async () => {
+  //     return fetch(`${config.ApiBaseUrl}/job`, {
+  //       method: 'POST',
+  //       headers: {
+  //         Authorization: `Bearer ${getAccessToken()}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         title: jobListingData.title,
+  //         description: JSON.stringify(editorVal),
+  //         salaryMin: jobListingData.salaryMin,
+  //         salaryMax: jobListingData.salaryMax,
+  //         currency: selectedCurrency?.label,
+  //         role: selectedJobType.label,
+  //         location: selectedLocation.label,
+  //         isRemote: jobListingData.isRemote === 'true',
+  //         status: jobListingData.status,
+  //         organisationId: Number(orgId),
+  //         salaryType: 'annual',
+  //       }),
+  //     })
+  //       .then(function (response) {
+  //         return response.json();
+  //       })
+  //       .then(function (data) {
+  //         const { jobId_uuid } = data;
+  //         setSelectedJobUuid(jobId_uuid);
+  //       });
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       setShowCreate(false);
+  //       refetch();
+  //     },
+  //     onError: (err: any) => {
+  //       console.log('err', err);
+  //     },
+  //   }
+  // );
 
   return (
     <>
@@ -470,7 +512,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       <JobDescriptionEdit setEditorVal={setEditorVal} editorVal={editorVal} />
       <button
         className={styles[`publish-job-btn`]}
-        // onClick={() => updateJobEntry()}
+        onClick={() => updateJobEntry()}
       >
         Update
       </button>

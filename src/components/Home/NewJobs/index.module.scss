@@ -1,10 +1,21 @@
 .new-jobs-wrap {
   color: #fff;
-  width: 70%;
   margin: auto;
   height: 280px;
   cursor: pointer;
-
+   @media (max-width: 1920px)  {
+    width: 70%;
+  }
+  @media (max-width: 1680px)  {
+    width: 70%;
+  }
+  @media (max-width: 1440px)  {
+     
+    width: 80%;
+  }
+  @media (max-width: 1024px) {
+     
+  }
   &>.new-jobs-head {
     display: flex;
     justify-content: space-between;

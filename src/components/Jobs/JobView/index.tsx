@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import ReactHtmlParser from 'react-html-parser';
+import { useMutation } from '@tanstack/react-query';
+import { getAccessToken } from 'utils/authFn';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -51,20 +53,47 @@ const JobView: FC<IJobView> = ({
   setEditorVal,
   editorVal,
 }) => {
+  const payload = { jobId_uuid: selectedJobUuid };
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
 
+  const { mutate: fetchJobApplicants } = useMutation(
+    async () => {
+      return fetch(`${config.ApiBaseUrl}/job/applicants`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    },
+    {
+      onSuccess: () => {
+        // setShowCreate(false);
+        // refetch();
+      },
+      onError: (err: any) => {
+        console.log('err', err);
+      },
+    }
+  );
+
   const editJobEntry = () => {
     setEditJobListing(true);
+    fetchJobApplicants();
   };
 
   const generateShareLink = () => {
     navigator.clipboard.writeText(
       `${config.AppDomain}/organisation/${orgId}/jobs/all?${jobUuid}`
     );
-    toast.success('Share link copied to clipboard!');
+    toast.success('Copied to clipboard!');
   };
-
+  const onClick = () => {
+    console.log('click');
+    setShowJobApplicants(true);
+  };
   if (selectedJobUuid === jobUuid) {
     return (
       <div className={styles['job-view-wrap']}>
@@ -130,6 +159,7 @@ const JobView: FC<IJobView> = ({
             <JobApplicants
               setShowJobApplicants={setShowJobApplicants}
               showJobApplicants={showJobApplicants}
+              onClick={onClick}
             />
             {!showJobApplicants && (
               <div className={styles['job-view-description']}>
@@ -147,22 +177,17 @@ const JobView: FC<IJobView> = ({
 interface IJobApplicants {
   setShowJobApplicants: any;
   showJobApplicants: any;
+  onClick: any;
 }
 
 const JobApplicants: FC<IJobApplicants> = ({
   setShowJobApplicants,
   showJobApplicants,
+  onClick,
 }) => {
-  const showJobApplicantsFunc = () => {
-    setShowJobApplicants(true);
-  };
-
   return (
     <>
-      <div
-        className={styles['job-list-people-wrap']}
-        onClick={showJobApplicantsFunc}
-      >
+      <div className={styles['job-list-people-wrap']} onClick={onClick}>
         <div className={styles['job-list-people']} key={getRandomString(5)}>
           {!showJobApplicants && (
             <>

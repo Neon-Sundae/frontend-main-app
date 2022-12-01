@@ -23,11 +23,13 @@
   }
 
   .job-view-description {
-    height: 290px;
+    min-height: 290px;
     margin-top: 15px;
+    overflow-y: scroll;
   }
 
   .job-detail-apply-button {
+    margin-top: 25px;
     border: solid 0.72px #e49df4;
     background: linear-gradient(
         93.25deg,

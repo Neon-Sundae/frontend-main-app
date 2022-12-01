@@ -27,16 +27,10 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
     return null;
   }
 
-  const sanitizeHtml = () => {
-    if (data.description)
-      return JSON.parse(data.description)?.split('\\')?.join('');
-    return null;
-  };
-
   const handleApply = () => {
     applyToJob.mutate({ jobId_uuid: data.jobId_uuid });
   };
-
+  console.log(data.description);
   return (
     <div className={styles['job-detail-view']}>
       <h1>{data.title}</h1>
@@ -51,7 +45,7 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
       </span>
 
       <div className={styles['job-view-description']}>
-        {ReactHtmlParser(sanitizeHtml())}
+        {ReactHtmlParser(data.description.slice(1, -1))}
       </div>
 
       <div className={styles['job-detail-apply-group']}>
