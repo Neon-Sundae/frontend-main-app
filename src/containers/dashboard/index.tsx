@@ -13,9 +13,9 @@ const Dashboard: FC = () => {
     return <p>Loading...</p>;
   }
 
-  // if (!isFirstTimeUser) {
-  //   return <FirstTimeUser />;
-  // }
+  if (!isFirstTimeUser) {
+    return <FirstTimeUser />;
+  }
 
   return <Landing />;
 };
