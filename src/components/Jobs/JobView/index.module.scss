@@ -27,13 +27,15 @@
     font-family: var(--font-family-roboto-regular);
     font-size: 16px;
     cursor: pointer;
-    & > .pencil-icon, .share-icon {
+
+    &>.pencil-icon,
+    .share-icon {
       font-size: 16px !important;
       margin-left: 5px;
     }
   }
 
- 
+
 
   &>h1 {
     font-family: var(--font-family-roboto-regular);
@@ -55,7 +57,20 @@
   }
 
   &>.job-view-description {
-    min-height: 390px;
+    @media (max-width: 1920px) {
+      height: 600px;
+    }
+    @media (max-width: 1680px) {
+      height: 550px;
+
+    }
+    @media (max-width: 1440px) {
+      height: 450px;
+
+    }
+    @media (max-width: 1024px) {
+      height: 380px;
+    }
     margin-top: 15px;
     overflow-y: scroll;
   }
@@ -142,10 +157,12 @@
       font-style: normal;
       font-size: 14px;
     }
+
     margin-top: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     &>img {
       height: 50px;
     }

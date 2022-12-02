@@ -12,6 +12,9 @@
   }
 
   padding: 35px 75px;
+  @media (min-width: 375px) and (max-width: 490px) {
+    padding: 15px 45px;
+  }
   max-height: 191px;
 
   & .actions {
