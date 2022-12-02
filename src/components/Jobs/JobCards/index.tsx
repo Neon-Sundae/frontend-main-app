@@ -1,6 +1,9 @@
+import { useMutation } from '@tanstack/react-query';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
+import config from 'config';
 import { FC } from 'react';
+import { getAccessToken } from 'utils/authFn';
 import styles from './index.module.scss';
 
 interface IJobCards {
@@ -13,6 +16,7 @@ interface IJobCards {
   jobUuid: string;
   selectedJobUuid?: any;
   handleCardClick: any;
+  setJobApplicantsData?: any;
 }
 
 const JobCards: FC<IJobCards> = ({
@@ -25,9 +29,39 @@ const JobCards: FC<IJobCards> = ({
   jobUuid,
   selectedJobUuid,
   handleCardClick,
+  setJobApplicantsData,
 }) => {
+  const payload = { jobId_uuid: jobUuid };
+  const { mutate: fetchJobApplicants } = useMutation(
+    async () => {
+      return fetch(`${config.ApiBaseUrl}/job/applicants`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          setJobApplicantsData(data);
+        });
+    },
+    {
+      onSuccess: () => {
+        // Do nothing
+      },
+      onError: (err: any) => {
+        console.log('err', err);
+      },
+    }
+  );
+
   const handleClick = () => {
     handleCardClick(jobUuid);
+    fetchJobApplicants();
   };
 
   return (
@@ -70,6 +104,7 @@ const JobCards: FC<IJobCards> = ({
 
 JobCards.defaultProps = {
   selectedJobUuid: undefined,
+  setJobApplicantsData: undefined,
 };
 
 export default JobCards;
