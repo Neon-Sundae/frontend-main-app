@@ -18,6 +18,7 @@ import JobView from '../JobView';
 const JobsLanding = () => {
   const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
+  const [JobApplicantsData, setJobApplicantsData] = useState([]);
   useEffect(() => {
     setShowView(true);
   }, [selectedJobUuid]);
@@ -49,8 +50,7 @@ const JobsLanding = () => {
   };
 
   if (isLoading) return null;
-  const { name: orgName, profileImage } = organisation;
-
+  const { name: orgName, profileImage, organisationUser } = organisation;
   const handleCreate = () => {
     setShowCreate(true);
     setShowView(false);
@@ -108,6 +108,7 @@ const JobsLanding = () => {
                 jobUuid={d.jobId_uuid}
                 selectedJobUuid={selectedJobUuid}
                 handleCardClick={jobCardClicked}
+                setJobApplicantsData={setJobApplicantsData}
               />
             );
           })}
@@ -146,6 +147,8 @@ const JobsLanding = () => {
                   jobStatus={d.status}
                   orgId={Number(orgId)}
                   setSelectedJobUuid={setSelectedJobUuid}
+                  JobApplicantsData={JobApplicantsData}
+                  orgOwnerUserId={organisationUser[0].userId}
                 />
               );
             })}

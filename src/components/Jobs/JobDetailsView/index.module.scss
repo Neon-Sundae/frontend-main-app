@@ -2,13 +2,47 @@
   &--no-selection {
     text-align: center;
   }
+  &>span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-  & > h1 {
+  .share-job-btn {
+    color: #fff;
+    border: solid 0.72px #E49DF4;
+    width: 113px;
+    height: 42px;
+    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+    box-shadow: 0px 3.40709px 20.4425px -0.851771px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    backdrop-filter: blur(17.0354px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 15px;
+    margin-left: 20.09px;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    justify-content: space-evenly;
+    padding: 0 25px;
+    font-family: var(--font-family-roboto-regular);
+    font-size: 16px;
+    cursor: pointer;
+
+    &>.pencil-icon,
+    .share-icon {
+      font-size: 16px !important;
+      margin-left: 5px;
+    }
+  }
+
+  &>span>h1 {
     font-family: var(--font-family-roboto-regular);
     font-size: 25px;
   }
 
-  & > h2 {
+  &>h2 {
     font-family: var(--font-family-roboto-regular);
     font-size: 18px;
     margin-top: 10px;
@@ -20,39 +54,61 @@
     margin-top: 15px;
     font-family: var(--font-family-roboto-regular);
     font-size: 16px;
+
+    @media (min-width: 375px) and (max-width: 490px) {
+      flex-wrap: wrap;
+    }
   }
 
   .job-view-description {
-    min-height: 290px;
+    @media (max-width: 1920px) {
+      height: 600px;
+    }
+
+    @media (max-width: 1680px) {
+      height: 550px;
+
+    }
+
+    @media (max-width: 1440px) {
+      height: 450px;
+
+    }
+
+    @media (max-width: 1024px) {
+      height: 380px;
+    }
+
+    @media screen and ( min-width: 401px ) and ( max-height: 500px ){
+      height: 580px;
+    }
+
+    @media screen and ( min-width: 375px ) and ( max-height: 500px ){
+      height: 300px;
+    }
+    
     margin-top: 15px;
+    overflow-y: scroll;
   }
 
   .job-detail-apply-button {
     margin-top: 25px;
     border: solid 0.72px #e49df4;
-    background: linear-gradient(
-        93.25deg,
+    background: linear-gradient(93.25deg,
         #bb84f0 4.05%,
         #ff94e6 63.65%,
-        #ffa3c8 99.41%
-      ),
+        #ffa3c8 99.41%),
       linear-gradient(0deg, #e880ff, #e880ff),
-      radial-gradient(
-        116.97% 116.97% at 34.87% -2.72%,
+      radial-gradient(116.97% 116.97% at 34.87% -2.72%,
         #ff8bfa 0%,
-        #ffffff 100%
-      ),
-      linear-gradient(
-        94.63deg,
+        #ffffff 100%),
+      linear-gradient(94.63deg,
         rgba(255, 255, 255, 0.16) 4.94%,
-        rgba(255, 255, 255, 0.04) 93.94%
-      );
+        rgba(255, 255, 255, 0.04) 93.94%);
     border-image-source: linear-gradient(0deg, #e880ff, #e880ff),
-      radial-gradient(
-        116.97% 116.97% at 34.87% -2.72%,
+      radial-gradient(116.97% 116.97% at 34.87% -2.72%,
         #ff8bfa 0%,
-        #ffffff 100%
-      );
+        #ffffff 100%);
     border-radius: 16.8px;
     box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
     backdrop-filter: blur(40px);
@@ -66,6 +122,10 @@
     letter-spacing: 2%;
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
+
+    @media (min-width: 375px) and (max-width: 490px) {
+      display: none;
+    }
   }
 
   .job-detail-note {
@@ -74,5 +134,9 @@
     font-size: 12px;
     color: #b4b4b4;
     margin-top: 10px;
+
+    @media (min-width: 375px) and (max-width: 490px) {
+      display: none;
+    }
   }
 }

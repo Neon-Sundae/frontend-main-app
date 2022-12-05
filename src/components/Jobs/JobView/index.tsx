@@ -5,8 +5,8 @@ import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
-import { useMutation } from '@tanstack/react-query';
-import { getAccessToken } from 'utils/authFn';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -28,6 +28,8 @@ interface IJobView {
   jobStatus: string;
   orgId: number;
   setSelectedJobUuid: any;
+  JobApplicantsData: any;
+  orgOwnerUserId: any;
 }
 
 const JobView: FC<IJobView> = ({
@@ -46,40 +48,19 @@ const JobView: FC<IJobView> = ({
   setShowView,
   selectedJobUuid,
   setSelectedJobUuid,
+  JobApplicantsData,
   jobStatus,
   orgId,
+  orgOwnerUserId,
 }) => {
-  const payload = { jobId_uuid: selectedJobUuid };
+  const userId = useSelector((state: RootState) => state.user.user?.userId);
+
+  const userIsOrgOwner = () => {
+    return orgOwnerUserId === userId;
+  };
+
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
-  const [JobApplicantsData, setJobApplicantsData] = useState([]);
-
-  const { mutate: fetchJobApplicants } = useMutation(
-    async () => {
-      return fetch(`${config.ApiBaseUrl}/job/applicants`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          setJobApplicantsData(data);
-        });
-    },
-    {
-      onSuccess: () => {
-        // Do nothing
-      },
-      onError: (err: any) => {
-        console.log('err', err);
-      },
-    }
-  );
 
   const editJobEntry = () => {
     setEditJobListing(true);
@@ -89,11 +70,11 @@ const JobView: FC<IJobView> = ({
     navigator.clipboard.writeText(`${config.AppDomain}/jobs/all?${jobUuid}`);
     toast.success('Copied to clipboard!');
   };
+
   const onClick = () => {
-    console.log('click');
-    fetchJobApplicants();
     setShowJobApplicants(true);
   };
+
   if (selectedJobUuid === jobUuid) {
     return (
       <div className={styles['job-view-wrap']}>
@@ -123,15 +104,19 @@ const JobView: FC<IJobView> = ({
             <div className={styles['inline-job-buttons']}>
               <h1>{title}</h1>
               <span>
-                <button
-                  className={styles['edit-job-btn']}
-                  onClick={() => editJobEntry()}
-                >
-                  Edit{' '}
-                  <i className={clsx('material-icons', styles['pencil-icon'])}>
-                    edit
-                  </i>
-                </button>
+                {userIsOrgOwner() && (
+                  <button
+                    className={styles['edit-job-btn']}
+                    onClick={() => editJobEntry()}
+                  >
+                    Edit{' '}
+                    <i
+                      className={clsx('material-icons', styles['pencil-icon'])}
+                    >
+                      edit
+                    </i>
+                  </button>
+                )}
                 <button
                   className={styles['edit-job-btn']}
                   onClick={() => generateShareLink()}
@@ -153,13 +138,14 @@ const JobView: FC<IJobView> = ({
               </p>
               <p>🌏 {isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
             </span>
-
-            <JobApplicants
-              setShowJobApplicants={setShowJobApplicants}
-              showJobApplicants={showJobApplicants}
-              onClick={onClick}
-              JobApplicantsData={JobApplicantsData}
-            />
+            {userIsOrgOwner() && (
+              <JobApplicants
+                setShowJobApplicants={setShowJobApplicants}
+                showJobApplicants={showJobApplicants}
+                onClick={onClick}
+                JobApplicantsData={JobApplicantsData}
+              />
+            )}
             {!showJobApplicants && (
               <div className={styles['job-view-description']}>
                 {description ? convertHtmlToReact(description) : 'N/A'}
@@ -190,21 +176,35 @@ const JobApplicants: FC<IJobApplicants> = ({
     <>
       <div className={styles['job-list-people-wrap']} onClick={onClick}>
         <div className={styles['job-list-people']} key={getRandomString(5)}>
-          {!showJobApplicants &&
-            JobApplicantsData.map((item: any) => (
-              <>
-                {' '}
-                <div className={styles['job-people']} key={getRandomString(5)}>
-                  <img
-                    src={getDefaultAvatarSrc(item.Profile.user.name)}
-                    alt=""
-                  />
-                </div>
-                <div>
-                  <p>+{JobApplicantsData.length}</p>
-                </div>
-              </>
-            ))}
+          {JobApplicantsData && JobApplicantsData.length === 0 && (
+            <p>no applicants yet.</p>
+          )}
+          {JobApplicantsData &&
+            JobApplicantsData.slice(0, 3).map((item: any) => {
+              return (
+                <>
+                  <div
+                    className={styles['job-people']}
+                    key={getRandomString(5)}
+                  >
+                    <img
+                      src={
+                        item.Profile.picture ||
+                        getDefaultAvatarSrc(
+                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                        )
+                      }
+                      alt=""
+                    />
+                  </div>
+                  {JobApplicantsData && JobApplicantsData.length > 2 && (
+                    <div>
+                      <p>+ {JobApplicantsData.length}</p>
+                    </div>
+                  )}
+                </>
+              );
+            })}
         </div>
       </div>
 
@@ -219,18 +219,29 @@ const JobApplicants: FC<IJobApplicants> = ({
             </i>
             <p>Applicants</p>
           </span>
-          {/* TODO: map job applicants */}
-          {JobApplicantsData.map((item: any) => (
-            <>
-              <div className={styles['job-applicants-view']}>
-                <img src={getDefaultAvatarSrc('A')} alt="" />
-                <p>{item.Profile.user.name}</p>
-                <p>Person Title</p>
-                <p>person@email.com</p>
-              </div>
-              <hr />
-            </>
-          ))}
+          {JobApplicantsData &&
+            JobApplicantsData.map((item: any) => (
+              <>
+                <div
+                  className={styles['job-applicants-view']}
+                  key={getRandomString(5)}
+                >
+                  <img
+                    src={
+                      item.Profile.picture ||
+                      getDefaultAvatarSrc(
+                        item?.Profile?.user?.name?.charAt(0).toUpperCase()
+                      )
+                    }
+                    alt="Job Applicant"
+                  />
+                  <p>{item.Profile.user.name}</p>
+                  <p>{item.Profile.title}</p>
+                  <p>{item.Profile.user.email}</p>
+                </div>
+                <hr />
+              </>
+            ))}
         </div>
       )}
     </>

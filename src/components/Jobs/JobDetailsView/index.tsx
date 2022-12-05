@@ -2,6 +2,8 @@
 import { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
+import toast from 'react-hot-toast';
+import clsx from 'clsx';
 import { useFetchJobDetail } from '../AllJobs/hooks';
 import useApplyToJob from './hooks';
 import styles from './index.module.scss';
@@ -17,9 +19,9 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   if (jobId_uuid === null) {
     return (
       <div className={styles['job-detail-view']}>
-        <h1 className={styles['job-detail-view--no-selection']}>
+        <h2 className={styles['job-detail-view--no-selection']}>
           Nothing selected
-        </h1>
+        </h2>
       </div>
     );
   }
@@ -30,6 +32,11 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
 
   const handleApply = () => {
     applyToJob.mutate({ jobId_uuid: data.jobId_uuid });
+  };
+
+  const generateShareLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success('Copied to clipboard!');
   };
 
   return (
@@ -78,6 +85,17 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
         <meta property="og:url" content={window.location.href} />
       </Helmet>
       <h1>{data.title}</h1>
+      <span>
+        <h1>{data.title}</h1>
+        <button
+          className={styles['share-job-btn']}
+          onClick={() => generateShareLink()}
+        >
+          {' '}
+          Share
+          <i className={clsx('material-icons', styles['share-icon'])}>share</i>
+        </button>
+      </span>
       <h2>{data.organisation.name}</h2>
       <span className={styles['inline-job-details']}>
         <p>💻 {data.role}</p>
