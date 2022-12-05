@@ -40,6 +40,7 @@ const JobDetails: FC<IJobDetails> = ({
   const tempCurrencies: any = [];
 
   const [editorVal, setEditorVal] = useState('');
+  const [initActiveVal, setInitActiveVal] = useState<any>(true);
 
   useEffect(() => {
     if (!temp.length) {
@@ -64,7 +65,7 @@ const JobDetails: FC<IJobDetails> = ({
   const [selectedLocation, setSelectedLocation] = useState<any>([]);
   const [selectedJobType, setSelectedJobType] = useState<any>([]);
   const { orgId } = useParams();
-  console.log(jobEntryData);
+
   const [selectedCurrency, setSelectedCurrency] = useState<Option | null>(null);
   const [jobListingData, setJobListingData] = useState<any>({
     title: '',
@@ -126,6 +127,7 @@ const JobDetails: FC<IJobDetails> = ({
     }));
   };
   const handleJobStatusChange = (e: any) => {
+    setInitActiveVal(undefined);
     setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
@@ -184,7 +186,7 @@ const JobDetails: FC<IJobDetails> = ({
             alignItems: 'center',
             justifyItems: 'start',
             padding: 8,
-            borderRadius: 4,
+            borderRadius: 10,
           }}
         >
           <input
@@ -215,6 +217,7 @@ const JobDetails: FC<IJobDetails> = ({
             id="toggleTwo"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
             onChange={e => handleJobStatusChange(e)}
+            defaultChecked={initActiveVal ?? jobListingData.status}
           />
           <label htmlFor="toggleTwo" className={styles.switch}>
             {' '}
@@ -444,7 +447,8 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
             justifyItems: 'start',
             padding: 8,
             border: '1px solid #ccc',
-            borderRadius: 4,
+            borderRadius: 10,
+            marginRight: 10,
           }}
         >
           <input
