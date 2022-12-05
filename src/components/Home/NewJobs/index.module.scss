@@ -3,19 +3,22 @@
   margin: auto;
   height: 280px;
   cursor: pointer;
-   @media (max-width: 1920px)  {
+
+  @media (max-width: 1920px) {
     width: 70%;
   }
-  @media (max-width: 1680px)  {
+
+  @media (max-width: 1680px) {
     width: 70%;
   }
-  @media (max-width: 1440px)  {
-     
+
+  @media (max-width: 1440px) {
+
     width: 80%;
   }
-  @media (max-width: 1024px) {
-     
-  }
+
+  @media (max-width: 1024px) {}
+
   &>.new-jobs-head {
     display: flex;
     justify-content: space-between;
@@ -38,6 +41,24 @@
 
   &>.job-card-wrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    @media (max-width: 1920px) {
+      gap: 145px;
+
+    }
+
+    @media (max-width: 1680px) {
+      gap: 52px;
+
+    }
+
+    @media (max-width: 1440px) {
+      gap: 40px;
+
+    }
+
+    @media (max-width: 1024px) {
+      gap: 1px;
+    }
   }
 }
