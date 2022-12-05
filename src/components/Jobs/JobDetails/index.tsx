@@ -73,8 +73,9 @@ const JobDetails: FC<IJobDetails> = ({
     currency: '',
     role: '',
     location: '',
-    isRemote: 'false',
-    status: '',
+    isRemote: jobEntryData && jobEntryData.isRemote === true,
+    status:
+      jobEntryData && jobEntryData.active === 'active' ? 'active' : 'inactive',
     organisationId: '',
   });
 
@@ -168,6 +169,10 @@ const JobDetails: FC<IJobDetails> = ({
         selectedJobUuid={selectedJobUuid}
         refetch={refetch}
         editorVal={editorVal}
+        handleMinSalaryChange={handleMinSalaryChange}
+        handleMaxSalaryChange={handleMaxSalaryChange}
+        setJobListingData={setJobListingData}
+        jobListingData={jobListingData}
       />
     );
   return (
@@ -286,6 +291,10 @@ interface IJobDetailsEdit {
   selectedJobUuid: string;
   refetch: any;
   editorVal: any;
+  handleMinSalaryChange: any;
+  setJobListingData: any;
+  handleMaxSalaryChange: any;
+  jobListingData: any;
 }
 
 const JobDetailsEdit: FC<IJobDetailsEdit> = ({
@@ -304,8 +313,13 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   selectedJobUuid,
   refetch,
   editorVal,
+  handleMinSalaryChange,
+  setJobListingData,
+  handleMaxSalaryChange,
+  jobListingData,
 }) => {
   const { orgId } = useParams();
+
   useEffect(() => {
     setSelectedJobType({ value: jobEntryData.role, label: jobEntryData.role });
     setSelectedLocation({
@@ -318,6 +332,49 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     });
     setEditorVal(jobEntryData.description);
   }, []);
+
+  const [remote, setRemote] = useState(jobEntryData.isRemote);
+  const [status, setStatus] = useState(jobEntryData.jobStatus);
+
+  const { mutate: updateJobEntryMut } = useMutation(
+    async () => {
+      return fetch(`${config.ApiBaseUrl}/job/${selectedJobUuid}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: jobListingData.title
+            ? jobListingData.title
+            : jobEntryData.title,
+          description: editorVal,
+          salaryMin: jobListingData.salaryMin
+            ? jobListingData.salaryMin
+            : jobEntryData.salaryMin,
+          salaryMax: jobListingData.salaryMax
+            ? jobListingData.salaryMax
+            : jobEntryData.salaryMax,
+          currency: selectedCurrency?.label,
+          role: selectedJobType.label,
+          location: selectedLocation.label,
+          isRemote: remote === true,
+          status: status === true ? 'active' : 'inactive',
+          organisationId: Number(orgId),
+          salaryType: 'annual',
+        }),
+      });
+    },
+    {
+      onSuccess: () => {
+        setShowCreate(false);
+        refetch();
+      },
+      onError: (err: any) => {
+        console.log('err', err);
+      },
+    }
+  );
 
   const { mutate: deleteJobEntry } = useMutation(
     async () => {
@@ -341,18 +398,6 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     }
   );
 
-  const [jobListingData, setJobListingData] = useState<any>({
-    title: jobEntryData.title,
-    salaryMin: '',
-    salaryMax: '',
-    currency: '',
-    role: selectedJobType.label,
-    location: selectedLocation.label,
-    isRemote: jobEntryData.isRemote,
-    status: jobEntryData.jobStatus,
-    organisationId: '',
-  });
-
   const handleJobTitleChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
@@ -360,75 +405,11 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     }));
   };
 
-  const handleJobStatusChange = (e: any) => {
-    setJobListingData((prevState: any) => ({
-      ...prevState,
-      status: e.target.checked ? 'active' : 'inactive',
-    }));
-  };
-
-  const handleRemoteToggle = (e: any) => {
-    setJobListingData((prevState: any) => ({
-      ...prevState,
-      isRemote: e.target.checked ? 'true' : 'false',
-    }));
-  };
-  const handleMinSalaryChange = (e: any) => {
-    setJobListingData((prevState: any) => ({
-      ...prevState,
-      salaryMin: e.target.value,
-    }));
-  };
-  const handleMaxSalaryChange = (e: any) => {
-    setJobListingData((prevState: any) => ({
-      ...prevState,
-      salaryMax: e.target.value,
-    }));
-  };
   const handleCancelBtn = () => {
     setShowCreate(false);
     setShowView(false);
   };
-  const updateJobEntryFunc = () => {
-    updateJobEntryMut();
-  };
-  const { mutate: updateJobEntryMut } = useMutation(
-    async () => {
-      return fetch(`${config.ApiBaseUrl}/job/${selectedJobUuid}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: jobListingData.title,
-          description: editorVal,
-          salaryMin: jobEntryData.salaryMin
-            ? jobEntryData.salaryMin
-            : jobListingData.salaryMin,
-          salaryMax: jobEntryData.salaryMax
-            ? jobEntryData.salaryMax
-            : jobListingData.salaryMax,
-          currency: selectedCurrency?.label,
-          role: selectedJobType.label,
-          location: selectedLocation.label,
-          isRemote: jobListingData.isRemote === 'true',
-          status: jobListingData.status,
-          organisationId: Number(orgId),
-          salaryType: 'annual',
-        }),
-      });
-    },
-    {
-      onSuccess: () => {
-        setShowCreate(false);
-        refetch();
-      },
-      onError: (err: any) => {
-        console.log('err', err);
-      },
-    }
-  );
+
   return (
     <>
       <span className={styles['inline-job-title']}>
@@ -436,7 +417,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
           placeholder="Job Title here"
           className={styles[`job-title-it`]}
           onChange={e => handleJobTitleChange(e)}
-          defaultValue={jobListingData.title}
+          defaultValue={jobEntryData.title ?? jobListingData.title}
         />
         <span className={styles['inline-job-status-label']}>
           <p>Active</p>
@@ -444,8 +425,8 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
             type="checkbox"
             id="toggleThree"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
-            checked={jobListingData.status === 'active'}
-            onChange={e => handleJobStatusChange(e)}
+            checked={status}
+            onChange={() => setStatus(!status)}
           />
           <label htmlFor="toggleThree" className={styles.switch}>
             {' '}
@@ -481,8 +462,8 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
             type="checkbox"
             id="remoteToggleThree"
             className={styles.checkbox}
-            checked={jobEntryData.isRemote === true}
-            onChange={e => handleRemoteToggle(e)}
+            checked={remote}
+            onChange={() => setRemote(!remote)}
           />
           <label htmlFor="remoteToggleThree" className={styles.switch}>
             {' '}
@@ -515,7 +496,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       <JobDescriptionEdit setEditorVal={setEditorVal} editorVal={editorVal} />
       <button
         className={styles[`publish-job-btn`]}
-        onClick={() => updateJobEntryFunc()}
+        onClick={() => updateJobEntryMut()}
       >
         Update
       </button>
