@@ -2,6 +2,7 @@
   &--no-selection {
     text-align: center;
   }
+
   &>span {
     display: flex;
     justify-content: space-between;
@@ -80,17 +81,21 @@
       height: 420px;
     }
 
-    @media screen and ( min-width: 401px ) and ( max-height: 500px ){
+    @media screen and (min-width: 401px) and (max-height: 500px) {
       height: 580px;
     }
 
-    @media screen and ( min-width: 375px ) and ( max-height: 500px ){
+    @media screen and (min-width: 375px) and (max-height: 500px) {
       height: 300px;
     }
-    
+
     margin-top: 15px;
     overflow-y: scroll;
     position: relative;
+
+    a {
+      color: #fff;
+    }
   }
 
   .job-detail-apply-button {
