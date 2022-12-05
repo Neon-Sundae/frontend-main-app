@@ -42,7 +42,7 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   return (
     <div className={styles['job-detail-view']}>
       <Helmet>
-        <title>{data.title ?? 'Neon Sundae - Job'}</title>
+        {/* <title>{data.title ?? 'Neon Sundae - Job'}</title>
         <link rel="canonical" href={window.location.href} />
 
         <meta name="twitter:creator" content="@neonsundae" />
@@ -82,7 +82,44 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
           property="og:image"
           content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
         />
+        <meta property="og:url" content={window.location.href} /> */}
+
+        {/* Primary Meta Tags */}
+        <title>{data.title ?? 'Neon Sundae - Job'}</title>
+        <meta name="title" content={data.title ?? 'Neon Sundae - Job'} />
+        <meta
+          name="description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
         <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content={data.title ?? 'Neon Sundae - Job'} />
+        <meta
+          property="og:description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta
+          property="og:image"
+          content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
+        />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={window.location.href} />
+        <meta
+          property="twitter:title"
+          content={data.title ?? 'Neon Sundae - Job'}
+        />
+        <meta
+          property="twitter:description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta
+          property="twitter:image"
+          content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
+        />
       </Helmet>
       <h1>{data.title}</h1>
       <span>
