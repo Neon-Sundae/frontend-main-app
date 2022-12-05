@@ -122,10 +122,6 @@
     letter-spacing: 2%;
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
-
-    @media (min-width: 375px) and (max-width: 490px) {
-      display: none;
-    }
   }
 
   .job-detail-note {
