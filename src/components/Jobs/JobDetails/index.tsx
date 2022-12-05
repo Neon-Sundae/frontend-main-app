@@ -359,7 +359,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
           role: selectedJobType.label,
           location: selectedLocation.label,
           isRemote: remote,
-          status: status === true ? 'active' : 'inactive',
+          status: status ? 'active' : 'inactive',
           organisationId: Number(orgId),
           salaryType: 'annual',
         }),
