@@ -40,6 +40,7 @@ const JobDetails: FC<IJobDetails> = ({
   const tempCurrencies: any = [];
 
   const [editorVal, setEditorVal] = useState('');
+  const [initActiveVal, setInitActiveVal] = useState<any>(true);
 
   useEffect(() => {
     if (!temp.length) {
@@ -126,6 +127,7 @@ const JobDetails: FC<IJobDetails> = ({
     }));
   };
   const handleJobStatusChange = (e: any) => {
+    setInitActiveVal(undefined);
     setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
@@ -178,12 +180,17 @@ const JobDetails: FC<IJobDetails> = ({
   return (
     <form onSubmit={() => createJobEntry()}>
       <span className={styles['inline-job-title']}>
-        <input
-          placeholder="Job Title here"
-          className={styles[`job-title-it`]}
-          onChange={e => handleJobTitleChange(e)}
-          required
-        />
+        <div className={styles['inline-job-div']}>
+          <input
+            placeholder="Job Title here"
+            className={styles[`job-title-it`]}
+            onChange={e => handleJobTitleChange(e)}
+            required
+          />
+          <span className={styles[`job-title-span`]}>
+            {jobListingData.title}
+          </span>
+        </div>
         <span className={styles['inline-job-status-label']}>
           <p>Active</p>
           <input
@@ -191,6 +198,7 @@ const JobDetails: FC<IJobDetails> = ({
             id="toggleTwo"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
             onChange={e => handleJobStatusChange(e)}
+            defaultChecked={initActiveVal ?? jobListingData.status}
           />
           <label htmlFor="toggleTwo" className={styles.switch}>
             {' '}
@@ -413,12 +421,18 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   return (
     <>
       <span className={styles['inline-job-title']}>
-        <input
-          placeholder="Job Title here"
-          className={styles[`job-title-it`]}
-          onChange={e => handleJobTitleChange(e)}
-          defaultValue={jobEntryData.title ?? jobListingData.title}
-        />
+        <div className={styles['inline-job-div']}>
+          <input
+            placeholder="Job Title here"
+            className={styles[`job-title-it`]}
+            onChange={e => handleJobTitleChange(e)}
+            required
+          />
+          <span className={styles[`job-title-span`]}>
+            {jobEntryData.title ?? jobListingData.title}
+          </span>
+        </div>
+
         <span className={styles['inline-job-status-label']}>
           <p>Active</p>
           <input

@@ -6,7 +6,27 @@
   overflow-y: hidden;
 
   .job-cards-all-wrap {
-    width: 72%;
+    width: 80%;
+
+    @media (max-width: 1920px) {
+      width: 71%;
+
+    }
+
+    @media (max-width: 1680px) {
+      width: 72%;
+
+    }
+
+    @media (max-width: 1440px) {
+      width: 78%;
+
+    }
+
+    @media (max-width: 1024px) {
+      width: 82%;
+    }
+
     margin: auto;
     height: 80vh;
     display: flex;
@@ -55,8 +75,9 @@
 
   .jobs-card-details-wrap {
     width: 55%;
+
     @media (min-width: 375px) and (max-width: 490px) {
       width: 100%;
-     }
+    }
   }
 }

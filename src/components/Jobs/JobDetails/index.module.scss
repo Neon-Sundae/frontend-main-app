@@ -1,15 +1,26 @@
 .inline-job-title {
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  .inline-job-div {
+    display: inline-grid;
+    align-items: center;
+    justify-content: start;
+    padding: 8;
+    border-radius: 10;
+  }
+  .job-title-span {
+    grid-area: 1 / 1 / 2 / 2;
+    visibility: hidden;
+  }
 }
 
 .inline-job-status-label {
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  margin-right: 242px;
   &>p {
     margin-right: 10px;
     font-family: var(--font-family-roboto-flex);
@@ -24,7 +35,19 @@
   font-size: 25px;
   color: #fff;
   font-family: var(--font-family-roboto-regular);
-  min-width: 100px;
+  min-width: 6em;
+  grid-area: 1 / 1 / 2 / 2;
+  width: '100%';
+  padding: 0;
+  border: 'none';
+  span {
+    font-family:  'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 1.75rem;
+    border: 2px solid #666;
+    /* box-sizing: border-box; */
+    /* padding: 0.5em 1em; */
+}
+
 }
 
 .job-title-it::placeholder {

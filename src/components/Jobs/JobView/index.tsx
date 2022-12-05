@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import config from 'config';
 import { FC, useState } from 'react';
 import getRandomString from 'utils/getRandomString';
@@ -7,6 +8,7 @@ import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -54,7 +56,7 @@ const JobView: FC<IJobView> = ({
   orgOwnerUserId,
 }) => {
   const userId = useSelector((state: RootState) => state.user.user?.userId);
-
+  const navigate = useNavigate();
   const userIsOrgOwner = () => {
     return orgOwnerUserId === userId;
   };
@@ -129,7 +131,7 @@ const JobView: FC<IJobView> = ({
               </span>
             </div>
 
-            <h2>{orgName}</h2>
+            <a onClick={() => navigate(`/organisation/${orgId}`)}>{orgName}</a>
             <span className={styles['inline-job-details']}>
               <p>💻 {role}</p>
               <p>📍 {location}</p>

@@ -4,6 +4,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    h1 {
+      word-wrap: break-word;
+        word-break: break-all;
+        width: 425px;
+
+    }
   }
 
   .edit-job-btn {
@@ -37,15 +43,16 @@
 
 
 
-  &>h1 {
+  h1 {
     font-family: var(--font-family-roboto-regular);
     font-size: 25px;
   }
 
-  &>h2 {
+  a {
     font-family: var(--font-family-roboto-regular);
     font-size: 18px;
     margin-top: 10px;
+    cursor: pointer;
   }
 
   &>.inline-job-details {
@@ -60,19 +67,33 @@
     @media (max-width: 1920px) {
       height: 600px;
     }
+
     @media (max-width: 1680px) {
       height: 550px;
 
     }
+
     @media (max-width: 1440px) {
       height: 450px;
 
     }
+
     @media (max-width: 1024px) {
       height: 380px;
     }
+
     margin-top: 15px;
     overflow-y: scroll;
+  }
+
+  a {
+    color: #fff;
+  }
+  p {
+    font-family: var(--font-family-roboto-flex);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
   }
 }
 
