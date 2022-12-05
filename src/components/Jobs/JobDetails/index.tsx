@@ -180,33 +180,14 @@ const JobDetails: FC<IJobDetails> = ({
   return (
     <form onSubmit={() => createJobEntry()}>
       <span className={styles['inline-job-title']}>
-        <div
-          style={{
-            display: 'inline-grid',
-            alignItems: 'center',
-            justifyItems: 'start',
-            padding: 8,
-            borderRadius: 10,
-          }}
-        >
+        <div className={styles['inline-job-div']}>
           <input
             placeholder="Job Title here"
             className={styles[`job-title-it`]}
             onChange={e => handleJobTitleChange(e)}
             required
-            style={{
-              gridArea: '1 / 1 / 2 / 2',
-              width: '100%',
-              padding: 0,
-              border: 'none',
-            }}
           />
-          <span
-            style={{
-              gridArea: '1 / 1 / 2 / 2',
-              visibility: 'hidden',
-            }}
-          >
+          <span className={styles[`job-title-span`]}>
             {jobListingData.title}
           </span>
         </div>
@@ -440,38 +421,18 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   return (
     <>
       <span className={styles['inline-job-title']}>
-        <div
-          style={{
-            display: 'inline-grid',
-            alignItems: 'center',
-            justifyItems: 'start',
-            padding: 8,
-            border: '1px solid #ccc',
-            borderRadius: 10,
-            marginRight: 10,
-          }}
-        >
+        <div className={styles['inline-job-div']}>
           <input
             placeholder="Job Title here"
             className={styles[`job-title-it`]}
             onChange={e => handleJobTitleChange(e)}
-            defaultValue={jobEntryData.title ?? jobListingData.title}
-            style={{
-              gridArea: '1 / 1 / 2 / 2',
-              width: '100%',
-              padding: 0,
-              border: 'none',
-            }}
+            required
           />
-          <span
-            style={{
-              gridArea: '1 / 1 / 2 / 2',
-              visibility: 'hidden',
-            }}
-          >
+          <span className={styles[`job-title-span`]}>
             {jobEntryData.title ?? jobListingData.title}
           </span>
         </div>
+
         <span className={styles['inline-job-status-label']}>
           <p>Active</p>
           <input
