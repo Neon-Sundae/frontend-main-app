@@ -37,15 +37,16 @@
 
 
 
-  &>h1 {
+  h1 {
     font-family: var(--font-family-roboto-regular);
     font-size: 25px;
   }
 
-  &>h2 {
+  a {
     font-family: var(--font-family-roboto-regular);
     font-size: 18px;
     margin-top: 10px;
+    cursor: pointer;
   }
 
   &>.inline-job-details {

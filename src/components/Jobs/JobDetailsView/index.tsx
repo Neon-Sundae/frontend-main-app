@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable camelcase */
 import { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 import { useFetchJobDetail } from '../AllJobs/hooks';
 import useApplyToJob from './hooks';
 import styles from './index.module.scss';
@@ -15,6 +17,7 @@ interface IJobDetailsView {
 const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   const { data, isLoading } = useFetchJobDetail(jobId_uuid);
   const applyToJob = useApplyToJob();
+  const navigate = useNavigate();
 
   if (jobId_uuid === null) {
     return (
@@ -79,7 +82,6 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
           content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
         />
       </Helmet>
-      <h1>{data.title}</h1>
       <span>
         <h1>{data.title}</h1>
         <button
@@ -91,7 +93,9 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
           <i className={clsx('material-icons', styles['share-icon'])}>share</i>
         </button>
       </span>
-      <h2>{data.organisation.name}</h2>
+      <a onClick={() => navigate(`/organisation/${data.organisationId}`)}>
+        {data.organisation.name}
+      </a>
       <span className={styles['inline-job-details']}>
         <p>💻 {data.role}</p>
         <p>📍 {data.location}</p>
@@ -113,7 +117,8 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
           Apply
         </button>
         <p className={styles['job-detail-note']}>
-          * When you apply you agree to use your email for interview purposes
+          * You&rsquo;ll need to mint your profile & agree to use your email for
+          interview purposes
         </p>
       </div>
     </div>
