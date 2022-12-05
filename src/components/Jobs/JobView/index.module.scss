@@ -4,6 +4,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    h1 {
+      word-wrap: break-word;
+        word-break: break-all;
+        width: 425px;
+
+    }
   }
 
   .edit-job-btn {

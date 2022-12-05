@@ -43,6 +43,12 @@
       font-weight: 500;
       font-size: 14px;
       line-height: 16px;
+
+      white-space: nowrap; 
+      width: 220px; 
+      overflow: hidden;
+      text-overflow: ellipsis; 
+ 
     }
 
     p:nth-child(2) {
