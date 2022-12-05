@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { FC } from 'react';
+import { Helmet } from 'react-helmet-async';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useFetchJobDetail } from '../AllJobs/hooks';
 import useApplyToJob from './hooks';
@@ -30,9 +31,52 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   const handleApply = () => {
     applyToJob.mutate({ jobId_uuid: data.jobId_uuid });
   };
-  console.log(data.description);
+
   return (
     <div className={styles['job-detail-view']}>
+      <Helmet>
+        <title>{data.title ?? 'Neon Sundae - Job'}</title>
+        <link rel="canonical" href={window.location.href} />
+
+        <meta name="twitter:creator" content="@neonsundae" />
+        <meta name="twitter:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={data.title ?? 'Neon Sundae - Job'}
+        />
+        <meta
+          name="twitter:description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta name="twitter:site" content="@neonsundae" />
+        <meta
+          name="twitter:image"
+          content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
+        />
+
+        <meta
+          name="description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta property="og:type" content={window.location.href} />
+        <meta
+          name="title"
+          property="og:title"
+          content={data.title ?? 'Neon Sundae - Job'}
+        />
+        <meta
+          name="description"
+          property="og:description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta
+          name="image"
+          property="og:image"
+          content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
+        />
+        <meta property="og:url" content={window.location.href} />
+      </Helmet>
       <h1>{data.title}</h1>
       <h2>{data.organisation.name}</h2>
       <span className={styles['inline-job-details']}>
