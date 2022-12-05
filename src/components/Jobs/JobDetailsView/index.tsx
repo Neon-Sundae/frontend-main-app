@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { FC } from 'react';
+import { Helmet } from 'react-helmet-async';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
-import config from 'config';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
 import { useFetchJobDetail } from '../AllJobs/hooks';
@@ -35,14 +35,51 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   };
 
   const generateShareLink = () => {
-    navigator.clipboard.writeText(
-      `${config.AppDomain}/jobs/all?job=${jobId_uuid}`
-    );
+    navigator.clipboard.writeText(window.location.href);
     toast.success('Copied to clipboard!');
   };
 
   return (
     <div className={styles['job-detail-view']}>
+      <Helmet>
+        {/* Primary Meta Tags */}
+        <title>{data.title ?? 'Neon Sundae - Job'}</title>
+        <meta name="title" content={data.title ?? 'Neon Sundae - Job'} />
+        <meta
+          name="description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content={data.title ?? 'Neon Sundae - Job'} />
+        <meta
+          property="og:description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta
+          property="og:image"
+          content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
+        />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={window.location.href} />
+        <meta
+          property="twitter:title"
+          content={data.title ?? 'Neon Sundae - Job'}
+        />
+        <meta
+          property="twitter:description"
+          content="Making Building in Web3 as Smooth as Sundae🍦"
+        />
+        <meta
+          property="twitter:image"
+          content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
+        />
+      </Helmet>
+      <h1>{data.title}</h1>
       <span>
         <h1>{data.title}</h1>
         <button
