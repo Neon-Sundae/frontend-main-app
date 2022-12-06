@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import config from 'config';
 import { useParams } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
@@ -19,7 +19,6 @@ const jobTypeOptions = [
 ];
 interface IJobDetails {
   orgName: string;
-  refetch: any;
   setShowCreate: any;
   jobEntryData?: any;
   setShowView: any;
@@ -29,7 +28,6 @@ interface IJobDetails {
 
 const JobDetails: FC<IJobDetails> = ({
   orgName,
-  refetch,
   setShowCreate,
   jobEntryData,
   setShowView,
@@ -41,6 +39,7 @@ const JobDetails: FC<IJobDetails> = ({
 
   const [editorVal, setEditorVal] = useState('');
   const [initActiveVal, setInitActiveVal] = useState<any>(true);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!temp.length) {
@@ -70,6 +69,9 @@ const JobDetails: FC<IJobDetails> = ({
     label: 'USD',
     value: 'USD',
   });
+
+  const getStatus = () => jobEntryData && jobEntryData.status === 'active';
+
   const [jobListingData, setJobListingData] = useState<any>({
     title: '',
     salaryMin: '',
@@ -78,9 +80,7 @@ const JobDetails: FC<IJobDetails> = ({
     role: '',
     location: '',
     isRemote: jobEntryData && jobEntryData.isRemote === true,
-    status:
-      jobEntryData && jobEntryData.active === 'active' ? 'active' : 'inactive',
-    organisationId: '',
+    status: getStatus(),
   });
 
   const { mutate: createJobEntry } = useMutation(
@@ -116,26 +116,28 @@ const JobDetails: FC<IJobDetails> = ({
     {
       onSuccess: () => {
         setShowCreate(false);
-        refetch();
+        queryClient.invalidateQueries(['orgJobs']);
       },
       onError: (err: any) => {
         console.log('err', err);
       },
     }
   );
+
   const handleJobTitleChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
     }));
   };
+
   const handleJobStatusChange = (e: any) => {
-    setInitActiveVal(undefined);
     setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
     }));
   };
+
   const handleRemoteToggle = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
@@ -149,13 +151,13 @@ const JobDetails: FC<IJobDetails> = ({
       salaryMin: e.target.value,
     }));
   };
+
   const handleMaxSalaryChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
       salaryMax: e.target.value,
     }));
   };
-
   if (jobEntryData)
     return (
       <JobDetailsEdit
@@ -172,7 +174,6 @@ const JobDetails: FC<IJobDetails> = ({
         setShowCreate={setShowCreate}
         setShowView={setShowView}
         selectedJobUuid={selectedJobUuid}
-        refetch={refetch}
         editorVal={editorVal}
         handleMinSalaryChange={handleMinSalaryChange}
         handleMaxSalaryChange={handleMaxSalaryChange}
@@ -207,7 +208,7 @@ const JobDetails: FC<IJobDetails> = ({
             id="toggleTwo"
             className={clsx(styles.checkbox, styles['job-active-checkbox'])}
             onChange={e => handleJobStatusChange(e)}
-            defaultChecked={initActiveVal ?? jobListingData.status}
+            defaultChecked={initActiveVal}
           />
           <label htmlFor="toggleTwo" className={styles.switch}>
             {' '}
@@ -306,7 +307,6 @@ interface IJobDetailsEdit {
   setShowCreate: any;
   setShowView: any;
   selectedJobUuid: string;
-  refetch: any;
   editorVal: any;
   handleMinSalaryChange: any;
   setJobListingData: any;
@@ -328,7 +328,6 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   setShowCreate,
   setShowView,
   selectedJobUuid,
-  refetch,
   editorVal,
   handleMinSalaryChange,
   setJobListingData,
@@ -336,6 +335,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   jobListingData,
 }) => {
   const { orgId } = useParams();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setSelectedJobType({ value: jobEntryData.role, label: jobEntryData.role });
@@ -350,10 +350,8 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     setEditorVal(jobEntryData.description);
   }, []);
 
-  const getStatus = () => jobEntryData.jobStatus === 'active';
-
   const [remote, setRemote] = useState(jobEntryData.isRemote);
-  const [status, setStatus] = useState(getStatus());
+  const [status, setStatus] = useState(jobEntryData.jobStatus);
 
   const { mutate: updateJobEntryMut } = useMutation(
     async () => {
@@ -387,7 +385,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     {
       onSuccess: () => {
         setShowCreate(false);
-        refetch();
+        queryClient.invalidateQueries(['orgJobs']);
       },
       onError: (err: any) => {
         console.log('err', err);
@@ -409,7 +407,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       onSuccess: () => {
         setShowCreate(false);
         setShowView(false);
-        refetch();
+        queryClient.invalidateQueries(['orgJobs']);
       },
       onError: (err: any) => {
         console.log('err', err);
@@ -418,7 +416,6 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   );
 
   const handleJobTitleChange = (e: any) => {
-    console.log(e.target.value);
     setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
@@ -429,12 +426,13 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     setShowCreate(false);
     setShowView(false);
   };
+
   return (
     <>
       <span className={styles['inline-job-title']}>
         <div className={styles['inline-job-div']}>
           <input
-            placeholder={jobEntryData.title ?? jobListingData.title}
+            placeholder="Job Title here"
             className={styles[`job-title-it`]}
             onChange={e => handleJobTitleChange(e)}
             required
