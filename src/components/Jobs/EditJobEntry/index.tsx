@@ -61,7 +61,6 @@ const EditJobEntry: FC<IEditJobEntry> = ({
     <div>
       <JobDetails
         orgName={orgName}
-        refetch={refetch}
         setShowCreate={setShowCreate}
         jobEntryData={jobEntryData}
         setShowView={setShowView}

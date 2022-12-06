@@ -70,8 +70,6 @@ const JobDetails: FC<IJobDetails> = ({
     value: 'USD',
   });
 
-  const getStatus = () => jobEntryData && jobEntryData.status === 'active';
-
   const [jobListingData, setJobListingData] = useState<any>({
     title: '',
     salaryMin: '',
@@ -80,9 +78,11 @@ const JobDetails: FC<IJobDetails> = ({
     role: '',
     location: '',
     isRemote: jobEntryData && jobEntryData.isRemote === true,
-    status: getStatus(),
+    status:
+      jobEntryData && jobEntryData.status === true ? 'active' : 'inactive',
   });
-
+  console.log('jobEntryData', jobEntryData);
+  console.log('jobListingData', jobListingData);
   const { mutate: createJobEntry } = useMutation(
     async () => {
       return fetch(`${config.ApiBaseUrl}/job`, {
@@ -100,7 +100,7 @@ const JobDetails: FC<IJobDetails> = ({
           role: selectedJobType.label,
           location: selectedLocation.label,
           isRemote: jobListingData.isRemote === 'true',
-          status: jobListingData.status,
+          status: initActiveVal === true ? 'active' : 'inactive',
           organisationId: Number(orgId),
           salaryType: 'annual',
         }),
@@ -132,6 +132,7 @@ const JobDetails: FC<IJobDetails> = ({
   };
 
   const handleJobStatusChange = (e: any) => {
+    setInitActiveVal(e.target.checked);
     setJobListingData((prevState: any) => ({
       ...prevState,
       status: e.target.checked ? 'active' : 'inactive',
@@ -185,6 +186,7 @@ const JobDetails: FC<IJobDetails> = ({
   const handleSubmit = (e: any) => {
     e.preventDefault();
     createJobEntry();
+    console.log(jobListingData.status);
   };
 
   return (
@@ -351,7 +353,8 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   }, []);
 
   const [remote, setRemote] = useState(jobEntryData.isRemote);
-  const [status, setStatus] = useState(jobEntryData.jobStatus);
+  const [status, setStatus] = useState(jobEntryData.jobStatus === 'active');
+  const [title, setTitle] = useState(jobEntryData.title);
 
   const { mutate: updateJobEntryMut } = useMutation(
     async () => {
@@ -416,6 +419,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   );
 
   const handleJobTitleChange = (e: any) => {
+    setTitle(e.target.value);
     setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
@@ -432,7 +436,8 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       <span className={styles['inline-job-title']}>
         <div className={styles['inline-job-div']}>
           <input
-            placeholder="Job Title here"
+            placeholder={jobEntryData.title ?? jobListingData.title}
+            value={title}
             className={styles[`job-title-it`]}
             onChange={e => handleJobTitleChange(e)}
             required
