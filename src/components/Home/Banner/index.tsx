@@ -67,7 +67,7 @@ interface BannerBtnProps {
   onClick: () => void;
 }
 
-const BannerBtn: FC<BannerBtnProps> = ({ title, onClick }) => {
+export const BannerBtn: FC<BannerBtnProps> = ({ title, onClick }) => {
   return (
     <button
       type="button"

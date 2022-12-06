@@ -2,7 +2,6 @@
   width: 90%;
   max-width: 1532px;
   margin-inline: auto;
-  margin-top: 3%;
   @media (max-width: 1920px)  {
     width: 70%;
   }
@@ -90,8 +89,9 @@
 }
 
 .organisation-project-cards-container {
+  width: 95%;
   display: flex;
   overflow-x: scroll;
   padding: 15px 0;
-  gap: 25px;
+  gap: 75px;
 }

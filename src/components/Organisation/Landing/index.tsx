@@ -6,10 +6,10 @@ import styles from './index.module.scss';
 import useFetchOrganisation from './hooks';
 import BasicDetails from '../BasicDetails';
 import OrganisationProjects from '../OrganisationProjects';
+import OrganisationJobs from '../OrganisationJobs';
 
 const Landing: FC = () => {
   const { organisation, isLoading } = useFetchOrganisation();
-
   if (isLoading) return null;
   return (
     <div
@@ -24,7 +24,10 @@ const Landing: FC = () => {
       <NavBar />
       <Banner organisation={organisation} />
       <BasicDetails organisation={organisation} />
-      <OrganisationProjects organisation={organisation} />
+      <div className={styles['organisation-project-jobs-wrap']}>
+        <OrganisationProjects organisation={organisation} />
+        <OrganisationJobs organisationId={organisation.organisationId} />
+      </div>
     </div>
   );
 };
