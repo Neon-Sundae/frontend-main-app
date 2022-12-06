@@ -113,7 +113,9 @@ const JobDetails: FC<IJobDetails> = ({
     {
       onSuccess: () => {
         setShowCreate(false);
-        refetch();
+        setTimeout(() => {
+          refetch();
+        }, 1000);
       },
       onError: (err: any) => {
         console.log('err', err);
