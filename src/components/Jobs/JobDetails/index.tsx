@@ -350,12 +350,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     setEditorVal(jobEntryData.description);
   }, []);
 
-  const getStatus = () => {
-    if (jobEntryData.jobStatus === 'inactive') {
-      return false;
-    }
-    return true;
-  };
+  const getStatus = () => jobEntryData.jobStatus === 'active';
 
   const [remote, setRemote] = useState(jobEntryData.isRemote);
   const [status, setStatus] = useState(getStatus());
