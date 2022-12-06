@@ -66,7 +66,10 @@ const JobDetails: FC<IJobDetails> = ({
   const [selectedJobType, setSelectedJobType] = useState<any>([]);
   const { orgId } = useParams();
 
-  const [selectedCurrency, setSelectedCurrency] = useState<Option | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState<Option | null>({
+    label: 'USD',
+    value: 'USD',
+  });
   const [jobListingData, setJobListingData] = useState<any>({
     title: '',
     salaryMin: '',
@@ -113,9 +116,7 @@ const JobDetails: FC<IJobDetails> = ({
     {
       onSuccess: () => {
         setShowCreate(false);
-        setTimeout(() => {
-          refetch();
-        }, 1000);
+        refetch();
       },
       onError: (err: any) => {
         console.log('err', err);
@@ -179,8 +180,14 @@ const JobDetails: FC<IJobDetails> = ({
         jobListingData={jobListingData}
       />
     );
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    createJobEntry();
+  };
+
   return (
-    <form onSubmit={() => createJobEntry()}>
+    <form onSubmit={e => handleSubmit(e)}>
       <span className={styles['inline-job-title']}>
         <div className={styles['inline-job-div']}>
           <input
