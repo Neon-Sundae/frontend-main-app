@@ -350,8 +350,15 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     setEditorVal(jobEntryData.description);
   }, []);
 
+  const getStatus = () => {
+    if (jobEntryData.jobStatus === 'inactive') {
+      return false;
+    }
+    return true;
+  };
+
   const [remote, setRemote] = useState(jobEntryData.isRemote);
-  const [status, setStatus] = useState(jobEntryData.jobStatus);
+  const [status, setStatus] = useState(getStatus());
 
   const { mutate: updateJobEntryMut } = useMutation(
     async () => {
@@ -416,6 +423,7 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
   );
 
   const handleJobTitleChange = (e: any) => {
+    console.log(e.target.value);
     setJobListingData((prevState: any) => ({
       ...prevState,
       title: e.target.value,
@@ -426,13 +434,12 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
     setShowCreate(false);
     setShowView(false);
   };
-
   return (
     <>
       <span className={styles['inline-job-title']}>
         <div className={styles['inline-job-div']}>
           <input
-            placeholder="Job Title here"
+            placeholder={jobEntryData.title ?? jobListingData.title}
             className={styles[`job-title-it`]}
             onChange={e => handleJobTitleChange(e)}
             required
