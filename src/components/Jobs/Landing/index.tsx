@@ -117,7 +117,6 @@ const JobsLanding = () => {
           {showCreate && !showView && (
             <JobDetails
               orgName={orgName}
-              refetch={refetch}
               setShowCreate={setShowCreate}
               setShowView={setShowView}
               selectedJobUuid={selectedJobUuid}
