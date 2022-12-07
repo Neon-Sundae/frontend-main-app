@@ -1,7 +1,7 @@
 import { updateCurrentStep, updateFirstTimeUser } from 'actions/auth';
 import config from 'config';
-import { Dispatch, SetStateAction } from 'react';
-import { providers } from 'ethers';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { providers, ethers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleAddPolygonChain, signMessage } from 'utils/ethereumFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
@@ -13,6 +13,7 @@ import {
   handleSwitchChange,
   requestEthereumAccounts,
 } from 'utils/web3EventFn';
+import UAuth from '@uauth/js';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
@@ -201,4 +202,92 @@ const useWalletConnectLogin = () => {
   return walletConnectGenerateNonce;
 };
 
-export { useMetamaskLogin, useWalletConnectLogin };
+const useUnstoppableDomains = () => {
+  const provider = detectMetamask();
+  const ac = new AbortController();
+  const { signal } = ac;
+  const dispatch = useDispatch();
+  // TODO: remove these hardcoded values
+  const uauth = new UAuth({
+    clientID: '9ef6576c-dc0a-43a8-83d0-e9d31512b00d',
+    redirectUri: 'http://localhost:3000',
+    scope: 'openid wallet profile',
+  });
+  const login = async () => {
+    try {
+      const authorization = await uauth.loginWithPopup();
+      const walletAddress = authorization.idToken.wallet_address;
+
+      if (
+        authorization &&
+        authorization.idToken &&
+        authorization.idToken.wallet_address
+      ) {
+        const payload = {
+          walletId: walletAddress,
+        };
+
+        const response = await fetch(
+          `${config.ApiBaseUrl}/auth/generate-nonce`,
+          {
+            signal,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        const json: any = await handleApiErrors(response);
+
+        dispatch(updateUser(json.user));
+
+        const signature = await signMessage(provider, json.message);
+
+        if (signature) {
+          const payload2 = {
+            message: json.message,
+            walletId: walletAddress,
+            isFirstTimeUser: json.isFirstTimeUser,
+            signature,
+          };
+
+          const response2 = await fetch(
+            `${config.ApiBaseUrl}/auth/verify-signature`,
+            {
+              signal,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload2),
+            }
+          );
+
+          const json2: any = await handleApiErrors(response2);
+
+          setAccessToken(json2.accessToken);
+          dispatch(updateFirstTimeUser(json.isFirstTimeUser));
+          dispatch(updateCurrentStep(2));
+        }
+      }
+
+      console.log('authorization', authorization);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await uauth.logout();
+      console.log('Logged out with Unstoppable');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return { login, logout };
+};
+
+export { useMetamaskLogin, useWalletConnectLogin, useUnstoppableDomains };
