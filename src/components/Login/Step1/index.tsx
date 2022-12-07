@@ -47,7 +47,7 @@ const Step1: FC = () => {
       {/* TODO: add icon for ud */}
       <IconButton
         handleClick={loginWithUd}
-        // icon={<MetamaskIcon width={25.8} height={23.26} />}
+        icon={<MetamaskIcon width={25.8} height={23.26} />}
         text="Unstoppable Domain"
       />
       {error && <p className={styles['error-text']}>{error}</p>}
