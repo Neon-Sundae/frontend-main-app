@@ -180,7 +180,7 @@ const useWalletConnectLogin = () => {
           );
 
           const json2: any = await handleApiErrors(response2);
-
+          dispatch(updateUser(json2.user));
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
@@ -203,77 +203,46 @@ const useWalletConnectLogin = () => {
 };
 
 const useUnstoppableDomains = () => {
-  const provider = detectMetamask();
   const ac = new AbortController();
   const { signal } = ac;
   const dispatch = useDispatch();
-  // TODO: remove these hardcoded values
+
   const uauth = new UAuth({
-    clientID: '9ef6576c-dc0a-43a8-83d0-e9d31512b00d',
-    redirectUri: 'http://localhost:3000',
+    clientID: import.meta.env.UD_API_KEY,
+    redirectUri: config.AppDomain,
     scope: 'openid wallet profile',
   });
+
   const login = async () => {
     try {
       const authorization = await uauth.loginWithPopup();
-      const walletAddress = authorization.idToken.wallet_address;
-
+      console.log('authorization', authorization);
       if (
         authorization &&
         authorization.idToken &&
         authorization.idToken.wallet_address
       ) {
-        const payload = {
-          walletId: walletAddress,
-        };
-
         const response = await fetch(
-          `${config.ApiBaseUrl}/auth/generate-nonce`,
+          `${config.ApiBaseUrl}/auth/verify-ud-signature`,
           {
             signal,
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({
+              walletId: authorization.idToken.wallet_address,
+              signature: authorization.idToken.eip4361_signature,
+              message: authorization.idToken.eip4361_message,
+              nonce: authorization.idToken.nonce,
+            }),
           }
         );
-
         const json: any = await handleApiErrors(response);
-
-        dispatch(updateUser(json.user));
-
-        const signature = await signMessage(provider, json.message);
-
-        if (signature) {
-          const payload2 = {
-            message: json.message,
-            walletId: walletAddress,
-            isFirstTimeUser: json.isFirstTimeUser,
-            signature,
-          };
-
-          const response2 = await fetch(
-            `${config.ApiBaseUrl}/auth/verify-signature`,
-            {
-              signal,
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(payload2),
-            }
-          );
-
-          const json2: any = await handleApiErrors(response2);
-
-          setAccessToken(json2.accessToken);
-          dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          dispatch(updateCurrentStep(2));
-        }
+        setAccessToken(json.accessToken);
+        dispatch(updateFirstTimeUser(json.isFirstTimeUser));
+        dispatch(updateCurrentStep(2));
       }
-
-      console.log('authorization', authorization);
     } catch (error) {
       console.error(error);
     }
