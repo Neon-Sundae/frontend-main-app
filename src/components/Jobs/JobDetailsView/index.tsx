@@ -98,7 +98,7 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
       </a>
       <span className={styles['inline-job-details']}>
         <p>💻 {data.role}</p>
-        <p>📍 {data.location}</p>
+        <p>📍 {data.location ?? 'Remote'}</p>
         <p>
           💰 {data.salaryMin}-{data.salaryMax} {data.currency}
         </p>

@@ -26,6 +26,7 @@ const OrganisationJobs: FC<IOrganisationJobs> = ({ organisationId }) => {
       <h3>Jobs Listed</h3>
       {data?.map((job: any) => (
         <JobCards
+          isOnDashboard
           key={job.jobId_uuid}
           orgName={job.organisation.name}
           orgImage={job.organisation.profileImage}

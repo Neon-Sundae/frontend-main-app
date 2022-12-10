@@ -18,6 +18,15 @@
   padding: 0 22px;
   cursor: pointer;
   margin-bottom: 15px;
+
+  &--dashboard {
+    color: white;
+  }
+
+  &--active {
+    color: white;
+  }
+
   .org-image {
     overflow: hidden;
     width: 51px;
@@ -25,9 +34,6 @@
     border-radius: 30px;
     cursor: pointer;
     object-fit: cover;
-  }
-  .job-card-left-active {
-    color: #fff;
   }
 
   .job-card-left {
@@ -44,11 +50,10 @@
       font-size: 14px;
       line-height: 16px;
 
-      white-space: nowrap; 
-      width: 220px; 
+      white-space: nowrap;
+      width: 220px;
       overflow: hidden;
-      text-overflow: ellipsis; 
- 
+      text-overflow: ellipsis;
     }
 
     p:nth-child(2) {
