@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useMutation } from '@tanstack/react-query';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import clsx from 'clsx';
@@ -14,6 +15,7 @@ interface IJobCards {
   salaryMax: number;
   currency: string;
   jobUuid: string;
+  isOnDashboard?: boolean;
   selectedJobUuid?: any;
   handleCardClick: any;
   setJobApplicantsData?: any;
@@ -27,6 +29,7 @@ const JobCards: FC<IJobCards> = ({
   salaryMax,
   currency,
   jobUuid,
+  isOnDashboard,
   selectedJobUuid,
   handleCardClick,
   setJobApplicantsData,
@@ -64,14 +67,20 @@ const JobCards: FC<IJobCards> = ({
     fetchJobApplicants();
   };
 
+  const getClassName = () => {
+    if (isOnDashboard) {
+      return styles['job-card-wrap--dashboard'];
+    }
+    if (selectedJobUuid === jobUuid) {
+      return styles['job-card-wrap--active'];
+    }
+    return undefined;
+  };
+
   return (
     <div
       onClick={handleClick}
-      className={clsx(
-        styles['job-card-wrap'],
-        selectedJobUuid === jobUuid && styles['job-card-left-active']
-      )}
-      style={{ color: selectedJobUuid === jobUuid ? '#fff' : '#A9A9A9' }}
+      className={clsx(styles['job-card-wrap'], getClassName())}
     >
       {orgImage ? (
         <div className={styles['job-card-org-image-wrapper']}>
@@ -103,6 +112,7 @@ const JobCards: FC<IJobCards> = ({
 };
 
 JobCards.defaultProps = {
+  isOnDashboard: false,
   selectedJobUuid: undefined,
   setJobApplicantsData: undefined,
 };

@@ -134,7 +134,7 @@ const JobView: FC<IJobView> = ({
             <a onClick={() => navigate(`/organisation/${orgId}`)}>{orgName}</a>
             <span className={styles['inline-job-details']}>
               <p>💻 {role}</p>
-              <p>📍 {location}</p>
+              <p>📍 {location ?? 'Remote'}</p>
               <p>
                 💰 {salaryMin}-{salaryMax} {currency}
               </p>
