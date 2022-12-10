@@ -32,6 +32,7 @@ const NewJobs = () => {
       <div className={styles['job-card-wrap']}>
         {data?.map((job: any) => (
           <JobCards
+            isOnDashboard
             key={job.jobId_uuid}
             orgName={job.organisation.name}
             orgImage={job.organisation.profileImage}
