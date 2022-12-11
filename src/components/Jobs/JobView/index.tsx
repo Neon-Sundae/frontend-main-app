@@ -179,34 +179,21 @@ const JobApplicants: FC<IJobApplicants> = ({
       <div className={styles['job-list-people-wrap']} onClick={onClick}>
         <div className={styles['job-list-people']} key={getRandomString(5)}>
           {JobApplicantsData && JobApplicantsData.length === 0 && (
-            <p>no applicants yet.</p>
+            <button
+              className={styles['view-applicants-btn']}
+              disabled={JobApplicantsData.length === 0}
+            >
+              View Applicants
+            </button>
           )}
-          {JobApplicantsData &&
-            JobApplicantsData.slice(0, 3).map((item: any) => {
-              return (
-                <>
-                  <div
-                    className={styles['job-people']}
-                    key={getRandomString(5)}
-                  >
-                    <img
-                      src={
-                        item.Profile.picture ||
-                        getDefaultAvatarSrc(
-                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
-                        )
-                      }
-                      alt=""
-                    />
-                  </div>
-                  {JobApplicantsData && JobApplicantsData.length > 2 && (
-                    <div>
-                      <p>+ {JobApplicantsData.length}</p>
-                    </div>
-                  )}
-                </>
-              );
-            })}
+          {JobApplicantsData && JobApplicantsData.length !== 0 && (
+            <button
+              className={styles['view-applicants-btn']}
+              disabled={JobApplicantsData.length === 0}
+            >
+              View Applicants
+            </button>
+          )}
         </div>
       </div>
 

@@ -4,10 +4,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
     h1 {
       word-wrap: break-word;
-        word-break: break-all;
-        width: 280px;
+      word-break: break-all;
+      width: 280px;
 
     }
   }
@@ -89,6 +90,7 @@
   a {
     color: #fff;
   }
+
   p {
     font-family: var(--font-family-roboto-flex);
     font-style: normal;
@@ -102,8 +104,33 @@
   width: fit-content;
   margin-top: 25px;
   margin-bottom: 25px;
-  padding: 0 15px;
   cursor: pointer;
+
+  .view-applicants-btn {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid #D3D3D3;
+    border-radius: 16px;
+    padding: 0 15px;
+    font-family: var(--font-family-roboto-regular);
+    font-size: 13.75px;
+    border: 1px solid #D3D3D3;
+    border-radius: 16px;
+    background: none;
+    width: 135px;
+    height: 38px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .view-applicants-btn:disabled {
+    border: 2px solid #a9a9a9;
+    color: #a9a9a9;
+    cursor: default;
+  }
 
   .job-list-people {
     display: flex;
@@ -129,6 +156,7 @@
         margin-left: 2px;
         font-size: 14px;
       }
+
     }
 
     .job-people {
