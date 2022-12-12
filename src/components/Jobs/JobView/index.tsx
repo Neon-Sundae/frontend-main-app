@@ -179,24 +179,13 @@ const JobApplicants: FC<IJobApplicants> = ({
       <div className={styles['job-list-people-wrap']}>
         <div className={styles['job-list-people']} key={getRandomString(5)}>
           <span>
-            {JobApplicantsData && JobApplicantsData.length === 0 && (
-              <button
-                className={styles['view-applicants-btn']}
-                disabled={JobApplicantsData.length === 0}
-                onClick={onClick}
-              >
-                View Applicants
-              </button>
-            )}
-            {JobApplicantsData && JobApplicantsData.length !== 0 && (
-              <button
-                className={styles['view-applicants-btn']}
-                disabled={JobApplicantsData.length === 0}
-                onClick={onClick}
-              >
-                View Applicants
-              </button>
-            )}
+            <button
+              className={styles['view-applicants-btn']}
+              disabled={JobApplicantsData && JobApplicantsData.length === 0}
+              onClick={onClick}
+            >
+              View Applicants
+            </button>
           </span>
           <span>
             {userIsOrgOwner() && (
