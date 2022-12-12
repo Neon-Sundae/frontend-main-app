@@ -290,7 +290,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               onClick={() => handleListAJob()}
             >
               <span className={styles.title}>
-                <p>List A Job</p>
+                <p>Manage Jobs</p>
               </span>
               <span className={clsx('material-icons', styles.icon)}>
                 trending_flat
