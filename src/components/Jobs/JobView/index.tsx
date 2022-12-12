@@ -105,30 +105,6 @@ const JobView: FC<IJobView> = ({
           <>
             <div className={styles['inline-job-buttons']}>
               <h1>{title}</h1>
-              <span>
-                {userIsOrgOwner() && (
-                  <button
-                    className={styles['edit-job-btn']}
-                    onClick={() => editJobEntry()}
-                  >
-                    Edit{' '}
-                    <i
-                      className={clsx('material-icons', styles['pencil-icon'])}
-                    >
-                      edit
-                    </i>
-                  </button>
-                )}
-                <button
-                  className={styles['edit-job-btn']}
-                  onClick={() => generateShareLink()}
-                >
-                  Share{' '}
-                  <i className={clsx('material-icons', styles['share-icon'])}>
-                    share
-                  </i>
-                </button>
-              </span>
             </div>
 
             <a onClick={() => navigate(`/organisation/${orgId}`)}>{orgName}</a>
@@ -146,6 +122,9 @@ const JobView: FC<IJobView> = ({
                 showJobApplicants={showJobApplicants}
                 onClick={onClick}
                 JobApplicantsData={JobApplicantsData}
+                orgOwnerUserId={orgOwnerUserId}
+                setEditJobListing={setEditJobListing}
+                jobUuid={jobUuid}
               />
             )}
             {!showJobApplicants && (
@@ -166,6 +145,9 @@ interface IJobApplicants {
   showJobApplicants: any;
   onClick: any;
   JobApplicantsData: any;
+  orgOwnerUserId: any;
+  setEditJobListing: any;
+  jobUuid: any;
 }
 
 const JobApplicants: FC<IJobApplicants> = ({
@@ -173,40 +155,60 @@ const JobApplicants: FC<IJobApplicants> = ({
   showJobApplicants,
   onClick,
   JobApplicantsData,
+  orgOwnerUserId,
+  setEditJobListing,
+  jobUuid,
 }) => {
+  const userId = useSelector((state: RootState) => state.user.user?.userId);
+
+  const userIsOrgOwner = () => {
+    return orgOwnerUserId === userId;
+  };
+
+  const editJobEntry = () => {
+    setEditJobListing(true);
+  };
+
+  const generateShareLink = () => {
+    navigator.clipboard.writeText(`${config.AppDomain}/jobs/all?${jobUuid}`);
+    toast.success('Copied to clipboard!');
+  };
+
   return (
     <>
-      <div className={styles['job-list-people-wrap']} onClick={onClick}>
+      <div className={styles['job-list-people-wrap']}>
         <div className={styles['job-list-people']} key={getRandomString(5)}>
-          {JobApplicantsData && JobApplicantsData.length === 0 && (
-            <p>no applicants yet.</p>
-          )}
-          {JobApplicantsData &&
-            JobApplicantsData.slice(0, 3).map((item: any) => {
-              return (
-                <>
-                  <div
-                    className={styles['job-people']}
-                    key={getRandomString(5)}
-                  >
-                    <img
-                      src={
-                        item.Profile.picture ||
-                        getDefaultAvatarSrc(
-                          item?.Profile?.user?.name?.charAt(0).toUpperCase()
-                        )
-                      }
-                      alt=""
-                    />
-                  </div>
-                  {JobApplicantsData && JobApplicantsData.length > 2 && (
-                    <div>
-                      <p>+ {JobApplicantsData.length}</p>
-                    </div>
-                  )}
-                </>
-              );
-            })}
+          <span>
+            <button
+              className={styles['view-applicants-btn']}
+              disabled={JobApplicantsData && JobApplicantsData.length === 0}
+              onClick={onClick}
+            >
+              View Applicants
+            </button>
+          </span>
+          <span>
+            {userIsOrgOwner() && (
+              <button
+                className={styles['edit-job-btn']}
+                onClick={() => editJobEntry()}
+              >
+                Edit
+                <i className={clsx('material-icons', styles['pencil-icon'])}>
+                  edit
+                </i>
+              </button>
+            )}
+            <button
+              className={styles['edit-job-btn']}
+              onClick={() => generateShareLink()}
+            >
+              Share
+              <i className={clsx('material-icons', styles['share-icon'])}>
+                share
+              </i>
+            </button>
+          </span>
         </div>
       </div>
 
