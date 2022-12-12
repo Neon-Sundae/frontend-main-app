@@ -208,7 +208,7 @@ const useUnstoppableDomains = () => {
   const dispatch = useDispatch();
 
   const uauth = new UAuth({
-    clientID: import.meta.env.UD_API_KEY,
+    clientID: import.meta.env.VITE_UD_CLIENT_KEY,
     redirectUri: config.AppDomain,
     scope: 'openid wallet profile',
   });
@@ -216,7 +216,6 @@ const useUnstoppableDomains = () => {
   const login = async () => {
     try {
       const authorization = await uauth.loginWithPopup();
-      console.log('authorization', authorization);
       if (
         authorization &&
         authorization.idToken &&
@@ -239,6 +238,7 @@ const useUnstoppableDomains = () => {
           }
         );
         const json: any = await handleApiErrors(response);
+        dispatch(updateUser(json.user));
         setAccessToken(json.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
