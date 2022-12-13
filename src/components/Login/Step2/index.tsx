@@ -32,7 +32,9 @@ const Step2: FC = () => {
         <MetamaskIcon width={23} height={22} />
         <span className={styles['connection-text']}>
           You&apos;re connected with{' '}
-          {`${user?.walletId?.slice(0, 4)}...${user?.walletId?.slice(38)}`}
+          {`${user && user.walletId?.slice(0, 4)}...${
+            user && user.walletId?.slice(38)
+          }`}
         </span>
       </div>
       <p className={styles['success-text']}>
