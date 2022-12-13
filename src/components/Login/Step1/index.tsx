@@ -1,22 +1,22 @@
 import { FC, useState } from 'react';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
-import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
+import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import IconButton from 'components/IconButton';
 import styles from './index.module.scss';
-import { useMetamaskLogin, useWalletConnectLogin } from './hooks';
+import { useMetamaskLogin, useUnstoppableDomains } from './hooks';
 
 const Step1: FC = () => {
   const [error, setError] = useState('');
 
   const generateNonce = useMetamaskLogin();
-  const walletConnectGenerateNonce = useWalletConnectLogin();
+  const unstoppableDomains = useUnstoppableDomains();
 
   const loginWithMetaMask = () => {
     generateNonce({ setError });
   };
 
-  const loginWithWalletConnect = async () => {
-    walletConnectGenerateNonce({ setError });
+  const loginWithUd = () => {
+    unstoppableDomains.login();
   };
 
   return (
@@ -29,9 +29,14 @@ const Step1: FC = () => {
         text="Metamask"
       />
       <IconButton
-        handleClick={loginWithWalletConnect}
-        icon={<WalletConnectIcon width={38} height={24} />}
-        text="WalletConnect"
+        handleClick={loginWithUd}
+        icon={<UDIcon width={39.59} height={43} />}
+        text="UNSTOPPABLE DOMAIN"
+        style={{
+          fontFamily: 'Montserrat',
+          fontSize: '15px',
+          padding: '0 25px',
+        }}
       />
       {error && <p className={styles['error-text']}>{error}</p>}
     </>
