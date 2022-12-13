@@ -108,6 +108,15 @@
   font-weight: 700;
 }
 
+// import monteserrat font from fonts directory
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./fonts/montserrat/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 400;
+  font-style: bold;
+}
+
+
 /*
   * Material icons font file
   * Refer here for getting icons - https://fonts.google.com/icons
@@ -184,4 +193,6 @@
   --font-family-asap-medium: InterMedium, sans-serif;
   --font-family-asap-semi-bold: InterSemiBold, sans-serif;
   --font-family-asap-bold: InterBold, sans-serif;
+
+  --font-family-montserrat: Montserrat, sans-serif;
 }
