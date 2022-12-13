@@ -2,6 +2,7 @@ import { FC, useState, SetStateAction, Dispatch, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import config from 'config';
 import { editProfile } from 'actions/profile';
 import { RootState } from 'reducers';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
@@ -42,7 +43,7 @@ const BasicDetails: FC = () => {
         className={styles['share-icon']}
         width={20}
         height={20}
-      ></ShareIcon>
+      />
       {shareOpen ? <SocialShareModal handleClose={handleClose} /> : null}
       <ProfileImage picture={profile?.picture} />
       <NameDesignation title={profile?.title} user={profile?.user} />
@@ -94,6 +95,10 @@ const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
   );
 };
 
+ProfileImage.defaultProps = {
+  picture: undefined,
+};
+
 interface INameDesignation {
   title: string | null | undefined;
   user:
@@ -137,6 +142,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
 
   useEffect(() => {
     if (showShareModal) handleShareOpen();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showShareModal]);
 
   const { createProfile, deploying } = useProfileManage();
@@ -148,6 +154,17 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
 
   const handleShareOpen = () => {
     setShare(true);
+  };
+
+  const handleMintOnChain = () => {
+    if (navigator) {
+      navigator.sendBeacon(
+        `${config.ApiBaseUrl}/profile/mint-analytics`,
+        walletId
+      );
+    }
+
+    createProfile(name, profile?.title, walletId);
   };
 
   const renderByDeployingState = () => {
@@ -189,7 +206,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
                 className={styles['address-container']}
                 id="profile-address-container"
                 style={{ cursor: 'pointer' }}
-                onClick={() => createProfile(name, profile?.title, walletId)}
+                onClick={handleMintOnChain}
               >
                 <span className="material-icons" style={{ color: '#FAA5B9' }}>
                   close
