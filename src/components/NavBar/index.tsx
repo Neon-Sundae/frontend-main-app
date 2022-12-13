@@ -11,8 +11,8 @@ const NavBar = () => {
   return (
     <nav className={styles.nav}>
       <NeonSundaeMainLogo
-        width={108.35}
-        height={72}
+        width={129.04}
+        height={85.75}
         onClick={() => navigate('/dashboard')}
         className={styles.logo}
       />
