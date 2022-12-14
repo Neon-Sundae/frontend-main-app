@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-evenly;
   cursor: pointer;
-  @media (min-width: 375px) and (max-width: 490px) {
+  @media (max-width: 600px) {
     display: none;
   }
   &>.image-cont {
