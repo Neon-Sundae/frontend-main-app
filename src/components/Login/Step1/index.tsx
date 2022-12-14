@@ -1,22 +1,20 @@
 import { FC, useState } from 'react';
-import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import IconButton from 'components/IconButton';
 import styles from './index.module.scss';
-import { useMetamaskLogin, useUnstoppableDomains } from './hooks';
+import { useUnstoppableDomains } from './hooks';
+import LoginModal from '../LoginModal';
 
 const Step1: FC = () => {
-  const [error, setError] = useState('');
-
-  const generateNonce = useMetamaskLogin();
+  const [showModal, setShowModal] = useState(false);
   const unstoppableDomains = useUnstoppableDomains();
-
-  const loginWithMetaMask = () => {
-    generateNonce({ setError });
-  };
 
   const loginWithUd = () => {
     unstoppableDomains.login();
+  };
+
+  const showLoginModal = () => {
+    setShowModal(true);
   };
 
   return (
@@ -24,9 +22,9 @@ const Step1: FC = () => {
       <h1 className={styles.title}>Welcome to Neon Sundae!</h1>
       <p className={styles.subtitle}>connect your wallet to get started.</p>
       <IconButton
-        handleClick={loginWithMetaMask}
-        icon={<MetamaskIcon width={25.8} height={23.26} />}
-        text="Metamask"
+        handleClick={showLoginModal}
+        icon={<></>}
+        text="Connect Wallet"
       />
       <IconButton
         handleClick={loginWithUd}
@@ -38,7 +36,9 @@ const Step1: FC = () => {
           padding: '0 25px',
         }}
       />
-      {error && <p className={styles['error-text']}>{error}</p>}
+      {showModal && (
+        <LoginModal showModal={showModal} setShowModal={setShowModal} />
+      )}
     </>
   );
 };
