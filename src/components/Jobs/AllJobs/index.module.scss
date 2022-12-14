@@ -7,6 +7,8 @@
 
   .job-cards-all-wrap {
     width: 80%;
+   
+
 
     @media (max-width: 1920px) {
       width: 71%;
@@ -29,10 +31,19 @@
 
     margin: auto;
     height: 80vh;
+    @media (max-width: 600px) {
+      height: fit-content;
+    }
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-
+    .jobs-card-details-wrap {
+      width: 55%;
+      height: 100%;
+      @media (max-width: 600px) {
+        width: 100%;
+      }
+    }
   }
 
   .jobs-cards-wrap {
@@ -63,7 +74,7 @@
       }
     }
 
-    @media (min-width: 375px) and (max-width: 490px) {
+    @media (max-width: 600px) {
       display: none;
     }
 
@@ -73,11 +84,5 @@
     margin-bottom: 20px;
   }
 
-  .jobs-card-details-wrap {
-    width: 55%;
 
-    @media (min-width: 375px) and (max-width: 490px) {
-      width: 100%;
-    }
-  }
 }

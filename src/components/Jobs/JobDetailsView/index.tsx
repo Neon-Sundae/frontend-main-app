@@ -82,34 +82,47 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
           content="https://nsassets.s3.ap-southeast-1.amazonaws.com/NeonSundae.png"
         />
       </Helmet>
-      <span>
-        <h1>{data.title}</h1>
-        <button
-          className={styles['share-job-btn']}
-          onClick={() => generateShareLink()}
-        >
-          {' '}
-          Share
-          <i className={clsx('material-icons', styles['share-icon'])}>share</i>
-        </button>
-      </span>
-      <a onClick={() => navigate(`/organisation/${data.organisationId}`)}>
-        {data.organisation.name}
-      </a>
-      <span className={styles['inline-job-details']}>
-        <p>💻 {data.role}</p>
-        <p>📍 {data.location ?? 'Remote'}</p>
-        <p>
-          💰 {data.salaryMin}-{data.salaryMax} {data.currency}
-        </p>
-        <p>🌏 {data.isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
-      </span>
-
-      <div className={styles['job-view-description']}>
-        {data.description ? convertHtmlToReact(data.description) : 'N/A'}
+      <div className={styles['job-detail-view--header']}>
+        <span>
+          <h1>{data.title}</h1>
+          <button
+            className={styles['share-job-btn']}
+            onClick={() => generateShareLink()}
+          >
+            {' '}
+            Share
+            <i className={clsx('material-icons', styles['share-icon'])}>
+              share
+            </i>
+          </button>
+        </span>
+        <a onClick={() => navigate(`/organisation/${data.organisationId}`)}>
+          {data.organisation.name}
+        </a>
+        <span className={styles['inline-job-details']}>
+          <p>💻 {data.role}</p>
+          <p>📍 {data.location ?? 'Remote'}</p>
+          <p>
+            💰 {data.salaryMin}-{data.salaryMax} {data.currency}
+          </p>
+          <p>🌏 {data.isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
+        </span>
       </div>
 
-      <div className={styles['job-detail-apply-group']}>
+      <div
+        className={clsx(
+          styles['job-view-description'],
+          styles['job-detail-view--content']
+        )}
+      >
+        {data.description ? convertHtmlToReact(data.description) : 'N/A'}
+      </div>
+      <div
+        className={clsx(
+          styles['job-detail-apply-group'],
+          styles['job-detail-view--footer']
+        )}
+      >
         <button
           className={styles['job-detail-apply-button']}
           onClick={handleApply}
