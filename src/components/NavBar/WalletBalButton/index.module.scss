@@ -7,7 +7,7 @@
   height: 69px;
   cursor: pointer;
   margin-right: 32px;
-  @media (min-width: 375px) and (max-width: 490px) {
+  @media (max-width: 600px) {
     display: none;
    }
 }
