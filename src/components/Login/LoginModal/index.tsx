@@ -142,7 +142,7 @@ const MetamaskLogin: FC<MetamaskLoginProps> = ({
       <div className={styles['metmask-login']}>
         <h2>Install Metamask</h2>
         <p>Scan with your phone to download on iOS or Android</p>
-        <img src="/src/assets/illustrations/icons/metamask-qr.png" />
+        <img src="/src/assets/illustrations/icons/metamask-qr.png" alt="scannable qr code" />
         <span>
         <p >Don't have Metamask?</p>
         <a href="https://metamask.io/download/">
