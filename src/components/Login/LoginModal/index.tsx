@@ -3,7 +3,6 @@ import Modal from 'components/Modal';
 import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
-import clsx from 'clsx';
 import styles from './index.module.scss';
 import { useMetamaskLogin, useWalletConnectLogin } from '../Step1/hooks';
 
@@ -15,12 +14,23 @@ interface LoginModalProps {
 const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
   const [error, setError] = useState('');
   const [getWalletShow, setGetWalletShow] = useState(false);
+  const [showQr, setShowQr] = useState(false);
 
   const generateNonce = useMetamaskLogin();
   const walletConnectGenerateNonce = useWalletConnectLogin();
 
   const loginWithMetaMask = () => {
     generateNonce({ setError });
+  };
+
+  const handleMetamaskLogin = () => {
+    if (typeof window.ethereum !== 'undefined') {
+      loginWithMetaMask();
+      setGetWalletShow(true);
+    } else {
+      setGetWalletShow(true);
+      setShowQr(true);
+    }
   };
 
   const loginWithWalletConnect = async () => {
@@ -50,14 +60,14 @@ const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
           <h2 className={styles['login-modal--section-heading']}>
             Connect Wallet
           </h2>
-          {typeof window.ethereum !== 'undefined' && (
-            <IconButton
-              icon={<MetamaskIcon width={26} height={23.4} />}
-              text="Metamask"
-              handleClick={loginWithMetaMask}
-              style={buttonStyles}
-            />
-          )}
+
+          <IconButton
+            icon={<MetamaskIcon width={26} height={23.4} />}
+            text="Metamask"
+            handleClick={handleMetamaskLogin}
+            style={buttonStyles}
+          />
+
           <IconButton
             icon={<WalletConnectIcon width={26} height={23.4} />}
             text="Wallet Connect"
@@ -70,9 +80,10 @@ const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
             <LoginModalContent setGetWalletShow={setGetWalletShow} />
           )}
           {getWalletShow && (
-            <GetWalletContent
+            <MetamaskLogin
               setGetWalletShow={setGetWalletShow}
-              loginWithWalletConnect={loginWithWalletConnect}
+              handleMetamaskLogin={handleMetamaskLogin}
+              showQr={showQr}
             />
           )}
         </div>
@@ -111,62 +122,42 @@ const LoginModalContent: FC<LoginModalContentProps> = ({
           connect your wallet.
         </p>
       </span>
-      <button
-        className={styles['login-modal--get-wallet-btn']}
-        onClick={() => setGetWalletShow(true)}
-      >
-        Get Wallet
-      </button>
     </>
   );
 };
 
-interface GetWalletContentProps {
+interface MetamaskLoginProps {
   setGetWalletShow: (getWalletShow: boolean) => void;
-  loginWithWalletConnect: () => void;
+  handleMetamaskLogin: any;
+  showQr: boolean;
 }
 
-const GetWalletContent: FC<GetWalletContentProps> = ({
+const MetamaskLogin: FC<MetamaskLoginProps> = ({
   setGetWalletShow,
-  loginWithWalletConnect,
+  handleMetamaskLogin,
+  showQr,
 }) => {
-  return (
-    <div className={styles['get-wallet-connect']}>
-      <div className={styles['get-wallet-connect--heading']}>
-        <button
-          className={styles['get-wallet-connect--heading-button']}
-          onClick={() => setGetWalletShow(false)}
-        >
-          <i className={clsx('material-icons', styles['arrow-back'])}>
-            arrow_back_ios
-          </i>
-        </button>
-        <h2>Get a wallet</h2>
-        <p>&nbsp;</p>
-      </div>
-      <div className={styles['get-wallet-connect--wallet-option']}>
+  if (showQr) {
+    return (
+      <div className={styles['metmask-login']}>
+        <h2>Install Metamask</h2>
+        <p>Scan with your phone to download on iOS or Android</p>
+        <img src="/src/assets/illustrations/icons/metamask-qr.png" />
         <span>
-          <MetamaskIcon width={26} height={23.4} />
-        </span>
-        <span className={styles['get-wallet-connect--wallet-option-content']}>
-          <p> Metamask</p>
-          <p>Mobile Wallet and Extension</p>
-        </span>
-        <a href="https://metamask.io/download/" target="_new">
-          <button>GET</button>
+        <p >Don't have Metamask?</p>
+        <a href="https://metamask.io/download/">
+          <button>Get</button>
         </a>
-      </div>
-      <div className={styles['get-wallet-connect--wallet-option']}>
-        <span>
-          <WalletConnectIcon width={26} height={23.4} />
         </span>
-        <span className={styles['get-wallet-connect--wallet-option-content']}>
-          <p>Wallet Connect</p>
-          <p>Mobile Wallet and Extension</p>
-        </span>
-
-        <button onClick={loginWithWalletConnect}>GET</button>
       </div>
+    );
+  }
+  return (
+    <div className={styles['metmask-login']}>
+      <h2>Opening MetaMask...</h2>
+      <p>Confirm connection in the extension</p>
+      <br />
+      <button onClick={handleMetamaskLogin}>Retry</button>
     </div>
   );
 };
