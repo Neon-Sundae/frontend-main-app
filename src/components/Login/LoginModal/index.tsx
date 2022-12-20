@@ -118,8 +118,10 @@ const LoginModalContent: FC<LoginModalContentProps> = ({
           A New Way to Log In
         </h3>
         <p>
-          Instead of creating new accounts and passwords on every website, just
-          connect your wallet.
+          In the decentralised world you don't need to create a new account and
+          password all the time for every app. Login with a single wallet across
+          multiple apps and maintain ownership of your data. Welcome to the
+          Neonverse! 🍦
         </p>
       </span>
     </>
@@ -142,12 +144,15 @@ const MetamaskLogin: FC<MetamaskLoginProps> = ({
       <div className={styles['metmask-login']}>
         <h2>Install Metamask</h2>
         <p>Scan with your phone to download on iOS or Android</p>
-        <img src="/src/assets/illustrations/icons/metamask-qr.png" alt="scannable qr code" />
+        <img
+          src="/src/assets/illustrations/icons/metamask-qr.png"
+          alt="scannable qr code"
+        />
         <span>
-        <p >Don't have Metamask?</p>
-        <a href="https://metamask.io/download/" target="_blank">
-          <button>Get</button>
-        </a>
+          <p>Don't have Metamask?</p>
+          <a href="https://metamask.io/download/" target="_blank">
+            <button>Get</button>
+          </a>
         </span>
       </div>
     );
