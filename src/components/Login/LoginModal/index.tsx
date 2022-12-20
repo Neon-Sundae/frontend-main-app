@@ -145,7 +145,7 @@ const MetamaskLogin: FC<MetamaskLoginProps> = ({
         <img src="/src/assets/illustrations/icons/metamask-qr.png" alt="scannable qr code" />
         <span>
         <p >Don't have Metamask?</p>
-        <a href="https://metamask.io/download/">
+        <a href="https://metamask.io/download/" target="_blank">
           <button>Get</button>
         </a>
         </span>
