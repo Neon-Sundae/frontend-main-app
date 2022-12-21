@@ -5,6 +5,7 @@ import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metam
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import styles from './index.module.scss';
 import { useMetamaskLogin, useWalletConnectLogin } from '../Step1/hooks';
+import QRCode from "react-qr-code";
 
 interface LoginModalProps {
   showModal: boolean;
@@ -144,9 +145,12 @@ const MetamaskLogin: FC<MetamaskLoginProps> = ({
       <div className={styles['metmask-login']}>
         <h2>Install Metamask</h2>
         <p>Scan with your phone to download on iOS or Android</p>
-        <img
-          src="/src/assets/illustrations/icons/metamask-qr.png"
-          alt="scannable qr code"
+        <QRCode
+          value={"https://metamask.io/download"}
+          bgColor="transparent"
+          fgColor="white"
+          size={200}
+          style={{margin: "15px"}}
         />
         <span>
           <p>Don't have Metamask?</p>
