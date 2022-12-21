@@ -164,7 +164,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
       );
     }
 
-    createProfile(name, profile?.title, walletId);
+    createProfile(name, profile?.title || 'Product Designer', walletId);
   };
 
   const renderByDeployingState = () => {
