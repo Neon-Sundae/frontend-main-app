@@ -43,9 +43,9 @@ const createProfileContract = async (
       });
 
     await later(3000);
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    throw new Error('Unable to create profile');
+    throw new Error(error.message);
   }
 };
 
