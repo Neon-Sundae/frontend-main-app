@@ -9,11 +9,12 @@ import { handleApiErrors } from 'utils/handleApiErrors';
 import toast from 'react-hot-toast';
 import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
+import errorEventBeacon from 'utils/analyticsFns/errorEventBeacon';
 
 const useProfileManage = () => {
   const dispatch = useDispatch();
   const [deploying, setDeploying] = useState('mint');
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const accessToken = getAccessToken();
 
@@ -51,8 +52,8 @@ const useProfileManage = () => {
       });
       await saveProfileContractAddress(contractAddress);
       setDeploying('minted');
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      errorEventBeacon(user?.walletId, err.message);
     }
   };
 
@@ -64,15 +65,18 @@ const useProfileManage = () => {
       const payload = {
         profileSmartContractId: address,
       };
-      const response = await fetch(`${config.ApiBaseUrl}/profile/${userId}`, {
-        signal,
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `${config.ApiBaseUrl}/profile/${user?.userId}`,
+        {
+          signal,
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
       await handleApiErrors(response);
       dispatch(updateProfileContractAddressAction(address));
     } catch (err) {
