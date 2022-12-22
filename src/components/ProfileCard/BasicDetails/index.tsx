@@ -2,13 +2,13 @@ import { FC, useState, SetStateAction, Dispatch, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import config from 'config';
 import { editProfile } from 'actions/profile';
 import { RootState } from 'reducers';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import { ReactComponent as ShareIcon } from 'assets/illustrations/icons/share.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import clickEventBeacon from 'utils/analyticsFns/clickEventBeacon';
 import styles from './index.module.scss';
 import useProfileManage from './hooks';
 import SocialShareModal from '../SocialShare';
@@ -157,13 +157,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
   };
 
   const handleMintOnChain = () => {
-    if (navigator) {
-      navigator.sendBeacon(
-        `${config.ApiBaseUrl}/profile/mint-analytics`,
-        walletId
-      );
-    }
-
+    clickEventBeacon(walletId);
     createProfile(name, profile?.title || 'Product Designer', walletId);
   };
 
