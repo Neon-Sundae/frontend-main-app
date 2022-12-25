@@ -4,6 +4,7 @@ import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { Dispatch, SetStateAction } from 'react';
 import { handleApiErrors } from 'utils/handleApiErrors';
+import { useNavigate } from 'react-router-dom';
 
 interface IReturnType {
   data: any;
@@ -62,7 +63,7 @@ interface ICreateProjectFromTemplate {
 }
 
 const useCreateProjectFromTemplate = (
-  setProjectId: Dispatch<SetStateAction<string | null>>
+  setProjectData: Dispatch<SetStateAction<string | null>>
 ) => {
   const accessToken = getAccessToken();
   const createProjectFromTemplate = useMutation(
@@ -83,7 +84,7 @@ const useCreateProjectFromTemplate = (
             'successfully created project from template',
             data.flProjectId_uuid
           );
-          setProjectId(data.flProjectId_uuid);
+          setProjectData(data);
         });
     },
     {

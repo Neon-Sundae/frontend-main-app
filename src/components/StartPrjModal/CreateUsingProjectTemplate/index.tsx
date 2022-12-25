@@ -27,12 +27,18 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   const navigate = useNavigate();
   const [showProjectCreate, setShowProjectCreate] = useState(false);
   const [currentTemplate, setCurrentTemplate] = useState<any>(null);
-  // create project id
-  const [projectUuid, setProjectUuid] = useState<string | null>(null);
+  const [projectData, setProjectData] = useState<any>(null);
+
+  useEffect(() => {
+    if (projectData) {
+      createProjectTasksFromTemplate();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectData]);
 
   const useFetchProjectTemplates = fetchAllProjectTemplates(setCurrentTemplate);
   const createProjectFromTemplate =
-    useCreateProjectFromTemplate(setProjectUuid);
+    useCreateProjectFromTemplate(setProjectData);
   const createTasksFromProjectTemplate = useCreateTasksFromProjectTemplate();
 
   const filterSelectedTemplate = (selectedTemplate: any) =>
@@ -42,15 +48,58 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     return <CreatePrjModal onClose={onClose} onNext={onNext} orgId={orgId} />;
   }
 
-  const tasksFromProjectTemplate = () => {
-    if (!currentTemplate) return [];
-    const allTasksFromProjectTemplate =
-      currentTemplate.flProjectCategoryTemplate.map(
-        (item: { tasksTemplate: any }) => {
-          return item.tasksTemplate;
-        }
-      );
-    return allTasksFromProjectTemplate.flat();
+  const createTasksFromProjectTemplateFunc = () => {
+    if (!projectData) return [];
+    const temp: { [x: string]: any } = {};
+
+    const flProjectCategoryData = projectData.flProjectCategory.map(
+      (flProjectCategory: {
+        flProjectCategoryId: number;
+        categoryName: string;
+      }) => {
+        return {
+          flProjectCategoryTemplateId: flProjectCategory.flProjectCategoryId,
+          categoryName: flProjectCategory.categoryName,
+        };
+      }
+    );
+
+    currentTemplate.flProjectCategoryTemplate.forEach(
+      (flProjectCategoryTemplate: {
+        categoryName: string;
+        tasksTemplate: any;
+      }) => {
+        temp[flProjectCategoryTemplate.categoryName] =
+          flProjectCategoryTemplate.tasksTemplate;
+      }
+    );
+
+    const mappedTasks = flProjectCategoryData.map(
+      (flProjectCategory: {
+        flProjectCategoryTemplateId: any;
+        categoryName: string;
+      }) => {
+        return temp[flProjectCategory.categoryName].map(
+          (task: { title: string; description: string }) => {
+            return {
+              ...task,
+              flProjectCategoryTemplateId:
+                flProjectCategory.flProjectCategoryTemplateId,
+            };
+          }
+        );
+      }
+    );
+
+    return mappedTasks.flat();
+  };
+
+  const createProjectTasksFromTemplate = () => {
+    createTasksFromProjectTemplate.mutate({
+      tasks: createTasksFromProjectTemplateFunc(),
+    });
+
+    navigate(`/project/${projectData.flProjectId_uuid}`);
   };
 
   const createProject = () => {
@@ -82,10 +131,6 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       ...temp
     } = currentTemplate;
 
-    createTasksFromProjectTemplate.mutate({
-      tasks: tasksFromProjectTemplate(),
-    });
-
     createProjectFromTemplate.mutate({
       ...temp,
       organisationId: orgId,
@@ -94,7 +139,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     });
   };
 
-  if (projectUuid) navigate(`/project/${projectUuid}`);
+  if (!currentTemplate) return <Loading />;
 
   return (
     <Modal
