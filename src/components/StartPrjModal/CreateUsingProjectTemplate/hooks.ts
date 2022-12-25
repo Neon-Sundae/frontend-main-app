@@ -61,7 +61,9 @@ interface ICreateProjectFromTemplate {
   flProjectCategory: object[];
 }
 
-const useCreateProjectFromTemplate = () => {
+const useCreateProjectFromTemplate = (
+  setProjectId: Dispatch<SetStateAction<string | null>>
+) => {
   const accessToken = getAccessToken();
   const createProjectFromTemplate = useMutation(
     async (payload: ICreateProjectFromTemplate) => {
@@ -77,7 +79,11 @@ const useCreateProjectFromTemplate = () => {
           return res.json();
         })
         .then(function (data) {
-          console.log(data);
+          console.log(
+            'successfully created project from template',
+            data.flProjectId_uuid
+          );
+          setProjectId(data.flProjectId_uuid);
         });
     },
     {
@@ -91,8 +97,46 @@ const useCreateProjectFromTemplate = () => {
   return createProjectFromTemplate;
 };
 
-// TODO: create required categories
-// TODO: create required resources
+interface ICreateTasksFromProjectTemplate {
+  tasks: object[];
+}
+
+const useCreateTasksFromProjectTemplate = () => {
+  const accessToken = getAccessToken();
+  const createTasksFromProjectTemplate = useMutation(
+    async (payload: ICreateTasksFromProjectTemplate) => {
+      return fetch(`${config.ApiBaseUrl}/task/create-from-template`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload.tasks),
+      })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          console.log('successfully created project tasks');
+        });
+    },
+    {
+      retry: 1,
+      onSuccess: (res: any) => {
+        console.log('successfully created project tasks');
+      },
+      onError: (error: any) => {
+        handleError({ error });
+      },
+    }
+  );
+
+  return createTasksFromProjectTemplate;
+};
 
 // eslint-disable-next-line import/prefer-default-export
-export { fetchAllProjectTemplates, useCreateProjectFromTemplate };
+export {
+  fetchAllProjectTemplates,
+  useCreateProjectFromTemplate,
+  useCreateTasksFromProjectTemplate,
+};

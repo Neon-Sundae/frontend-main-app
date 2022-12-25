@@ -1,0 +1,21 @@
+.backdrop {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  z-index: 2;
+}
+
+.overlay {
+  position: fixed;
+  padding: 33px;
+  top: 50%;
+  left: 50%;
+  border-radius: 18px;
+  transform: translateX(-50%) translateY(-50%);
+  overflow: hidden;
+  z-index: 2;
+}

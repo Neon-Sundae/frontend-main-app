@@ -3,12 +3,14 @@ import { FC, MouseEvent, useEffect, useState } from 'react';
 import Loading from 'components/Loading';
 import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import gif from './deleteme.gif';
 import CreatePrjModal from '../CreatePrjModal';
 import {
   fetchAllProjectTemplates,
   useCreateProjectFromTemplate,
+  useCreateTasksFromProjectTemplate,
 } from './hooks';
 
 interface ICreateUsingProjectTemplateProps {
@@ -22,11 +24,16 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   onNext,
   orgId,
 }) => {
+  const navigate = useNavigate();
   const [showProjectCreate, setShowProjectCreate] = useState(false);
   const [currentTemplate, setCurrentTemplate] = useState<any>(null);
+  // create project id
+  const [projectUuid, setProjectUuid] = useState<string | null>(null);
 
   const useFetchProjectTemplates = fetchAllProjectTemplates(setCurrentTemplate);
-  const createProjectFromTemplate = useCreateProjectFromTemplate();
+  const createProjectFromTemplate =
+    useCreateProjectFromTemplate(setProjectUuid);
+  const createTasksFromProjectTemplate = useCreateTasksFromProjectTemplate();
 
   const filterSelectedTemplate = (selectedTemplate: any) =>
     setCurrentTemplate(selectedTemplate);
@@ -35,7 +42,34 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     return <CreatePrjModal onClose={onClose} onNext={onNext} orgId={orgId} />;
   }
 
+  const tasksFromProjectTemplate = () => {
+    if (!currentTemplate) return [];
+    const allTasksFromProjectTemplate =
+      currentTemplate.flProjectCategoryTemplate.map(
+        (item: { tasksTemplate: any }) => {
+          return item.tasksTemplate;
+        }
+      );
+    return allTasksFromProjectTemplate.flat();
+  };
+
   const createProject = () => {
+    const {
+      flResourcesTemplate: resourcesFromProjectTemplate,
+      flProjectCategoryTemplate: categoriesFromProjectTemplate,
+    } = currentTemplate;
+
+    const flResources = resourcesFromProjectTemplate.map(
+      (resource: { title: string }) => ({ title: resource.title })
+    );
+
+    const flProjectCategory = categoriesFromProjectTemplate.map(
+      (category: { categoryName: string; percentageAllocation: number }) => ({
+        categoryName: category.categoryName,
+        percentageAllocation: category.percentageAllocation,
+      })
+    );
+
     const {
       flProjectTemplateId,
       smartContractId,
@@ -47,8 +81,20 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       flResourcesTemplate,
       ...temp
     } = currentTemplate;
-    createProjectFromTemplate.mutate({ ...temp, organisationId: orgId });
+
+    createTasksFromProjectTemplate.mutate({
+      tasks: tasksFromProjectTemplate(),
+    });
+
+    createProjectFromTemplate.mutate({
+      ...temp,
+      organisationId: orgId,
+      flResources,
+      flProjectCategory,
+    });
   };
+
+  if (projectUuid) navigate(`/project/${projectUuid}`);
 
   return (
     <Modal
