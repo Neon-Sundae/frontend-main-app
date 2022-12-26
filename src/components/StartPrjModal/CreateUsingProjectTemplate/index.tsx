@@ -1,6 +1,5 @@
 import Modal from 'components/Modal';
 import { FC, MouseEvent, useEffect, useState } from 'react';
-import Loading from 'components/Loading';
 import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
@@ -138,8 +137,6 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       flProjectCategory,
     });
   };
-
-  if (!currentTemplate) return <Loading />;
 
   return (
     <Modal
