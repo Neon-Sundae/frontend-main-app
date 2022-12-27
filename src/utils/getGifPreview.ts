@@ -15,7 +15,7 @@ const getGifPreview = (templateName: string) => {
   console.log('formattedTemplateName', formattedTemplateName);
   if (formattedTemplateName === 'nFTWebsite') return nftWebsite;
   if (formattedTemplateName === 'nFTCollection') return nftCollection;
-  return null;
+  return undefined;
 };
 
 export default getGifPreview;
