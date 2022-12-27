@@ -137,7 +137,6 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       flProjectCategory,
     });
   };
-
   return (
     <Modal
       onClose={onClose}
@@ -168,7 +167,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
           <div className={styles[`project-template-modal--preview`]}>
             <div className={styles[`gif-preview`]}>
               <img
-                src={getGifPreview('NFT Collection')}
+                src={getGifPreview(currentTemplate.name)}
                 alt="template preview"
               />
             </div>
@@ -189,6 +188,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   );
 };
 
+
 interface ITemplateOptionProps {
   id: string;
   title: string;
@@ -207,15 +207,18 @@ const TemplateOption: FC<ITemplateOptionProps> = ({
 
   return (
     <div
-      className={styles['template-option']}
+      className={clsx(
+        'template-option',
+        selected && 'template-option--selected'
+      )}
       style={{ border: selected ? '0.56px solid #fff' : '' }}
-      onClick={e => onClick(e)}
+      onClick={onClick}
       id={id}
     >
       <p
         className={clsx(
-          styles['template-option--title'],
-          selected ? 'selected' : ''
+          'template-option--title',
+          selected && 'template-option--selected'
         )}
         style={{ color: selected ? '#fff' : '' }}
       >
