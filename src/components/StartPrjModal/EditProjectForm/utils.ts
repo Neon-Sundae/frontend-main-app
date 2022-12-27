@@ -5,7 +5,7 @@ const formatDateFunction = (date: any) => {
   return date?.substring(0, 10);
 };
 const formattedPreferredTimeZones = (preferredTimeZones: string) => {
-  if (preferredTimeZones.length > 1) {
+  if (preferredTimeZones?.length > 1) {
     const timezoneArr = preferredTimeZones?.split(', ');
     const temp: { label: any; value: any }[] = [];
     timezoneArr?.map((timezone: any) => {
