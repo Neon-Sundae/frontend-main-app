@@ -35,10 +35,10 @@ type Action =
   | {
       type: typeof UPDATE_USER_DISCORD;
       discordId: string;
-  } | {
+    }
+  | {
       type: typeof UPDATE_USER_EMAIL;
       email: string;
-
     };
 
 const initialState: State = {
