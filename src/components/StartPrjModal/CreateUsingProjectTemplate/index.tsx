@@ -3,8 +3,8 @@ import { FC, MouseEvent, useEffect, useState } from 'react';
 import getRandomString from 'utils/getRandomString';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import getGifPreview from 'utils/getGifPreview';
 import styles from './index.module.scss';
-import gif from './deleteme.gif';
 import CreatePrjModal from '../CreatePrjModal';
 import {
   fetchAllProjectTemplates,
@@ -167,7 +167,10 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
         {currentTemplate && (
           <div className={styles[`project-template-modal--preview`]}>
             <div className={styles[`gif-preview`]}>
-              <img src={gif} alt="template preview" />
+              <img
+                src={getGifPreview('NFT Collection')}
+                alt="template preview"
+              />
             </div>
             <h2 className={styles[`template-name`]}>{currentTemplate?.name}</h2>
             <div className={styles[`text-content`]}>
