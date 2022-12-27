@@ -12,7 +12,7 @@ interface IReturnType {
   refetch: () => any;
 }
 
-const fetchAllProjectTemplates = (
+const useFetchAllProjectTemplates = (
   setCurrentTemplate: Dispatch<SetStateAction<null>>
 ): IReturnType => {
   const accessToken = getAccessToken();
@@ -137,7 +137,7 @@ const useCreateTasksFromProjectTemplate = () => {
 
 // eslint-disable-next-line import/prefer-default-export
 export {
-  fetchAllProjectTemplates,
+  useFetchAllProjectTemplates,
   useCreateProjectFromTemplate,
   useCreateTasksFromProjectTemplate,
 };

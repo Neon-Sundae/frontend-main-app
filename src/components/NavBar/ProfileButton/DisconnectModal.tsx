@@ -23,7 +23,9 @@ const DisconnectModal: FC<IDisconnectModal> = ({
   const [email, setEmail] = useState<string | null | undefined>(
     user && user.email
   );
+
   const updateProfileDetails = useUpdateUserProfileEmail();
+
   const handleCopyAddress = () => {
     if (user?.walletId) {
       navigator.clipboard.writeText(user.walletId);
@@ -32,16 +34,16 @@ const DisconnectModal: FC<IDisconnectModal> = ({
       toast.error('Failed to copy wallet address');
     }
   };
+
   const updateEmail = () => {
-    const formData = new FormData();
     if (email) {
-      formData.append('email', email);
       updateProfileDetails.mutate({
         email,
       });
     }
     handleClose();
   };
+
   return (
     <Modal title="Settings" onClose={handleClose} width="550px" height="500px">
       <p className={styles['disconnect-connected-text']}>Wallet Information</p>

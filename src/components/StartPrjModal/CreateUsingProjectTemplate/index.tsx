@@ -7,7 +7,7 @@ import getGifPreview from 'utils/getGifPreview';
 import styles from './index.module.scss';
 import CreatePrjModal from '../CreatePrjModal';
 import {
-  fetchAllProjectTemplates,
+  useFetchAllProjectTemplates,
   useCreateProjectFromTemplate,
   useCreateTasksFromProjectTemplate,
 } from './hooks';
@@ -35,7 +35,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectData]);
 
-  const useFetchProjectTemplates = fetchAllProjectTemplates(setCurrentTemplate);
+  const fetchProjectTemplates = useFetchAllProjectTemplates(setCurrentTemplate);
   const createProjectFromTemplate =
     useCreateProjectFromTemplate(setProjectData);
   const createTasksFromProjectTemplate = useCreateTasksFromProjectTemplate();
@@ -48,7 +48,6 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   }
 
   const createTasksFromProjectTemplateFunc = () => {
-    if (!projectData) return [];
     const temp: { [x: string]: any } = {};
 
     const flProjectCategoryData = projectData.flProjectCategory.map(
@@ -63,7 +62,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       }
     );
 
-    currentTemplate.flProjectCategoryTemplate.forEach(
+    currentTemplate?.flProjectCategoryTemplate?.forEach(
       (flProjectCategoryTemplate: {
         categoryName: string;
         tasksTemplate: any;
@@ -130,13 +129,18 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       ...temp
     } = currentTemplate;
 
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+
     createProjectFromTemplate.mutate({
       ...temp,
       organisationId: orgId,
       flResources,
       flProjectCategory,
+      timeOfCompletion: date.toISOString(),
     });
   };
+
   return (
     <Modal
       onClose={onClose}
@@ -147,7 +151,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       <div className={styles[`project-template-modal`]}>
         <div className={styles[`project-template-modal--picker`]}>
           <h2>Choose Template</h2>
-          {useFetchProjectTemplates.data?.map(
+          {fetchProjectTemplates.data?.map(
             (template: { name: string; flProjectTemplateId: number }) => (
               <TemplateOption
                 title={template.name}
@@ -188,7 +192,6 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   );
 };
 
-
 interface ITemplateOptionProps {
   id: string;
   title: string;
@@ -208,19 +211,16 @@ const TemplateOption: FC<ITemplateOptionProps> = ({
   return (
     <div
       className={clsx(
-        'template-option',
-        selected && 'template-option--selected'
+        styles['template-option'],
+        selected && styles['template-option--selected']
       )}
-      style={{ border: selected ? '0.56px solid #fff' : '' }}
       onClick={onClick}
-      id={id}
     >
       <p
         className={clsx(
-          'template-option--title',
-          selected && 'template-option--selected'
+          styles['template-option--title'],
+          selected && styles['template-option--selected']
         )}
-        style={{ color: selected ? '#fff' : '' }}
       >
         {title}
       </p>
