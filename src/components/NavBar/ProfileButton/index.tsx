@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
@@ -94,8 +95,10 @@ const ProfileButton: FC = () => {
           handleClose={handleClose}
           pictureFunc={pictureFunc}
           getFormattedWalletId={getFormattedWalletId}
+          getFormattedDomainName={getFormattedDomainName}
         />
       )}
+      <Toaster />
     </div>
   );
 };

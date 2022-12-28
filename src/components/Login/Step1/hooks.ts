@@ -235,6 +235,7 @@ const useUnstoppableDomains = () => {
               message: authorization.idToken.eip4361_message,
               nonce: authorization.idToken.nonce,
               domain: authorization.idToken.sub,
+              picture: authorization.idToken.picture,
             }),
           }
         );
