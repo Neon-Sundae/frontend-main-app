@@ -5,7 +5,7 @@ import config from 'config';
 
 const getProfileContractAddress = async (address: string | undefined) => {
   try {
-    if (!address) return null;
+    if (!address) throw new Error('Address not found');
 
     const web3 = getWeb3Instance();
 
@@ -18,14 +18,14 @@ const getProfileContractAddress = async (address: string | undefined) => {
         gasPrice: '50000000000',
       }
     );
-    const profileContractAddress = await ProfileFactory.methods
+    const profileContractAddress: string = await ProfileFactory.methods
       .ownerToProfileAddress(address)
       .call();
 
     return profileContractAddress;
   } catch (error) {
     console.log(error);
-    throw new Error('Failed to get the profile contract address');
+    return 'Failed';
   }
 };
 

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ReactComponent as DummyImage1 } from 'assets/illustrations/task/task-dummy-1.svg';
 import { ReactComponent as Add } from 'assets/illustrations/icons/add.svg';
 import BaseModal from 'components/Home/BaseModal';
@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
-import CreatePrjModal from './CreatePrjModal';
 import styles from './index.module.scss';
+import CreateUsingProjectTemplate from './CreateUsingProjectTemplate';
 
 interface IStartPrjProps {
   onClose: () => void;
@@ -113,12 +113,10 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
           </BaseModal>
         </>
       ) : (
-        <CreatePrjModal
+        <CreateUsingProjectTemplate
           onClose={onClose}
-          onNext={() => {
-            console.log('next!');
-          }}
           orgId={selected}
+          onNext={handleNext}
         />
       )}
     </div>
