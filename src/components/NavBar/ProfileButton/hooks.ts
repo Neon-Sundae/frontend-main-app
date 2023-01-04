@@ -15,7 +15,7 @@ const useUpdateUserProfileEmail = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const user = useSelector((state: RootState) => state.user.user);
-  const updateTaskChecklist = useMutation(
+  const updateProfileEmail = useMutation(
     async (payload: IUpdateProfileDetailsParameters) => {
       console.log(payload);
       const response = await fetch(
@@ -40,7 +40,7 @@ const useUpdateUserProfileEmail = () => {
     }
   );
 
-  return updateTaskChecklist;
+  return updateProfileEmail;
 };
 
 export default useUpdateUserProfileEmail;
