@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
@@ -30,10 +31,21 @@ const ProfileButton: FC = () => {
 
   const getFormattedWalletId = () => {
     if (user?.walletId) {
-      return `${user?.walletId?.slice(0, 6)}...${user?.walletId?.slice(
+      return `${user.walletId.slice(0, 6)}...${user.walletId.slice(
         // eslint-disable-next-line no-unsafe-optional-chaining
-        user?.walletId.length - 6,
-        user?.walletId.length
+        user.walletId.length - 6,
+        user.walletId.length
+      )}`;
+    }
+
+    return '';
+  };
+
+  const getFormattedDomainName = () => {
+    if (user?.domain) {
+      return `${user.domain.slice(0, 6)}...${user.domain.slice(
+        user.domain.length - 6,
+        user.domain.length
       )}`;
     }
 
@@ -67,8 +79,11 @@ const ProfileButton: FC = () => {
         onClick={handleOpen}
       >
         <p className={styles['navbar-username']}>{user?.name}</p>
-        <span className={styles['navbar-wallet-address']}>
-          {getFormattedWalletId()}
+        <span
+          className={styles['navbar-wallet-address']}
+          title={user?.domain ? user.domain : user?.walletId}
+        >
+          {user?.domain ? getFormattedDomainName() : getFormattedWalletId()}
         </span>
         <div className={clsx(styles['text--secondary'], styles['text--align'])}>
           <span>Connected Wallet</span>
@@ -80,8 +95,10 @@ const ProfileButton: FC = () => {
           handleClose={handleClose}
           pictureFunc={pictureFunc}
           getFormattedWalletId={getFormattedWalletId}
+          getFormattedDomainName={getFormattedDomainName}
         />
       )}
+      <Toaster />
     </div>
   );
 };
