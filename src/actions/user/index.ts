@@ -13,6 +13,8 @@ export interface IUser {
   discordId: string | null;
   isFounder: boolean;
   nonce: string;
+  authentication_method: string;
+  domain: string | null;
 }
 
 export interface IUpdateUser {
