@@ -16,12 +16,14 @@ interface ICreateUsingProjectTemplateProps {
   onClose: () => void;
   onNext: () => void;
   orgId: number;
+  showModal?: boolean;
 }
 
 const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   onClose,
   onNext,
   orgId,
+  showModal,
 }) => {
   const navigate = useNavigate();
   const [showProjectCreate, setShowProjectCreate] = useState(false);
@@ -141,6 +143,48 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     });
   };
 
+  if (!showModal) {
+    return (
+      <div className={styles[`project-template-modal`]}>
+        <div className={styles[`project-template-modal--picker`]}>
+          <h2>Choose Template</h2>
+          {fetchProjectTemplates.data?.map(
+            (template: { name: string; flProjectTemplateId: number }) => (
+              <TemplateOption
+                title={template.name}
+                key={getRandomString(5)}
+                id={template.flProjectTemplateId.toString()}
+                filterSelectedTemplate={() => filterSelectedTemplate(template)}
+                selected={
+                  currentTemplate?.flProjectTemplateId ===
+                  template.flProjectTemplateId
+                }
+              />
+            )
+          )}
+        </div>
+
+        {currentTemplate && (
+          <div className={styles[`project-template-modal--preview`]}>
+            <div className={styles[`gif-preview`]}>
+              <img
+                src={getGifPreview(currentTemplate.name)}
+                alt="template preview"
+              />
+            </div>
+            <h2 className={styles[`template-name`]}>{currentTemplate?.name}</h2>
+            <div className={styles[`text-content`]}>
+              <p>{currentTemplate?.description}</p>
+              <div className={styles.buttons}>
+                <button onClick={createProject}>Get Template</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <Modal
       onClose={onClose}
@@ -190,6 +234,9 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       </div>
     </Modal>
   );
+};
+CreateUsingProjectTemplate.defaultProps = {
+  showModal: true,
 };
 
 interface ITemplateOptionProps {

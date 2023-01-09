@@ -3,12 +3,17 @@ import { Toaster } from 'react-hot-toast';
 import { useSearchParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
 import bg from 'assets/illustrations/gradients/bg.png';
+import { FC } from 'react';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetailsView from '../JobDetailsView';
 import { useFetchJobs } from './hooks';
 
-const AllJobsLanding = () => {
+interface AllJobsLandingProps {
+  hideNavbar?: boolean;
+}
+
+const AllJobsLanding: FC<AllJobsLandingProps> = ({ hideNavbar }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const data = useFetchJobs(searchParams.get('organisation'));
 
@@ -27,7 +32,8 @@ const AllJobsLanding = () => {
         backgroundAttachment: 'fixed',
       }}
     >
-      <NavBar />
+      {!hideNavbar && <NavBar />}
+
       <Toaster />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
@@ -52,6 +58,10 @@ const AllJobsLanding = () => {
       </div>
     </div>
   );
+};
+
+AllJobsLanding.defaultProps = {
+  hideNavbar: false,
 };
 
 export default AllJobsLanding;
