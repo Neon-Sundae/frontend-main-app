@@ -34,7 +34,7 @@ const AllJobsLanding = () => {
     <div
       className={styles.container}
       style={{
-        backgroundColor: '#000',
+        backgroundColor: '#242529',
       }}
     >
       <NavBar />
