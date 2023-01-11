@@ -2,7 +2,6 @@ import { FC } from 'react';
 import Lottie from 'lottie-react';
 import loading from 'assets/lottie/loading.json';
 import messages from 'assets/data/loading.json';
-import bg from 'assets/illustrations/gradients/bg.png';
 import emojis from 'utils/emojis';
 import styles from './index.module.scss';
 
@@ -12,10 +11,7 @@ const Loading: FC = () => {
     <div
       className={styles.backdrop}
       style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
+        backgroundColor: '#242529',
       }}
     >
       <div className={styles.overlay}>
