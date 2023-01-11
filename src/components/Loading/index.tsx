@@ -12,10 +12,7 @@ const Loading: FC = () => {
     <div
       className={styles.backdrop}
       style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
+        backgroundColor: '#242529',
       }}
     >
       <div className={styles.overlay}>
