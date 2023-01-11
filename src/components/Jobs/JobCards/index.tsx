@@ -98,9 +98,11 @@ const JobCards: FC<IJobCards> = ({
       <div className={styles['job-card-left']}>
         <h3>{title}</h3>
         <p>{orgName}</p>
-        <p>
-          💰 {salaryMin} to {salaryMax} {currency}
-        </p>
+        {salaryMin && (
+          <p>
+            💰 {salaryMin} to {salaryMax} {currency}
+          </p>
+        )}
       </div>
       <div className={styles['job-card-right']}>
         <i className={clsx('material-icons', styles['arrow-right'])}>

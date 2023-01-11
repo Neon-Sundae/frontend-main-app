@@ -111,9 +111,11 @@ const JobView: FC<IJobView> = ({
             <span className={styles['inline-job-details']}>
               <p>💻 {role}</p>
               <p>📍 {location ?? 'Remote'}</p>
-              <p>
-                💰 {salaryMin}-{salaryMax} {currency}
-              </p>
+              {salaryMin && (
+                <p>
+                  💰 {salaryMin} to {salaryMax} {currency}
+                </p>
+              )}
               <p>🌏 {isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
             </span>
             {userIsOrgOwner() && (

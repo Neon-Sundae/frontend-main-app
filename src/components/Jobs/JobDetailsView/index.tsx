@@ -22,9 +22,9 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   if (jobId_uuid === null) {
     return (
       <div className={styles['job-detail-view']}>
-        <h2 className={styles['job-detail-view--no-selection']}>
+        <p className={styles['job-detail-view--no-selection']}>
           Nothing selected
-        </h2>
+        </p>
       </div>
     );
   }
