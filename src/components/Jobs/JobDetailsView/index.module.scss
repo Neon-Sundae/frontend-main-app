@@ -4,6 +4,10 @@
     text-align: center;
   }
 
+  @media (max-width: 600px) {
+    // display: none;
+  }
+
   &--header {
     height: 20%;
     
@@ -91,6 +95,7 @@
     a {
       color: #fff;
       cursor: pointer;
+      text-decoration: underline;
     }
     a:hover {
       text-decoration: underline;
