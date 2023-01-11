@@ -69,10 +69,7 @@ const JobsLanding = () => {
     <div
       className={styles.container}
       style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
+        backgroundColor: 'black',
       }}
     >
       <NavBar />

@@ -17,6 +17,7 @@ const AllJobsLanding = () => {
 
   useEffect(() => {
     if (!searchParams.get('job')) setShowCard(true);
+    if (window.innerWidth > 600) setShowCard(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -33,10 +34,7 @@ const AllJobsLanding = () => {
     <div
       className={styles.container}
       style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
+        backgroundColor: '#000',
       }}
     >
       <NavBar />
