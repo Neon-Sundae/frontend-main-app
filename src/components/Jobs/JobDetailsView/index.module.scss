@@ -4,6 +4,10 @@
     text-align: center;
   }
 
+  @media (max-width: 600px) {
+    // display: none;
+  }
+
   &--header {
     height: 20%;
     
