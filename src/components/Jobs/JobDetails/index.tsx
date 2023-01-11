@@ -149,7 +149,7 @@ const JobDetails: FC<IJobDetails> = ({
   const handleMinSalaryChange = (e: any) => {
     setJobListingData((prevState: any) => ({
       ...prevState,
-      salaryMin: e.target.value,
+      salaryMin: e.target.value.length === 0 ? 0 : e.target.value,
     }));
   };
 
@@ -255,15 +255,13 @@ const JobDetails: FC<IJobDetails> = ({
       </span>
       <span className={styles['inline-job-salary']}>
         <input
-          placeholder="Min Salary"
+          placeholder="Min Salary (optional)"
           id="salaryRange"
           onChange={e => handleMinSalaryChange(e)}
-          required
         />
         <input
-          placeholder="Max Salary"
+          placeholder="Max Salary (optional)"
           onChange={e => handleMaxSalaryChange(e)}
-          required
         />
         <Select
           options={currencyOptions}
@@ -500,13 +498,13 @@ const JobDetailsEdit: FC<IJobDetailsEdit> = ({
       </span>
       <span className={styles['inline-job-salary']}>
         <input
-          placeholder="Min Salary"
+          placeholder="Min Salary (optional)"
           id="salaryRange"
           defaultValue={jobEntryData.salaryMin}
           onChange={e => handleMinSalaryChange(e)}
         />
         <input
-          placeholder="Max Salary"
+          placeholder="Max Salary (optional)"
           defaultValue={jobEntryData.salaryMax}
           onChange={e => handleMaxSalaryChange(e)}
         />
