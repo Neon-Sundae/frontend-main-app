@@ -20,6 +20,9 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   const navigate = useNavigate();
 
   if (jobId_uuid === null) {
+    if (window.innerWidth <= 600) {
+      return null;
+    }
     return (
       <div className={styles['job-detail-view']}>
         <p className={styles['job-detail-view--no-selection']}>
@@ -102,9 +105,12 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
         <span className={styles['inline-job-details']}>
           <p>💻 {data.role}</p>
           <p>📍 {data.location ?? 'Remote'}</p>
-          <p>
-            💰 {data.salaryMin}-{data.salaryMax} {data.currency}
-          </p>
+          {data.salaryMin && (
+            <p>
+              💰 {data.salaryMin}-{data.salaryMax} {data.currency}
+            </p>
+          )}
+
           <p>🌏 {data.isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
         </span>
       </div>
