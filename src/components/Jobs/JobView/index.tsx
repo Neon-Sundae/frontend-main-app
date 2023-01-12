@@ -8,7 +8,7 @@ import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -161,6 +161,7 @@ const JobApplicants: FC<IJobApplicants> = ({
   setEditJobListing,
   jobUuid,
 }) => {
+  const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.user.user?.userId);
 
   const userIsOrgOwner = () => {
@@ -231,6 +232,7 @@ const JobApplicants: FC<IJobApplicants> = ({
                 <div
                   className={styles['job-applicants-view']}
                   key={getRandomString(5)}
+                  onClick={() => navigate(`/profile/${item.Profile.profileId}`)}
                 >
                   <img
                     src={

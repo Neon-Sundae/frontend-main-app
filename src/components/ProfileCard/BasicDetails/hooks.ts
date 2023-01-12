@@ -26,7 +26,10 @@ const useProfileManage = () => {
     try {
       const isContractDeployed = await getProfileContractAddress(address);
 
-      if (isContractDeployed !== '0x0000000000000000000000000000000000000000') {
+      if (
+        isContractDeployed !== '0x0000000000000000000000000000000000000000' &&
+        isContractDeployed !== 'Failed'
+      ) {
         await saveProfileContractAddress(isContractDeployed);
         return;
       }
@@ -46,11 +49,13 @@ const useProfileManage = () => {
 
       const contractAddress = await getProfileContractAddress(address);
       console.log('Deployed profile contract address: ', contractAddress);
-      dispatch({
-        type: GET_PROFILE_CONTRACT_ADDRESS,
-        payload: contractAddress,
-      });
-      await saveProfileContractAddress(contractAddress);
+      if (isContractDeployed !== 'Failed') {
+        dispatch({
+          type: GET_PROFILE_CONTRACT_ADDRESS,
+          payload: contractAddress,
+        });
+        await saveProfileContractAddress(contractAddress);
+      }
       setDeploying('minted');
     } catch (err: any) {
       errorEventBeacon(user?.walletId, err.message);
