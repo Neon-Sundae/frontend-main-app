@@ -20,6 +20,9 @@ const JobDetailsView: FC<IJobDetailsView> = ({ jobId_uuid }) => {
   const navigate = useNavigate();
 
   if (jobId_uuid === null) {
+    if (window.innerWidth <= 600) {
+      return null;
+    }
     return (
       <div className={styles['job-detail-view']}>
         <p className={styles['job-detail-view--no-selection']}>
