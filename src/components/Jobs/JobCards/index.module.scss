@@ -86,4 +86,10 @@
       border-radius: 50%;
     }
   }
+  @media (max-width: 600px) {
+    // height: 100vh;
+    // display: none;
+    width: 300px;
+    padding: 0 10px;
+  }
 }

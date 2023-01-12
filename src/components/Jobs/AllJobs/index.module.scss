@@ -4,6 +4,7 @@
   background-size: cover;
   color: #fff;
   overflow-y: hidden;
+  min-height:100vh ;
 
   .job-cards-all-wrap {
     width: 80%;
@@ -33,6 +34,7 @@
     height: 80vh;
     @media (max-width: 600px) {
       height: fit-content;
+      flex-direction: column;
     }
     display: flex;
     justify-content: space-between;
@@ -42,6 +44,7 @@
       height: 100%;
       @media (max-width: 600px) {
         width: 100%;
+        // display: none;
       }
     }
   }
@@ -75,7 +78,8 @@
     }
 
     @media (max-width: 600px) {
-      display: none;
+      // height: 100vh;
+      // display: none;
     }
 
   }

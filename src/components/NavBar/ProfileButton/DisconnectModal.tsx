@@ -12,12 +12,14 @@ interface IDisconnectModal {
   handleClose: () => void;
   getFormattedWalletId: () => string;
   pictureFunc: () => string;
+  getFormattedDomainName: () => string;
 }
 
 const DisconnectModal: FC<IDisconnectModal> = ({
   getFormattedWalletId,
   handleClose,
   pictureFunc,
+  getFormattedDomainName,
 }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState<string | null | undefined>(
@@ -27,7 +29,10 @@ const DisconnectModal: FC<IDisconnectModal> = ({
   const updateProfileDetails = useUpdateUserProfileEmail();
 
   const handleCopyAddress = () => {
-    if (user?.walletId) {
+    if (user?.domain) {
+      navigator.clipboard.writeText(user.domain);
+      toast.success('Copied!');
+    } else if (user?.walletId) {
       navigator.clipboard.writeText(user.walletId);
       toast.success('Copied!');
     } else {
@@ -52,8 +57,11 @@ const DisconnectModal: FC<IDisconnectModal> = ({
           <div className={styles['disconnect-image-container']}>
             <img src={pictureFunc()} alt="your profile" />
           </div>
-          <span className={styles['navbar-wallet-address']}>
-            {getFormattedWalletId()}
+          <span
+            className={styles['navbar-wallet-address']}
+            title={user?.domain ? user.domain : user?.walletId}
+          >
+            {user?.domain ? getFormattedDomainName() : getFormattedWalletId()}
           </span>
           <div className={styles['disconnect-action-container']}>
             <span

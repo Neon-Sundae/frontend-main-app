@@ -210,7 +210,7 @@ const useUnstoppableDomains = () => {
   const uauth = new UAuth({
     clientID: import.meta.env.VITE_UD_CLIENT_KEY,
     redirectUri: config.AppDomain,
-    scope: 'openid wallet profile',
+    scope: 'openid wallet profile:optional',
   });
 
   const login = async () => {
@@ -234,6 +234,8 @@ const useUnstoppableDomains = () => {
               signature: authorization.idToken.eip4361_signature,
               message: authorization.idToken.eip4361_message,
               nonce: authorization.idToken.nonce,
+              domain: authorization.idToken.sub,
+              picture: authorization.idToken.picture,
             }),
           }
         );

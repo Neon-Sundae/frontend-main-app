@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import { Toaster } from 'react-hot-toast';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
 import bg from 'assets/illustrations/gradients/bg.png';
-import { FC } from 'react';
+import { useEffect, useState, FC } from 'react';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetailsView from '../JobDetailsView';
@@ -14,10 +14,22 @@ interface AllJobsLandingProps {
 }
 
 const AllJobsLanding: FC<AllJobsLandingProps> = ({ hideNavbar }) => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showCard, setShowCard] = useState(false);
   const data = useFetchJobs(searchParams.get('organisation'));
 
+  useEffect(() => {
+    if (!searchParams.get('job')) setShowCard(true);
+    if (window.innerWidth > 600) setShowCard(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleJobCardSelect = (jobId_uuid: string) => {
+    if (window.innerWidth <= 600) {
+      setShowCard(false);
+      navigate(`/jobs/all?job=${jobId_uuid}`);
+    }
     searchParams.set('job', jobId_uuid);
     setSearchParams(searchParams);
   };
@@ -26,32 +38,32 @@ const AllJobsLanding: FC<AllJobsLandingProps> = ({ hideNavbar }) => {
     <div
       className={styles.container}
       style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
+        backgroundColor: '#242529',
       }}
     >
       {!hideNavbar && <NavBar />}
 
       <Toaster />
       <div className={styles['job-cards-all-wrap']}>
-        <div className={styles['jobs-cards-wrap']}>
-          {data?.map((job: any) => (
-            <JobCards
-              key={job.jobId_uuid}
-              jobUuid={job.jobId_uuid}
-              currency={job.currency}
-              orgName={job.organisation.name}
-              orgImage={job.organisation.profileImage}
-              salaryMin={job.salaryMin}
-              salaryMax={job.salaryMax}
-              title={job.title}
-              handleCardClick={handleJobCardSelect}
-              selectedJobUuid={searchParams.get('job')}
-            />
-          ))}
-        </div>
+        {showCard && (
+          <div className={styles['jobs-cards-wrap']}>
+            {data?.map((job: any) => (
+              <JobCards
+                key={job.jobId_uuid}
+                jobUuid={job.jobId_uuid}
+                currency={job.currency}
+                orgName={job.organisation.name}
+                orgImage={job.organisation.profileImage}
+                salaryMin={job.salaryMin}
+                salaryMax={job.salaryMax}
+                title={job.title}
+                handleCardClick={handleJobCardSelect}
+                selectedJobUuid={searchParams.get('job')}
+              />
+            ))}
+          </div>
+        )}
+
         <div className={styles['jobs-card-details-wrap']}>
           <JobDetailsView jobId_uuid={searchParams.get('job')} />
         </div>
