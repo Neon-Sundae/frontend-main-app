@@ -11,6 +11,7 @@ import { useFetchJobs } from './hooks';
 
 const AllJobsLanding = () => {
   const navigate = useNavigate();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [showCard, setShowCard] = useState(false);
   const data = useFetchJobs(searchParams.get('organisation'));
@@ -29,6 +30,13 @@ const AllJobsLanding = () => {
     searchParams.set('job', jobId_uuid);
     setSearchParams(searchParams);
   };
+
+  if (searchParams.get('job')) {
+    window.onpopstate = function () {
+      navigate('/jobs/all');
+      setShowCard(true);
+    };
+  }
 
   return (
     <div
