@@ -201,6 +201,7 @@
   }
 
   .job-applicants-view {
+    cursor: pointer;
     &>p {
       font-family: var(--font-family-roboto-flex);
       font-style: normal;
