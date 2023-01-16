@@ -31,10 +31,6 @@ const useFetchJobs = (organisationId: string | null) => {
       retry: 1,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
-        if (error.message === 'Not Found') {
-          navigate('/404');
-        }
-
         handleError({
           error,
           explicitMessage: 'Unable to fetch jobs',

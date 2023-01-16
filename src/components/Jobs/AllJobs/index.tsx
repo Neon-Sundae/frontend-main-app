@@ -2,8 +2,8 @@
 import { Toaster } from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
-import bg from 'assets/illustrations/gradients/bg.png';
 import { useEffect, useState, FC } from 'react';
+import clsx from 'clsx';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetailsView from '../JobDetailsView';
@@ -15,6 +15,7 @@ interface AllJobsLandingProps {
 
 const AllJobsLanding: FC<AllJobsLandingProps> = ({ hideNavbar }) => {
   const navigate = useNavigate();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [showCard, setShowCard] = useState(false);
   const data = useFetchJobs(searchParams.get('organisation'));
@@ -34,11 +35,18 @@ const AllJobsLanding: FC<AllJobsLandingProps> = ({ hideNavbar }) => {
     setSearchParams(searchParams);
   };
 
+  if (searchParams.get('job')) {
+    window.onpopstate = function () {
+      navigate('/jobs/all');
+      setShowCard(true);
+    };
+  }
+
   return (
     <div
       className={styles.container}
       style={{
-        backgroundColor: '#242529',
+        backgroundColor: `${!hideNavbar} ? "none": "242529"`,
       }}
     >
       {!hideNavbar && <NavBar />}
