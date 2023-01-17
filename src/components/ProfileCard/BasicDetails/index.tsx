@@ -18,7 +18,7 @@ const BasicDetails: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
   const user = useSelector((state: RootState) => state.user.user);
   const [shareOpen, setShareOpen] = useState(false);
-
+  console.log('profile', profile);
   const showEditIcon = () => {
     if (profileId && user) {
       if (user.userId === parseInt(profileId, 10)) {
@@ -80,14 +80,15 @@ interface ProfileImageProps {
 }
 
 const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
-  const { user } = useSelector((state: RootState) => state.user);
+  const profile = useSelector((state: RootState) => state.profile.profile);
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
         <img
           alt="user"
           src={
-            picture || getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+            picture ||
+            getDefaultAvatarSrc(profile?.user?.name?.charAt(0).toUpperCase())
           }
         />
       </div>
