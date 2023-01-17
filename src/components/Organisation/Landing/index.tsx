@@ -56,7 +56,7 @@ const Landing: FC = () => {
       )}
       {tabSelected === 'projects' && (
         <div className={styles['organisation-projects-wrap']}>
-          <OrganisationProjects organisation={organisation} />
+          <OrganisationProjects organisation={organisation} showAddBtn />
         </div>
       )}
       {tabSelected === 'jobs' && (
