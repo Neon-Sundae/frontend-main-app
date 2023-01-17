@@ -26,7 +26,7 @@ const useProjectData = () => {
       retry: 1,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
-        handleError({ error, explicitMessage: 'Unable to fetch project data' });
+        handleError({ error });
       },
     }
   );

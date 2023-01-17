@@ -129,7 +129,7 @@ const useFetchProjects = (create: any) => {
       refetchOnWindowFocus: false,
       enabled: create !== undefined || create !== null,
       onError: (error: any) => {
-        handleError({ error, explicitMessage: 'Unable to fetch project data' });
+        handleError({ error });
       },
     }
   );

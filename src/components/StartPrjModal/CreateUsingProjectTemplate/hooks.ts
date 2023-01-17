@@ -43,7 +43,6 @@ const useFetchAllProjectTemplates = (
       onError: (error: any) => {
         handleError({
           error,
-          explicitMessage: 'Unable to fetch project templates',
         });
       },
     }

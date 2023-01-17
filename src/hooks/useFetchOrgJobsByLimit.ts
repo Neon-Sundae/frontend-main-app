@@ -32,7 +32,6 @@ const useFetchOrgJobsByLimit = (organisationId: number, limit: number) => {
       onError: (error: any) => {
         handleError({
           error,
-          explicitMessage: 'Unable to fetch jobs',
         });
       },
     }

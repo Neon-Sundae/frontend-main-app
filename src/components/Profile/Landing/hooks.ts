@@ -78,7 +78,6 @@ const useFetchPublicProfile = (profileId: string | undefined) => {
       onError: (error: any) => {
         handleError({
           error,
-          explicitMessage: 'Unable to fetch profile data',
         });
       },
     }

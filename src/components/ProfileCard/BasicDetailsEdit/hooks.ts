@@ -105,7 +105,7 @@ const fetchNFTs = (walletId: any, agree: boolean): IReturnType => {
       staleTime: Infinity,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
-        handleError({ error, explicitMessage: 'Unable to fetch nfts' });
+        handleError({ error });
       },
       enabled: false, // to run query on click
     }

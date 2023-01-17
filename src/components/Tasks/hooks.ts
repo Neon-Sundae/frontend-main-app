@@ -32,7 +32,6 @@ const useFetchUserTasks = () => {
       onError: (error: any) => {
         handleError({
           error,
-          explicitMessage: 'Unable to fetch user tasks',
         });
       },
     }
