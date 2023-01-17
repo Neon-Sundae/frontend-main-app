@@ -6,21 +6,37 @@ import { ReactComponent as ExpandIcon } from 'assets/illustrations/organisation/
 import { ReactComponent as CollapseIcon } from 'assets/illustrations/organisation/sidebar/collapse.svg';
 import bg from 'assets/illustrations/organisation/sidebar/bg.png';
 import clsx from 'clsx';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { IOrganisation } from 'interfaces/organisation';
 import styles from './index.module.scss';
+import {
+  useFetchOrganisation,
+  useFetchUserOrganisation,
+} from '../Landing/hooks';
 
 interface OrganisationSidebarProps {
   setTabSelected: (arg0: string) => void;
   tabSelected: string;
+  allOrgData: any[];
+  organisationId: number;
+  setSelectedOrg: any;
+  selectedOrg: any;
 }
 
 const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   setTabSelected,
   tabSelected,
+  allOrgData,
+  organisationId,
+  setSelectedOrg,
+  selectedOrg,
 }) => {
   const [expandSidebar, setExpandSidebar] = useState(false);
-  const activeClass = clsx;
+  const [isExpanded, setExpanded] = useState(false);
 
+  const currentOrg = allOrgData?.find(x => x.organisationId === organisationId);
+
+  console.log(selectedOrg);
   return (
     <div
       className={clsx(
@@ -42,13 +58,57 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
         </button>
       )}
       {expandSidebar && (
-        <button
-          onClick={() => setExpandSidebar(false)}
-          className={styles[`collapse-btn`]}
-        >
-          <CollapseIcon width={25.7} height={25.7} />
-        </button>
+        <>
+          <button
+            onClick={() => setExpandSidebar(false)}
+            className={styles[`collapse-btn`]}
+          >
+            <CollapseIcon width={25.7} height={25.7} />
+          </button>
+
+          {!isExpanded ? (
+            <div
+              onClick={() => setExpanded(true)}
+              className={styles['non-expanded-list']}
+            >
+              <i className="material-icons">expand_more</i>
+              <div>
+                <h4>{currentOrg?.name}</h4>
+              </div>
+            </div>
+          ) : (
+            <div className={styles['expanded-list']}>
+              <div onClick={() => setExpanded(false)}>
+                <i className="material-icons">expand_more</i>
+                {true ? (
+                  <div>
+                    <h4>{currentOrg?.name}</h4>
+                  </div>
+                ) : (
+                  <div className={styles['project-list-select']}>
+                    <h4>Select Organisation</h4>
+                  </div>
+                )}
+              </div>
+              {1 > 0 ? (
+                allOrgData.map(org => (
+                  <span
+                    key={org?.organisationId}
+                    onClick={() => {
+                      setSelectedOrg(org?.organisationId);
+                    }}
+                  >
+                    {org?.name}
+                  </span>
+                ))
+              ) : (
+                <p>No projects</p>
+              )}
+            </div>
+          )}
+        </>
       )}
+
       <div
         className={styles[`organisation-sidebar--navigation-icons-container`]}
       >
@@ -86,14 +146,14 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             <TeamsIcon width={24} height={24} />
             {expandSidebar && <p>Teams</p>}
           </button> */}
-          <button
+          {/* <button
             onClick={() => setTabSelected('templates')}
             title="Templates"
             className={clsx(tabSelected === 'templates' && styles.active)}
           >
             <TemplatesIcon width={24} height={24} />
             {expandSidebar && <p>Templates</p>}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

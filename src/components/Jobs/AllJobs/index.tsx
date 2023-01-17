@@ -46,7 +46,7 @@ const AllJobsLanding: FC<AllJobsLandingProps> = ({ hideNavbar }) => {
     <div
       className={styles.container}
       style={{
-        backgroundColor: `${!hideNavbar} ? "none": "242529"`,
+        backgroundColor: `${window.innerWidth <= 600} ? "none": "242529"`,
       }}
     >
       {!hideNavbar && <NavBar />}

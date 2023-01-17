@@ -1,21 +1,30 @@
 import NavBar from 'components/NavBar';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import bg from 'assets/illustrations/gradients/bg.png';
 import CreateUsingProjectTemplate from 'components/StartPrjModal/CreateUsingProjectTemplate';
-import AllJobsLanding from 'components/Jobs/AllJobs';
+import JobsLanding from 'components/Jobs/Landing';
 import Banner from '../Banner';
 import styles from './index.module.scss';
-import useFetchOrganisation from './hooks';
+import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
 import BasicDetails from '../BasicDetails';
 import OrganisationProjects from '../OrganisationProjects';
 import OrganisationJobs from '../OrganisationJobs';
 import OrganisationSidebar from '../OrganisationSidebar';
 
 const Landing: FC = () => {
-  const { organisation, isLoading } = useFetchOrganisation();
+  const [selectedOrg, setSelectedOrg] = useState('');
+  const { organisation, isLoading, refetch } =
+    useFetchOrganisation(selectedOrg);
+  const { data, isLoading: loading } = useFetchUserOrganisation();
   const [tabSelected, setTabSelected] = useState('home');
-  if (isLoading) return null;
-  console.log('tabSelected', tabSelected);
+
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOrg]);
+
+  if (isLoading || loading) return null;
+
   return (
     <div
       className={styles['organisation-container']}
@@ -29,6 +38,10 @@ const Landing: FC = () => {
       <OrganisationSidebar
         setTabSelected={setTabSelected}
         tabSelected={tabSelected}
+        allOrgData={data}
+        organisationId={organisation.organisationId}
+        selectedOrg={selectedOrg}
+        setSelectedOrg={setSelectedOrg}
       />
       <NavBar />
       {tabSelected === 'home' && (
@@ -48,7 +61,7 @@ const Landing: FC = () => {
       )}
       {tabSelected === 'jobs' && (
         <div className={styles['organisation-jobs-wrap']}>
-          <AllJobsLanding hideNavbar />
+          <JobsLanding hideNavbar />
         </div>
       )}
       {tabSelected === 'templates' && (
