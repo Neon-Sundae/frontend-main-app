@@ -36,7 +36,6 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
 
   const currentOrg = allOrgData?.find(x => x.organisationId === organisationId);
 
-  console.log(selectedOrg);
   return (
     <div
       className={clsx(
@@ -90,20 +89,19 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
                   </div>
                 )}
               </div>
-              {1 > 0 ? (
-                allOrgData.map(org => (
+              <div className={styles['expanded-list--items']}>
+                {allOrgData.map(org => (
                   <span
                     key={org?.organisationId}
                     onClick={() => {
                       setSelectedOrg(org?.organisationId);
+                      setExpandSidebar(false);
                     }}
                   >
                     {org?.name}
                   </span>
-                ))
-              ) : (
-                <p>No projects</p>
-              )}
+                ))}
+              </div>
             </div>
           )}
         </>

@@ -7,7 +7,7 @@
   box-shadow: 0px 1.43229px 37.2396px rgba(0, 0, 0, 0.1);
   border: 1.07px solid rgba(41, 30, 50, 0.25);
   transition: all 0.2s ease-out;
-
+  position: fixed;
   .collapse-btn,
   .expand-btn {
     background: none;
@@ -33,6 +33,7 @@
   }
 
   &--expanded {
+    
     position: absolute;
     z-index: 10;
     width: 200px;
@@ -80,23 +81,38 @@
     }
     .non-expanded-list {
       height: 77px;
+      width: 100%;
+      position: absolute;
+      transition: all 0.1s ease-in;
     }
     .expanded-list {
-      & h4 {
-       margin-top: 10px;
       
+      position: absolute;
+      width: 100%;
+      transition: all 0.1s ease-out;
+      background-color: #242529;
+      z-index: 10;
+      & h4 {
+      //  margin-top: 10px;
       }
       flex-direction: column;
       align-items: flex-start;
-    
+      
       &>div {
+        margin-top: 25px;
+        
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
         cursor: pointer;
       }
-    
+      &--items {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 300px;
+      }
       & span {
         font-family: var(--font-family-roboto-regular);
         font-weight: 400;
@@ -105,6 +121,7 @@
         width: 100%;
         cursor: pointer;
       }
+      
     }
  
   &--navigation-icons-container {
