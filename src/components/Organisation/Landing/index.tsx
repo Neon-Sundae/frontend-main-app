@@ -45,7 +45,15 @@ const Landing: FC = () => {
         setSelectedOrg={setSelectedOrg}
       />
       <NavBar />
-      {tabSelected === 'home' && (
+      {tabSelector(tabSelected, organisation)}
+    </div>
+  );
+};
+
+const tabSelector = (tabSelected: string, organisation: any) => {
+  switch (tabSelected) {
+    case 'home':
+      return (
         <>
           <Banner organisation={organisation} />
           <BasicDetails organisation={organisation} />
@@ -54,18 +62,21 @@ const Landing: FC = () => {
             <OrganisationJobs organisationId={organisation.organisationId} />
           </div>
         </>
-      )}
-      {tabSelected === 'projects' && (
+      );
+    case 'projects':
+      return (
         <div className={styles['organisation-projects-wrap']}>
           <OrganisationProjects organisation={organisation} showAddBtn />
         </div>
-      )}
-      {tabSelected === 'jobs' && (
+      );
+    case 'jobs':
+      return (
         <div className={styles['organisation-jobs-wrap']}>
           <JobsLanding hideNavbar />
         </div>
-      )}
-      {tabSelected === 'templates' && (
+      );
+    case 'templates':
+      return (
         <div className={styles['organisation-templates-wrap']}>
           <CreateUsingProjectTemplate
             onClose={() => {}}
@@ -74,9 +85,17 @@ const Landing: FC = () => {
             showModal={false}
           />
         </div>
-      )}
-    </div>
-  );
+      );
+    default:
+      <>
+        <Banner organisation={organisation} />
+        <BasicDetails organisation={organisation} />
+        <div className={styles['organisation-project-jobs-wrap']}>
+          <OrganisationProjects organisation={organisation} />
+          <OrganisationJobs organisationId={organisation.organisationId} />
+        </div>
+      </>;
+  }
 };
 
 export default Landing;
