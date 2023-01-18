@@ -31,9 +31,9 @@ const useFetchOrganisation = (): IReturnType => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
-      onError: (error: any) => {
-        handleError({ error, explicitMessage: 'Unable to fetch organisation' });
-      },
+      // onError: (error: any) => {
+      //   handleError({ error });
+      // },
     }
   );
 

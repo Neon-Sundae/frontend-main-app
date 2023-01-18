@@ -18,7 +18,7 @@ const BasicDetails: FC = () => {
   const profile = useSelector((state: RootState) => state.profile.profile);
   const user = useSelector((state: RootState) => state.user.user);
   const [shareOpen, setShareOpen] = useState(false);
-  console.log('profile', profile);
+
   const showEditIcon = () => {
     if (profileId && user) {
       if (user.userId === parseInt(profileId, 10)) {
