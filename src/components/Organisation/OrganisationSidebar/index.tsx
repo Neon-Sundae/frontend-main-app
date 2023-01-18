@@ -33,8 +33,14 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
 }) => {
   const [expandSidebar, setExpandSidebar] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
+  const [currentOrg, setCurrentOrg] = useState(
+    allOrgData?.find(x => x.organisationId === organisationId)
+  );
 
-  const currentOrg = allOrgData?.find(x => x.organisationId === organisationId);
+  useEffect(() => {
+    setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allOrgData]);
 
   return (
     <div

@@ -71,6 +71,7 @@ const useFetchUserOrganisation = (): IReturnTypeUserOrgs => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled: !!user?.userId,
       onError: (error: any) => {
         handleError({ error, explicitMessage: 'Unable to fetch organisation' });
       },
