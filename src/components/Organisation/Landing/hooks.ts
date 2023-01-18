@@ -14,7 +14,7 @@ interface IReturnType {
   refetch: any;
 }
 
-const useFetchOrganisation = (selectedOrgId: any): IReturnType => {
+const useFetchOrganisation = (selectedOrgId: number): IReturnType => {
   const { orgId } = useParams();
 
   const { data, isLoading, refetch } = useQuery(

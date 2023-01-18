@@ -13,8 +13,9 @@ import OrganisationSidebar from '../OrganisationSidebar';
 
 const Landing: FC = () => {
   const [selectedOrg, setSelectedOrg] = useState('');
-  const { organisation, isLoading, refetch } =
-    useFetchOrganisation(selectedOrg);
+  const { organisation, isLoading, refetch } = useFetchOrganisation(
+    Number(selectedOrg)
+  );
   const { data, isLoading: loading } = useFetchUserOrganisation();
   const [tabSelected, setTabSelected] = useState('home');
 
