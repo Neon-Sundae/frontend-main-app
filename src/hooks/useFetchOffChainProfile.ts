@@ -42,6 +42,7 @@ const useFetchOffChainProfile = () => {
       onError: (error: any) => {
         handleError({
           error,
+          explicitMessage: 'Unable to fetch off chain profile',
         });
       },
     }

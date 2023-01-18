@@ -39,6 +39,7 @@ const useFetchWalletProjects = ({ open }: IProps) => {
       onError: (error: any) => {
         handleError({
           error,
+          explicitMessage: 'Unable to fetch user projects',
         });
       },
     }

@@ -31,6 +31,7 @@ const useFetchUserOrgs = () => {
       onError: (error: any) => {
         handleError({
           error,
+          explicitMessage: 'Unable to fetch off user orgs',
         });
       },
     }

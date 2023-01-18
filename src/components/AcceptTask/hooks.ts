@@ -35,6 +35,7 @@ const useFetchTaskData = (taskId: number | undefined) => {
       onError: (error: any) => {
         handleError({
           error,
+          explicitMessage: 'Unable to fetch task data',
         });
       },
     }
