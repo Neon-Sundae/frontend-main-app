@@ -72,6 +72,30 @@ const App = () => {
             }
           />
           <Route
+            path="/organisation/:orgId/home"
+            element={
+              <PrivateRoute>
+                <Organisation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/organisation/:orgId/projects"
+            element={
+              <PrivateRoute>
+                <Organisation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/organisation/:orgId/jobs"
+            element={
+              <PrivateRoute>
+                <Organisation />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/project"
             element={
               <PrivateRoute>

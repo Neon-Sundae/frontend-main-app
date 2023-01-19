@@ -2,9 +2,10 @@
 import clsx from 'clsx';
 import { IOrganisation } from 'interfaces/organisation';
 import { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import StartPrjModal from 'components/StartPrjModal';
+import CreateUsingProjectTemplate from 'components/StartPrjModal/CreateUsingProjectTemplate';
 import styles from './index.module.scss';
 import ProjectCard from '../../../components/Home/ProjectCard/index';
 
@@ -17,9 +18,11 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
   organisation,
   showAddBtn,
 }) => {
+  const param = useParams();
   const [showCreateProject, setShowProjectCreate] = useState(false);
   const { flProjects } = organisation;
-
+  const location = useLocation();
+  const subpage = location.pathname.split('/').pop();
   return (
     <div className={styles['organisation-projects-container']}>
       {showAddBtn && (
@@ -35,24 +38,36 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
       )}
 
       {showCreateProject && (
-        <StartPrjModal onClose={() => setShowProjectCreate(false)} />
+        <CreateUsingProjectTemplate
+          onClose={() => setShowProjectCreate(false)}
+          onNext={() => {}}
+          orgId={organisation.organisationId}
+        />
       )}
 
-      <div className={styles['organisation-project-cards-container']}>
-        {flProjects.length > 0
-          ? flProjects.map(flProject => (
-              <OrganisationProjectCard
-                key={flProject.flProject_uuid}
-                projectId={flProject.flProject_uuid}
-                description={flProject.flProjectDescription}
-                numTasks={flProject.taskCount}
-                projectName={flProject.flProjectName}
-                org={organisation.name}
-                profileImage={organisation.profileImage}
-              />
-            ))
-          : null}
-      </div>
+      {!showCreateProject && (
+        <div
+          className={clsx(
+            subpage == 'home'
+              ? styles['organisation-project-cards-container']
+              : styles['organisation-project-cards-container-alternate']
+          )}
+        >
+          {flProjects.length > 0
+            ? flProjects.map(flProject => (
+                <OrganisationProjectCard
+                  key={flProject.flProject_uuid}
+                  projectId={flProject.flProject_uuid}
+                  description={flProject.flProjectDescription}
+                  numTasks={flProject.taskCount}
+                  projectName={flProject.flProjectName}
+                  org={organisation.name}
+                  profileImage={organisation.profileImage}
+                />
+              ))
+            : null}
+        </div>
+      )}
     </div>
   );
 };

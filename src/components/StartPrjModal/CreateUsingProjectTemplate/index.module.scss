@@ -54,8 +54,8 @@
 
     .text-content {
       display: flex;
-
-      &>p {
+      justify-content: flex-end;
+      &>p { 
         font-family: var(--font-family-roboto-flex);
         font-weight: 400;
         font-size: 14px;
@@ -68,7 +68,7 @@
 
     .buttons {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
 
       button {
         color: #fff;
@@ -87,7 +87,8 @@
         background: linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%), linear-gradient(89.58deg, #826AF7 2.95%, #DB5DDE 56.19%, #E87AAF 103.17%);
         box-shadow: 0px 3.44px 3.44px rgba(204, 204, 204, 0.1);
         border-radius: 18.92px;
-        margin-bottom: 10px
+        margin-bottom: 10px;
+        margin-right: 10px;
       }
 
       :nth-child(2) {

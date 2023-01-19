@@ -143,7 +143,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     });
   };
 
-  if (!showModal) {
+  if (showModal) {
     return (
       <div className={styles[`project-template-modal`]}>
         <div className={styles[`project-template-modal--picker`]}>
@@ -184,56 +184,61 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
       </div>
     );
   }
+  if (!showModal)
+    return (
+      <Modal
+        onClose={onClose}
+        width="1000px"
+        height="700px"
+        title="Use Project Template"
+      >
+        <div className={styles[`project-template-modal`]}>
+          <div className={styles[`project-template-modal--picker`]}>
+            <h2>Choose Template</h2>
+            {fetchProjectTemplates.data?.map(
+              (template: { name: string; flProjectTemplateId: number }) => (
+                <TemplateOption
+                  title={template.name}
+                  key={getRandomString(5)}
+                  id={template.flProjectTemplateId.toString()}
+                  filterSelectedTemplate={() =>
+                    filterSelectedTemplate(template)
+                  }
+                  selected={
+                    currentTemplate?.flProjectTemplateId ===
+                    template.flProjectTemplateId
+                  }
+                />
+              )
+            )}
+          </div>
 
-  return (
-    <Modal
-      onClose={onClose}
-      width="1000px"
-      height="700px"
-      title="Use Project Template"
-    >
-      <div className={styles[`project-template-modal`]}>
-        <div className={styles[`project-template-modal--picker`]}>
-          <h2>Choose Template</h2>
-          {fetchProjectTemplates.data?.map(
-            (template: { name: string; flProjectTemplateId: number }) => (
-              <TemplateOption
-                title={template.name}
-                key={getRandomString(5)}
-                id={template.flProjectTemplateId.toString()}
-                filterSelectedTemplate={() => filterSelectedTemplate(template)}
-                selected={
-                  currentTemplate?.flProjectTemplateId ===
-                  template.flProjectTemplateId
-                }
-              />
-            )
-          )}
-        </div>
-
-        {currentTemplate && (
-          <div className={styles[`project-template-modal--preview`]}>
-            <div className={styles[`gif-preview`]}>
-              <img
-                src={getGifPreview(currentTemplate.name)}
-                alt="template preview"
-              />
-            </div>
-            <h2 className={styles[`template-name`]}>{currentTemplate?.name}</h2>
-            <div className={styles[`text-content`]}>
-              <p>{currentTemplate?.description}</p>
-              <div className={styles.buttons}>
-                <button onClick={createProject}>Get Template</button>
-                <button onClick={() => setShowProjectCreate(true)}>
-                  Skip for now
-                </button>
+          {currentTemplate && (
+            <div className={styles[`project-template-modal--preview`]}>
+              <div className={styles[`gif-preview`]}>
+                <img
+                  src={getGifPreview(currentTemplate.name)}
+                  alt="template preview"
+                />
+              </div>
+              <h2 className={styles[`template-name`]}>
+                {currentTemplate?.name}
+              </h2>
+              <div className={styles[`text-content`]}>
+                <p>{currentTemplate?.description}</p>
+                <div className={styles.buttons}>
+                  <button onClick={createProject}>Get Template</button>
+                  <button onClick={() => setShowProjectCreate(true)}>
+                    Skip for now
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-    </Modal>
-  );
+          )}
+        </div>
+      </Modal>
+    );
+  return null;
 };
 CreateUsingProjectTemplate.defaultProps = {
   showModal: true,

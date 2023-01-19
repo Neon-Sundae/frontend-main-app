@@ -8,6 +8,12 @@ import bg from 'assets/illustrations/organisation/sidebar/bg.png';
 import clsx from 'clsx';
 import { FC, useEffect, useState } from 'react';
 import { IOrganisation } from 'interfaces/organisation';
+import {
+  Link,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import styles from './index.module.scss';
 import {
   useFetchOrganisation,
@@ -36,6 +42,12 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   const [currentOrg, setCurrentOrg] = useState(
     allOrgData?.find(x => x.organisationId === organisationId)
   );
+  const location = useLocation();
+
+  useEffect(() => {
+    setTabSelected(location.pathname.split('/').pop() || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabSelected]);
 
   useEffect(() => {
     setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
@@ -85,19 +97,15 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             <div className={styles['expanded-list']}>
               <div onClick={() => setExpanded(false)}>
                 <i className="material-icons">expand_more</i>
-                {true ? (
-                  <div>
-                    <h4>{currentOrg?.name}</h4>
-                  </div>
-                ) : (
-                  <div className={styles['project-list-select']}>
-                    <h4>Select Organisation</h4>
-                  </div>
-                )}
+
+                <div>
+                  <h4>{currentOrg?.name}</h4>
+                </div>
               </div>
               <div className={styles['expanded-list--items']}>
                 {allOrgData.map(org => (
-                  <span
+                  <Link
+                    to={`/organisation/${org?.organisationId}/home`}
                     key={org?.organisationId}
                     onClick={() => {
                       setSelectedOrg(org?.organisationId);
@@ -105,7 +113,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
                     }}
                   >
                     {org?.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -117,30 +125,41 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
         className={styles[`organisation-sidebar--navigation-icons-container`]}
       >
         <div className={styles[`organisation-sidebar-icons`]}>
-          <button
+          <Link
+            to={`/organisation/${currentOrg.organisationId}/home`}
+            className={clsx(
+              tabSelected === 'home' && styles.active,
+              styles.button
+            )}
             onClick={() => setTabSelected('home')}
-            title="Home"
-            className={clsx(tabSelected === 'home' && styles.active)}
           >
             <HomeIcon width={24} height={24} />
             {expandSidebar && <p>Home</p>}
-          </button>
-          <button
+          </Link>
+          <Link
+            to={`/organisation/${currentOrg.organisationId}/projects`}
             onClick={() => setTabSelected('projects')}
             title="Projects"
-            className={clsx(tabSelected === 'projects' && styles.active)}
+            className={clsx(
+              tabSelected === 'projects' && styles.active,
+              styles.button
+            )}
           >
             <ProjectsIcon width={24} height={24} />
             {expandSidebar && <p>Projects</p>}
-          </button>
-          <button
+          </Link>
+          <Link
+            to={`/organisation/${currentOrg.organisationId}/jobs`}
             onClick={() => setTabSelected('jobs')}
             title="Jobs"
-            className={clsx(tabSelected === 'jobs' && styles.active)}
+            className={clsx(
+              tabSelected === 'jobs' && styles.active,
+              styles.button
+            )}
           >
             <JobsIcon width={24} height={24} />
             {expandSidebar && <p>Jobs</p>}
-          </button>
+          </Link>
           {/* TODO: this feature not implemented yet */}
           {/* <button
             onClick={() => setTabSelected('teams')}
