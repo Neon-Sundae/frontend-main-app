@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import clsx from 'clsx';
 import { IOrganisation } from 'interfaces/organisation';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import StartPrjModal from 'components/StartPrjModal';
@@ -18,9 +18,16 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
   organisation,
   showAddBtn,
 }) => {
-  const param = useParams();
   const [showCreateProject, setShowProjectCreate] = useState(false);
+  const [checkIfNumber, setCheckIfNumber] = useState<any>(null);
   const { flProjects } = organisation;
+
+  useEffect(() => {
+    const checkIfNum = location.pathname.split('/').pop() || '';
+    const num = checkIfNum.replace(/[^0-9]/g, '');
+    if (num.length) setCheckIfNumber(num.length);
+  }, []);
+
   const location = useLocation();
   const subpage = location.pathname.split('/').pop();
   return (
@@ -48,7 +55,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
       {!showCreateProject && (
         <div
           className={clsx(
-            subpage == 'home'
+            subpage || checkIfNumber === 'home'
               ? styles['organisation-project-cards-container']
               : styles['organisation-project-cards-container-alternate']
           )}

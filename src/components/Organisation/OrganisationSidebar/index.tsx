@@ -42,6 +42,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   const [currentOrg, setCurrentOrg] = useState(
     allOrgData?.find(x => x.organisationId === organisationId)
   );
+
   const location = useLocation();
 
   useEffect(() => {
@@ -58,8 +59,6 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
     setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allOrgData]);
-
-  console.log(tabSelected);
 
   return (
     <div
