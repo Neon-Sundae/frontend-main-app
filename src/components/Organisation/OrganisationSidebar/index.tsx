@@ -46,6 +46,11 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
 
   useEffect(() => {
     setTabSelected(location.pathname.split('/').pop() || '');
+    const checkIfNum = location.pathname.split('/').pop() || '';
+    const num = checkIfNum.replace(/[^0-9]/g, '');
+    if (num.length) {
+      setTabSelected('home');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabSelected]);
 
@@ -53,6 +58,8 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
     setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allOrgData]);
+
+  console.log(tabSelected);
 
   return (
     <div
