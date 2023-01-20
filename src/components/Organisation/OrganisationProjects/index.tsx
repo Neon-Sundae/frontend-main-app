@@ -56,7 +56,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
       {!showCreateProject && (
         <div
           className={clsx(
-            subpage || checkIfNumber === 'home'
+            subpage === 'home'
               ? styles['organisation-project-cards-container']
               : styles['organisation-project-cards-container-alternate']
           )}
