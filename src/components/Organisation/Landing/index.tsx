@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import bg from 'assets/illustrations/gradients/bg.png';
 import CreateUsingProjectTemplate from 'components/StartPrjModal/CreateUsingProjectTemplate';
 import JobsLanding from 'components/Jobs/Landing';
+import { RootState } from 'reducers';
+import { useSelector } from 'react-redux';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
@@ -12,6 +14,7 @@ import OrganisationJobs from '../OrganisationJobs';
 import OrganisationSidebar from '../OrganisationSidebar';
 
 const Landing: FC = () => {
+  const user = useSelector((state: RootState) => state.user.user);
   const [selectedOrg, setSelectedOrg] = useState('');
   const { organisation, isLoading, refetch } = useFetchOrganisation(
     Number(selectedOrg)
@@ -26,6 +29,10 @@ const Landing: FC = () => {
 
   if (isLoading || loading) return null;
 
+  const isFounder = () => {
+    return user?.userId === organisation.organisationUser[0].userId;
+  };
+
   return (
     <div
       className={styles['organisation-container']}
@@ -36,14 +43,17 @@ const Landing: FC = () => {
         backgroundAttachment: 'fixed',
       }}
     >
-      <OrganisationSidebar
-        setTabSelected={setTabSelected}
-        tabSelected={tabSelected}
-        allOrgData={data}
-        organisationId={organisation.organisationId}
-        selectedOrg={selectedOrg}
-        setSelectedOrg={setSelectedOrg}
-      />
+      {isFounder() && (
+        <OrganisationSidebar
+          setTabSelected={setTabSelected}
+          tabSelected={tabSelected}
+          allOrgData={data}
+          organisationId={organisation.organisationId}
+          selectedOrg={selectedOrg}
+          setSelectedOrg={setSelectedOrg}
+        />
+      )}
+
       <NavBar />
       {tabSelector(tabSelected, organisation)}
     </div>
