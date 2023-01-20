@@ -25,3 +25,20 @@
   line-height: 23px;
   z-index: 1;
 }
+
+.btn {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  color: #fff;
+  margin-top: 15px;
+  text-decoration: underline;
+  font-family: var(--font-family-roboto-regular);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+}

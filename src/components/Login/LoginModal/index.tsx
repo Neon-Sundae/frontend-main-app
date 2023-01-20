@@ -146,15 +146,19 @@ const MetamaskLogin: FC<MetamaskLoginProps> = ({
         <h2>Install Metamask</h2>
         <p>Scan with your phone to download on iOS or Android</p>
         <QRCode
-          value={"https://metamask.io/download"}
+          value="https://metamask.io/download"
           bgColor="transparent"
           fgColor="white"
           size={200}
-          style={{margin: "15px"}}
+          style={{ margin: '15px' }}
         />
         <span>
-          <p>Don't have Metamask?</p>
-          <a href="https://metamask.io/download/" target="_blank">
+          <p>Don&apos;t have Metamask?</p>
+          <a
+            href="https://metamask.io/download/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <button>Get</button>
           </a>
         </span>
