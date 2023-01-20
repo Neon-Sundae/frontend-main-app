@@ -39,7 +39,7 @@ const useProfileManage = () => {
         return;
       }
 
-      await createProfileContract(
+      const profileContractAddress = await createProfileContract(
         address,
         name,
         title,
@@ -47,14 +47,16 @@ const useProfileManage = () => {
         setDeploying
       );
 
-      const contractAddress = await getProfileContractAddress(address);
-      console.log('Deployed profile contract address: ', contractAddress);
+      console.log(
+        'Deployed profile contract address: ',
+        profileContractAddress
+      );
       if (isContractDeployed !== 'Failed') {
         dispatch({
           type: GET_PROFILE_CONTRACT_ADDRESS,
-          payload: contractAddress,
+          payload: profileContractAddress,
         });
-        await saveProfileContractAddress(contractAddress);
+        await saveProfileContractAddress(profileContractAddress);
       }
       setDeploying('minted');
     } catch (err: any) {
