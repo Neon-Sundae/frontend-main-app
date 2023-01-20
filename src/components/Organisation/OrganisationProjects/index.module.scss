@@ -2,6 +2,12 @@
   width: 90%;
   max-width: 1532px;
   margin-inline: auto;
+  
+  h3 {
+    color: white;
+    font-family: var(--font-family-roboto-regular);
+    font-size: 27px;
+  }
 
   @media (max-width: 1920px) {
     width: 70%;
@@ -40,6 +46,8 @@
       cursor: pointer;
     }
   }
+  
+  
 }
 
 .organisation-project-card {
@@ -104,14 +112,6 @@
     }
   }
 }
-
-.organisation-heading {
-  color: white;
-  font-family: var(--font-family-roboto-regular);
-  font-size: 27px;
-  margin-bottom: 40px;
-}
-
 .organisation-project-cards-container {
   
   width: 95%;

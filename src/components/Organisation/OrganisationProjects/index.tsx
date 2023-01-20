@@ -30,6 +30,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
 
   const location = useLocation();
   const subpage = location.pathname.split('/').pop();
+  console.log(subpage && subpage.length);
   return (
     <div className={styles['organisation-projects-container']}>
       {showAddBtn && (
@@ -52,6 +53,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
           directShowProjectCreate
         />
       )}
+      {subpage && subpage !== 'projects' && <h3>Projects</h3>}
 
       {!showCreateProject && (
         <div
