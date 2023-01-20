@@ -16,17 +16,19 @@ interface ICreateUsingProjectTemplateProps {
   onClose: () => void;
   onNext: () => void;
   orgId: number;
-  showModal?: boolean;
+  directShowProjectCreate?: boolean;
 }
 
 const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   onClose,
   onNext,
   orgId,
-  showModal,
+  directShowProjectCreate,
 }) => {
   const navigate = useNavigate();
-  const [showProjectCreate, setShowProjectCreate] = useState(showModal);
+  const [showProjectCreate, setShowProjectCreate] = useState(
+    directShowProjectCreate
+  );
   const [currentTemplate, setCurrentTemplate] = useState<any>(null);
   const [projectData, setProjectData] = useState<any>(null);
 
@@ -194,7 +196,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
   );
 };
 CreateUsingProjectTemplate.defaultProps = {
-  showModal: false,
+  directShowProjectCreate: false,
 };
 
 interface ITemplateOptionProps {

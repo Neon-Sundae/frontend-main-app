@@ -82,19 +82,20 @@ const tabSelector = (tabSelected: string, organisation: any) => {
             onClose={() => {}}
             orgId={organisation.organisationId}
             onNext={() => {}}
-            showModal={false}
           />
         </div>
       );
     default:
-      <>
-        <Banner organisation={organisation} />
-        <BasicDetails organisation={organisation} />
-        <div className={styles['organisation-project-jobs-wrap']}>
-          <OrganisationProjects organisation={organisation} />
-          <OrganisationJobs organisationId={organisation.organisationId} />
-        </div>
-      </>;
+      return (
+        <>
+          <Banner organisation={organisation} />
+          <BasicDetails organisation={organisation} />
+          <div className={styles['organisation-project-jobs-wrap']}>
+            <OrganisationProjects organisation={organisation} />
+            <OrganisationJobs organisationId={organisation.organisationId} />
+          </div>
+        </>
+      );
   }
 };
 

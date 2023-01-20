@@ -49,6 +49,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
           onClose={() => setShowProjectCreate(false)}
           onNext={() => {}}
           orgId={organisation.organisationId}
+          directShowProjectCreate
         />
       )}
 

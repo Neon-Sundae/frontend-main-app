@@ -11,6 +11,7 @@ import { IOrganisation } from 'interfaces/organisation';
 import {
   Link,
   useLocation,
+  useNavigate,
   useParams,
   useSearchParams,
 } from 'react-router-dom';
@@ -46,6 +47,11 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   const location = useLocation();
 
   useEffect(() => {
+    setCurrentOrg(allOrgData?.find(x => x.organisationId === selectedOrg));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOrg]);
+
+  useEffect(() => {
     setTabSelected(location.pathname.split('/').pop() || '');
     const checkIfNum = location.pathname.split('/').pop() || '';
     const num = checkIfNum.replace(/[^0-9]/g, '');
@@ -59,6 +65,8 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
     setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allOrgData]);
+
+  console.log('currentOrg', currentOrg);
 
   return (
     <div
@@ -114,7 +122,9 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
                     to={`/organisation/${org?.organisationId}/home`}
                     key={org?.organisationId}
                     onClick={() => {
+                      setTabSelected('home');
                       setSelectedOrg(org?.organisationId);
+                      setExpanded(false);
                       setExpandSidebar(false);
                     }}
                   >
