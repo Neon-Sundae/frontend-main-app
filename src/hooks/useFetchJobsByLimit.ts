@@ -26,12 +26,11 @@ const useFetchJobsByLimit = (limit: number) => {
       staleTime: Infinity,
       retry: 1,
       refetchOnWindowFocus: false,
-      onError: (error: any) => {
-        handleError({
-          error,
-          explicitMessage: 'Unable to fetch jobs',
-        });
-      },
+      // onError: (error: any) => {
+      //   handleError({
+      //     error,
+      //   });
+      // },
     }
   );
   return { data, isLoading };
