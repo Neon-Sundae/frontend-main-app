@@ -35,10 +35,9 @@ const useFetchJobs = (organisationId: string | null) => {
           navigate('/404');
         }
 
-        handleError({
-          error,
-          explicitMessage: 'Unable to fetch jobs',
-        });
+        // handleError({
+        //   error,
+        // });
       },
     }
   );
