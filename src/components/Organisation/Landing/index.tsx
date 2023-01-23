@@ -5,6 +5,7 @@ import CreateUsingProjectTemplate from 'components/StartPrjModal/CreateUsingProj
 import JobsLanding from 'components/Jobs/Landing';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
@@ -14,13 +15,25 @@ import OrganisationJobs from '../OrganisationJobs';
 import OrganisationSidebar from '../OrganisationSidebar';
 
 const Landing: FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const user = useSelector((state: RootState) => state.user.user);
   const [selectedOrg, setSelectedOrg] = useState('');
   const { organisation, isLoading, refetch } = useFetchOrganisation(
     Number(selectedOrg)
   );
   const { data, isLoading: loading } = useFetchUserOrganisation();
-  const [tabSelected, setTabSelected] = useState('home');
+  const [tabSelected, setTabSelected] = useState(
+    searchParams.get('show') || null
+  );
+
+  useEffect(() => {
+    if (!searchParams.get('show')) {
+      searchParams.set('show', 'home');
+      setSearchParams(searchParams);
+      setTabSelected(searchParams.get('show'));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     refetch();
@@ -60,7 +73,7 @@ const Landing: FC = () => {
   );
 };
 
-const tabSelector = (tabSelected: string, organisation: any) => {
+const tabSelector = (tabSelected: string | null, organisation: any) => {
   switch (tabSelected) {
     case 'home':
       return (

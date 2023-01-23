@@ -23,7 +23,7 @@ import {
 
 interface OrganisationSidebarProps {
   setTabSelected: (arg0: string) => void;
-  tabSelected: string;
+  tabSelected: string | null;
   allOrgData: any[];
   organisationId: number;
   setSelectedOrg: any;
@@ -43,8 +43,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   const [currentOrg, setCurrentOrg] = useState(
     allOrgData?.find(x => x.organisationId === organisationId)
   );
-
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setCurrentOrg(allOrgData?.find(x => x.organisationId === selectedOrg));
@@ -52,12 +51,12 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   }, [selectedOrg]);
 
   useEffect(() => {
-    setTabSelected(location.pathname.split('/').pop() || '');
-    const checkIfNum = location.pathname.split('/').pop() || '';
-    const num = checkIfNum.replace(/[^0-9]/g, '');
-    if (num.length) {
-      setTabSelected('home');
+    if (!searchParams.get('show')) {
+      searchParams.set('show', 'home');
+      setSearchParams(searchParams);
     }
+    searchParams.set('show', tabSelected || '');
+    setSearchParams(searchParams);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabSelected]);
 
@@ -65,8 +64,6 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
     setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allOrgData]);
-
-  console.log('currentOrg', currentOrg);
 
   return (
     <div
@@ -119,7 +116,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
               <div className={styles['expanded-list--items']}>
                 {allOrgData.map(org => (
                   <Link
-                    to={`/organisation/${org?.organisationId}/home`}
+                    to={`/organisation/${org?.organisationId}/?show=home`}
                     key={org?.organisationId}
                     onClick={() => {
                       setTabSelected('home');
@@ -142,7 +139,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
       >
         <div className={styles[`organisation-sidebar-icons`]}>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/home`}
+            to={`/organisation/${currentOrg.organisationId}/?show=home`}
             className={clsx(
               tabSelected === 'home' && styles.active,
               styles.button
@@ -153,7 +150,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Home</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/projects`}
+            to={`/organisation/${currentOrg.organisationId}/?show=projects`}
             onClick={() => setTabSelected('projects')}
             title="Projects"
             className={clsx(
@@ -165,7 +162,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Projects</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/jobs`}
+            to={`/organisation/${currentOrg.organisationId}/?show=jobs`}
             onClick={() => setTabSelected('jobs')}
             title="Jobs"
             className={clsx(
