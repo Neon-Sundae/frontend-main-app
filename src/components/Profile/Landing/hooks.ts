@@ -76,10 +76,10 @@ const useFetchPublicProfile = (profileId: string | undefined) => {
         user.userId !== parseInt(profileId, 10),
       refetchOnWindowFocus: false,
       onError: (error: any) => {
-        handleError({
-          error,
-          explicitMessage: 'Unable to fetch profile data',
-        });
+        // handleError({
+        //   error,
+        //   explicitMessage: 'Unable to fetch profile data',
+        // });
       },
     }
   );
