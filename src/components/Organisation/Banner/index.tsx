@@ -269,7 +269,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             </button>
           )}
         </div>
-        {isFounder() && (
+        {/* {isFounder() && (
           <div className={styles[`buttons-container`]}>
             <button
               type="button"
@@ -297,7 +297,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               </span>
             </button>
           </div>
-        )}
+        )} */}
       </div>
       {open && (
         <OrganisationSocialModal
