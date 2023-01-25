@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import config from 'config';
 import { useQuery } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
@@ -12,13 +12,18 @@ import { RootState } from 'reducers';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
-import useFetchOrganisation from '../../Organisation/Landing/hooks';
+import { useFetchOrganisation } from '../../Organisation/Landing/hooks';
 import JobView from '../JobView';
 
-const JobsLanding = () => {
+interface JobsLandingProps {
+  hideNavbar?: boolean;
+}
+
+const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
   const [JobApplicantsData, setJobApplicantsData] = useState([]);
+
   useEffect(() => {
     setShowView(true);
   }, [selectedJobUuid]);
@@ -44,7 +49,7 @@ const JobsLanding = () => {
   );
 
   const { orgId } = useParams();
-  const { organisation, isLoading } = useFetchOrganisation();
+  const { organisation, isLoading } = useFetchOrganisation(0);
   const isFounder = () => {
     return userId === organisation.organisationUser[0].userId;
   };
@@ -69,10 +74,11 @@ const JobsLanding = () => {
     <div
       className={styles.container}
       style={{
-        backgroundColor: '#242529',
+        backgroundColor: `${window.innerWidth <= 600} ? 'none' : '#242529'`,
       }}
     >
-      <NavBar />
+      {!hideNavbar && <NavBar />}
+
       <Toaster />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
@@ -152,6 +158,10 @@ const JobsLanding = () => {
       </div>
     </div>
   );
+};
+
+JobsLanding.defaultProps = {
+  hideNavbar: false,
 };
 
 export default JobsLanding;
