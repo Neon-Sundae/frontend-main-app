@@ -5,12 +5,19 @@
   height: 100%;
   justify-content: space-evenly;
   z-index: 10;
-  p {
+
+  &--title {
     color: #fff;
     font-family: var(--font-family-roboto-regular);
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
+  }
+
+  &--error-message {
+    font-family: var(--font-family-roboto-regular);
+    color: #CD5C5C;
+    margin: 7px 0;
   }
 
   form {
@@ -39,7 +46,7 @@
     font-size: 16px;
     outline: none;
     padding: 0 25px;
-    margin-top: 15px;
+    margin-top: 7px;
   }
 
   label {
@@ -74,6 +81,10 @@
 
     span {
       text-align: center;
+
+      p {
+        color: #fff;
+      }
     }
 
     h3 {
@@ -109,10 +120,16 @@
       opacity: .9;
     }
 
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     button {
       width: 279px;
       display: block;
-       
+
       cursor: pointer;
       background: linear-gradient(126.59deg,
           rgba(255, 255, 255, 0.12) 12.11%,
@@ -128,7 +145,7 @@
       font-style: normal;
       font-weight: 500;
       font-size: 18px;
-       
+
     }
   }
 }
