@@ -29,8 +29,8 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
   }, []);
 
   const location = useLocation();
-  const subpage = location.pathname.split('/').pop();
-  console.log(subpage && subpage.length);
+  const subpage = location.search.slice(location.search.lastIndexOf('=') + 1);
+
   return (
     <div className={styles['organisation-projects-container']}>
       {showAddBtn && (
@@ -119,6 +119,10 @@ const OrganisationProjectCard: FC<IOrganisationProjectCard> = ({
       />
     </div>
   );
+};
+
+OrganisationProjectCard.defaultProps = {
+  profileImage: null,
 };
 
 OrganisationProjects.defaultProps = {

@@ -2,7 +2,7 @@
   background-color: #242529;
   background-size: cover;
   height: 150vh;
-  
+
   &>.organisation-project-jobs-wrap {
     width: 75%;
     margin: auto;
@@ -10,9 +10,11 @@
     justify-content: space-evenly;
     margin-top: 35px;
   }
+
   &>.organisation-projects-wrap {
     width: 90%;
     margin: auto;
+
     h3 {
       font-family: var(--font-family-roboto-flex);
       font-size: 19.25px;
@@ -20,19 +22,24 @@
       margin-bottom: 10px;
     }
   }
+
   &>.organisation-jobs-wrap {
     width: 90%;
     margin: auto;
+
     h3 {
-     display: none;
+      //  display: none;
     }
   }
+
   &>.organisation-templates-wrap {
     margin: auto;
     width: 70%;
+
     div {
       justify-content: space-between;
     }
+
     h2 {
       color: #fff;
       margin-bottom: 15px;
