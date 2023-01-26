@@ -311,7 +311,7 @@ const DepositStep1: FC<IDepositStep1> = ({
       </div>
       <div className={styles['qr-code-container']}>
         <QRCode
-          value={selectedContract.smartContractId}
+          value={selectedContract?.smartContractId}
           bgColor="transparent"
           fgColor="white"
           size={144}
