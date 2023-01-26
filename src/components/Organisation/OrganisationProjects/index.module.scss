@@ -155,7 +155,7 @@
 
   @media (max-width: 1920px) {
     width: 50%;
-    gap: 70px;
+    gap: 115px;
     position: absolute;
     left: 15%;
   }
@@ -169,7 +169,7 @@
   @media (max-width: 1440px) {
     width: 50%;
     left: 10%;
-    gap: 15px;
+    gap: 45px;
   }
 }
 
@@ -180,6 +180,6 @@
   overflow-x: scroll;
   padding: 15px 0;
   gap: 49px;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: auto;
 }
