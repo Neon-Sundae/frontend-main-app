@@ -1,13 +1,45 @@
-.organisation-projects-container {
+.organisation-projects-container-alternate {
   width: 90%;
   max-width: 1532px;
   margin-inline: auto;
-  
-  h3 {
+
+  .organisation-heading,
+  .projects-heading {
     color: white;
     font-family: var(--font-family-roboto-regular);
+  }
+
+  @media (max-width: 1920px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1024px) {}
+}
+
+.organisation-projects-container {
+  width: 90%;
+  max-width: 1532px;
+
+
+  .organisation-heading,
+  .projects-heading {
+    color: white;
+    font-family: var(--font-family-roboto-regular);
+  }
+
+  .projects-heading {
+
     font-size: 27px;
   }
+
 
   @media (max-width: 1920px) {
     width: 70%;
@@ -46,8 +78,8 @@
       cursor: pointer;
     }
   }
-  
-  
+
+
 }
 
 .organisation-project-card {
@@ -112,21 +144,42 @@
     }
   }
 }
+
 .organisation-project-cards-container {
-  
-  width: 95%;
+  width: 78%;
   display: flex;
   overflow-x: scroll;
   padding: 15px 0;
-  gap: 70px;
+  gap: 20px;
+  margin: 0 0;
+
+  @media (max-width: 1920px) {
+    width: 50%;
+    gap: 70px;
+    position: absolute;
+    left: 15%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 49%;
+    left: 14.5%;
+
+  }
+
+  @media (max-width: 1440px) {
+    width: 50%;
+    left: 10%;
+    gap: 15px;
+  }
 }
+
 .organisation-project-cards-container-alternate {
   width: 95%;
   display: flex;
   flex-wrap: wrap;
   overflow-x: scroll;
   padding: 15px 0;
-  gap: 100px;
-  justify-content: flex-start;
+  gap: 49px;
+  justify-content: space-between;
   margin: auto;
 }
