@@ -10,7 +10,7 @@ const useFetchOrgJobsByLimit = (organisationId: number, limit: number) => {
   const accessToken = getAccessToken();
 
   const { data, isLoading } = useQuery(
-    ['org_jobs_limit'],
+    [`org_jobs_limit-${organisationId}`],
     async () => {
       const response = await fetch(
         `${config.ApiBaseUrl}/job/organisation/${organisationId}?limit=${limit}`,
