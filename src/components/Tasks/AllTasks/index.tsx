@@ -17,9 +17,9 @@ const AllTasks: FC = () => {
       refetchOnWindowFocus: false,
     }
   );
-  if (isFetching) return <p>Loading...</p>;
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error...</div>;
+  if (isFetching) return null;
+  if (isLoading) return null;
+  if (error) return null;
   return (
     <div>
       <div className={styles.container}>

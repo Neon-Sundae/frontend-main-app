@@ -1,5 +1,5 @@
 .container {
-  background-color: #242529;
+  // background-color: #242529;
   padding-bottom: 55px;
   background-size: cover;
   color: #fff;
@@ -12,15 +12,36 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+
+    @media (max-width: 1920px) {
+      width: 71%;
+
+    }
+
+    @media (max-width: 1680px) {
+      width: 72%;
+
+    }
+
+    @media (max-width: 1440px) {
+      width: 78%;
+
+    }
+
+    @media (max-width: 1024px) {
+      width: 82%;
+    }
   }
 
   .jobs-cards-wrap {
     overflow-y: scroll;
     position: relative;
+
     .job-create-btn-wrap {
       display: flex;
       align-items: baseline;
       justify-content: end;
+
       .create-job-btn {
         color: #fff;
         display: inline-flex;

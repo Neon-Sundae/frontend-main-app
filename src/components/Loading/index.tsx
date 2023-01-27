@@ -11,7 +11,7 @@ const Loading: FC = () => {
     <div
       className={styles.backdrop}
       style={{
-        backgroundColor: '#242529',
+        backgroundColor: `${window.innerWidth <= 600} ? 'none' : '#242529'`,
       }}
     >
       <div className={styles.overlay}>

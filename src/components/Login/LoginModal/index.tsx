@@ -3,9 +3,9 @@ import Modal from 'components/Modal';
 import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
+import QRCode from 'react-qr-code';
 import styles from './index.module.scss';
 import { useMetamaskLogin, useWalletConnectLogin } from '../Step1/hooks';
-import QRCode from "react-qr-code";
 
 interface LoginModalProps {
   showModal: boolean;
@@ -146,15 +146,19 @@ const MetamaskLogin: FC<MetamaskLoginProps> = ({
         <h2>Install Metamask</h2>
         <p>Scan with your phone to download on iOS or Android</p>
         <QRCode
-          value={"https://metamask.io/download"}
+          value="https://metamask.io/download"
           bgColor="transparent"
           fgColor="white"
           size={200}
-          style={{margin: "15px"}}
+          style={{ margin: '15px' }}
         />
         <span>
-          <p>Don't have Metamask?</p>
-          <a href="https://metamask.io/download/" target="_blank">
+          <p>Don&apos;t have Metamask?</p>
+          <a
+            href="https://metamask.io/download/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <button>Get</button>
           </a>
         </span>

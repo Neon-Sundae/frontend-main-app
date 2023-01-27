@@ -2,12 +2,51 @@
   background-color: #242529;
   background-size: cover;
   height: 150vh;
-  
+
   &>.organisation-project-jobs-wrap {
-    width: 70%;
+    width: 70.5%;
     margin: auto;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin-top: 35px;
+
+    @media (min-width: 1024px) and (max-width: 1440px) {
+      width: 80.5%;
+    }
+  }
+
+  &>.organisation-projects-wrap {
+    width: 90%;
+    margin: auto;
+
+    h3 {
+      font-family: var(--font-family-roboto-flex);
+      font-size: 19.25px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+  }
+
+  &>.organisation-jobs-wrap {
+    width: 90%;
+    margin: auto;
+
+    h3 {
+      //  display: none;
+    }
+  }
+
+  &>.organisation-templates-wrap {
+    margin: auto;
+    width: 70%;
+
+    div {
+      justify-content: space-between;
+    }
+
+    h2 {
+      color: #fff;
+      margin-bottom: 15px;
+    }
   }
 }

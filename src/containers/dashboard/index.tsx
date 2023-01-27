@@ -10,7 +10,7 @@ const Dashboard: FC = () => {
   );
 
   if (isFirstTimeUser === undefined) {
-    return <p>Loading...</p>;
+    return null;
   }
 
   if (!isFirstTimeUser) {
