@@ -139,7 +139,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
       >
         <div className={styles[`organisation-sidebar-icons`]}>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/?show=home`}
+            to={`/organisation/${currentOrg?.organisationId}/?show=home`}
             className={clsx(
               tabSelected === 'home' && styles.active,
               styles.button
@@ -150,7 +150,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Home</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/?show=projects`}
+            to={`/organisation/${currentOrg?.organisationId}/?show=projects`}
             onClick={() => setTabSelected('projects')}
             title="Projects"
             className={clsx(
@@ -162,7 +162,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Projects</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/?show=jobs`}
+            to={`/organisation/${currentOrg?.organisationId}/?show=jobs`}
             onClick={() => setTabSelected('jobs')}
             title="Jobs"
             className={clsx(
