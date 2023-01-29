@@ -117,7 +117,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
               <div className={styles['expanded-list--items']}>
                 {allOrgData.map(org => (
                   <Link
-                    to={`/organisation/${org?.organisationId}/?show=home`}
+                    to={`/organisation/${org?.organisationId}?show=home`}
                     key={org?.organisationId}
                     onClick={() => {
                       setTabSelected('home');
