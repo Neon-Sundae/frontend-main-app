@@ -1,11 +1,13 @@
 interface OrganisationUser {
-  name: string;
-  userId: number;
-  profile: {
-    profileId: number;
-    title: string | null;
-    createdAt: string;
-    picture: string;
+  user: {
+    name: string;
+    userId: number;
+    profile: {
+      profileId: number;
+      title: string | null;
+      createdAt: string;
+      picture: string;
+    };
   };
 }
 
@@ -29,6 +31,6 @@ export interface IOrganisation {
   instagram: string | null;
   profileImage: string | null;
   bannerImage: string | null;
-  organisationUser: OrganisationUser[];
+  OrganisationUser: OrganisationUser[];
   flProjects: OrganisationProjects[];
 }

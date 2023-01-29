@@ -198,7 +198,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
       if (
         notAllowedCases(
           result,
-          projectData.organisation.organisationUser[0].userId,
+          projectData.organisation.OrganisationUser[0].user.userId,
           user?.userId
         )
       ) {

@@ -43,7 +43,7 @@ const Landing: FC = () => {
   if (isLoading || loading) return null;
 
   const isFounder = () => {
-    return user?.userId === organisation.organisationUser[0].userId;
+    return user?.userId === organisation.OrganisationUser[0].user.userId;
   };
 
   return (

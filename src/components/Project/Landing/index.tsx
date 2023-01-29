@@ -69,9 +69,9 @@ const Landing: FC = () => {
       <Header
         projectName={name}
         setOpen={val => setOpen(val)}
-        founderAddress={organisation?.organisationUser[0]?.walletId}
+        founderAddress={organisation?.OrganisationUser[0]?.walletId}
         organisationName={organisation?.name}
-        organisationOwnerWalletId={organisation?.organisationUser[0]?.walletId}
+        organisationOwnerWalletId={organisation?.OrganisationUser[0]?.walletId}
         organisationId={organisationId}
       />
       <Description
@@ -84,7 +84,7 @@ const Landing: FC = () => {
       <TaskManagement
         project_budget={budget}
         project_name={name}
-        project_founder={organisation?.organisationUser[0]?.walletId}
+        project_founder={organisation?.OrganisationUser[0]?.walletId}
         flProjectCategory={projectData.flProjectCategory}
       />
       {open && (

@@ -51,11 +51,11 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   const { orgId } = useParams();
   const { organisation, isLoading } = useFetchOrganisation(0);
   const isFounder = () => {
-    return userId === organisation.organisationUser[0].userId;
+    return userId === organisation.OrganisationUser[0].user.userId;
   };
 
   if (isLoading) return null;
-  const { name: orgName, profileImage, organisationUser } = organisation;
+  const { name: orgName, profileImage, OrganisationUser } = organisation;
   const handleCreate = () => {
     setShowCreate(true);
     setShowView(false);
@@ -150,7 +150,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
                   orgId={Number(orgId)}
                   setSelectedJobUuid={setSelectedJobUuid}
                   JobApplicantsData={JobApplicantsData}
-                  orgOwnerUserId={organisationUser[0].userId}
+                  orgOwnerUserId={OrganisationUser[0].user.userId}
                 />
               );
             })}

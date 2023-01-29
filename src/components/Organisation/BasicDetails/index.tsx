@@ -125,11 +125,11 @@ interface ICreatedBy {
 const CreatedBy: FC<ICreatedBy> = ({ organisation }) => {
   const navigate = useNavigate();
 
-  const { organisationUser } = organisation;
+  const { OrganisationUser } = organisation;
   const {
     name,
     profile: { title, createdAt, profileId, picture },
-  } = organisationUser[0];
+  } = OrganisationUser[0].user;
 
   const handleNavigation = () => {
     navigate(`../../profile/${profileId}`);
