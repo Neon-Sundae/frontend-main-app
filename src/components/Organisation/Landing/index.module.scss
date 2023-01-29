@@ -3,7 +3,7 @@
   background-size: cover;
   height: 150vh;
 
-  &>.organisation-project-jobs-wrap {
+  & > .organisation-project-jobs-wrap {
     width: 75%;
     margin: auto;
     display: flex;
@@ -11,7 +11,7 @@
     margin-top: 35px;
   }
 
-  &>.organisation-projects-wrap {
+  & > .organisation-projects-wrap {
     width: 90%;
     margin: auto;
 
@@ -23,7 +23,7 @@
     }
   }
 
-  &>.organisation-jobs-wrap {
+  & > .organisation-jobs-wrap {
     width: 90%;
     margin: auto;
 
@@ -32,7 +32,7 @@
     }
   }
 
-  &>.organisation-templates-wrap {
+  & > .organisation-templates-wrap {
     margin: auto;
     width: 70%;
 

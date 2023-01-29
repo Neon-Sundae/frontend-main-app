@@ -13,6 +13,7 @@ import BasicDetails from '../BasicDetails';
 import OrganisationProjects from '../OrganisationProjects';
 import OrganisationJobs from '../OrganisationJobs';
 import OrganisationSidebar from '../OrganisationSidebar';
+import OrganisationMembers from '../OrganisationMembers';
 
 const Landing: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -106,6 +107,12 @@ const tabSelector = (tabSelected: string | null, organisation: any) => {
             orgId={organisation.organisationId}
             onNext={() => {}}
           />
+        </div>
+      );
+    case 'teams':
+      return (
+        <div className={styles['organisation-jobs-wrap']}>
+          <OrganisationMembers />
         </div>
       );
     default:

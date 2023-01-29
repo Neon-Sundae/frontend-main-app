@@ -2,6 +2,7 @@ import { ReactComponent as HomeIcon } from 'assets/illustrations/organisation/si
 import { ReactComponent as ProjectsIcon } from 'assets/illustrations/organisation/sidebar/projects.svg';
 import { ReactComponent as JobsIcon } from 'assets/illustrations/organisation/sidebar/jobs.svg';
 import { ReactComponent as TemplatesIcon } from 'assets/illustrations/organisation/sidebar/templates.svg';
+import { ReactComponent as TeamsIcon } from 'assets/illustrations/organisation/sidebar/teams.svg';
 import { ReactComponent as ExpandIcon } from 'assets/illustrations/organisation/sidebar/expand.svg';
 import { ReactComponent as CollapseIcon } from 'assets/illustrations/organisation/sidebar/collapse.svg';
 import bg from 'assets/illustrations/organisation/sidebar/bg.png';
@@ -139,7 +140,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
       >
         <div className={styles[`organisation-sidebar-icons`]}>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/?show=home`}
+            to={`/organisation/${currentOrg.organisationId}?show=home`}
             className={clsx(
               tabSelected === 'home' && styles.active,
               styles.button
@@ -150,7 +151,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Home</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/?show=projects`}
+            to={`/organisation/${currentOrg.organisationId}?show=projects`}
             onClick={() => setTabSelected('projects')}
             title="Projects"
             className={clsx(
@@ -162,7 +163,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Projects</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}/?show=jobs`}
+            to={`/organisation/${currentOrg.organisationId}?show=jobs`}
             onClick={() => setTabSelected('jobs')}
             title="Jobs"
             className={clsx(
@@ -174,14 +175,18 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Jobs</p>}
           </Link>
           {/* TODO: this feature not implemented yet */}
-          {/* <button
+          <Link
+            to={`/organisation/${currentOrg.organisationId}?show=teams`}
             onClick={() => setTabSelected('teams')}
             title="Teams"
-            className={clsx(tabSelected === 'teams' ? 'active-tab' : 'inactive-tab')}
+            className={clsx(
+              tabSelected === 'teams' && styles.active,
+              styles.button
+            )}
           >
             <TeamsIcon width={24} height={24} />
             {expandSidebar && <p>Teams</p>}
-          </button> */}
+          </Link>
           {/* <button
             onClick={() => setTabSelected('templates')}
             title="Templates"
