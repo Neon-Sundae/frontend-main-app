@@ -24,10 +24,12 @@
       border-radius: 10px;
       margin-bottom: 15px;
       cursor: pointer;
+
       &--title {
         color: #858585;
         margin-left: 19px;
       }
+
       &--selected {
         color: #fff;
       }
@@ -58,7 +60,8 @@
     .text-content {
       display: flex;
       justify-content: flex-end;
-      &>p { 
+
+      &>p {
         font-family: var(--font-family-roboto-flex);
         font-weight: 400;
         font-size: 14px;
@@ -71,7 +74,7 @@
 
     .buttons {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
 
       button {
         color: #fff;

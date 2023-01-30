@@ -32,7 +32,13 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
   const subpage = location.search.slice(location.search.lastIndexOf('=') + 1);
 
   return (
-    <div className={styles['organisation-projects-container']}>
+    <div
+      className={clsx(
+        subpage === 'home'
+          ? styles['organisation-projects-container']
+          : styles['organisation-projects-container-alternate']
+      )}
+    >
       {showAddBtn && (
         <span
           className={styles['organisation-projects-container--new-projects']}
@@ -53,7 +59,9 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
           directShowProjectCreate
         />
       )}
-      {subpage && subpage !== 'projects' && <h3>Projects</h3>}
+      {subpage && subpage !== 'projects' && (
+        <h3 className={styles['projects-heading']}>Projects</h3>
+      )}
 
       {!showCreateProject && (
         <div

@@ -7,11 +7,15 @@
   }
 
   & .organisation-project-jobs-wrap {
-    width: 75%;
+    width: 70.5%;
     margin: auto;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin-top: 35px;
+
+    @media (min-width: 1024px) and (max-width: 1440px) {
+      width: 80.5%;
+    }
   }
 
   & > .organisation-projects-wrap {
