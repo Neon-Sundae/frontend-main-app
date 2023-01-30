@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import JobCards from 'components/Jobs/JobCards';
 import useFetchJobsByLimit from 'hooks/useFetchJobsByLimit';

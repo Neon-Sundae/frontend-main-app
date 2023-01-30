@@ -1,9 +1,7 @@
-/* eslint-disable camelcase */
 import { Toaster } from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
 import { useEffect, useState, FC } from 'react';
-import clsx from 'clsx';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetailsView from '../JobDetailsView';

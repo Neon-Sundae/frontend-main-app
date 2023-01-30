@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import EditTask from 'components/EditTask';

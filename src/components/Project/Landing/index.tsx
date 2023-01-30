@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';

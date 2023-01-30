@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FC } from 'react';
 import JobCards from 'components/Jobs/JobCards';
 import { useNavigate } from 'react-router-dom';
