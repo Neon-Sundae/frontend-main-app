@@ -8,16 +8,14 @@
   padding: 54px 52px 60px 90px;
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: 1;
   @media (max-width: 1920px)  {
     height: 700px;
-     
   }
   @media (max-width: 1680px)  {
     height: 690px;
-    
   }
   @media (max-width: 1440px)  {
-    
     height: 620px;
   }
   @media (max-width: 1024px) {
