@@ -49,7 +49,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   );
 
   const { orgId } = useParams();
-  const { organisation, isLoading } = useFetchOrganisation(0);
+  const { organisation, isLoading } = useFetchOrganisation(orgId);
   const isFounder = () => {
     return userId === organisation.OrganisationUser[0].user.userId;
   };

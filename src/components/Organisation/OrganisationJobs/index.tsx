@@ -21,6 +21,10 @@ const OrganisationJobs: FC<IOrganisationJobs> = ({ organisationId }) => {
     return null;
   }
 
+  if (data.length === 0) {
+    return null;
+  }
+
   return (
     <div className={styles['organisation-jobs-wrap']}>
       <h3>Jobs Listed</h3>

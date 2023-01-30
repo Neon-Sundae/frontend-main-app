@@ -1,9 +1,12 @@
 .organisation-container {
   background-color: #242529;
-  background-size: cover;
-  height: 150vh;
+  min-height: 100vh;
 
-  & > .organisation-project-jobs-wrap {
+  &--founder {
+    display: flex;
+  }
+
+  & .organisation-project-jobs-wrap {
     width: 75%;
     margin: auto;
     display: flex;
@@ -12,7 +15,6 @@
   }
 
   & > .organisation-projects-wrap {
-    width: 90%;
     margin: auto;
 
     h3 {
@@ -24,17 +26,11 @@
   }
 
   & > .organisation-jobs-wrap {
-    width: 90%;
     margin: auto;
-
-    h3 {
-      //  display: none;
-    }
   }
 
   & > .organisation-templates-wrap {
     margin: auto;
-    width: 70%;
 
     div {
       justify-content: space-between;

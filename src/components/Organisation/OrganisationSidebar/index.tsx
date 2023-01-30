@@ -7,67 +7,70 @@ import { ReactComponent as ExpandIcon } from 'assets/illustrations/organisation/
 import { ReactComponent as CollapseIcon } from 'assets/illustrations/organisation/sidebar/collapse.svg';
 import bg from 'assets/illustrations/organisation/sidebar/bg.png';
 import clsx from 'clsx';
-import { FC, useEffect, useState } from 'react';
-import { IOrganisation } from 'interfaces/organisation';
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { gsap, Elastic } from 'gsap';
 import styles from './index.module.scss';
-import {
-  useFetchOrganisation,
-  useFetchUserOrganisation,
-} from '../Landing/hooks';
 
 interface OrganisationSidebarProps {
-  setTabSelected: (arg0: string) => void;
+  setOrganisationTab: (value: string) => void;
+  setOrganisation: (value: string) => void;
   tabSelected: string | null;
   allOrgData: any[];
-  organisationId: number;
-  setSelectedOrg: any;
-  selectedOrg: any;
 }
 
 const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
-  setTabSelected,
+  setOrganisationTab,
+  setOrganisation,
   tabSelected,
   allOrgData,
-  organisationId,
-  setSelectedOrg,
-  selectedOrg,
 }) => {
+  const { orgId } = useParams();
   const [expandSidebar, setExpandSidebar] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
   const [currentOrg, setCurrentOrg] = useState(
-    allOrgData?.find(x => x.organisationId === organisationId)
+    allOrgData?.find(x => x.organisationId === orgId)
   );
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const sideBarRef = useRef(null);
 
   useEffect(() => {
-    setCurrentOrg(allOrgData?.find(x => x.organisationId === selectedOrg));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOrg]);
-
-  useEffect(() => {
-    if (!searchParams.get('show')) {
-      searchParams.set('show', 'home');
-      setSearchParams(searchParams);
+    if (expandSidebar) {
+      gsap.to(sideBarRef.current, {
+        width: 200,
+        duration: 0.5,
+        ease: Elastic.easeOut.config(1, 0.6),
+      });
+    } else {
+      gsap.to(sideBarRef.current, {
+        width: 125,
+        duration: 0.5,
+        ease: Elastic.easeOut.config(1, 0.6),
+      });
     }
-    searchParams.set('show', tabSelected || '');
-    setSearchParams(searchParams);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabSelected]);
+  }, [expandSidebar]);
 
   useEffect(() => {
-    setCurrentOrg(allOrgData?.find(x => x.organisationId === organisationId));
+    if (orgId) {
+      setCurrentOrg(allOrgData?.find(x => x.organisationId === Number(orgId)));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allOrgData]);
+  }, [orgId]);
+
+  const setTab = (e: MouseEvent<HTMLAnchorElement>) => {
+    setOrganisationTab(e.currentTarget.id);
+  };
+
+  const setOrgId = (e: MouseEvent<HTMLAnchorElement>) => {
+    setOrganisation(e.currentTarget.id);
+    setExpanded(false);
+    setExpandSidebar(false);
+  };
 
   return (
     <div
+      ref={sideBarRef}
       className={clsx(
         styles['organisation-sidebar'],
         expandSidebar && styles['organisation-sidebar--expanded']
@@ -119,12 +122,8 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
                   <Link
                     to={`/organisation/${org?.organisationId}?show=home`}
                     key={org?.organisationId}
-                    onClick={() => {
-                      setTabSelected('home');
-                      setSelectedOrg(org?.organisationId);
-                      setExpanded(false);
-                      setExpandSidebar(false);
-                    }}
+                    id={org?.organisationId}
+                    onClick={setOrgId}
                   >
                     {org?.name}
                   </Link>
@@ -140,19 +139,21 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
       >
         <div className={styles[`organisation-sidebar-icons`]}>
           <Link
-            to={`/organisation/${currentOrg.organisationId}?show=home`}
+            id="home"
+            to={`/organisation/${currentOrg?.organisationId}?show=home`}
             className={clsx(
               tabSelected === 'home' && styles.active,
               styles.button
             )}
-            onClick={() => setTabSelected('home')}
+            onClick={setTab}
           >
             <HomeIcon width={24} height={24} />
             {expandSidebar && <p>Home</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}?show=projects`}
-            onClick={() => setTabSelected('projects')}
+            id="projects"
+            to={`/organisation/${currentOrg?.organisationId}?show=projects`}
+            onClick={setTab}
             title="Projects"
             className={clsx(
               tabSelected === 'projects' && styles.active,
@@ -163,8 +164,9 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             {expandSidebar && <p>Projects</p>}
           </Link>
           <Link
-            to={`/organisation/${currentOrg.organisationId}?show=jobs`}
-            onClick={() => setTabSelected('jobs')}
+            id="jobs"
+            to={`/organisation/${currentOrg?.organisationId}?show=jobs`}
+            onClick={setTab}
             title="Jobs"
             className={clsx(
               tabSelected === 'jobs' && styles.active,
@@ -174,10 +176,10 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             <JobsIcon width={24} height={24} />
             {expandSidebar && <p>Jobs</p>}
           </Link>
-          {/* TODO: this feature not implemented yet */}
           <Link
-            to={`/organisation/${currentOrg.organisationId}?show=teams`}
-            onClick={() => setTabSelected('teams')}
+            id="teams"
+            to={`/organisation/${currentOrg?.organisationId}?show=teams`}
+            onClick={setTab}
             title="Teams"
             className={clsx(
               tabSelected === 'teams' && styles.active,
@@ -187,6 +189,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
             <TeamsIcon width={24} height={24} />
             {expandSidebar && <p>Teams</p>}
           </Link>
+          {/* TODO: this feature not implemented yet */}
           {/* <button
             onClick={() => setTabSelected('templates')}
             title="Templates"

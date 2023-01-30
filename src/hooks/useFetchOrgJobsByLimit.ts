@@ -1,16 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
-import { useNavigate } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useFetchOrgJobsByLimit = (organisationId: number, limit: number) => {
-  const navigate = useNavigate();
   const accessToken = getAccessToken();
 
   const { data, isLoading } = useQuery(
-    ['org_jobs_limit'],
+    ['org_jobs_limit', organisationId],
     async () => {
       const response = await fetch(
         `${config.ApiBaseUrl}/job/organisation/${organisationId}?limit=${limit}`,
@@ -22,7 +20,6 @@ const useFetchOrgJobsByLimit = (organisationId: number, limit: number) => {
         }
       );
       const json = await handleApiErrors(response);
-      if (json.length === 0) throw new Error('Not Found');
       return json;
     },
     {

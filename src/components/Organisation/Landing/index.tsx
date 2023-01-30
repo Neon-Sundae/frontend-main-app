@@ -1,11 +1,12 @@
 import NavBar from 'components/NavBar';
 import { FC, useEffect, useState } from 'react';
+import clsx from 'clsx';
 import bg from 'assets/illustrations/gradients/bg.png';
 import CreateUsingProjectTemplate from 'components/StartPrjModal/CreateUsingProjectTemplate';
 import JobsLanding from 'components/Jobs/Landing';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
@@ -16,117 +17,122 @@ import OrganisationSidebar from '../OrganisationSidebar';
 import OrganisationMembers from '../OrganisationMembers';
 
 const Landing: FC = () => {
+  const { orgId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const user = useSelector((state: RootState) => state.user.user);
-  const [selectedOrg, setSelectedOrg] = useState('');
-  const { organisation, isLoading, refetch } = useFetchOrganisation(
-    Number(selectedOrg)
-  );
+  const { organisation, isLoading } = useFetchOrganisation(orgId);
   const { data, isLoading: loading } = useFetchUserOrganisation();
-  const [tabSelected, setTabSelected] = useState(
-    searchParams.get('show') || null
-  );
+  const [tabSelected, setTabSelected] = useState(searchParams.get('show'));
+
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     if (!searchParams.get('show')) {
       searchParams.set('show', 'home');
       setSearchParams(searchParams);
-      setTabSelected(searchParams.get('show'));
+      setTabSelected('home');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOrg]);
-
   if (isLoading || loading) return null;
+
+  const setOrganisationTab = (value: string) => {
+    setTabSelected(value);
+    searchParams.set('show', value);
+    setSearchParams(searchParams);
+  };
+
+  const setOrganisation = () => {
+    setTabSelected('home');
+  };
 
   const isFounder = () => {
     return user?.userId === organisation.OrganisationUser[0].user.userId;
   };
 
+  const tabSelector = () => {
+    switch (tabSelected) {
+      case 'home':
+        return (
+          <>
+            <Banner organisation={organisation} />
+            <BasicDetails organisation={organisation} />
+            <div className={styles['organisation-project-jobs-wrap']}>
+              <OrganisationProjects organisation={organisation} />
+              <OrganisationJobs organisationId={organisation.organisationId} />
+            </div>
+          </>
+        );
+      case 'projects':
+        return (
+          <div className={styles['organisation-projects-wrap']}>
+            <OrganisationProjects organisation={organisation} showAddBtn />
+          </div>
+        );
+      case 'jobs':
+        return (
+          <div className={styles['organisation-jobs-wrap']}>
+            <JobsLanding hideNavbar />
+          </div>
+        );
+      case 'templates':
+        return (
+          <div className={styles['organisation-templates-wrap']}>
+            <CreateUsingProjectTemplate
+              onClose={() => {}}
+              orgId={organisation.organisationId}
+              onNext={() => {}}
+            />
+          </div>
+        );
+      case 'teams':
+        return (
+          <div className={styles['organisation-jobs-wrap']}>
+            <OrganisationMembers />
+          </div>
+        );
+      default:
+        return (
+          <>
+            <Banner organisation={organisation} />
+            <BasicDetails organisation={organisation} />
+            <div className={styles['organisation-project-jobs-wrap']}>
+              <OrganisationProjects organisation={organisation} />
+              <OrganisationJobs organisationId={organisation.organisationId} />
+            </div>
+          </>
+        );
+    }
+  };
+
   return (
-    <div
-      className={styles['organisation-container']}
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      {isFounder() && (
-        <OrganisationSidebar
-          setTabSelected={setTabSelected}
-          tabSelected={tabSelected}
-          allOrgData={data}
-          organisationId={organisation.organisationId}
-          selectedOrg={selectedOrg}
-          setSelectedOrg={setSelectedOrg}
-        />
-      )}
-
-      <NavBar />
-      {tabSelector(tabSelected, organisation)}
-    </div>
-  );
-};
-
-const tabSelector = (tabSelected: string | null, organisation: any) => {
-  switch (tabSelected) {
-    case 'home':
-      return (
-        <>
-          <Banner organisation={organisation} />
-          <BasicDetails organisation={organisation} />
-          <div className={styles['organisation-project-jobs-wrap']}>
-            <OrganisationProjects organisation={organisation} />
-            <OrganisationJobs organisationId={organisation.organisationId} />
-          </div>
-        </>
-      );
-    case 'projects':
-      return (
-        <div className={styles['organisation-projects-wrap']}>
-          <OrganisationProjects organisation={organisation} showAddBtn />
-        </div>
-      );
-    case 'jobs':
-      return (
-        <div className={styles['organisation-jobs-wrap']}>
-          <JobsLanding hideNavbar />
-        </div>
-      );
-    case 'templates':
-      return (
-        <div className={styles['organisation-templates-wrap']}>
-          <CreateUsingProjectTemplate
-            onClose={() => {}}
-            orgId={organisation.organisationId}
-            onNext={() => {}}
+    <>
+      {isFounder() ? (
+        <div
+          className={clsx(
+            styles['organisation-container'],
+            styles['organisation-container--founder']
+          )}
+        >
+          <OrganisationSidebar
+            tabSelected={tabSelected}
+            allOrgData={data}
+            setOrganisationTab={setOrganisationTab}
+            setOrganisation={setOrganisation}
           />
-        </div>
-      );
-    case 'teams':
-      return (
-        <div className={styles['organisation-jobs-wrap']}>
-          <OrganisationMembers />
-        </div>
-      );
-    default:
-      return (
-        <>
-          <Banner organisation={organisation} />
-          <BasicDetails organisation={organisation} />
-          <div className={styles['organisation-project-jobs-wrap']}>
-            <OrganisationProjects organisation={organisation} />
-            <OrganisationJobs organisationId={organisation.organisationId} />
+          <div style={{ flexGrow: 1 }}>
+            <NavBar />
+            {tabSelector()}
           </div>
-        </>
-      );
-  }
+        </div>
+      ) : (
+        <div className={styles['organisation-container']}>
+          <NavBar />
+          {tabSelector()}
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Landing;
