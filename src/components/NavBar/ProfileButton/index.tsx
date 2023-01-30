@@ -13,14 +13,15 @@ const ProfileButton: FC = () => {
   const [open, setOpen] = useState(false);
 
   const { user } = useSelector((state: RootState) => state.user);
-  const navbarProfile = useSelector(
-    (state: RootState) => state.profile.navbarProfile
+  const currentUserProfilePicture = useSelector(
+    (state: RootState) => state.profile.currentUserProfilePicture
   );
 
   const pictureFunc = () => {
-    return navbarProfile?.image
-      ? navbarProfile?.image
-      : getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase());
+    return (
+      currentUserProfilePicture ||
+      getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+    );
   };
 
   const handleNavigation = () => {

@@ -12,7 +12,7 @@ import ProjectsTab from 'components/ProjectsTab';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
-  const [activeState, setActiveState] = useState('task');
+  const [activeState, setActiveState] = useState('workHistory');
   const user = useSelector((state: RootState) => state.user.user);
 
   const renderTabs = () => {
