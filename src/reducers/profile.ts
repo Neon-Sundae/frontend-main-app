@@ -16,6 +16,7 @@ import {
   GET_PROFILE_CONTRACT_ADDRESS,
   GET_USER_XP,
   UPDATE_PROFILE_CONTRACT_ADDRESS,
+  GET_CURRENT_USER_PROFILE_PICTURE,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
 import {
@@ -36,6 +37,7 @@ interface State {
   isEditable: boolean;
   xp: number;
   usdcBalance: number;
+  currentUserProfilePicture: string | null;
   navbarProfile: {
     profileId: number;
     image: string | null;
@@ -133,6 +135,7 @@ const initialState: State = {
   xp: 0,
   usdcBalance: 0,
   navbarProfile: null,
+  currentUserProfilePicture: null,
 };
 
 const profile = (state = initialState, action: Action): State => {
@@ -286,6 +289,12 @@ const profile = (state = initialState, action: Action): State => {
         };
       }
       return { ...state };
+    case GET_CURRENT_USER_PROFILE_PICTURE:
+      return {
+        ...state,
+        currentUserProfilePicture:
+          state && state.navbarProfile && state.navbarProfile.image,
+      };
     default:
       return { ...state };
   }
