@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { getCurrentUserProfilePicture } from 'actions/profile';
+import { setCurrentUserProfilePicture } from 'actions/profile';
 import { handleError } from 'utils/handleUnAuthorization';
 import { IProfileApiResponse } from 'interfaces/profile';
 
@@ -28,7 +28,7 @@ const useFetchCurrentUserProfilePicture = () => {
       );
 
       const json: IProfileApiResponse = await handleApiErrors(response);
-      dispatch(getCurrentUserProfilePicture(json.picture));
+      dispatch(setCurrentUserProfilePicture(json.picture));
       return json.picture;
     },
     {

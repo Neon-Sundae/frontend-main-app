@@ -21,7 +21,7 @@ import {
   GET_USER_XP,
   GET_USDC_BALANCE,
   UPDATE_PROFILE_CONTRACT_ADDRESS,
-  GET_CURRENT_USER_PROFILE_PICTURE,
+  SET_CURRENT_USER_PROFILE_PICTURE,
 } from './types';
 
 export const getXP = (xp: number) => ({
@@ -142,9 +142,9 @@ export const updateProfileContractAddressAction = (address: string) => ({
   address,
 });
 
-export const getCurrentUserProfilePicture = (
+export const setCurrentUserProfilePicture = (
   currentUserProfilePicture: string | null
 ) => ({
-  type: GET_CURRENT_USER_PROFILE_PICTURE,
+  type: SET_CURRENT_USER_PROFILE_PICTURE,
   currentUserProfilePicture,
 });

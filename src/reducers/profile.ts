@@ -16,7 +16,7 @@ import {
   GET_PROFILE_CONTRACT_ADDRESS,
   GET_USER_XP,
   UPDATE_PROFILE_CONTRACT_ADDRESS,
-  GET_CURRENT_USER_PROFILE_PICTURE,
+  SET_CURRENT_USER_PROFILE_PICTURE,
 } from 'actions/profile/types';
 import { ISkills } from 'actions/skills';
 import {
@@ -123,6 +123,10 @@ type Action =
   | {
       type: typeof UPDATE_PROFILE_CONTRACT_ADDRESS;
       address: string;
+    }
+  | {
+      type: typeof SET_CURRENT_USER_PROFILE_PICTURE;
+      currentUserProfilePicture: string;
     };
 
 const initialState: State = {
@@ -289,11 +293,10 @@ const profile = (state = initialState, action: Action): State => {
         };
       }
       return { ...state };
-    case GET_CURRENT_USER_PROFILE_PICTURE:
+    case SET_CURRENT_USER_PROFILE_PICTURE:
       return {
         ...state,
-        currentUserProfilePicture:
-          state && state.navbarProfile && state.navbarProfile.image,
+        currentUserProfilePicture: action.currentUserProfilePicture,
       };
     default:
       return { ...state };
