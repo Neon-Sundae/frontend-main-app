@@ -126,7 +126,7 @@ type Action =
     }
   | {
       type: typeof SET_CURRENT_USER_PROFILE_PICTURE;
-      currentUserProfilePicture: string;
+      currentUserProfilePicture: string | null;
     };
 
 const initialState: State = {
