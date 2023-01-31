@@ -116,14 +116,15 @@ const updateOrganisationImageUrl = async (
   }
 };
 
-const useUpdateOrganisationImage = (organisationId: number) => {
+const useUpdateOrganisationImage = () => {
   const queryClient = useQueryClient();
   const accessToken = getAccessToken();
 
   const updateOrganisationImageHandler = async (
     image: File | null,
     key: string,
-    imageType: string
+    imageType: string,
+    organisationId: number
   ) => {
     try {
       if (image) {

@@ -4,38 +4,54 @@ import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { useNavigate } from 'react-router-dom';
 import { updateUser } from 'actions/user';
-import { useMutation } from '@tanstack/react-query';
-import { handleError } from 'utils/handleUnAuthorization';
+import { toast } from 'react-hot-toast';
+import { handleApiErrors } from 'utils/handleApiErrors';
+import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
+
+interface ICreateOrganisationPayload {
+  name: string;
+  description: string;
+  userId: string;
+  image: File | undefined;
+}
 
 const useCreateOrganisation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = getAccessToken();
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
 
   const user = useSelector((state: RootState) => state.user.user);
 
-  const createOrganisation = useMutation(
-    (formData: FormData) =>
-      fetch(`${config.ApiBaseUrl}/organisation`, {
+  const createOrganisation = async (payload: ICreateOrganisationPayload) => {
+    try {
+      const { image, ...rest } = payload;
+      const response = await fetch(`${config.ApiBaseUrl}/organisation`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
-      }),
-    {
-      retry: 1,
-      onError: (error: any) => {
-        handleError({ error });
-      },
-      onSuccess: (data: Response) => {
-        dispatch(updateUser({ ...user, isFounder: true }));
-        data.json().then(json => {
-          navigate(`../organisation/${json.organisationId}`);
-        });
-      },
+        body: JSON.stringify(rest),
+      });
+      const json = await handleApiErrors(response);
+
+      if (image) {
+        await updateOrganisationImageHandler(
+          image,
+          'profileImage',
+          'profile',
+          json.organisationId
+        );
+      }
+
+      dispatch(updateUser({ ...user, isFounder: true }));
+      navigate(`../organisation/${json.organisationId}`);
+    } catch (e) {
+      console.log(e);
+      toast.error('Failed to create organisation');
     }
-  );
+  };
 
   return createOrganisation;
 };

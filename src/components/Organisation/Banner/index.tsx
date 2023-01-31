@@ -39,9 +39,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const [showPrjModal, setShowPrjModal] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
-  const updateOrganisationImageHandler = useUpdateOrganisationImage(
-    organisation.organisationId
-  );
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
   const payload = {
     name: nameLocal,
     description: organisation.description,
@@ -59,14 +57,16 @@ const Banner: FC<IBanner> = ({ organisation }) => {
         await updateOrganisationImageHandler(
           orgCoverFileData,
           'bannerImage',
-          'banner'
+          'banner',
+          organisation.organisationId
         );
       }
       if (orgLogoFileData) {
         await updateOrganisationImageHandler(
           orgLogoFileData,
           'profileImage',
-          'profile'
+          'profile',
+          organisation.organisationId
         );
       }
       dispatch(editOrganisation(false));
