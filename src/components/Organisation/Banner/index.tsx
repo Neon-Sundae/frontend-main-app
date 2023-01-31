@@ -17,21 +17,15 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
-import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
-import {
-  useUpdateOrganisation,
-  useUpdateOrgPic,
-  useUpdateOrgCoverPic,
-} from './hooks';
+import { useUpdateOrganisation, useUpdateOrganisationImage } from './hooks';
 
 interface IBanner {
   organisation: IOrganisation;
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
-  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -45,8 +39,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const [showPrjModal, setShowPrjModal] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
-  const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
-  const updateCoverOrgPicture = useUpdateOrgCoverPic(
+  const updateOrganisationImageHandler = useUpdateOrganisationImage(
     organisation.organisationId
   );
   const payload = {
@@ -60,16 +53,21 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     dispatch(editOrganisation(true));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (isEditable) {
-      const formData = new FormData();
       if (orgCoverFileData) {
-        formData.append('bannerImage', orgCoverFileData);
-        updateCoverOrgPicture.mutate(formData);
+        await updateOrganisationImageHandler(
+          orgCoverFileData,
+          'bannerImage',
+          'banner'
+        );
       }
       if (orgLogoFileData) {
-        formData.append('profileImage', orgLogoFileData);
-        updateOrgPicture.mutate(formData);
+        await updateOrganisationImageHandler(
+          orgLogoFileData,
+          'profileImage',
+          'profile'
+        );
       }
       dispatch(editOrganisation(false));
     }
@@ -124,10 +122,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       if (inputRefCover.current) inputRefCover.current.click();
     }
   };
-  const handleStartProject = () => setShowPrjModal(true);
-  const handleListAJob = () => {
-    navigate(`/organisation/${organisation.organisationId}/jobs/all`);
-  };
+
   return (
     <div className={styles.container}>
       <Toaster />
