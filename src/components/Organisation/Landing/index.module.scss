@@ -1,9 +1,14 @@
 .organisation-container {
   background-color: #242529;
-  min-height: 100vh;
+  height: 100vh;
 
   &--founder {
     display: flex;
+  }
+
+  & > .organisation-content-container {
+    flex-grow: 1;
+    overflow-y: auto;
   }
 
   & .organisation-project-jobs-wrap {

@@ -14,7 +14,7 @@ import BasicDetails from '../BasicDetails';
 import OrganisationProjects from '../OrganisationProjects';
 import OrganisationJobs from '../OrganisationJobs';
 import OrganisationSidebar from '../OrganisationSidebar';
-import OrganisationMembers from '../OrganisationMembers';
+import OrganisationTeam from '../OrganisationTeam';
 
 const Landing: FC = () => {
   const { orgId } = useParams();
@@ -86,11 +86,7 @@ const Landing: FC = () => {
           </div>
         );
       case 'teams':
-        return (
-          <div className={styles['organisation-jobs-wrap']}>
-            <OrganisationMembers />
-          </div>
-        );
+        return <OrganisationTeam />;
       default:
         return (
           <>
@@ -120,7 +116,7 @@ const Landing: FC = () => {
             setOrganisationTab={setOrganisationTab}
             setOrganisation={setOrganisation}
           />
-          <div style={{ flexGrow: 1 }}>
+          <div className={styles['organisation-content-container']}>
             <NavBar />
             {tabSelector()}
           </div>
