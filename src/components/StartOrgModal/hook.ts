@@ -1,18 +1,12 @@
 import config from 'config';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { useNavigate } from 'react-router-dom';
-import { updateUser } from 'actions/user';
 import { useMutation } from '@tanstack/react-query';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useCreateOrganisation = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = getAccessToken();
-
-  const user = useSelector((state: RootState) => state.user.user);
 
   const createOrganisation = useMutation(
     (formData: FormData) =>
@@ -28,11 +22,9 @@ const useCreateOrganisation = () => {
       onError: (error: any) => {
         handleError({ error });
       },
-      onSuccess: (data: Response) => {
-        dispatch(updateUser({ ...user, isFounder: true }));
-        data.json().then(json => {
-          navigate(`../organisation/${json.organisationId}`);
-        });
+      onSuccess: async (data: Response) => {
+        const json = await data.json();
+        navigate(`/organisation/${json.organisationId}`);
       },
     }
   );

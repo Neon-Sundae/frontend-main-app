@@ -17,7 +17,9 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import {
@@ -31,6 +33,7 @@ interface IBanner {
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
+  const { orgId } = useParams();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
@@ -49,6 +52,9 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const updateCoverOrgPicture = useUpdateOrgCoverPic(
     organisation.organisationId
   );
+
+  const { members } = useFetchOrganisationOwnerManager(orgId);
+
   const payload = {
     name: nameLocal,
     description: organisation.description,
@@ -94,10 +100,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     const { name, value } = e.target;
     setWebsite(value);
     debounceFn(name, value);
-  };
-
-  const isFounder = () => {
-    return user?.userId === organisation.OrganisationUser[0].user.userId;
   };
 
   const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -184,7 +186,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           ) : (
             <h2 className={styles['organisation-name']}>{organisation.name}</h2>
           )}
-          {isFounder() ? (
+          {isOrganisationMember(user, members) ? (
             isEditable ? (
               <button className={styles.btn} onClick={handleSave}>
                 Save
@@ -269,35 +271,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             </button>
           )}
         </div>
-        {/* {isFounder() && (
-          <div className={styles[`buttons-container`]}>
-            <button
-              type="button"
-              className={clsx(styles.bannerBtn, styles.glass)}
-              onClick={() => handleStartProject()}
-            >
-              <span className={styles.title}>
-                <p>Start A Project</p>
-              </span>
-              <span className={clsx('material-icons', styles.icon)}>
-                trending_flat
-              </span>
-            </button>
-
-            <button
-              type="button"
-              className={clsx(styles.bannerBtn, styles.glass)}
-              onClick={() => handleListAJob()}
-            >
-              <span className={styles.title}>
-                <p>Manage Jobs</p>
-              </span>
-              <span className={clsx('material-icons', styles.icon)}>
-                trending_flat
-              </span>
-            </button>
-          </div>
-        )} */}
       </div>
       {open && (
         <OrganisationSocialModal

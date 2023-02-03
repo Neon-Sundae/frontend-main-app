@@ -1,26 +1,10 @@
+import { IUser } from 'interfaces/user';
 import {
   UPDATE_USER,
   UPDATE_USER_NAME,
   UPDATE_USER_EMAIL,
   UPDATE_USER_DISCORD,
 } from './types';
-
-export interface IUser {
-  userId: number;
-  name: string | null;
-  walletId: string;
-  email: string | null;
-  discordId: string | null;
-  isFounder: boolean;
-  nonce: string;
-  authentication_method: string;
-  domain: string | null;
-}
-
-export interface IUpdateUser {
-  userId: number;
-  discordId: string;
-}
 
 export const updateUser = (user: Partial<IUser>) => ({
   type: UPDATE_USER,

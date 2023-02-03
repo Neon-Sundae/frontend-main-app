@@ -34,3 +34,29 @@ export interface IOrganisation {
   OrganisationUser: OrganisationUser[];
   flProjects: OrganisationProjects[];
 }
+
+export interface IOwnerData {
+  role: string;
+  user: {
+    name: string;
+    email: string;
+    userId: number;
+    profile: {
+      profileId: number;
+      title: string | null;
+      picture: string | null;
+      createdAt: string;
+    };
+  };
+}
+
+export interface IMember {
+  userId: number;
+  role: string;
+}
+
+export interface IMemberData {
+  managers: IMember[];
+  owner: IMember[];
+  all: IMember[];
+}

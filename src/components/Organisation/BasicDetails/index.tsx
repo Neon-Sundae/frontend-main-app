@@ -3,8 +3,8 @@
 /* eslint-disable import/extensions */
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
-import { IOrganisation } from 'interfaces/organisation';
-import ProfileImage from 'assets/images/profile/user-image.svg';
+import { IOrganisation, IOwnerData } from 'interfaces/organisation';
+import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
@@ -14,9 +14,10 @@ import { useUpdateOrganisation } from '../Banner/hooks';
 
 interface IBasicDetails {
   organisation: IOrganisation;
+  owner: IOwnerData;
 }
 
-const BasicDetails: FC<IBasicDetails> = ({ organisation }) => {
+const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
   const [whitepaper, setWhitepaper] = useState(
     organisation.whitepaper ?? 'https://defi.xyz/whitepaper.html'
   );
@@ -61,7 +62,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation }) => {
       <section className={styles.section}>
         <div className={styles['organisation-profile-created']}>
           <h3 className={styles['organisation-heading']}>Profile Created By</h3>
-          <CreatedBy organisation={organisation} />
+          <CreatedBy owner={owner} />
         </div>
         <div className={styles['organisation-name-description']}>
           <h3 className={styles['organisation-heading']}>
@@ -119,33 +120,38 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation }) => {
 };
 
 interface ICreatedBy {
-  organisation: IOrganisation;
+  owner: IOwnerData;
 }
 
-const CreatedBy: FC<ICreatedBy> = ({ organisation }) => {
+const CreatedBy: FC<ICreatedBy> = ({ owner }) => {
   const navigate = useNavigate();
 
-  const { OrganisationUser } = organisation;
   const {
-    name,
-    profile: { title, createdAt, profileId, picture },
-  } = OrganisationUser[0].user;
+    user: { name, profile },
+  } = owner;
 
   const handleNavigation = () => {
-    navigate(`../../profile/${profileId}`);
+    navigate(`/profile/${profile.profileId}`);
   };
 
   return (
     <div className={styles['organisation-profile-container']}>
       <div className={styles['image-container']}>
-        <img src={picture ? picture : ProfileImage} alt="Profile" />
+        <img
+          src={
+            profile.picture ||
+            getDefaultAvatarSrc(name?.charAt(0).toUpperCase())
+          }
+          alt="profile"
+        />
       </div>
       <p className={clsx(styles.text, styles['text--primary'])}>{name}</p>
       <p className={clsx(styles.text, styles['text--secondary'])}>
-        {title ?? ''}
+        {profile.title ?? ''}
       </p>
       <p className={clsx(styles.text, styles['text--addn'])}>
-        Profile created on {new Date(createdAt).toLocaleDateString('en-GB')}
+        Profile created on{' '}
+        {new Date(profile.createdAt).toLocaleDateString('en-GB')}
       </p>
       <button className={styles.btn} onClick={handleNavigation}>
         View Profile

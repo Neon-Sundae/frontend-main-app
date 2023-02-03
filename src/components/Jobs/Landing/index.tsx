@@ -9,6 +9,8 @@ import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
@@ -20,16 +22,17 @@ interface JobsLandingProps {
 }
 
 const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
+  const { orgId } = useParams();
+
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
   const [JobApplicantsData, setJobApplicantsData] = useState([]);
-
-  useEffect(() => {
-    setShowView(true);
-  }, [selectedJobUuid]);
-
   const [showCreate, setShowCreate] = useState(false);
   const [showView, setShowView] = useState(false);
+
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const { organisation, isLoading } = useFetchOrganisation(orgId);
+  const { members } = useFetchOrganisationOwnerManager(orgId);
 
   const {
     data,
@@ -48,14 +51,12 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
     }
   );
 
-  const { orgId } = useParams();
-  const { organisation, isLoading } = useFetchOrganisation(orgId);
-  const isFounder = () => {
-    return userId === organisation.OrganisationUser[0].user.userId;
-  };
-
-  if (isLoading) return null;
   const { name: orgName, profileImage, OrganisationUser } = organisation;
+
+  useEffect(() => {
+    setShowView(true);
+  }, [selectedJobUuid]);
+
   const handleCreate = () => {
     setShowCreate(true);
     setShowView(false);
@@ -67,6 +68,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
     setSelectedJobUuid(jobUuid);
   };
 
+  if (isLoading) return null;
   if (isFetching) return null;
   if (loading) return null;
 
@@ -82,7 +84,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
       <Toaster />
       <div className={styles['job-cards-all-wrap']}>
         <div className={styles['jobs-cards-wrap']}>
-          {isFounder() && (
+          {isOrganisationMember(user, members) && (
             <div className={styles['job-create-btn-wrap']}>
               <button
                 onClick={() => {
@@ -150,7 +152,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
                   orgId={Number(orgId)}
                   setSelectedJobUuid={setSelectedJobUuid}
                   JobApplicantsData={JobApplicantsData}
-                  orgOwnerUserId={OrganisationUser[0].user.userId}
+                  orgOwnerUserId={members.owner[0].userId}
                 />
               );
             })}

@@ -7,6 +7,9 @@ import JobsLanding from 'components/Jobs/Landing';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
+import useFetchOrganisationOwner from 'hooks/useFetchOrganisationOwner';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
@@ -20,7 +23,9 @@ const Landing: FC = () => {
   const { orgId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const { organisation, isLoading } = useFetchOrganisation(orgId);
-  const { data, isLoading: loading } = useFetchUserOrganisation();
+  const { data, isLoading: isLoading2 } = useFetchUserOrganisation();
+  const { owner } = useFetchOrganisationOwner(orgId);
+  const { members } = useFetchOrganisationOwnerManager(orgId);
   const [tabSelected, setTabSelected] = useState(searchParams.get('show'));
 
   const user = useSelector((state: RootState) => state.user.user);
@@ -34,7 +39,7 @@ const Landing: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isLoading || loading) return null;
+  if (isLoading || isLoading2) return null;
 
   const setOrganisationTab = (value: string) => {
     setTabSelected(value);
@@ -46,17 +51,13 @@ const Landing: FC = () => {
     setTabSelected('home');
   };
 
-  const isFounder = () => {
-    return user?.userId === organisation.OrganisationUser[0].user.userId;
-  };
-
   const tabSelector = () => {
     switch (tabSelected) {
       case 'home':
         return (
           <>
             <Banner organisation={organisation} />
-            <BasicDetails organisation={organisation} />
+            <BasicDetails organisation={organisation} owner={owner} />
             <div className={styles['organisation-project-jobs-wrap']}>
               <OrganisationProjects organisation={organisation} />
               <OrganisationJobs organisationId={organisation.organisationId} />
@@ -91,7 +92,7 @@ const Landing: FC = () => {
         return (
           <>
             <Banner organisation={organisation} />
-            <BasicDetails organisation={organisation} />
+            <BasicDetails organisation={organisation} owner={owner} />
             <div className={styles['organisation-project-jobs-wrap']}>
               <OrganisationProjects organisation={organisation} />
               <OrganisationJobs organisationId={organisation.organisationId} />
@@ -103,7 +104,7 @@ const Landing: FC = () => {
 
   return (
     <>
-      {isFounder() ? (
+      {isOrganisationMember(user, members) ? (
         <div
           className={clsx(
             styles['organisation-container'],
