@@ -14,7 +14,7 @@ import { useUpdateOrganisation } from '../Banner/hooks';
 
 interface IBasicDetails {
   organisation: IOrganisation;
-  owner: IOwnerData;
+  owner: IOwnerData | undefined;
 }
 
 const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
@@ -62,7 +62,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
       <section className={styles.section}>
         <div className={styles['organisation-profile-created']}>
           <h3 className={styles['organisation-heading']}>Profile Created By</h3>
-          <CreatedBy owner={owner} />
+          {owner && <CreatedBy owner={owner} />}
         </div>
         <div className={styles['organisation-name-description']}>
           <h3 className={styles['organisation-heading']}>
