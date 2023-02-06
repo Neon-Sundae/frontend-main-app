@@ -81,7 +81,6 @@ const Landing: FC = () => {
       <TaskManagement
         project_budget={budget}
         project_name={name}
-        project_founder={organisation?.OrganisationUser[0]?.walletId}
         flProjectCategory={projectData.flProjectCategory}
       />
       {open && (

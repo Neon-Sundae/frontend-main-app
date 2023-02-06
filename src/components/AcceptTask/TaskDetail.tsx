@@ -21,6 +21,8 @@ import { SET_TASK_XP } from 'actions/flProject/types';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import { IMemberData } from 'interfaces/organisation';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
@@ -30,16 +32,16 @@ interface ITaskDetail {
   setViewTalentList: Dispatch<SetStateAction<boolean>>;
   project_name?: string;
   handleCommit: any;
-  project_founder?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  members: IMemberData;
 }
 
 const TaskDetail: FC<ITaskDetail> = ({
   setViewTalentList,
   project_name,
-  project_founder,
   handleCommit,
   setOpen,
+  members,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,13 +52,14 @@ const TaskDetail: FC<ITaskDetail> = ({
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
   );
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+
   const profile = useSelector((state: RootState) => state.profile.profile);
   const { user } = useSelector((state: RootState) => state.user);
+
   useEffect(() => {
     const getXP = async () => {
       const xp = await calculateTaskXP(
-        walletId,
+        user?.walletId,
         selectedTask?.estimatedDifficulty
       );
       dispatch({
@@ -300,20 +303,21 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
-            {project_founder?.toLowerCase() === walletId?.toLowerCase() ? (
+            {isOrganisationMember(user, members) ? (
               founderTaskAction()
             ) : (
               <div>
                 {selectedTask?.status === 'open' &&
                 selectedTask?.profileTask.filter(
-                  (item: any) => item?.Profile?.user?.walletId === walletId
+                  (item: any) =>
+                    item?.Profile?.user?.walletId === user?.walletId
                 ).length === 0 ? (
                   <button onClick={applyToTask}>Apply for task</button>
                 ) : selectedTask?.status === 'open' &&
                   selectedTask?.profileTask.filter(
                     (item: any) =>
                       item?.Profile?.user?.walletId.toLowerCase() ===
-                        walletId?.toLowerCase() &&
+                        user?.walletId?.toLowerCase() &&
                       item?.applicationStatus === 'accepted'
                   ).length > 0 ? (
                   <button onClick={handleCommit}>Commit to task</button>
@@ -330,7 +334,6 @@ const TaskDetail: FC<ITaskDetail> = ({
 };
 
 TaskDetail.defaultProps = {
-  project_founder: '',
   project_name: '',
 };
 

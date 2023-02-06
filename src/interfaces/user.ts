@@ -14,3 +14,7 @@ export interface IUpdateUser {
   userId: number;
   discordId: string;
 }
+
+export interface IUserOrganisationMember {
+  isOrganisationMember: boolean | undefined;
+}
