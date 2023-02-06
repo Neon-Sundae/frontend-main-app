@@ -68,9 +68,7 @@ const Landing: FC = () => {
       <Header
         projectName={name}
         setOpen={val => setOpen(val)}
-        founderAddress={organisation?.OrganisationUser[0]?.walletId}
         organisationName={organisation?.name}
-        organisationOwnerWalletId={organisation?.OrganisationUser[0]?.walletId}
         organisationId={organisationId}
       />
       <Description

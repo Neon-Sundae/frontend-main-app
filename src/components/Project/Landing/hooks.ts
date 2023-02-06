@@ -26,9 +26,6 @@ const useProject = () => {
   const [deploying, setDeploying] = useState('go_live');
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { selectedProjectAddress } = useSelector(
-    (state: RootState) => state.flProject
-  );
 
   const getUSDCBalance = async () => {
     try {
