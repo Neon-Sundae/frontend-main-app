@@ -83,11 +83,13 @@ const OrganisationTeam: FC = () => {
                 </td>
                 <td />
                 <td className={styles['email-data']}>{member.user.email}</td>
-                <td className={styles['delete-member-data']}>
-                  <div>
-                    <DeleteIcon width={21} height={21} />
-                  </div>
-                </td>
+                {member.role !== 'Type.Owner' && (
+                  <td className={styles['delete-member-data']}>
+                    <div>
+                      <DeleteIcon width={21} height={21} />
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
             {data.invitations.map((invitation: any) => (
