@@ -25,7 +25,7 @@ const OrganisationTeam: FC = () => {
     modalStatus: setShowAddManagerModal,
   });
   const { transferOwnershipInvitation } = useTransferOwnership({
-    modalStatus: setShowAddManagerModal,
+    modalStatus: setShowTransferModal,
   });
 
   const openAddManagerModal = () => setShowAddManagerModal(true);
