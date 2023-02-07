@@ -1,0 +1,4 @@
+{
+  "extends": ["stylelint-config-airbnb", "stylelint-config-prettier", "stylelint-scss"],
+  "customSyntax": "postcss-scss"
+}
