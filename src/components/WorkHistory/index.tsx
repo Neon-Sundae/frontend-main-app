@@ -8,20 +8,34 @@ import debounce from 'lodash/debounce';
 import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete.svg';
 import months from 'utils/getMonthsArray';
 import numberRange from 'utils/numberRange';
+import CreatableSelect from 'react-select/creatable';
+import { Link } from 'react-router-dom';
+import creatableReactSelectStyles from './createSelectStyles';
 import {
   useAddProfileWorkplace,
   useRemoveProfileWorkplace,
   useUpdateProfileWorkplace,
+  useFetchAllOrganisations,
 } from './hooks';
 import styles from './index.module.scss';
 
 const WorkHistory: FC = () => {
+  const fetchAllOrganisations = useFetchAllOrganisations();
+
   const workplaces = useSelector(
     (state: RootState) => state.profile.workplaces
   );
+
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
+
+  const workplaceOrganisation = (name: string) =>
+    fetchAllOrganisations.normalizedOrganisationsData.filter(
+      function (organisation: { label: string }) {
+        return organisation.label === name;
+      }
+    );
 
   const addProfileWorkplace = useAddProfileWorkplace();
 
@@ -37,6 +51,9 @@ const WorkHistory: FC = () => {
             description={d.description}
             startDate={d.startDate}
             endDate={d.endDate}
+            fetchAllOrganisationsData={
+              fetchAllOrganisations.normalizedOrganisationsData
+            }
           />
         ) : (
           <WorkplaceCard
@@ -47,6 +64,7 @@ const WorkHistory: FC = () => {
             description={d.description}
             startDate={d.startDate}
             endDate={d.endDate}
+            isOrganisation={workplaceOrganisation(d.name)}
           />
         )
       )}
@@ -67,6 +85,7 @@ interface IWorkplace {
   description: string;
   startDate: string;
   endDate: string;
+  isOrganisation: any;
 }
 
 const WorkplaceCard: FC<IWorkplace> = ({
@@ -76,12 +95,19 @@ const WorkplaceCard: FC<IWorkplace> = ({
   description,
   startDate,
   endDate,
+  isOrganisation,
 }) => {
   return (
     <div className={styles['workplace-card']}>
       <h2 className={styles.role}>{role}</h2>
       <div className={styles['organisation-date-container']}>
-        <h5 className={styles.text}>{nameValue}</h5>
+        {isOrganisation && isOrganisation[0]?.value ? (
+          <Link to={`/organisation/${isOrganisation[0]?.value}`}>
+            <h5 className={styles.text}>{nameValue}</h5>
+          </Link>
+        ) : (
+          <h5 className={styles.text}>{nameValue}</h5>
+        )}
         <span>|</span>
         <h5 className={styles.text}>
           {new Date(startDate).toLocaleDateString()} -{' '}
@@ -93,13 +119,26 @@ const WorkplaceCard: FC<IWorkplace> = ({
   );
 };
 
-const WorkplaceCardEdit: FC<IWorkplace> = ({
+interface IWorkplaceEdit {
+  workplaceId: number;
+  role: string;
+  nameValue: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  fetchAllOrganisationsData: any;
+}
+
+type SelectOptionType = { label: string; value: string };
+
+const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
   workplaceId,
   role,
   nameValue,
   description,
   startDate,
   endDate,
+  fetchAllOrganisationsData,
 }) => {
   const now = new Date();
   const [roleLocal, setRoleLocal] = useState(role);
@@ -120,6 +159,11 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
   const removeProfileWorkplace = useRemoveProfileWorkplace();
   const updateProfileWorkplace = useUpdateProfileWorkplace();
 
+  const [selectedOptions, setSelectedOptions] = useState<SelectOptionType>({
+    label: nameValue,
+    value: '',
+  });
+
   const handleDebounceFn = (keyName: string, value: string) => {
     updateProfileWorkplace({
       workplaceId,
@@ -130,6 +174,7 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
 
   const debounceFn: any = useRef(
     debounce((name: string, value: string) => {
+      console.log('name, value', name, value);
       handleDebounceFn(name, value);
     }, 500)
   ).current;
@@ -140,10 +185,10 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
     debounceFn(name, value);
   };
 
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNameLocal(value);
-    debounceFn(name, value);
+  const handleOptionsChange = (options: SelectOptionType) => {
+    const { label } = options;
+    setSelectedOptions(options);
+    debounceFn('name', label);
   };
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -210,11 +255,19 @@ const WorkplaceCardEdit: FC<IWorkplace> = ({
         <DeleteIcon width={23} height={23} onClick={handleDelete} />
       </div>
       <div className={styles['organisation-date-container']}>
-        <input
+        <CreatableSelect
+          defaultValue={selectedOptions}
+          styles={creatableReactSelectStyles}
           name="name"
-          className={clsx(styles.text, styles['text--edit'])}
-          value={nameLocal}
-          onChange={handleNameChange}
+          options={fetchAllOrganisationsData}
+          isSearchable
+          openMenuOnClick={false}
+          isClearable
+          formatCreateLabel={userInput => `Just use ${userInput}`}
+          placeholder="Ex: Google"
+          onChange={option =>
+            handleOptionsChange(option ?? { label: '', value: '' })
+          }
         />
         <span>|</span>
         <span className={styles['input-date-container']}>

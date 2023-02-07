@@ -51,6 +51,11 @@
     margin-top: 20px;
     margin-bottom: 15px;
 
+    a {
+      text-decoration: underline;
+      color: #fff;
+    }
+
     .text {
       font-family: var(--font-family-roboto-flex);
       font-weight: 400;

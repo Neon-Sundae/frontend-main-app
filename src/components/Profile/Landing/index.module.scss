@@ -8,16 +8,18 @@
   justify-content: space-between;
   margin: auto;
   width: 73%;
-  @media (max-width: 1920px)  {
+  @media (max-width: 1920px) {
     width: 70%;
   }
-  @media (max-width: 1680px)  {
+
+  @media (max-width: 1680px) {
     width: 70%;
-    
   }
-  @media (max-width: 1440px)  {
+
+  @media (max-width: 1440px) {
     width: 80%;
   }
+
   @media (max-width: 1024px) {
     width: 90%;
   }

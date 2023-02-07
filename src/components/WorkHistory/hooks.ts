@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import {
   addProfileWorkplaceAction,
   removeProfileWorkplaceAction,
@@ -8,7 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleUnAuthorization } from 'utils/handleUnAuthorization';
+import {
+  handleError,
+  handleUnAuthorization,
+} from 'utils/handleUnAuthorization';
 
 const useAddProfileWorkplace = () => {
   const dispatch = useDispatch();
@@ -148,8 +152,45 @@ const useUpdateProfileWorkplace = () => {
   return updateProfileWorkplace;
 };
 
+const useFetchAllOrganisations = () => {
+  const accessToken = getAccessToken();
+  const { data } = useQuery(
+    ['all_organisations'],
+    async () => {
+      const response = await fetch(`${config.ApiBaseUrl}/organisation/all`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const json = await handleApiErrors(response);
+      return json;
+    },
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        handleError({
+          error,
+          explicitMessage: 'Unable to fetch all Organisation data',
+        });
+      },
+    }
+  );
+
+  const normalizedOrganisationsData = data?.map(
+    (organisation: { name: string; organisationId: number }) => ({
+      label: organisation.name,
+      value: organisation.organisationId,
+    })
+  );
+
+  return { normalizedOrganisationsData };
+};
+
 export {
   useAddProfileWorkplace,
   useRemoveProfileWorkplace,
   useUpdateProfileWorkplace,
+  useFetchAllOrganisations,
 };
