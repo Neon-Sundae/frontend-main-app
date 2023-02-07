@@ -1,9 +1,6 @@
 import config from 'config';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { useNavigate } from 'react-router-dom';
-import { updateUser } from 'actions/user';
 import { toast } from 'react-hot-toast';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
@@ -16,12 +13,9 @@ interface ICreateOrganisationPayload {
 }
 
 const useCreateOrganisation = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = getAccessToken();
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
-
-  const user = useSelector((state: RootState) => state.user.user);
 
   const createOrganisation = async (payload: ICreateOrganisationPayload) => {
     try {
@@ -45,8 +39,7 @@ const useCreateOrganisation = () => {
         );
       }
 
-      dispatch(updateUser({ ...user, isFounder: true }));
-      navigate(`../organisation/${json.organisationId}`);
+      navigate(`/organisation/${json.organisationId}`);
     } catch (e) {
       console.log(e);
       toast.error('Failed to create organisation');

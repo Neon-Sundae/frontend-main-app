@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FC, MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

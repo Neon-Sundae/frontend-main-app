@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -27,9 +26,6 @@ const useProject = () => {
   const [deploying, setDeploying] = useState('go_live');
 
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
-  const { selectedProjectAddress } = useSelector(
-    (state: RootState) => state.flProject
-  );
 
   const getUSDCBalance = async () => {
     try {

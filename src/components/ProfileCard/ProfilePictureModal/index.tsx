@@ -84,8 +84,8 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
           </p>
           <div />
           <footer>
-            By connecting your wallet you authorize Founder’s Lab to extract
-            your NFT information belonging to &nbsp;
+            By connecting your wallet you authorize Founder&apos;s Lab to
+            extract your NFT information belonging to &nbsp;
             <span>{truncatedWalletId}</span>{' '}
             <span className={styles.spanLeft}>Learn More</span>
           </footer>
