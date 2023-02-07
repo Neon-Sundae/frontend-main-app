@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { Toaster } from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';

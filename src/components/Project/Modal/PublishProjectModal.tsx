@@ -1,14 +1,13 @@
-/* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Modal from 'components/Modal';
+import { toggleWalletDrawer } from 'actions/app';
 import DepositFundsToWallet from './DepositFundsToWallet';
 import { useProject } from '../Landing/hooks';
 import styles from './index.module.scss';
 import Spinner from './Spinner';
-import { toggleWalletDrawer } from 'actions/app';
 
 interface IPublishProject {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -188,7 +187,7 @@ const DeploySuccessState: FC<IDeploySuccessState> = ({
         </button>
         <div onClick={onClose}>
           {' '}
-          <p style={{ cursor: 'pointer' }}>I'll do it later</p>
+          <p style={{ cursor: 'pointer' }}>I&apos;ll do it later</p>
         </div>
       </div>
     </>

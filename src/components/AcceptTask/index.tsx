@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import EditTask from 'components/EditTask';
@@ -6,8 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GET_SELECTED_TASK } from 'actions/flProject/types';
 import { RootState } from 'reducers';
 import { ReactComponent as VerifiedIcon } from 'assets/illustrations/icons/verified.svg';
+import { useParams } from 'react-router-dom';
 import Modal from 'components/Modal';
 import _ from 'lodash';
+import { useFetchProjects } from 'components/Project/Landing/hooks';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import { useFetchTaskData } from './hooks';
 import TaskDetail from './TaskDetail';
 import TalentList from './TalentList';
@@ -18,7 +21,6 @@ interface IAcceptTask {
   setViewComplete: Dispatch<SetStateAction<boolean>>;
   taskId?: number;
   handleApprove?: any;
-  project_founder?: string;
   project_name?: string;
   handleCommit?: any;
   flProjectCategory?: any;
@@ -33,20 +35,20 @@ const AcceptTask: FC<IAcceptTask> = ({
   taskId,
   handleApprove,
   project_name,
-  project_founder,
   handleCommit,
   flProjectCategory,
   location,
   editable,
   data,
 }) => {
+  const { create } = useParams();
   const filterDataForCurrentTask = () =>
     _.filter(data, {
       taskId,
     });
   const filteredData = filterDataForCurrentTask();
 
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const user = useSelector((state: RootState) => state.user.user);
   const [taskEdit, setTaskEdit] = useState(false);
   const dispatch = useDispatch();
 
@@ -54,6 +56,11 @@ const AcceptTask: FC<IAcceptTask> = ({
   const [viewTalentList, setViewTalentList] = useState(false);
 
   const { selectedTask } = useSelector((state: RootState) => state.flProject);
+
+  const { projectData = {} } = useFetchProjects(create);
+  const { members } = useFetchOrganisationOwnerManager(
+    projectData.organisationId
+  );
 
   useEffect(() => {
     if (taskData) {
@@ -67,7 +74,7 @@ const AcceptTask: FC<IAcceptTask> = ({
 
   const showEditTaskModal = () => setTaskEdit(true);
   const handleClose = () => setOpen(false);
-  const isFounder = () => walletId === project_founder;
+
   return (
     <Modal
       onClose={handleClose}
@@ -82,7 +89,6 @@ const AcceptTask: FC<IAcceptTask> = ({
           selectedTask={selectedTask}
           flProjectCategory={flProjectCategory}
           setOpen={setOpen}
-          // projectFounder={project_founder}
         />
       )}
       {!taskEdit && (
@@ -100,7 +106,7 @@ const AcceptTask: FC<IAcceptTask> = ({
           <h5 className={styles['founder-name']}>
             {selectedTask?.organisation?.name}
           </h5>
-          {editable && isFounder() && (
+          {editable && isOrganisationMember(user, members) && (
             <button className={styles['edit-btn']} onClick={showEditTaskModal}>
               edit task
               <i className={clsx('material-icons', styles['pencil-icon'])}>
@@ -124,8 +130,8 @@ const AcceptTask: FC<IAcceptTask> = ({
               setViewTalentList={setViewTalentList}
               project_name={filteredData[0]?.flProjectCategory?.flProject?.name}
               handleCommit={handleCommit}
-              project_founder={project_founder}
               setOpen={setOpen}
+              members={members}
             />
           )}
         </div>
@@ -137,7 +143,6 @@ const AcceptTask: FC<IAcceptTask> = ({
 AcceptTask.defaultProps = {
   taskId: 0,
   handleApprove: undefined,
-  project_founder: '',
   project_name: '',
   handleCommit: undefined,
   flProjectCategory: undefined,

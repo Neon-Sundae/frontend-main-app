@@ -24,15 +24,16 @@ import { getAccessToken } from 'utils/authFn';
 import _ from 'lodash';
 import getRandomString from 'utils/getRandomString';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import isOwner from 'utils/accessFns/isOwner';
 import styles from './index.module.scss';
 import CreatePrjModalWithData from '../../StartPrjModal/CreatePrjModalWithData';
 
 interface IHeaderProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   projectName: string;
-  founderAddress: string;
   organisationName: string;
-  organisationOwnerWalletId: string;
   organisationId: string;
 }
 
@@ -41,7 +42,7 @@ const Header: FC<IHeaderProps> = props => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { create: projectUuid } = useParams();
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const user = useSelector((state: RootState) => state.user.user);
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
@@ -52,7 +53,9 @@ const Header: FC<IHeaderProps> = props => {
     useState(false);
   const [currentProjectTasks, setCurrentProjectTasks] = useState<any[]>([]);
 
-  const { data, refetch } = useQuery(
+  const { members } = useFetchOrganisationOwnerManager(props.organisationId);
+
+  const { data } = useQuery(
     ['userTasksData'],
     () =>
       fetch(`${config.ApiBaseUrl}/task/all`, {
@@ -67,8 +70,8 @@ const Header: FC<IHeaderProps> = props => {
   const accumulatePeopleProjectData = () => {
     let tempArray: any[] = [];
     currentProjectTasks.forEach((task: any) => {
-      task.profileTask.forEach((user: any) => {
-        tempArray.push(user.Profile);
+      task.profileTask.forEach((taskUser: any) => {
+        tempArray.push(taskUser.Profile);
       });
     });
     if (tempArray.length !== 0) tempArray = [...new Set(tempArray)];
@@ -88,7 +91,7 @@ const Header: FC<IHeaderProps> = props => {
 
   const handlePublishProject = async () => {
     try {
-      const profileAddress = await getProfileContractAddress(walletId);
+      const profileAddress = await getProfileContractAddress(user?.walletId);
 
       if (profileAddress !== '0x0000000000000000000000000000000000000000') {
         dispatch({
@@ -114,15 +117,12 @@ const Header: FC<IHeaderProps> = props => {
     setShowProjectFormModalWithData(true);
   };
 
-  const isFounder = () => {
-    if (walletId === props.organisationOwnerWalletId) return true;
-    return false;
-  };
   const peopleProjectDataCount = useMemo(
     () => accumulatePeopleProjectData().length,
     [currentProjectTasks]
   );
   peopleCount = peopleProjectDataCount - peopleProjectDataCount + 1;
+
   return (
     <div className={styles.container}>
       <div className={styles['project-info']}>
@@ -158,8 +158,7 @@ const Header: FC<IHeaderProps> = props => {
               )}
             </div>
           </span>
-          {props.founderAddress?.toLowerCase() === walletId?.toLowerCase() &&
-          selectedProjectAddress === '' ? (
+          {isOwner(user, members) && selectedProjectAddress === '' ? (
             <button
               onClick={handlePublishProject}
               className={styles.transparentBtn}
@@ -168,8 +167,7 @@ const Header: FC<IHeaderProps> = props => {
             </button>
           ) : (
             <div>
-              {props.founderAddress?.toLowerCase() ===
-              walletId?.toLowerCase() ? (
+              {isOwner(user, members) ? (
                 <button
                   onClick={handleToggle}
                   className={styles.transparentBtn}
@@ -203,7 +201,7 @@ const Header: FC<IHeaderProps> = props => {
               />
             )}
           </span>
-          {isFounder() && (
+          {isOrganisationMember(user, members) && (
             <button
               onClick={handleEditButtonClick}
               className={styles['edit-project-btn']}

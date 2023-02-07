@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';

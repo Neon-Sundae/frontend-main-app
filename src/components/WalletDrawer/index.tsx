@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import clsx from 'clsx';
 import {
   Dispatch,
@@ -309,28 +308,36 @@ const DepositStep1: FC<IDepositStep1> = ({
           close
         </i>
       </div>
-      <div className={styles['qr-code-container']}>
-        <QRCode
-          value={selectedContract?.smartContractId}
-          bgColor="transparent"
-          fgColor="white"
-          size={144}
-        />
-        <div
-          className={styles['address-copy-container']}
-          onClick={() => handleCopyAddress(selectedContract.smartContractId)}
-        >
-          <span>{getFormattedWalletId(selectedContract.smartContractId)}</span>
-          <i className="material-icons-200">content_copy</i>
+      {selectedContract.smartContractId ? (
+        <div className={styles['qr-code-container']}>
+          <QRCode
+            value={selectedContract.smartContractId}
+            bgColor="transparent"
+            fgColor="white"
+            size={144}
+          />
+          <div
+            className={styles['address-copy-container']}
+            onClick={() => handleCopyAddress(selectedContract.smartContractId)}
+          >
+            <span>
+              {getFormattedWalletId(selectedContract.smartContractId)}
+            </span>
+            <i className="material-icons-200">content_copy</i>
+          </div>
+          <p className={styles['or-use-text']}>or use</p>
+          <button
+            className={styles['use-metamask-btn']}
+            onClick={() => setCurrentState(2)}
+          >
+            <MetamaskIcon width={24} height={21.6} /> Metamask
+          </button>
         </div>
-        <p className={styles['or-use-text']}>or use</p>
-        <button
-          className={styles['use-metamask-btn']}
-          onClick={() => setCurrentState(2)}
-        >
-          <MetamaskIcon width={24} height={21.6} /> Metamask
-        </button>
-      </div>
+      ) : (
+        <div className={styles['project-unpublished-state']}>
+          <p>Project is not published yet</p>
+        </div>
+      )}
     </>
   );
 };
@@ -448,7 +455,7 @@ const DepositStep2: FC<IDepositStep2> = ({
             }
             title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
             projectName={selectedContract.name}
-            successState={'no'}
+            successState="no"
             bigMessage={
               isWithdraw
                 ? 'Your funds are being withdrawn from'
@@ -459,10 +466,10 @@ const DepositStep2: FC<IDepositStep2> = ({
       case 'give_usdc_permission':
         return (
           <InteractionDiv
-            message={'Transacting'}
+            message="Transacting"
             title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
             projectName={selectedContract.name}
-            successState={'no'}
+            successState="no"
             bigMessage={
               isWithdraw
                 ? 'Your funds are being withdrawn from'
@@ -473,10 +480,10 @@ const DepositStep2: FC<IDepositStep2> = ({
       case 'usdc_success':
         return (
           <InteractionDiv
-            message={'Got it. Thanks! '}
+            message="Got it. Thanks! "
             title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
             projectName={selectedContract.name}
-            successState={'no'}
+            successState="no"
             bigMessage={
               isWithdraw
                 ? 'Your funds are being withdrawn from'
@@ -487,10 +494,10 @@ const DepositStep2: FC<IDepositStep2> = ({
       case 'deploying':
         return (
           <InteractionDiv
-            message={''}
+            message=""
             title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
             projectName={selectedContract.name}
-            successState={'no'}
+            successState="no"
             bigMessage={
               isWithdraw
                 ? 'Your funds are being withdrawn from'
@@ -501,10 +508,10 @@ const DepositStep2: FC<IDepositStep2> = ({
       case 'deploy_success':
         return (
           <InteractionDiv
-            message={'Please Refresh your browser to reflect changes'}
+            message="Please Refresh your browser to reflect changes"
             title={isWithdraw ? 'Withdraw USDC' : 'Deposit USDC'}
             projectName={selectedContract.name}
-            successState={'success'}
+            successState="success"
             bigMessage={
               isWithdraw
                 ? 'Your funds have been withdrawn from'

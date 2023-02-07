@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable camelcase */
 import { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
