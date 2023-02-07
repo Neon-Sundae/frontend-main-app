@@ -1,23 +1,18 @@
 import { FC } from 'react';
-import bg from 'assets/illustrations/gradients/bg.png';
 import NavBar from 'components/NavBar';
+import BlurBlobs from 'components/BlurBlobs';
 import styles from './index.module.scss';
 import AllTasks from '../AllTasks';
 
 const Landing: FC = () => {
   return (
-    <div
-      className={styles['all-task-container']}
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <NavBar />
-      <AllTasks />
-    </div>
+    <>
+      <BlurBlobs />
+      <div className={styles['all-task-container']}>
+        <NavBar />
+        <AllTasks />
+      </div>
+    </>
   );
 };
 export default Landing;

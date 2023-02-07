@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import bg from 'assets/illustrations/gradients/bg.png';
 import NavBar from 'components/NavBar';
 import config from 'config';
 import { useQuery } from '@tanstack/react-query';
 import { getAccessToken } from 'utils/authFn';
+import BlurBlobs from 'components/BlurBlobs';
 import AllProjects from '../AllProjects';
 import styles from './index.module.scss';
 
@@ -23,18 +23,13 @@ const Landing: FC = () => {
   if (isLoading) return null;
   if (error) return null;
   return (
-    <div
-      className={styles.container}
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <NavBar />
-      <AllProjects projectData={data} />
-    </div>
+    <>
+      <BlurBlobs />
+      <div className={styles.container}>
+        <NavBar />
+        <AllProjects projectData={data} />
+      </div>
+    </>
   );
 };
 

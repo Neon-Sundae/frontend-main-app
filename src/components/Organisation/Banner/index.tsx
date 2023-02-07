@@ -22,11 +22,7 @@ import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
-import {
-  useUpdateOrganisation,
-  useUpdateOrgPic,
-  useUpdateOrgCoverPic,
-} from './hooks';
+import { useUpdateOrganisation, useUpdateOrganisationImage } from './hooks';
 
 interface IBanner {
   organisation: IOrganisation;
@@ -48,13 +44,10 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const [showPrjModal, setShowPrjModal] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
-  const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
-  const updateCoverOrgPicture = useUpdateOrgCoverPic(
-    organisation.organisationId
-  );
 
   const { members } = useFetchOrganisationOwnerManager(orgId);
 
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
   const payload = {
     name: nameLocal,
     description: organisation.description,
@@ -66,16 +59,23 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     dispatch(editOrganisation(true));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (isEditable) {
-      const formData = new FormData();
       if (orgCoverFileData) {
-        formData.append('bannerImage', orgCoverFileData);
-        updateCoverOrgPicture.mutate(formData);
+        await updateOrganisationImageHandler(
+          orgCoverFileData,
+          'bannerImage',
+          'banner',
+          organisation.organisationId
+        );
       }
       if (orgLogoFileData) {
-        formData.append('profileImage', orgLogoFileData);
-        updateOrgPicture.mutate(formData);
+        await updateOrganisationImageHandler(
+          orgLogoFileData,
+          'profileImage',
+          'profile',
+          organisation.organisationId
+        );
       }
       dispatch(editOrganisation(false));
     }
@@ -126,10 +126,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       if (inputRefCover.current) inputRefCover.current.click();
     }
   };
-  const handleStartProject = () => setShowPrjModal(true);
-  const handleListAJob = () => {
-    navigate(`/organisation/${organisation.organisationId}/jobs/all`);
-  };
+
   return (
     <div className={styles.container}>
       <Toaster />

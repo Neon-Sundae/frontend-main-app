@@ -13,7 +13,7 @@ import useIsOrganisationMember from 'hooks/useIsOrganisationMember';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
-  const [activeState, setActiveState] = useState('task');
+  const [activeState, setActiveState] = useState('workHistory');
   const user = useSelector((state: RootState) => state.user.user);
 
   const { isOrganisationMember } = useIsOrganisationMember(user?.userId);

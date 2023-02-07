@@ -1,16 +1,13 @@
 .container {
-  
   padding-bottom: 55px;
   background-size: cover;
   color: #fff;
   overflow-y: hidden;
   min-height:100vh ;
-
+  position: relative;
   .job-cards-all-wrap {
     width: 80%;
-   
-
-
+  
     @media (max-width: 1920px) {
       width: 71%;
 
