@@ -41,11 +41,11 @@ const useFetchOrganisationMembers = () => {
   return { data, isLoading };
 };
 
-interface IUseAddManager {
+interface IModalStatus {
   modalStatus: Dispatch<SetStateAction<boolean>>;
 }
 
-const useAddManager = ({ modalStatus }: IUseAddManager) => {
+const useAddManager = ({ modalStatus }: IModalStatus) => {
   const { orgId } = useParams();
   const queryClient = useQueryClient();
   const accessToken = getAccessToken();
@@ -81,7 +81,7 @@ const useAddManager = ({ modalStatus }: IUseAddManager) => {
   return { addManagerInvitation };
 };
 
-const useTransferOwnership = ({ modalStatus }: IUseAddManager) => {
+const useTransferOwnership = ({ modalStatus }: IModalStatus) => {
   const { orgId } = useParams();
   const queryClient = useQueryClient();
   const accessToken = getAccessToken();
@@ -117,4 +117,79 @@ const useTransferOwnership = ({ modalStatus }: IUseAddManager) => {
   return { transferOwnershipInvitation };
 };
 
-export { useFetchOrganisationMembers, useAddManager, useTransferOwnership };
+const useDeleteOrganisationMember = ({ modalStatus }: IModalStatus) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const deleteOrganisationMember = useMutation(
+    async (memberId: string) => {
+      console.log('deleting');
+      const response = await fetch(
+        `${config.ApiBaseUrl}/organisation/member/delete/${memberId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['organisation-members']);
+        toast.success('Successfuly deleted');
+        modalStatus(false);
+      },
+    }
+  );
+
+  return { deleteOrganisationMember };
+};
+
+const useDeleteUserInvitation = ({ modalStatus }: IModalStatus) => {
+  const queryClient = useQueryClient();
+  const accessToken = getAccessToken();
+
+  const deleteUserInvitation = useMutation(
+    async (memberId: string) => {
+      const response = await fetch(
+        `${config.ApiBaseUrl}/organisation/invitation/delete/${memberId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['organisation-members']);
+        toast.success('Successfuly deleted');
+        modalStatus(false);
+      },
+    }
+  );
+
+  return { deleteUserInvitation };
+};
+
+export {
+  useFetchOrganisationMembers,
+  useAddManager,
+  useTransferOwnership,
+  useDeleteOrganisationMember,
+  useDeleteUserInvitation,
+};

@@ -3,6 +3,7 @@ import {
   Dispatch,
   FC,
   FormEvent,
+  MouseEvent,
   SetStateAction,
   useState,
 } from 'react';
@@ -11,6 +12,8 @@ import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete-
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import {
   useAddManager,
+  useDeleteOrganisationMember,
+  useDeleteUserInvitation,
   useFetchOrganisationMembers,
   useTransferOwnership,
 } from './hooks';
@@ -19,6 +22,11 @@ import styles from './index.module.scss';
 const OrganisationTeam: FC = () => {
   const [showAddManagerModal, setShowAddManagerModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
+  const [showDeleteInvitationModal, setShowDeleteInvitationModal] =
+    useState(false);
+  const [deleteEmail, setDeleteEmail] = useState('');
+  const [memberId, setMemberId] = useState('');
 
   const { data, isLoading } = useFetchOrganisationMembers();
   const { addManagerInvitation } = useAddManager({
@@ -26,6 +34,12 @@ const OrganisationTeam: FC = () => {
   });
   const { transferOwnershipInvitation } = useTransferOwnership({
     modalStatus: setShowTransferModal,
+  });
+  const { deleteOrganisationMember } = useDeleteOrganisationMember({
+    modalStatus: setShowDeleteUserModal,
+  });
+  const { deleteUserInvitation } = useDeleteUserInvitation({
+    modalStatus: setShowDeleteInvitationModal,
   });
 
   const openAddManagerModal = () => setShowAddManagerModal(true);
@@ -37,6 +51,26 @@ const OrganisationTeam: FC = () => {
 
   const handleAddManager = (email: string) => {
     addManagerInvitation.mutate(email);
+  };
+
+  const handleDelete =
+    (email: string, type: string) => (e: MouseEvent<HTMLDivElement>) => {
+      setDeleteEmail(email);
+      setMemberId(e.currentTarget.id);
+
+      if (type === 'user') {
+        setShowDeleteUserModal(true);
+      } else if (type === 'invitation') {
+        setShowDeleteInvitationModal(true);
+      }
+    };
+
+  const handleDeleteUser = () => {
+    deleteOrganisationMember.mutate(memberId);
+  };
+
+  const handleDeleteInvitation = () => {
+    deleteUserInvitation.mutate(memberId);
   };
 
   if (isLoading) {
@@ -85,7 +119,10 @@ const OrganisationTeam: FC = () => {
                 <td className={styles['email-data']}>{member.user.email}</td>
                 {member.role !== 'Type.Owner' && (
                   <td className={styles['delete-member-data']}>
-                    <div>
+                    <div
+                      id={member.organisation_user_id}
+                      onClick={handleDelete(member.user.email, 'user')}
+                    >
                       <DeleteIcon width={21} height={21} />
                     </div>
                   </td>
@@ -112,7 +149,10 @@ const OrganisationTeam: FC = () => {
                 </td>
                 <td className={styles['email-data']}>{invitation.email}</td>
                 <td className={styles['delete-member-data']}>
-                  <div>
+                  <div
+                    id={invitation.organisation_user_invites_id}
+                    onClick={handleDelete(invitation.email, 'invitation')}
+                  >
                     <DeleteIcon width={21} height={21} />
                   </div>
                 </td>
@@ -138,6 +178,22 @@ const OrganisationTeam: FC = () => {
           btnText="Transfer Ownership"
           hideModal={setShowTransferModal}
           handleSubmit={handleTransferOwnership}
+        />
+      )}
+      {showDeleteUserModal && (
+        <DeleteModal
+          title="Delete Member"
+          hideModal={setShowDeleteUserModal}
+          email={deleteEmail}
+          handleSubmit={handleDeleteUser}
+        />
+      )}
+      {showDeleteInvitationModal && (
+        <DeleteModal
+          title="Delete invitation"
+          hideModal={setShowDeleteInvitationModal}
+          email={deleteEmail}
+          handleSubmit={handleDeleteInvitation}
         />
       )}
     </div>
@@ -193,6 +249,44 @@ const ActionModal: FC<IActionModal> = ({
         </div>
         <input type="submit" value={btnText} className={styles['submit-btn']} />
       </form>
+    </Modal>
+  );
+};
+
+interface IDeleteModal {
+  title: string;
+  email: string;
+  hideModal: Dispatch<SetStateAction<boolean>>;
+  handleSubmit: () => void;
+}
+
+const DeleteModal: FC<IDeleteModal> = ({
+  title,
+  email,
+  hideModal,
+  handleSubmit,
+}) => {
+  const handleClose = () => hideModal(false);
+
+  return (
+    <Modal
+      title={title}
+      onClose={handleClose}
+      width="425px"
+      height="300px"
+      padding="13px 30px"
+    >
+      <p className={styles['modal-descriptive-text']}>
+        Are you sure you want to delete {email}?
+      </p>
+      <div className={styles['modal-delete-action']}>
+        <button onClick={handleSubmit} className={styles['delete-member']}>
+          Yes, delete
+        </button>
+        <button onClick={handleClose} className={styles['cancel-delete']}>
+          No, cancel
+        </button>
+      </div>
     </Modal>
   );
 };
