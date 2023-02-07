@@ -1,7 +1,6 @@
 import NavBar from 'components/NavBar';
 import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import bg from 'assets/illustrations/gradients/bg.png';
 import CreateUsingProjectTemplate from 'components/StartPrjModal/CreateUsingProjectTemplate';
 import JobsLanding from 'components/Jobs/Landing';
 import { RootState } from 'reducers';
@@ -10,6 +9,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useFetchOrganisationOwner from 'hooks/useFetchOrganisationOwner';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import BlurBlobs from 'components/BlurBlobs';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
@@ -104,6 +104,7 @@ const Landing: FC = () => {
 
   return (
     <>
+      <BlurBlobs />
       {isOrganisationMember(user, members) ? (
         <div
           className={clsx(
