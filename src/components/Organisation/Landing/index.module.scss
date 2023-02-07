@@ -9,6 +9,7 @@
   & > .organisation-content-container {
     flex-grow: 1;
     overflow-y: auto;
+    z-index: 1;
   }
 
   & .organisation-project-jobs-wrap {

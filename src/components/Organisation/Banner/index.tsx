@@ -43,6 +43,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const [showPrjModal, setShowPrjModal] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
 
   const { members } = useFetchOrganisationOwnerManager(orgId);
@@ -61,6 +62,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
 
   const handleSave = async () => {
     if (isEditable) {
+      setImageLoading(true);
       if (orgCoverFileData) {
         await updateOrganisationImageHandler(
           orgCoverFileData,
@@ -77,6 +79,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           organisation.organisationId
         );
       }
+      setImageLoading(false);
       dispatch(editOrganisation(false));
     }
   };
@@ -185,8 +188,12 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           )}
           {isOrganisationMember(user, members) ? (
             isEditable ? (
-              <button className={styles.btn} onClick={handleSave}>
-                Save
+              <button
+                className={styles.btn}
+                onClick={handleSave}
+                disabled={imageLoading}
+              >
+                {imageLoading ? 'Saving...' : 'Save'}
               </button>
             ) : (
               <button className={styles.btn} onClick={handleEdit}>
@@ -296,32 +303,26 @@ const OrgLogo: FC<IOrgLogo> = ({
   return (
     <div>
       {organisation.profileImage ? ( // checks for images from db
-        <div
-          className={styles.logo}
-          onClick={isEditable ? handleClick : () => {}}
-        >
-          <img src={organisation && organisation.profileImage} alt="logo" />
+        <div className={styles.logo} onClick={handleClick}>
           {/* to show edit icon over image */}
-          {isEditable && (
+          {isEditable ? (
             <>
               <img
                 alt="background"
-                src={Background}
+                src={
+                  orgLogoFileData
+                    ? URL.createObjectURL(orgLogoFileData)
+                    : organisation.profileImage
+                }
                 className={styles.bgImage}
               />
               <div className={styles.centered}>
                 <EditIcon width={50} height={50} />
               </div>
             </>
+          ) : (
+            <img src={organisation && organisation.profileImage} alt="logo" />
           )}
-        </div>
-      ) : orgLogoFileData ? ( // checks for locally uploaded images
-        <div className={styles.logo} onClick={handleClick}>
-          <img src={URL.createObjectURL(orgLogoFileData)} alt="logo" />
-          <img alt="background" src={Background} className={styles.bgImage} />
-          <div className={styles.centered}>
-            <EditIcon width={50} height={50} />
-          </div>
         </div>
       ) : (
         // shows default image
@@ -331,7 +332,11 @@ const OrgLogo: FC<IOrgLogo> = ({
             <>
               <img
                 alt="background"
-                src={Background}
+                src={
+                  orgLogoFileData
+                    ? URL.createObjectURL(orgLogoFileData)
+                    : Background
+                }
                 className={styles.bgImageDefault}
               />
               <div className={styles.centeredEdit}>
