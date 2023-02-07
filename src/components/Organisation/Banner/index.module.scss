@@ -6,18 +6,18 @@
 
   margin: auto;
   border-radius: 20px;
-  background: linear-gradient(126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%);
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.12) 12.11%,
+    rgba(255, 255, 255, 0.03) 73.08%
+  );
 
   @media (max-width: 1920px) {
     width: 70%;
-
   }
 
   @media (max-width: 1680px) {
     width: 70%;
-
   }
 
   @media (max-width: 1440px) {
@@ -99,13 +99,13 @@
     margin-top: 20px;
   }
 
-  &>.socials-header {
+  & > .socials-header {
     font-family: var(--font-family-roboto-regular);
     font-size: 21px;
     font-weight: 500px;
   }
 
-  &>.organisation-website {
+  & > .organisation-website {
     font-family: var(--font-family-roboto-regular);
     font-size: 21px;
     font-weight: 500px;
@@ -124,7 +124,7 @@
     }
   }
 
-  &>.social-icon-container {
+  & > .social-icon-container {
     width: 150px;
     display: flex;
     justify-content: flex-start;
@@ -173,7 +173,7 @@
     transform: translate(-50%, -50%);
   }
 
-  &>img {
+  & > img {
     width: 100%;
     height: 100%;
   }
@@ -192,10 +192,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
   }
 
-  &>img {
+  & > img {
     width: 100%;
     height: 100%;
   }
@@ -250,15 +249,21 @@
   font-weight: 400;
   text-align: center;
 
-  background: linear-gradient(94.3deg,
-      rgba(255, 255, 255, 0.12) 8.58%,
-      rgba(255, 255, 255, 0.03) 96.04%);
+  background: linear-gradient(
+    94.3deg,
+    rgba(255, 255, 255, 0.12) 8.58%,
+    rgba(255, 255, 255, 0.03) 96.04%
+  );
   box-shadow: 0px 4px 4px rgba(68, 68, 68, 0.5);
   backdrop-filter: blur(64.767px);
 
   -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
   -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
   box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .social-title {
@@ -318,7 +323,11 @@
     justify-content: space-between;
     position: relative;
     cursor: pointer;
-    background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
     box-shadow: 0px 3.40709px 20.4425px -0.851771px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(34.0709px);
 
