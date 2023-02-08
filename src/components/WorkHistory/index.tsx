@@ -31,6 +31,8 @@ const WorkHistory: FC = () => {
   );
 
   const workplaceOrganisation = (name: string) =>
+    fetchAllOrganisations &&
+    fetchAllOrganisations.normalizedOrganisationsData &&
     fetchAllOrganisations.normalizedOrganisationsData.filter(
       function (organisation: { label: string }) {
         return organisation.label === name;
