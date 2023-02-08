@@ -10,6 +10,7 @@ import months from 'utils/getMonthsArray';
 import numberRange from 'utils/numberRange';
 import CreatableSelect from 'react-select/creatable';
 import { Link } from 'react-router-dom';
+import filterOrganisationData from 'utils/filterOrganisationData';
 import creatableReactSelectStyles from './createSelectStyles';
 import {
   useAddProfileWorkplace,
@@ -20,7 +21,7 @@ import {
 import styles from './index.module.scss';
 
 const WorkHistory: FC = () => {
-  const fetchAllOrganisations = useFetchAllOrganisations();
+  const { data } = useFetchAllOrganisations();
 
   const workplaces = useSelector(
     (state: RootState) => state.profile.workplaces
@@ -29,15 +30,6 @@ const WorkHistory: FC = () => {
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
-
-  const workplaceOrganisation = (name: string) =>
-    fetchAllOrganisations &&
-    fetchAllOrganisations.normalizedOrganisationsData &&
-    fetchAllOrganisations.normalizedOrganisationsData.filter(
-      function (organisation: { label: string }) {
-        return organisation.label === name;
-      }
-    );
 
   const addProfileWorkplace = useAddProfileWorkplace();
 
@@ -53,9 +45,7 @@ const WorkHistory: FC = () => {
             description={d.description}
             startDate={d.startDate}
             endDate={d.endDate}
-            fetchAllOrganisationsData={
-              fetchAllOrganisations.normalizedOrganisationsData
-            }
+            allOrganisationData={data}
           />
         ) : (
           <WorkplaceCard
@@ -66,7 +56,7 @@ const WorkHistory: FC = () => {
             description={d.description}
             startDate={d.startDate}
             endDate={d.endDate}
-            isOrganisation={workplaceOrganisation(d.name)}
+            isOrganisation={filterOrganisationData(d.name, data)}
           />
         )
       )}
@@ -87,7 +77,7 @@ interface IWorkplace {
   description: string;
   startDate: string;
   endDate: string;
-  isOrganisation: any;
+  isOrganisation: { label: string; value: number }[];
 }
 
 const WorkplaceCard: FC<IWorkplace> = ({
@@ -128,7 +118,7 @@ interface IWorkplaceEdit {
   description: string;
   startDate: string;
   endDate: string;
-  fetchAllOrganisationsData: any;
+  allOrganisationData: any;
 }
 
 type SelectOptionType = { label: string; value: string };
@@ -140,7 +130,7 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
   description,
   startDate,
   endDate,
-  fetchAllOrganisationsData,
+  allOrganisationData,
 }) => {
   const now = new Date();
   const [roleLocal, setRoleLocal] = useState(role);
@@ -176,7 +166,6 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
 
   const debounceFn: any = useRef(
     debounce((name: string, value: string) => {
-      console.log('name, value', name, value);
       handleDebounceFn(name, value);
     }, 500)
   ).current;
@@ -261,7 +250,7 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
           defaultValue={selectedOptions}
           styles={creatableReactSelectStyles}
           name="name"
-          options={fetchAllOrganisationsData}
+          options={allOrganisationData}
           isSearchable
           openMenuOnClick={false}
           isClearable

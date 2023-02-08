@@ -164,7 +164,13 @@ const useFetchAllOrganisations = () => {
         },
       });
       const json = await handleApiErrors(response);
-      return json;
+      const normalizedOrganisationsData = json?.map(
+        (organisation: { name: string; organisationId: number }) => ({
+          label: organisation.name,
+          value: organisation.organisationId,
+        })
+      );
+      return normalizedOrganisationsData;
     },
     {
       retry: 1,
@@ -178,14 +184,7 @@ const useFetchAllOrganisations = () => {
     }
   );
 
-  const normalizedOrganisationsData = data?.map(
-    (organisation: { name: string; organisationId: number }) => ({
-      label: organisation.name,
-      value: organisation.organisationId,
-    })
-  );
-
-  return { normalizedOrganisationsData };
+  return { data };
 };
 
 export {
