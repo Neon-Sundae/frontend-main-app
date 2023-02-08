@@ -40,6 +40,7 @@ const InvitationAction: FC = () => {
         'noopener,noreferrer'
       );
       if (newWindow) newWindow.opener = null;
+      return;
     }
 
     const token = searchParams.get('invitation_token');
@@ -58,6 +59,7 @@ const InvitationAction: FC = () => {
         'noopener,noreferrer'
       );
       if (newWindow) newWindow.opener = null;
+      return;
     }
 
     const token = searchParams.get('invitation_token');
