@@ -6,9 +6,10 @@ import { handleApiErrors } from 'utils/handleApiErrors';
 
 const useAcceptInvitation = () => {
   const navigate = useNavigate();
-  const accessToken = getAccessToken();
 
   const acceptInvitation = async (invitationToken: string) => {
+    const accessToken = getAccessToken();
+
     try {
       const response = await fetch(
         `${config.ApiBaseUrl}/organisation/invitation/accept`,
@@ -34,9 +35,10 @@ const useAcceptInvitation = () => {
 
 const useRejectInvitation = () => {
   const navigate = useNavigate();
-  const accessToken = getAccessToken();
 
   const rejectInvitation = async (invitationToken: string) => {
+    const accessToken = getAccessToken();
+
     try {
       const response = await fetch(
         `${config.ApiBaseUrl}/organisation/invitation/reject`,
