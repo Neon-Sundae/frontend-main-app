@@ -1,3 +1,4 @@
+import useFetchCurrentUserProfilePicture from 'hooks/useFetchCurrentUserProfilePicture';
 import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import useGetUserByWalletId from 'hooks/useGetUserByWalletId';
 import { FC, ReactElement } from 'react';
@@ -12,6 +13,7 @@ const PrivateRoute: FC<ComponentProps> = ({ children }) => {
   const accessToken = getAccessToken();
   useGetUserByWalletId();
   useFetchOffChainProfile();
+  useFetchCurrentUserProfilePicture();
 
   if (accessToken === undefined) {
     // TODO - Add Loading spinner

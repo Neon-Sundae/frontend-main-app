@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
-import bg from 'assets/illustrations/gradients/bg.png';
 import clsx from 'clsx';
 import Shepherd from 'shepherd.js';
 import TourHomePage from './tour';
@@ -43,36 +42,31 @@ const Landing: FC = () => {
   }
   if (data) {
     return (
-      <div
-        className={styles.background}
-        style={{
-          backgroundImage: `url(${bg})`,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'space',
-          backgroundAttachment: 'fixed',
-        }}
-      >
-        <NavBar />
+      <>
         <BlurBlobs />
-        <Banner
-          showOnboardModal={showOnboardModal}
-          setShowOnboardModal={setShowOnboardModal}
-          tourStart={tourStart}
-        />
-        <section className={styles.content}>
-          <Projects />
-          <Tasks data={data} />
-        </section>
-        <section>
-          <NewJobs />
-        </section>
-        <section className={clsx(styles.content, styles['my-tasks-wrap'])}>
-          <MyTasks />
-        </section>
-        <section className={styles['my-projects-wrap']}>
-          <MyProjects />
-        </section>
-      </div>
+        <div className={styles.background}>
+          <NavBar />
+
+          <Banner
+            showOnboardModal={showOnboardModal}
+            setShowOnboardModal={setShowOnboardModal}
+            tourStart={tourStart}
+          />
+          <section className={styles.content}>
+            <Projects />
+            <Tasks data={data} />
+          </section>
+          <section>
+            <NewJobs />
+          </section>
+          <section className={clsx(styles.content, styles['my-tasks-wrap'])}>
+            <MyTasks />
+          </section>
+          <section className={styles['my-projects-wrap']}>
+            <MyProjects />
+          </section>
+        </div>
+      </>
     );
   }
 

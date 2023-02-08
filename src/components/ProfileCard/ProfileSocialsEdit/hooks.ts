@@ -2,8 +2,9 @@ import {
   IUpdateProfileSocial,
   updateProfileSocialAction,
 } from 'actions/profile';
-import { updateUserDiscord, IUpdateUser } from 'actions/user';
+import { updateUserDiscord } from 'actions/user';
 import config from 'config';
+import { IUpdateUser } from 'interfaces/user';
 import { Dispatch, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';

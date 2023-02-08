@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NavBar from 'components/NavBar';
@@ -9,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import { getAccessToken } from 'utils/authFn';
 import { RootState } from 'reducers';
 
+import BlurBlobs from 'components/BlurBlobs';
 import Header from '../Header';
 import Description from '../Description';
 import { useProject, useFetchProjects } from './hooks';
@@ -55,50 +55,52 @@ const Landing: FC = () => {
     organisationId,
   } = projectData;
 
-  return projectData ? (
-    <div
-      className={styles.container}
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'space',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <NavBar />
-      <Header
-        projectName={name}
-        setOpen={val => setOpen(val)}
-        founderAddress={organisation?.organisationUser[0]?.walletId}
-        organisationName={organisation?.name}
-        organisationOwnerWalletId={organisation?.organisationUser[0]?.walletId}
-        organisationId={organisationId}
-      />
-      <Description
-        description={description}
-        budget={budget}
-        timeOfCompletion={timeOfCompletion}
-        preferredTimeZones={preferredTimeZones}
-        flResources={flResources}
-      />
-      <TaskManagement
-        project_budget={budget}
-        project_name={name}
-        project_founder={organisation?.organisationUser[0]?.walletId}
-        flProjectCategory={projectData.flProjectCategory}
-      />
-      {open && (
-        <PublishProjectModal
-          setOpen={(val: any) => setOpen(val)}
-          usdcBalance={wallet_usdc_balance}
-          projectId={String(create)}
-          budget={budget}
-        />
+  return (
+    <>
+      <BlurBlobs />
+      {projectData ? (
+        <div
+          className={styles.container}
+          style={{
+            backgroundImage: `url(${bg})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'space',
+            backgroundAttachment: 'fixed',
+          }}
+        >
+          <NavBar />
+          <Header
+            projectName={name}
+            setOpen={val => setOpen(val)}
+            organisationName={organisation?.name}
+            organisationId={organisationId}
+          />
+          <Description
+            description={description}
+            budget={budget}
+            timeOfCompletion={timeOfCompletion}
+            preferredTimeZones={preferredTimeZones}
+            flResources={flResources}
+          />
+          <TaskManagement
+            project_budget={budget}
+            project_name={name}
+            flProjectCategory={projectData.flProjectCategory}
+          />
+          {open && (
+            <PublishProjectModal
+              setOpen={(val: any) => setOpen(val)}
+              usdcBalance={wallet_usdc_balance}
+              projectId={String(create)}
+              budget={budget}
+            />
+          )}
+          <Toaster />
+        </div>
+      ) : (
+        <div className={styles.container} />
       )}
-      <Toaster />
-    </div>
-  ) : (
-    <div className={styles.container} />
+    </>
   );
 };
 

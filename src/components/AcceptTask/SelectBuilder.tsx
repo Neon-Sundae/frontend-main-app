@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable camelcase */
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
@@ -155,7 +154,7 @@ const SelectBuilder: FC<ISelectBuilder> = ({
           ) : pending === 'confirmed' ? (
             <div className={styles['accept-task-content']}>
               <CheckIcon width={100} height={100} />
- 
+
               <p>The NFT has been minted!</p>
               <p>
                 Builder has been notified! Please wait for the builder to

@@ -1,4 +1,4 @@
-import { IUser } from 'actions/user';
+import { IUser } from 'interfaces/user';
 import {
   UPDATE_USER,
   UPDATE_USER_NAME,

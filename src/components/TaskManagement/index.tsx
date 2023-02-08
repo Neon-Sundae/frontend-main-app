@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -28,6 +27,9 @@ import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import getRandomString from 'utils/getRandomString';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import { IMemberData } from 'interfaces/organisation';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
@@ -36,7 +38,6 @@ const lists = ['open', 'in progress', 'in review', 'completed', 'cancelled'];
 
 interface ITaskManagement {
   project_name: string;
-  project_founder: string;
   project_budget: number;
   flProjectCategory?: any;
 }
@@ -44,17 +45,21 @@ interface ITaskManagement {
 const TaskManagement: FC<ITaskManagement> = ({
   project_budget,
   project_name,
-  project_founder,
   flProjectCategory,
 }) => {
+  const { create } = useParams();
   useFetchProjectCategories();
   const [filterOpen, setFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   const user = useSelector((state: RootState) => state.user.user);
+  const { projectData = {} } = useFetchProjects(create);
+  const { members } = useFetchOrganisationOwnerManager(
+    projectData.organisationId
+  );
 
   const handleOpenModal = () => {
-    if (user?.walletId && user.walletId === project_founder) {
+    if (isOrganisationMember(user, members)) {
       setOpen(true);
     } else {
       toast.error('Only founder can add the task');
@@ -85,8 +90,9 @@ const TaskManagement: FC<ITaskManagement> = ({
       <TaskManagementBoard
         project_budget={project_budget}
         project_name={project_name}
-        project_founder={project_founder}
         flProjectCategory={flProjectCategory}
+        projectData={projectData}
+        members={members}
       />
     </div>
   );
@@ -143,17 +149,24 @@ const FilterMenu: FC = () => {
   );
 };
 
-const TaskManagementBoard: FC<ITaskManagement> = ({
+interface ITaskManagementBoard {
+  project_name: string;
+  project_budget: number;
+  flProjectCategory?: any;
+  projectData: any;
+  members: IMemberData;
+}
+
+const TaskManagementBoard: FC<ITaskManagementBoard> = ({
   project_budget,
   project_name,
-  project_founder,
   flProjectCategory,
+  projectData,
+  members,
 }) => {
   const dispatch = useDispatch();
 
-  const { create } = useParams();
   const updateTask = useUpdateTaskStatus();
-  const { projectData } = useFetchProjects(create);
   const { projectTasks } = useFetchProjectTasks();
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -198,7 +211,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
       if (
         notAllowedCases(
           result,
-          projectData.organisation.organisationUser[0].userId,
+          projectData.organisation.OrganisationUser[0].user.userId,
           user?.userId
         )
       ) {
@@ -232,7 +245,7 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
     setOpenTask(true);
   };
 
-  const handleOpenComplete = val => {
+  const handleOpenComplete = (val: any) => {
     setOpenComplete(val);
     setOpenTask(false);
   };
@@ -247,22 +260,21 @@ const TaskManagementBoard: FC<ITaskManagement> = ({
               prefix={listKey}
               organisationName={projectData.organisation.name}
               setOpenTask={handleOpenTask}
-              projectFounder={project_founder}
+              members={members}
             />
           ))}
         </div>
         {openTask && (
           <AcceptTask
+            editable
             setOpen={setOpenTask}
             setViewComplete={handleOpenComplete}
             taskId={selectedTaskId}
             handleApprove={handleApprove}
             project_name={project_name}
-            project_founder={project_founder}
             handleCommit={handleCommit}
             setOpenTask={setOpenTask}
             flProjectCategory={flProjectCategory}
-            editable
           />
         )}
         {openSelectBuilder && (
@@ -287,8 +299,7 @@ interface IColumn {
   prefix: string;
   organisationName: string;
   setOpenTask: any;
-  projectFounder: string;
-  appliedBuilders: any;
+  members: IMemberData;
 }
 
 const Column: FC<IColumn> = ({
@@ -296,7 +307,7 @@ const Column: FC<IColumn> = ({
   prefix,
   organisationName,
   setOpenTask,
-  projectFounder,
+  members,
 }) => {
   return (
     <div className={styles['column-container']}>
@@ -312,8 +323,8 @@ const Column: FC<IColumn> = ({
                   index={index}
                   organisationName={organisationName}
                   setOpenTask={setOpenTask}
-                  projectFounder={projectFounder}
                   appliedBuilders={item.profileTask}
+                  members={members}
                 />
               ))}
               {provided.placeholder}
@@ -330,8 +341,8 @@ interface ICard {
   index: any;
   organisationName: string;
   setOpenTask: any;
-  projectFounder: string;
   appliedBuilders: any;
+  members: IMemberData;
 }
 
 const Card: FC<ICard> = ({
@@ -339,11 +350,11 @@ const Card: FC<ICard> = ({
   index,
   organisationName,
   setOpenTask,
-  projectFounder,
   appliedBuilders,
+  members,
 }) => {
   const navigate = useNavigate();
-  const walletId = useSelector((state: RootState) => state.user.user?.walletId);
+  const user = useSelector((state: RootState) => state.user.user);
   const profile = useSelector((state: RootState) => state.profile.profile);
   const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
@@ -351,7 +362,7 @@ const Card: FC<ICard> = ({
     () => [...Array(item.estimatedDifficulty).keys()],
     []
   );
-  const user = useSelector((state: RootState) => state.user.user);
+
   const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
@@ -368,7 +379,7 @@ const Card: FC<ICard> = ({
   const getTextOrAvatar = () => {
     switch (item.status) {
       case 'open':
-        if (projectFounder === walletId) {
+        if (isOrganisationMember(user, members)) {
           return <Avatars appliedBuilders={appliedBuilders} />;
         }
         return (
@@ -440,7 +451,7 @@ interface IAvatars {
 const Avatars: FC<IAvatars> = ({ appliedBuilders }) => {
   return (
     <div className={styles['avatar-container']}>
-      {appliedBuilders.map(elem => (
+      {appliedBuilders.map((elem: any) => (
         <img
           src={
             elem.Profile.picture ||
