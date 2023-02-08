@@ -14,8 +14,7 @@
     "eslint-watch-quiet": "esw -w --quiet --changed src/**",
     "lint": "eslint src --ext .ts,.tsx",
     "lint-fix": "eslint src --ext .ts,.tsx --fix",
-    "pre-commit": "lint-staged",
-    "style-lint": "npx stylelint"
+    "style-lint": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
     "@hedgedoc/html-to-react": "^1.4.5",
@@ -82,18 +81,5 @@
     "stylelint-scss": "^4.3.0",
     "typescript": "^4.6.3",
     "vite": "^2.9.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "npm run tsc-check"
-    ],
-    "*.scss": [
-      "npm run style-lint"
-    ]
   }
 }
