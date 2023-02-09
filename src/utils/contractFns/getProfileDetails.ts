@@ -28,7 +28,7 @@ const getProfileDetails = async (profileAddress: string) => {
     return [...resultArray];
   } catch (error) {
     console.log(error);
-    throw new Error('Failed to get the FNDR balance');
+    throw new Error('Contract function: Failed to get profile details');
   }
 };
 
