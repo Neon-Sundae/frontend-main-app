@@ -5,6 +5,7 @@ import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import config from 'config';
 import { SetStateAction, Dispatch } from 'react';
 import toast from 'react-hot-toast';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 const depositProjectFunds = async (
   amount: number,
@@ -13,13 +14,14 @@ const depositProjectFunds = async (
   setDeploying: Dispatch<SetStateAction<string>>
 ) => {
   const web3 = getWeb3Instance();
+  const gasPrice = await estimateGasPrice(web3);
   const depositAmount = amount * 10 ** 6;
 
   const USDCContract = new web3.eth.Contract(
     USDCAbi.abi as AbiItem[],
     config.USDCAddress,
     {
-      gasPrice: '50000000000',
+      gasPrice,
     }
   );
 
@@ -27,7 +29,7 @@ const depositProjectFunds = async (
     ProjectAbi.abi as AbiItem[],
     contractAddress,
     {
-      gasPrice: '50000000000',
+      gasPrice,
     }
   );
 
