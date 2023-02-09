@@ -13,6 +13,7 @@ import {
   handleError,
   handleUnAuthorization,
 } from 'utils/handleUnAuthorization';
+import { IOrganisationSelectData } from 'interfaces/organisation';
 
 const useAddProfileWorkplace = () => {
   const dispatch = useDispatch();
@@ -152,7 +153,7 @@ const useUpdateProfileWorkplace = () => {
   return updateProfileWorkplace;
 };
 
-const useFetchAllOrganisations = () => {
+const useFetchAllOrganisations = (): IOrganisationSelectData[] => {
   const accessToken = getAccessToken();
   const { data } = useQuery(
     ['all_organisations'],
@@ -184,7 +185,7 @@ const useFetchAllOrganisations = () => {
     }
   );
 
-  return { data };
+  return data;
 };
 
 export {

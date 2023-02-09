@@ -11,6 +11,7 @@ import numberRange from 'utils/numberRange';
 import CreatableSelect from 'react-select/creatable';
 import { Link } from 'react-router-dom';
 import filterOrganisationData from 'utils/filterOrganisationData';
+import { IOrganisationSelectData } from 'interfaces/organisation';
 import creatableReactSelectStyles from './createSelectStyles';
 import {
   useAddProfileWorkplace,
@@ -21,7 +22,7 @@ import {
 import styles from './index.module.scss';
 
 const WorkHistory: FC = () => {
-  const { data } = useFetchAllOrganisations();
+  const data = useFetchAllOrganisations();
 
   const workplaces = useSelector(
     (state: RootState) => state.profile.workplaces
@@ -77,7 +78,7 @@ interface IWorkplace {
   description: string;
   startDate: string;
   endDate: string;
-  isOrganisation: { label: string; value: number }[];
+  isOrganisation: IOrganisationSelectData[];
 }
 
 const WorkplaceCard: FC<IWorkplace> = ({
@@ -118,7 +119,7 @@ interface IWorkplaceEdit {
   description: string;
   startDate: string;
   endDate: string;
-  allOrganisationData: any;
+  allOrganisationData: IOrganisationSelectData[];
 }
 
 type SelectOptionType = { label: string; value: string };

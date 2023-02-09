@@ -60,3 +60,8 @@ export interface IMemberData {
   owner: IMember[];
   all: IMember[];
 }
+
+export interface IOrganisationSelectData {
+  label: string;
+  value: string;
+}

@@ -1,12 +1,9 @@
-interface IOrganisationData {
-  label: string;
-  value: number;
-}
+import { IOrganisationSelectData } from 'interfaces/organisation';
 
 const filterOrganisationData = (
   name: string,
-  data: IOrganisationData[]
-): IOrganisationData[] =>
+  data: IOrganisationSelectData[]
+): IOrganisationSelectData[] =>
   data &&
   data.filter(function (organisation: { label: string }) {
     return organisation.label === name;
