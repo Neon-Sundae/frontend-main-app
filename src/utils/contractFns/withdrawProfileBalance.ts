@@ -3,6 +3,7 @@ import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileAbi from 'contracts/abi/Profile.sol/Profile.json';
 import { SetStateAction, Dispatch } from 'react';
 import toast from 'react-hot-toast';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 const withdrawProfileBalance = async (
   amount: number,
@@ -11,6 +12,7 @@ const withdrawProfileBalance = async (
   setDeploying: Dispatch<SetStateAction<string>>
 ) => {
   const web3 = getWeb3Instance();
+  const gasPrice = await estimateGasPrice(web3);
 
   const withdrawAmount = amount * 10 ** 6;
 
@@ -18,7 +20,7 @@ const withdrawProfileBalance = async (
     ProfileAbi.abi as AbiItem[],
     contractAddress,
     {
-      gasPrice: '50000000000',
+      gasPrice,
     }
   );
 

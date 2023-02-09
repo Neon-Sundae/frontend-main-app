@@ -5,6 +5,7 @@ import config from 'config';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { setProjectTaskContract } from 'actions/flProject';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 interface ICreateProjectContract {
   projectAddress: string;
@@ -21,12 +22,13 @@ const createProjectTaskContract = async ({
     if (!walletId) throw new Error('Unable to create project task');
 
     const web3 = getWeb3Instance();
+    const gasPrice = await estimateGasPrice(web3);
 
     const TaskFactory = new web3.eth.Contract(
       TaskFactoryAbi.abi as AbiItem[],
       config.taskFactoryAddress,
       {
-        gasPrice: '50000000000',
+        gasPrice,
       }
     );
 

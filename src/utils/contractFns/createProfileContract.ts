@@ -1,8 +1,9 @@
-import { getEthersInstance } from 'utils/web3EventFn';
+import { getEthersInstance, getWeb3Instance } from 'utils/web3EventFn';
 import ProfileFactoryAbi from 'contracts/abi/ProfileFactory.sol/ProfileFactory.json';
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 import { ethers } from 'ethers';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 const createProfileContract = async (
   address: string | undefined,
@@ -16,7 +17,9 @@ const createProfileContract = async (
       throw new Error('Unable to create profile');
 
     const provider = getEthersInstance();
+    const web3 = getWeb3Instance();
     const signer = provider.getSigner();
+    const gasPrice = await estimateGasPrice(web3);
 
     const ProfileFactory = new ethers.Contract(
       config.profileFactoryAddress,
@@ -31,7 +34,7 @@ const createProfileContract = async (
       name,
       title,
       {
-        gasPrice: '50000000000',
+        gasPrice,
       }
     );
 
