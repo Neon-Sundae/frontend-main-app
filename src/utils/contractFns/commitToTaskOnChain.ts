@@ -8,6 +8,7 @@ import { IUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import config from 'config';
 import toast from 'react-hot-toast';
 import { IProfile } from 'interfaces/profile';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 interface ICommitToTaskOnChain {
   walletId: string | undefined;
@@ -37,6 +38,7 @@ const commitToTaskOnChain = async ({
       throw new Error('Unable to commit the task');
 
     const web3 = getWeb3Instance();
+    const gasPrice = await estimateGasPrice(web3);
 
     const payload = {
       walletId,
@@ -75,7 +77,7 @@ const commitToTaskOnChain = async ({
             TaskAbi.abi as AbiItem[],
             projectTaskContractAddress,
             {
-              gasPrice: '50000000000',
+              gasPrice,
             }
           );
           await taskContract.methods

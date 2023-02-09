@@ -89,7 +89,7 @@ const TaskManagement: FC<ITaskManagement> = ({
       <hr />
       <TaskManagementBoard
         project_budget={project_budget}
-        project_name={project_name}
+        project_name={project_name ?? (projectData && projectData.name)}
         flProjectCategory={flProjectCategory}
         projectData={projectData}
         members={members}
