@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { Landing } from 'components/Home';
+import Loading from 'components/Loading';
 
 const Dashboard: FC = () => {
   const isFirstTimeUser = useSelector(
@@ -10,10 +11,10 @@ const Dashboard: FC = () => {
   );
 
   if (isFirstTimeUser === undefined) {
-    return null;
+    return <Loading />;
   }
 
-  if (!isFirstTimeUser) {
+  if (isFirstTimeUser && !isFirstTimeUser) {
     return <FirstTimeUser />;
   }
 
