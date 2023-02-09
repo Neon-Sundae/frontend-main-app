@@ -53,8 +53,7 @@ const TaskManagement: FC<ITaskManagement> = ({
   const [open, setOpen] = useState(false);
 
   const user = useSelector((state: RootState) => state.user.user);
-  const { projectData = {} } = useFetchProjects(create);
-
+  const { projectData } = useFetchProjects(create);
   const { members } = useFetchOrganisationOwnerManager(
     projectData?.organisationId
   );
