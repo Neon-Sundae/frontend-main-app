@@ -26,8 +26,8 @@
 }
 
 .organisation-projects-container {
-  width: 90%;
-  max-width: 1532px;
+  width: 70%;
+  // max-width: 1532px;
 
   .organisation-heading,
   .projects-heading {
@@ -39,20 +39,20 @@
     font-size: 27px;
   }
 
-  @media (max-width: 1920px) {
-    width: 70%;
-  }
+  // @media (max-width: 1920px) {
+  //   width: 70%;
+  // }
 
-  @media (max-width: 1680px) {
-    width: 70%;
-  }
+  // @media (max-width: 1680px) {
+  //   width: 70%;
+  // }
 
-  @media (max-width: 1440px) {
-    width: 80%;
-  }
+  // @media (max-width: 1440px) {
+  //   width: 80%;
+  // }
 
-  @media (max-width: 1024px) {
-  }
+  // @media (max-width: 1024px) {
+  // }
 
   &--new-projects {
     display: flex;
@@ -153,21 +153,17 @@
   margin: 0 0;
 
   @media (max-width: 1920px) {
-    width: 48%;
+    // width: 48%;
     gap: 115px;
-    // position: absolute;
-    // left: 15%;
   }
 
   @media (max-width: 1680px) {
-    width: 45%;
-    // left: 14.5%;
+    // width: 45%;
     gap: 50px;
   }
 
   @media (max-width: 1440px) {
-    width: 50%;
-    // left: 10%;
+    // width: 50%;
     gap: 45px;
   }
 }

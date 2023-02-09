@@ -14,6 +14,7 @@ const MyTaskDetailModal: FC<IMyTaskDetailModal> = ({
   data,
 }) => {
   const [openTask, setOpenTask] = useState(false);
+
   const handleApprove = (item: any) => {
     setOpenTask(false);
   };

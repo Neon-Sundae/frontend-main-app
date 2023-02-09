@@ -9,7 +9,7 @@
 .content-header {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: max(800px, 80%);
   margin-bottom: 20px;
 
   &--action-container {
@@ -52,7 +52,7 @@
 }
 
 .content-table-container {
-  width: 80%;
+  width: max(800px, 80%);
   background: rgba(7, 7, 7, 0.21);
   border-radius: 20px;
   padding: 10px 26px;
