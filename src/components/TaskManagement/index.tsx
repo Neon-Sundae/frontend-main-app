@@ -56,7 +56,7 @@ const TaskManagement: FC<ITaskManagement> = ({
   const { projectData = {} } = useFetchProjects(create);
 
   const { members } = useFetchOrganisationOwnerManager(
-    projectData.organisationId
+    projectData?.organisationId
   );
 
   const handleOpenModal = () => {
@@ -250,7 +250,8 @@ const TaskManagementBoard: FC<ITaskManagementBoard> = ({
     setOpenComplete(val);
     setOpenTask(false);
   };
-  if (elements) {
+
+  if (elements && projectData) {
     return (
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className={styles.container}>
