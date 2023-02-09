@@ -7,6 +7,7 @@ import { AnyAction } from 'redux';
 import { GET_SELECTED_PROJECT_ADDRESS } from 'actions/flProject/types';
 import toast from 'react-hot-toast';
 import saveProjectContractAddress from 'hooks/saveProjectContractAddress';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 interface ICreateProjectContract {
   projectId: string;
@@ -25,12 +26,13 @@ const createProjectContract = async ({
     if (!walletId) throw new Error('Unable to create project');
 
     const web3 = getWeb3Instance();
+    const gasPrice = await estimateGasPrice(web3);
 
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
       config.projectFactoryAddress,
       {
-        gasPrice: '50000000000',
+        gasPrice,
       }
     );
 

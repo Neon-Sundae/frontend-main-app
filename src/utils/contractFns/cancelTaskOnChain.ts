@@ -1,6 +1,7 @@
 import { AbiItem } from 'web3-utils';
 import { getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 interface ICancelTaskOnChain {
   walletId: string | undefined;
@@ -19,12 +20,13 @@ const cancelTaskOnChain = async ({
     if (!walletId) throw new Error('Unable to complete the task');
 
     const web3 = getWeb3Instance();
+    const gasPrice = await estimateGasPrice(web3);
 
     const TaskContract = new web3.eth.Contract(
       TaskAbi.abi as AbiItem[],
       projectTaskAddress,
       {
-        gasPrice: '50000000000',
+        gasPrice,
       }
     );
     await TaskContract.methods

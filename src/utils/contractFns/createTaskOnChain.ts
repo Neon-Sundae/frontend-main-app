@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import { getEthersInstance } from 'utils/web3EventFn';
+import { getEthersInstance, getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import { ethers } from 'ethers';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 interface ICreateTaskOnChain {
   projectAddress: string;
@@ -24,7 +25,9 @@ const createTaskOnChain = async ({
     if (!walletId) throw new Error('Unable to complete the task');
 
     const provider = getEthersInstance();
+    const web3 = getWeb3Instance();
     const signer = provider.getSigner();
+    const gasPrice = await estimateGasPrice(web3);
 
     const TaskContract = new ethers.Contract(
       projectTaskAddress,
@@ -39,7 +42,7 @@ const createTaskOnChain = async ({
       Number(price * 10 ** 6).toFixed(0),
       xp,
       {
-        gasPrice: '50000000000',
+        gasPrice,
       }
     );
 

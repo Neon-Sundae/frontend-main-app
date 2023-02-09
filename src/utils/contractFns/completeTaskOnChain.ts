@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { UseMutationResult } from '@tanstack/react-query';
 import { IUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import config from 'config';
+import estimateGasPrice from 'utils/estimateGasFees';
 
 interface ICompleteTaskOnChain {
   walletId: string | undefined;
@@ -27,6 +28,7 @@ const completeTaskOnChain = async ({
     if (!walletId) throw new Error('Unable to complete the task');
 
     const web3 = getWeb3Instance();
+    const gasPrice = await estimateGasPrice(web3);
 
     console.log('complete task on chian');
 
@@ -34,7 +36,7 @@ const completeTaskOnChain = async ({
       TaskAbi.abi as AbiItem[],
       projectTaskAddress,
       {
-        gasPrice: '50000000000',
+        gasPrice,
       }
     );
 
