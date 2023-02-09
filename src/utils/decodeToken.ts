@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import jwt_decode from 'jwt-decode';
 import { removeAccessToken } from './authFn';
 

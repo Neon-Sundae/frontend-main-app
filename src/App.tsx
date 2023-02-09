@@ -19,6 +19,9 @@ const Logout = lazy(() => import('containers/logout'));
 const TaskCancel = lazy(() => import('containers/taskCancel'));
 const Jobs = lazy(() => import('containers/jobs'));
 const AllJobsContainer = lazy(() => import('containers/allJobs'));
+const MemberInvitation = lazy(
+  () => import('containers/organisation/MemberInvitation')
+);
 
 const App = () => {
   // Set application metadata - web3 providers, chain, etc.
@@ -113,6 +116,10 @@ const App = () => {
                 <Jobs />
               </PrivateRoute>
             }
+          />
+          <Route
+            path="/organisation/member_invitation"
+            element={<MemberInvitation />}
           />
           <Route path="/jobs/all" element={<AllJobsContainer />} />
         </Routes>

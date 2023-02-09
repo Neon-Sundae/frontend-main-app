@@ -9,11 +9,14 @@ import Tasks from 'components/Tasks';
 import WorkHistory from 'components/WorkHistory';
 import OrganisationTab from 'components/OrganisationTab';
 import ProjectsTab from 'components/ProjectsTab';
+import useIsOrganisationMember from 'hooks/useIsOrganisationMember';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
-  const [activeState, setActiveState] = useState('task');
+  const [activeState, setActiveState] = useState('workHistory');
   const user = useSelector((state: RootState) => state.user.user);
+
+  const { isOrganisationMember } = useIsOrganisationMember(user?.userId);
 
   const renderTabs = () => {
     switch (activeState) {
@@ -36,10 +39,14 @@ const ProfileTabs: FC = () => {
     setActiveState(value);
   };
 
+  if (isOrganisationMember === undefined) {
+    return null;
+  }
+
   return (
     <>
       <div className={styles['profile-tab-header']}>
-        {user?.isFounder && (
+        {isOrganisationMember && (
           <h3
             className={clsx(
               styles['profile-tab-title'],
@@ -51,7 +58,7 @@ const ProfileTabs: FC = () => {
             My Organisations
           </h3>
         )}
-        {user?.isFounder && (
+        {isOrganisationMember && (
           <h3
             className={clsx(
               styles['profile-tab-title'],

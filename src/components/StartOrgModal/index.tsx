@@ -33,18 +33,14 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
   const [showStepTwo, setShowStepTwo] = useState(false);
   const createOrganisation = useCreateOrganisation();
 
-  const handleCreateOrganisation = () => {
-    const formData = new FormData();
-
+  const handleCreateOrganisation = async () => {
     if (orgName && orgDesc && user?.userId) {
-      formData.append('name', orgName);
-      formData.append('description', orgDesc);
-      formData.append('userId', user.userId.toString());
-      if (fileData) {
-        formData.append('file', fileData.file);
-      }
-
-      createOrganisation.mutate(formData);
+      await createOrganisation({
+        name: orgName,
+        description: orgDesc,
+        userId: user.userId.toString(),
+        image: fileData?.file,
+      });
     }
   };
 

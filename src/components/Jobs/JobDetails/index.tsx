@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

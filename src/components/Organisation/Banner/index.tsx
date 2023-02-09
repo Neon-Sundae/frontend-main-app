@@ -17,20 +17,19 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
-import {
-  useUpdateOrganisation,
-  useUpdateOrgPic,
-  useUpdateOrgCoverPic,
-} from './hooks';
+import { useUpdateOrganisation, useUpdateOrganisationImage } from './hooks';
 
 interface IBanner {
   organisation: IOrganisation;
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
+  const { orgId } = useParams();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
@@ -44,11 +43,12 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const [showPrjModal, setShowPrjModal] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
-  const updateOrgPicture = useUpdateOrgPic(organisation.organisationId);
-  const updateCoverOrgPicture = useUpdateOrgCoverPic(
-    organisation.organisationId
-  );
+
+  const { members } = useFetchOrganisationOwnerManager(orgId);
+
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
   const payload = {
     name: nameLocal,
     description: organisation.description,
@@ -60,17 +60,26 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     dispatch(editOrganisation(true));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (isEditable) {
-      const formData = new FormData();
+      setImageLoading(true);
       if (orgCoverFileData) {
-        formData.append('bannerImage', orgCoverFileData);
-        updateCoverOrgPicture.mutate(formData);
+        await updateOrganisationImageHandler(
+          orgCoverFileData,
+          'bannerImage',
+          'banner',
+          organisation.organisationId
+        );
       }
       if (orgLogoFileData) {
-        formData.append('profileImage', orgLogoFileData);
-        updateOrgPicture.mutate(formData);
+        await updateOrganisationImageHandler(
+          orgLogoFileData,
+          'profileImage',
+          'profile',
+          organisation.organisationId
+        );
       }
+      setImageLoading(false);
       dispatch(editOrganisation(false));
     }
   };
@@ -94,10 +103,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     const { name, value } = e.target;
     setWebsite(value);
     debounceFn(name, value);
-  };
-
-  const isFounder = () => {
-    return user?.userId === organisation.organisationUser[0].userId;
   };
 
   const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -124,10 +129,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
       if (inputRefCover.current) inputRefCover.current.click();
     }
   };
-  const handleStartProject = () => setShowPrjModal(true);
-  const handleListAJob = () => {
-    navigate(`/organisation/${organisation.organisationId}/jobs/all`);
-  };
+
   return (
     <div className={styles.container}>
       <Toaster />
@@ -184,10 +186,14 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           ) : (
             <h2 className={styles['organisation-name']}>{organisation.name}</h2>
           )}
-          {isFounder() ? (
+          {isOrganisationMember(user, members) ? (
             isEditable ? (
-              <button className={styles.btn} onClick={handleSave}>
-                Save
+              <button
+                className={styles.btn}
+                onClick={handleSave}
+                disabled={imageLoading}
+              >
+                {imageLoading ? 'Saving...' : 'Save'}
               </button>
             ) : (
               <button className={styles.btn} onClick={handleEdit}>
@@ -269,35 +275,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             </button>
           )}
         </div>
-        {/* {isFounder() && (
-          <div className={styles[`buttons-container`]}>
-            <button
-              type="button"
-              className={clsx(styles.bannerBtn, styles.glass)}
-              onClick={() => handleStartProject()}
-            >
-              <span className={styles.title}>
-                <p>Start A Project</p>
-              </span>
-              <span className={clsx('material-icons', styles.icon)}>
-                trending_flat
-              </span>
-            </button>
-
-            <button
-              type="button"
-              className={clsx(styles.bannerBtn, styles.glass)}
-              onClick={() => handleListAJob()}
-            >
-              <span className={styles.title}>
-                <p>Manage Jobs</p>
-              </span>
-              <span className={clsx('material-icons', styles.icon)}>
-                trending_flat
-              </span>
-            </button>
-          </div>
-        )} */}
       </div>
       {open && (
         <OrganisationSocialModal
@@ -326,32 +303,26 @@ const OrgLogo: FC<IOrgLogo> = ({
   return (
     <div>
       {organisation.profileImage ? ( // checks for images from db
-        <div
-          className={styles.logo}
-          onClick={isEditable ? handleClick : () => {}}
-        >
-          <img src={organisation && organisation.profileImage} alt="logo" />
+        <div className={styles.logo} onClick={handleClick}>
           {/* to show edit icon over image */}
-          {isEditable && (
+          {isEditable ? (
             <>
               <img
                 alt="background"
-                src={Background}
+                src={
+                  orgLogoFileData
+                    ? URL.createObjectURL(orgLogoFileData)
+                    : organisation.profileImage
+                }
                 className={styles.bgImage}
               />
               <div className={styles.centered}>
                 <EditIcon width={50} height={50} />
               </div>
             </>
+          ) : (
+            <img src={organisation && organisation.profileImage} alt="logo" />
           )}
-        </div>
-      ) : orgLogoFileData ? ( // checks for locally uploaded images
-        <div className={styles.logo} onClick={handleClick}>
-          <img src={URL.createObjectURL(orgLogoFileData)} alt="logo" />
-          <img alt="background" src={Background} className={styles.bgImage} />
-          <div className={styles.centered}>
-            <EditIcon width={50} height={50} />
-          </div>
         </div>
       ) : (
         // shows default image
@@ -361,7 +332,11 @@ const OrgLogo: FC<IOrgLogo> = ({
             <>
               <img
                 alt="background"
-                src={Background}
+                src={
+                  orgLogoFileData
+                    ? URL.createObjectURL(orgLogoFileData)
+                    : Background
+                }
                 className={styles.bgImageDefault}
               />
               <div className={styles.centeredEdit}>

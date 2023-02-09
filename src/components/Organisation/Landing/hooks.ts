@@ -1,7 +1,6 @@
 import config from 'config';
 import { IOrganisation } from 'interfaces/organisation';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 import { useSelector } from 'react-redux';
@@ -14,14 +13,14 @@ interface IReturnType {
   refetch: any;
 }
 
-const useFetchOrganisation = (selectedOrgId: number): IReturnType => {
-  const { orgId } = useParams();
-
+const useFetchOrganisation = (
+  selectedOrgId: string | undefined
+): IReturnType => {
   const { data, isLoading, refetch } = useQuery(
-    ['organisation'],
+    ['organisation', selectedOrgId],
     async ({ signal }) => {
       const response = await fetch(
-        `${config.ApiBaseUrl}/organisation/${selectedOrgId || orgId}`,
+        `${config.ApiBaseUrl}/organisation/${selectedOrgId}`,
         {
           signal,
           headers: {
@@ -34,6 +33,7 @@ const useFetchOrganisation = (selectedOrgId: number): IReturnType => {
     },
     {
       retry: 1,
+      enabled: selectedOrgId !== undefined,
       refetchOnWindowFocus: false,
       // onError: (error: any) => {
       //   handleError({ error });
@@ -53,7 +53,7 @@ const useFetchUserOrganisation = (): IReturnTypeUserOrgs => {
   const accessToken = getAccessToken();
   const user = useSelector((state: RootState) => state.user.user);
   const { data, isLoading } = useQuery(
-    ['userOrgs'],
+    ['userOrgs-org-sidebar'],
     async ({ signal }) => {
       const response = await fetch(
         `${config.ApiBaseUrl}/organisation/user/${user?.userId}`,

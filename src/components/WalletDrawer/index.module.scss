@@ -22,7 +22,7 @@
 .wallet-drawer-icon-container {
   margin: 50px 0;
 
-  &>i {
+  & > i {
     cursor: pointer;
     font-size: 36px;
     margin-left: 25px;
@@ -59,7 +59,7 @@
   flex-direction: column;
   align-items: flex-start;
 
-  &>div {
+  & > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -108,19 +108,28 @@
 
 .wallet-drawer-deposit-btn,
 .deposit-step-btn {
-  background: linear-gradient(126.59deg,
-      rgba(255, 255, 255, 0.2) 12.11%,
-      rgba(255, 255, 255, 0.05) 73.08%);
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.2) 12.11%,
+    rgba(255, 255, 255, 0.05) 73.08%
+  );
   box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
   backdrop-filter: blur(40px);
   border: 1px solid #414141;
-  background: linear-gradient(93.25deg, #BB84F0 4.05%, #FF94E6 63.65%, #FFA3C8 99.41%),
-    linear-gradient(0deg, #E880FF, #E880FF),
-    radial-gradient(116.97% 116.97% at 34.87% -2.72%, #FF8BFA 0%, #FFFFFF 100%)
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
-    ,
-    linear-gradient(94.63deg, rgba(255, 255, 255, 0.16) 4.94%, rgba(255, 255, 255, 0.04) 93.94%);
-
+  background: linear-gradient(
+      93.25deg,
+      #bb84f0 4.05%,
+      #ff94e6 63.65%,
+      #ffa3c8 99.41%
+    ),
+    linear-gradient(0deg, #e880ff, #e880ff),
+    radial-gradient(116.97% 116.97% at 34.87% -2.72%, #ff8bfa 0%, #ffffff 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    linear-gradient(
+      94.63deg,
+      rgba(255, 255, 255, 0.16) 4.94%,
+      rgba(255, 255, 255, 0.04) 93.94%
+    );
 }
 
 .deposit-step-btn {
@@ -128,9 +137,11 @@
 }
 
 .wallet-drawer-withdraw-btn {
-  background: linear-gradient(94.3deg,
-      rgba(255, 255, 255, 0.12) 8.58%,
-      rgba(255, 255, 255, 0.03) 96.04%);
+  background: linear-gradient(
+    94.3deg,
+    rgba(255, 255, 255, 0.12) 8.58%,
+    rgba(255, 255, 255, 0.03) 96.04%
+  );
   backdrop-filter: blur(32.3835px);
   border: 1px solid white;
 }
@@ -143,37 +154,37 @@
   padding: 25px 0;
   margin-top: 50px;
 
-  &>.action-header {
+  & > .action-header {
     position: relative;
     display: flex;
     justify-content: center;
 
-    &>h4 {
+    & > h4 {
       font-family: var(--font-family-roboto-medium);
       font-weight: 500;
       font-size: 18px;
       margin-bottom: 25px;
     }
 
-    &>i {
+    & > i {
       position: absolute;
       right: 30px;
       // top: 20px;
       cursor: pointer;
     }
 
-    &>.back-icon {
+    & > .back-icon {
       left: 30px;
       right: 0;
     }
   }
 
-  &>.qr-code-container {
+  & > .qr-code-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    &>.address-copy-container {
+    & > .address-copy-container {
       display: flex;
       margin: 10px 0;
       cursor: pointer;
@@ -190,6 +201,13 @@
       }
     }
   }
+
+  & > .project-unpublished-state {
+    margin: 20px 0;
+    & p {
+      text-align: center;
+    }
+  }
 }
 
 .wallet-drawer-balance-row {
@@ -198,13 +216,13 @@
   align-items: center;
   margin-top: 40px;
 
-  &>h2 {
+  & > h2 {
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
     font-size: 16px;
   }
 
-  &>span {
+  & > span {
     font-family: var(--font-family-roboto-flex);
     font-weight: 600;
     font-size: 36px;
@@ -220,9 +238,11 @@
 }
 
 .use-metamask-btn {
-  background: linear-gradient(126.59deg,
-      rgba(255, 255, 255, 0.12) 12.11%,
-      rgba(255, 255, 255, 0.03) 73.08%);
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.12) 12.11%,
+    rgba(255, 255, 255, 0.03) 73.08%
+  );
   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
   font-family: var(--font-family-roboto-regular);
@@ -241,7 +261,7 @@
   align-items: center;
   margin-top: 15px;
 
-  &>svg {
+  & > svg {
     margin-right: 10%;
   }
 }
@@ -250,7 +270,7 @@
   width: 70%;
   margin-inline: auto;
 
-  &>.deposit-field-header {
+  & > .deposit-field-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -269,7 +289,7 @@
     font-size: 18px;
   }
 
-  &>.deposit-field-action {
+  & > .deposit-field-action {
     & .upper-line {
       margin-top: 15px;
     }
@@ -310,11 +330,11 @@
     }
   }
 
-  &>.deposit-set-max-row {
+  & > .deposit-set-max-row {
     display: flex;
     justify-content: space-between;
 
-    &>span {
+    & > span {
       font-family: var(--font-family-roboto-flex);
       font-weight: 400;
       font-size: 14px;
@@ -355,14 +375,14 @@
   align-items: center;
   margin: 10px;
 
-  &>h4 {
+  & > h4 {
     font-family: var(--font-family-roboto-medium);
     font-weight: 500;
     font-size: 18px;
     margin-bottom: 25px;
   }
 
-  &>p {
+  & > p {
     font-family: var(--font-family-roboto-regular);
     font-weight: 500;
     font-size: 21px;
@@ -373,12 +393,12 @@
 
     color: #ffffff;
 
-    &>span {
+    & > span {
       color: #eba8d0;
     }
   }
 
-  &>span {
+  & > span {
     font-family: var(--font-family-roboto-regular);
     font-weight: 400;
     font-size: 13px;

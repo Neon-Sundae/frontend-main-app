@@ -1,13 +1,9 @@
 .organisation-sidebar {
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  width: 122px;
+  width: 125px;
   text-align: center;
   box-shadow: 0px 1.43229px 37.2396px rgba(0, 0, 0, 0.1);
   border: 1.07px solid rgba(41, 30, 50, 0.25);
-  // transition: all 0.1s ease-out;
-  position: fixed;
+  z-index: 1;
 
   .collapse-btn,
   .expand-btn {
@@ -18,7 +14,6 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
-    // transition: all 0.7s ease-out;
   }
 
   .expand-btn {
@@ -34,14 +29,8 @@
   }
 
   &--expanded {
-    position: absolute;
-    z-index: 10;
-    width: 200px;
-    // transition: all 0.5s ease-in;
-
     .organisation-sidebar-icons {
       .active {
-        // padding: 15px;
         border-radius: 25px;
 
         p {
@@ -80,31 +69,22 @@
 
   .non-expanded-list {
     height: 77px;
-    width: 100%;
+    width: inherit;
     position: absolute;
-    // transition: all 0.1s ease-in;
   }
 
   .expanded-list {
     position: absolute;
-    width: 100%;
-    // transition: all 0.1s ease-out;
+    width: inherit;
     background-color: #242529;
     z-index: 10;
 
-    & h4 {
-      //  margin-top: 10px;
-    }
-
     flex-direction: column;
-    align-items: flex-start;
 
-    &>div {
+    & > div {
       margin-top: 25px;
 
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       width: 100%;
       cursor: pointer;
     }
