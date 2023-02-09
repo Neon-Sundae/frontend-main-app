@@ -54,6 +54,7 @@ const TaskManagement: FC<ITaskManagement> = ({
 
   const user = useSelector((state: RootState) => state.user.user);
   const { projectData = {} } = useFetchProjects(create);
+
   const { members } = useFetchOrganisationOwnerManager(
     projectData.organisationId
   );
@@ -89,7 +90,7 @@ const TaskManagement: FC<ITaskManagement> = ({
       <hr />
       <TaskManagementBoard
         project_budget={project_budget}
-        project_name={project_name}
+        project_name={project_name ?? (projectData && projectData.name)}
         flProjectCategory={flProjectCategory}
         projectData={projectData}
         members={members}
