@@ -3,26 +3,22 @@
   height: 200px;
   margin: auto;
   width: 73%;
-  @media (max-width: 1920px)  {
+  @media (max-width: 1920px) {
     width: 72%;
-    
   }
-  @media (max-width: 1680px)  {
+  @media (max-width: 1680px) {
     width: 70%;
-    
   }
-  @media (max-width: 1440px)  {
-  width: 80%;
-        
+  @media (max-width: 1440px) {
+    width: 80%;
   }
-  
+
   @media (max-width: 1024px) {
-    
   }
-  
+
   display: flex;
   justify-content: space-between;
-   
+
   border-radius: 20px;
   background: url('/src/assets/illustrations/home/banner-bg.png');
   background-size: cover;
@@ -41,7 +37,7 @@
         font-family: var(--font-family-roboto-light);
       }
       &--primary {
-        font-family: var(--font-family-asap-bold);
+        font-family: var(--font-family-roboto-bold);
         font-size: 50px;
         line-height: 123.19%;
         text-transform: capitalize;
@@ -62,8 +58,11 @@
   position: relative;
   cursor: pointer;
 
-
-  background: linear-gradient(126.59deg, rgba(255, 255, 255, 0.12) 12.11%, rgba(255, 255, 255, 0.03) 73.08%);
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 255, 255, 0.12) 12.11%,
+    rgba(255, 255, 255, 0.03) 73.08%
+  );
   box-shadow: 0px 3.40709px 20.4425px -0.851771px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(34.0709px);
 
@@ -71,9 +70,9 @@
     margin-bottom: 30px;
   }
 
-   border: 0.7px solid #cf92ff;
+  border: 0.7px solid #cf92ff;
   // border-image: linear-gradient(to right, rgba(207, 146, 255, 1)  , rgba(255, 255, 255, 1) ) 1;
-   border-radius: 19px;
+  border-radius: 19px;
 
   & .title {
     font-family: var(--font-family-roboto-regular);

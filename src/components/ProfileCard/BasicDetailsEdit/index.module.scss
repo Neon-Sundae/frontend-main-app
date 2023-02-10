@@ -106,12 +106,14 @@ body {
   margin: 15px 0;
 
   .value {
-    font-family: var(--font-family-roboto-slab-medium);
+    font-family: var(--font-family-roboto-flex);
+    font-weight: 500;
     font-size: 30px;
     color: white;
 
     .label {
-      font-family: var(--font-family-roboto-bold);
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 700;
       font-size: 23px;
       background: -webkit-linear-gradient(
         298.19deg,
