@@ -149,10 +149,9 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
                   setShowView={setShowView}
                   selectedJobUuid={selectedJobUuid}
                   jobStatus={d.status}
-                  orgId={Number(orgId)}
+                  orgId={orgId}
                   setSelectedJobUuid={setSelectedJobUuid}
                   JobApplicantsData={JobApplicantsData}
-                  orgOwnerUserId={members.owner[0].userId}
                 />
               );
             })}
