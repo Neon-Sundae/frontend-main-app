@@ -1,26 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap');
 
 @font-face {
+  font-family: RobotoThin;
+  src: url('./fonts/roboto/roboto-thin-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-thin-webfont.woff') format('woff');
+  font-weight: 100;
+}
+
+@font-face {
   font-family: RobotoLight;
-  src: url('./fonts/roboto/Roboto-Light.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-light-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-light-webfont.woff') format('woff');
   font-weight: 300;
 }
 
 @font-face {
   font-family: RobotoRegular;
-  src: url('./fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-regular-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-regular-webfont.woff') format('woff');
   font-weight: 400;
 }
 
 @font-face {
   font-family: RobotoMedium;
-  src: url('./fonts/roboto/Roboto-Medium.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-medium-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-medium-webfont.woff') format('woff');
   font-weight: 500;
 }
 
 @font-face {
   font-family: RobotoBold;
-  src: url('./fonts/roboto/Roboto-Bold.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-bold-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-bold-webfont.woff') format('woff');
   font-weight: 700;
 }
 
@@ -115,7 +126,6 @@
   font-weight: 400;
   font-style: bold;
 }
-
 
 /*
   * Material icons font file
