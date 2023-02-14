@@ -45,7 +45,7 @@ const useCreateProfile = () => {
 
           const json: any = await handleApiErrors(response);
           dispatch(updateUser(json));
-          dispatch(updateFirstTimeUser(true));
+          dispatch(updateFirstTimeUser(false));
         } catch (err) {
           console.log(err);
           handleUnAuthorization(err);
