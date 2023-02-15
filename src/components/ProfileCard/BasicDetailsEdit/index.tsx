@@ -81,7 +81,7 @@ const BasicDetailsEdit: FC = () => {
           title={title}
         />
       </div>
-      <ProfileBio bio={bio ?? 'Add your bio'} setBio={setBio} />
+      <ProfileBio bio={bio || 'Add your bio'} setBio={setBio} />
       <SaveProfile handleSave={handleSave} />
     </>
   );
@@ -262,7 +262,7 @@ const ProfileBio: FC<IProfileBio> = ({ bio, setBio }) => {
     <textarea
       className={styles['profile-bio']}
       maxLength={140}
-      value={bio}
+      defaultValue={bio}
       onChange={handleDescriptionChange}
     />
   );
