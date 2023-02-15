@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
-import { SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface ICreateOrganisationPayload {
   name: string;
@@ -13,10 +13,9 @@ interface ICreateOrganisationPayload {
   image: File | undefined;
 }
 
-const useCreateOrganisation = (setDisableButton: {
-  (value: SetStateAction<boolean>): void;
-  (arg0: boolean): void;
-}) => {
+const useCreateOrganisation = (
+  setDisableButton: Dispatch<SetStateAction<boolean>>
+) => {
   const navigate = useNavigate();
   const accessToken = getAccessToken();
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
