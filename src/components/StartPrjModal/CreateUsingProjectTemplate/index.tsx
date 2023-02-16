@@ -48,7 +48,7 @@ const CreateUsingProjectTemplate: FC<ICreateUsingProjectTemplateProps> = ({
     setCurrentTemplate(selectedTemplate);
 
   if (showProjectCreate) {
-    return <CreatePrjModal onClose={onClose} onNext={onNext} orgId={orgId} />;
+    return <CreatePrjModal onClose={onClose} orgId={orgId} />;
   }
 
   const createTasksFromProjectTemplateFunc = () => {
