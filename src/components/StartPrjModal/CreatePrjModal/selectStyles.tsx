@@ -20,6 +20,7 @@ export const customStyles: StylesConfig<Option> = {
     borderWidth: 0.56491,
     borderColor: '#fff',
     borderRadius: '5.6491px',
+    minHeight: '41px',
     width: '300px',
     padding: '0 20px',
     cursor: 'pointer',
@@ -39,6 +40,8 @@ export const customStyles: StylesConfig<Option> = {
     borderColor: '#3c3c3c',
     overflow: 'auto',
     zIndex: 2,
+    fontFamily: 'Roboto Flex',
+    fontSize: 14,
   }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     return {
@@ -72,14 +75,18 @@ export const customStyles: StylesConfig<Option> = {
     fontSize: 14,
     color: 'white',
   }),
-  singleValue: (styles, { data }) => ({ ...styles, color: 'white' }),
+  singleValue: (styles, { data }) => ({
+    ...styles,
+    color: 'white',
+    fontFamily: "'Roboto Flex', sans-serif",
+    fontSize: 14,
+  }),
   multiValue: styles => ({
     ...styles,
     backgroundColor: 'none',
   }),
   multiValueLabel: styles => ({
     ...styles,
-
     color: 'white',
   }),
   indicatorSeparator: styles => ({ ...styles, display: 'none' }),
