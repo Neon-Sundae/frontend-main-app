@@ -32,7 +32,7 @@ const useGetUserByWalletId = () => {
 
       const json: any = await handleApiErrors(response);
       dispatch(updateUser(json.user));
-      dispatch(updateFirstTimeUser(json.userExists));
+      dispatch(updateFirstTimeUser(!json.userExists));
 
       return json;
     },

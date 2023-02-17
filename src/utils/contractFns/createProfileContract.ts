@@ -4,6 +4,7 @@ import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 import { ethers } from 'ethers';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { MetamaskError } from 'utils/error/MetamaskError';
 
 const createProfileContract = async (
   address: string | undefined,
@@ -43,7 +44,11 @@ const createProfileContract = async (
     return response.events[0].address;
   } catch (error: any) {
     console.log(error);
-    throw new Error(error.message);
+    throw new MetamaskError({
+      code: error.code,
+      data: error.data,
+      message: error.message,
+    });
   }
 };
 
