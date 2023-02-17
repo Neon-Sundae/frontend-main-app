@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
 import errorEventBeacon from 'utils/analyticsFns/errorEventBeacon';
+import { MetamaskError } from 'utils/error/MetamaskError';
 
 const useProfileManage = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,26 @@ const useProfileManage = () => {
       }
       setDeploying('minted');
     } catch (err: any) {
+      setDeploying('mint');
       errorEventBeacon(user?.walletId, err.message);
+      console.log(err);
+
+      if (err instanceof MetamaskError) {
+        if (err.code === 'ACTION_REJECTED') {
+          toast.error('Denied the transaction');
+        } else if (
+          err.data?.message.includes('gas required exceeds allowance')
+        ) {
+          toast.error('You need MATIC to mint your profile');
+        } else {
+          toast.error('Failed to mint');
+        }
+
+        // throw new Error('Failed to mint');
+      } else {
+        toast.error(err.message);
+        // throw new Error('Failed to mint');
+      }
     }
   };
 

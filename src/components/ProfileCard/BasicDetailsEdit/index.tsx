@@ -9,7 +9,6 @@ import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { useMutation } from '@tanstack/react-query';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import useProfileManage from '../BasicDetails/hooks';
 import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
@@ -63,6 +62,7 @@ const BasicDetailsEdit: FC = () => {
     });
     updateProfilePicture();
   };
+
   return (
     <>
       <ProfileImage picture={picture} setPicture={setPicture} />
@@ -262,7 +262,7 @@ const ProfileBio: FC<IProfileBio> = ({ bio, setBio }) => {
     <textarea
       className={styles['profile-bio']}
       maxLength={140}
-      value={bio}
+      defaultValue={bio}
       onChange={handleDescriptionChange}
     />
   );

@@ -31,7 +31,7 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
   const [fileData, setFileData] = useState<IFile | null>(null);
   const [disableButton, setDisableButton] = useState(false);
   const [showStepTwo, setShowStepTwo] = useState(false);
-  const createOrganisation = useCreateOrganisation();
+  const createOrganisation = useCreateOrganisation(setDisableButton);
 
   const handleCreateOrganisation = async () => {
     if (orgName && orgDesc && user?.userId) {
@@ -46,7 +46,6 @@ const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
 
   const handleStepOne = () => {
     if (orgName.trim().length === 0) return;
-
     setShowStepTwo(true);
   };
 
@@ -219,6 +218,7 @@ const StepModal: FC<IStepProps> = ({
     </BaseModal>
   );
 };
+
 StepModal.defaultProps = {
   disableButton: false,
   setDisableButton: '',

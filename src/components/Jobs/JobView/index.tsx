@@ -8,7 +8,9 @@ import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
 
@@ -28,10 +30,9 @@ interface IJobView {
   setShowView: any;
   selectedJobUuid: any;
   jobStatus: string;
-  orgId: number;
+  orgId: string | undefined;
   setSelectedJobUuid: any;
   JobApplicantsData: any;
-  orgOwnerUserId: any;
 }
 
 const JobView: FC<IJobView> = ({
@@ -53,25 +54,17 @@ const JobView: FC<IJobView> = ({
   JobApplicantsData,
   jobStatus,
   orgId,
-  orgOwnerUserId,
 }) => {
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
   const navigate = useNavigate();
-  const userIsOrgOwner = () => {
-    return orgOwnerUserId === userId;
-  };
 
   const [editJobListing, setEditJobListing] = useState(false);
   const [showJobApplicants, setShowJobApplicants] = useState(false);
 
-  const editJobEntry = () => {
-    setEditJobListing(true);
-  };
+  const user = useSelector((state: RootState) => state.user.user);
 
-  const generateShareLink = () => {
-    navigator.clipboard.writeText(`${config.AppDomain}/jobs/all?${jobUuid}`);
-    toast.success('Copied to clipboard!');
-  };
+  const { members } = useFetchOrganisationOwnerManager(orgId);
+
+  const isOrganisationMemberLocal = () => isOrganisationMember(user, members);
 
   const onClick = () => {
     setShowJobApplicants(true);
@@ -118,15 +111,15 @@ const JobView: FC<IJobView> = ({
               )}
               <p>🌏 {isRemote ? 'Remote Allowed' : 'Not Remote'}</p>
             </span>
-            {userIsOrgOwner() && (
+            {isOrganisationMemberLocal && (
               <JobApplicants
                 setShowJobApplicants={setShowJobApplicants}
                 showJobApplicants={showJobApplicants}
                 onClick={onClick}
                 JobApplicantsData={JobApplicantsData}
-                orgOwnerUserId={orgOwnerUserId}
                 setEditJobListing={setEditJobListing}
                 jobUuid={jobUuid}
+                isOrganisationMemberLocal={isOrganisationMemberLocal}
               />
             )}
             {!showJobApplicants && (
@@ -147,9 +140,9 @@ interface IJobApplicants {
   showJobApplicants: any;
   onClick: any;
   JobApplicantsData: any;
-  orgOwnerUserId: any;
   setEditJobListing: any;
   jobUuid: any;
+  isOrganisationMemberLocal: () => boolean;
 }
 
 const JobApplicants: FC<IJobApplicants> = ({
@@ -157,16 +150,11 @@ const JobApplicants: FC<IJobApplicants> = ({
   showJobApplicants,
   onClick,
   JobApplicantsData,
-  orgOwnerUserId,
   setEditJobListing,
   jobUuid,
+  isOrganisationMemberLocal,
 }) => {
   const navigate = useNavigate();
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
-
-  const userIsOrgOwner = () => {
-    return orgOwnerUserId === userId;
-  };
 
   const editJobEntry = () => {
     setEditJobListing(true);
@@ -191,7 +179,7 @@ const JobApplicants: FC<IJobApplicants> = ({
             </button>
           </span>
           <span>
-            {userIsOrgOwner() && (
+            {isOrganisationMemberLocal() && (
               <button
                 className={styles['edit-job-btn']}
                 onClick={() => editJobEntry()}

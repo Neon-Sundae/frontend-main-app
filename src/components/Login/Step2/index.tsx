@@ -1,21 +1,17 @@
 import { FC, useEffect } from 'react';
-import { ReactComponent as SuccessIcon } from 'assets/illustrations/icons/success.svg';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { updateCurrentStep } from 'actions/auth';
 import styles from './index.module.scss';
 
 const Step2: FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/dashboard');
-      dispatch(updateCurrentStep(1));
     }, 3 * 1000);
 
     return () => {
