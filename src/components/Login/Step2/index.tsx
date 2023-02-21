@@ -12,13 +12,7 @@ const Step2: FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate(
-        (location &&
-          location.state &&
-          location.state.from &&
-          location.state.from.pathname) ??
-          '/dashboard'
-      );
+      navigate(location?.state?.from?.pathname ?? '/dashboard');
     }, 3 * 1000);
 
     return () => {
