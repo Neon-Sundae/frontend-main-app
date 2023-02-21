@@ -1,17 +1,24 @@
 import { FC, useEffect } from 'react';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
 const Step2: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/dashboard');
+      navigate(
+        (location &&
+          location.state &&
+          location.state.from &&
+          location.state.from.pathname) ??
+          '/dashboard'
+      );
     }, 3 * 1000);
 
     return () => {
