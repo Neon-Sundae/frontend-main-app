@@ -1,4 +1,5 @@
-import Select, { StylesConfig } from 'react-select';
+import { StylesConfig } from 'react-select';
+
 export type Option =
   | {
       value: number;
@@ -24,6 +25,7 @@ export const customStyles: StylesConfig<Option> = {
     width: '300px',
     padding: '0 20px',
     cursor: 'pointer',
+
     ':hover': {
       ...styles[':hover'],
       borderColor: '#3c3c3c',
@@ -51,6 +53,7 @@ export const customStyles: StylesConfig<Option> = {
       cursor: isDisabled ? 'not-allowed' : 'default',
       ':active': {
         ...styles[':active'],
+        // eslint-disable-next-line no-nested-ternary
         backgroundColor: !isDisabled
           ? isSelected
             ? 'white'

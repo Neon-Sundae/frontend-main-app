@@ -50,7 +50,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, orgId }) => {
       <Modal
         onClose={() => onClose()}
         width="700px"
-        maxHeight="85vh"
+        maxHeight="90vh"
         overflowY="auto"
         title="Start a Project"
       >
@@ -91,12 +91,14 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
   const [selectedOptions, setSelectedOptions] = useState<MultiValue<Option>>(
     []
   );
+  const [selectError, setSelectError] = useState(false);
 
   const selectedOptionsLabel = selectedOptions?.map((option: any) => {
     return option.label;
   });
 
   const onSubmit: SubmitHandler<Inputs> = data => {
+    setSelectError(selectedOptions.length === 0);
     Object.assign(data, {
       organisationId: orgId,
       preferredTimeZones: selectedOptionsLabel?.join(', '),
@@ -110,6 +112,7 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
   };
 
   const handleSelectOptionsChange = (newValue: MultiValue<Option>): void => {
+    setSelectError(newValue?.length === 0);
     setSelectedOptions(newValue);
   };
 
@@ -120,27 +123,25 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
     >
       <>
         <div className={styles['project-create-container--row']}>
-          <label htmlFor="name">
+          <label htmlFor="name" className={styles.label}>
             Name
             <input
               placeholder="Project Name"
               {...register('name', { required: true })}
               className={clsx(
                 styles['project-create-container--input'],
-                styles['name-field']
+                styles['name-field'],
+                styles[errors.name ? 'error' : '']
               )}
             />
             {errors.name && (
               <p className={styles['project-create-container--error-message']}>
-                <i className={clsx('material-icons', styles['error-icon'])}>
-                  error
-                </i>
-                Project Name is required
+                *Project Name is required
               </p>
             )}
           </label>
 
-          <label htmlFor="budget">
+          <label htmlFor="budget" className={styles.label}>
             Budget
             <span className={styles['budget-currency-container']}>
               <input
@@ -152,19 +153,22 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
                 })}
                 className={clsx(
                   styles['project-create-container--input'],
-                  styles['budget-field']
+                  styles['budget-field'],
+                  styles[errors.budget ? 'error' : '']
                 )}
               />
-              <div className={styles['budget-currency']}>
+              <div
+                className={clsx(
+                  styles['budget-currency'],
+                  styles[errors.budget ? 'error' : '']
+                )}
+              >
                 <p>USDC</p>
               </div>
             </span>
             {errors.budget && (
               <p className={styles['project-create-container--error-message']}>
-                <i className={clsx('material-icons', styles['error-icon'])}>
-                  error
-                </i>
-                Project Budget is required
+                *Project Budget is required
               </p>
             )}
           </label>
@@ -176,14 +180,14 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
             <textarea
               placeholder="Project Description"
               {...register('description', { required: true })}
-              className={styles['project-create-container--input']}
+              className={clsx(
+                styles['project-create-container--input'],
+                styles[errors.budget ? 'error' : '']
+              )}
             />
             {errors.description && (
               <p className={styles['project-create-container--error-message']}>
-                <i className={clsx('material-icons', styles['error-icon'])}>
-                  error
-                </i>
-                Project Description is required
+                *Project Description is required
               </p>
             )}
           </label>
@@ -195,28 +199,34 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
             <input
               {...register('timeOfCompletion', { required: true })}
               type="date"
-              className={styles['project-create-container--input']}
+              className={clsx(
+                styles['project-create-container--input'],
+                styles[errors.timeOfCompletion ? 'error' : '']
+              )}
             />
             {errors.timeOfCompletion && (
               <p className={styles['project-create-container--error-message']}>
-                <i className={clsx('material-icons', styles['error-icon'])}>
-                  error
-                </i>
-                Date is required
+                *Date is required
               </p>
             )}
           </label>
 
-          <div>
-            <p className={styles['project-create-container--label']}>
+          <div className={styles['project-create-container--timezones']}>
+            <h3 className={styles['project-create-container--label']}>
               Preferred Timezones
-            </p>
+            </h3>
             <Select
               options={options}
               styles={customStyles}
               isMulti
               onChange={newValue => handleSelectOptionsChange(newValue)}
+              className={styles[selectError ? 'select-error' : '']}
             />
+            {selectError && (
+              <p className={styles['project-create-container--error-message']}>
+                *One timezone is required
+              </p>
+            )}
           </div>
         </div>
 
@@ -264,11 +274,13 @@ interface MultipleInputFieldsProps {
   register: any;
   setValue: any;
   getValues: any;
+  errors: any;
 }
 
 const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
   control,
   register,
+  errors,
 }) => {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -287,10 +299,13 @@ const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
                 className={styles['project-create-container--list']}
               >
                 <input
-                  {...register(`flResources.${index}.title`)}
+                  {...register(`flResources.${index}.title`, {
+                    required: true,
+                  })}
                   className={clsx(
                     styles['project-create-container--input'],
-                    styles['talents-input']
+                    styles['talents-input'],
+                    styles[errors.flResources ? 'error' : '']
                   )}
                   placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
                 />
@@ -310,7 +325,11 @@ const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
           );
         })}
       </ul>
-
+      {errors.flResources && (
+        <p className={styles['project-create-container--error-message']}>
+          *Ensure there are no empty fields
+        </p>
+      )}
       <section>
         <button
           type="button"
@@ -329,6 +348,7 @@ const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
 const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
   control,
   register,
+  errors,
 }) => {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -348,10 +368,13 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
               >
                 <input
                   name="category"
-                  {...register(`flProjectCategory.${index}.categoryName`)}
+                  {...register(`flProjectCategory.${index}.categoryName`, {
+                    required: true,
+                  })}
                   className={clsx(
                     styles['project-create-container--input'],
-                    styles['category-field']
+                    styles['category-field'],
+                    styles[errors.flProjectCategory ? 'error' : '']
                   )}
                   placeholder="Category name (“Website Design”)"
                 />
@@ -359,12 +382,16 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
                 <input
                   {...register(
                     `flProjectCategory.${index}.percentageAllocation`,
-                    { setValueAs: (v: string) => parseInt(v, 10) }
+                    {
+                      required: true,
+                      setValueAs: (v: string) => parseInt(v, 10),
+                    }
                   )}
                   type="number"
                   className={clsx(
                     styles['project-create-container--input'],
-                    styles['category-allocate-input']
+                    styles['category-allocate-input'],
+                    styles[errors.flProjectCategory ? 'error' : '']
                   )}
                   placeholder="% of budget for this category"
                 />
@@ -384,6 +411,11 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
           );
         })}
       </ul>
+      {errors.flProjectCategory && (
+        <p className={styles['project-create-container--error-message']}>
+          *Empty fields are not allowed
+        </p>
+      )}
       <section>
         <button
           type="button"

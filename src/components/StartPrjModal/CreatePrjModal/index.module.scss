@@ -3,7 +3,15 @@
   flex-direction: column;
   align-items: center;
   padding: 33px;
-
+  label {
+    input,
+    textarea {
+      margin-top: 10px;
+    }
+  }
+  label {
+    min-height: 110px;
+  }
   input,
   textarea {
     border: 1px solid rgb(180, 180, 180);
@@ -16,7 +24,7 @@
   }
 
   textarea {
-    height: 120px;
+    height: 100px;
     min-width: 100%;
   }
 
@@ -30,6 +38,7 @@
     position: relative;
     padding: 10px;
     min-width: 19.5em;
+    color-scheme: dark;
   }
 
   input[type='date']::-webkit-calendar-picker-indicator {
@@ -66,7 +75,6 @@
     line-height: 19px;
     text-align: left;
     color: #ffffff;
-    margin-bottom: 10px;
   }
 
   li {
@@ -76,10 +84,6 @@
 
   ul {
     padding: 0;
-  }
-
-  label {
-    margin-bottom: 5px;
   }
 
   &--form {
@@ -106,16 +110,16 @@
     min-width: 15em;
   }
   .talents-input {
-    width: 92%;
+    width: 94%;
   }
   .category-allocate-input {
-    min-width: 18em;
+    min-width: 19em;
   }
 
   &--row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: flex-end;
   }
 
   &--row-second {
@@ -130,6 +134,12 @@
     display: flex;
     flex-direction: column;
   }
+  &--timezones {
+    min-height: 105px;
+    h3 {
+      margin-bottom: 10px;
+    }
+  }
 
   &--list {
     display: flex;
@@ -137,17 +147,9 @@
   &--talents,
   &--categories {
     margin-bottom: 15px;
-  }
-
-  &--error-message {
-    color: red;
-    font-family: var(--font-family-roboto-flex);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    margin: 5px 0;
-    & > i {
-      margin-right: 5px;
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
 
@@ -165,6 +167,7 @@
       width: 62px;
       height: 41px;
       display: flex;
+      margin-top: 10px;
       p {
         padding: 0 12px;
       }
@@ -173,6 +176,35 @@
   .empty-space {
     width: 100%;
     height: 5px;
+  }
+  .select-error {
+    border: 0.56px solid #ff8383;
+    border-radius: 5.6491px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    justify-content: center;
+    div {
+      border: none;
+    }
+  }
+  .error {
+    border: 0.56px solid #ff8383 !important;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: center;
+  }
+  &--error-message {
+    color: #ff8383;
+    font-family: var(--font-family-roboto-flex);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    margin: 2px 0;
+    & > i {
+      margin-right: 5px;
+    }
   }
 
   .submit-button-wrapper {
