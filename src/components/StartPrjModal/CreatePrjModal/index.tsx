@@ -39,8 +39,6 @@ interface OptionType {
   label: string;
 }
 
-type OptionsTypes = Array<OptionType>;
-
 const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, orgId }) => {
   return (
     <div className={styles['project-create-container']}>
@@ -52,10 +50,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, orgId }) => {
         overflowY="auto"
         title="Start a Project"
       >
-        <FormComponent
-          options={timezoneData ?? ([{}] as OptionsTypes)}
-          orgId={orgId}
-        />
+        <FormComponent options={timezoneData} orgId={orgId} />
       </Modal>
     </div>
   );
@@ -67,7 +62,7 @@ const defaultValues = {
 };
 
 interface FormComponentProps {
-  options: OptionsTypes;
+  options: OptionType[];
   orgId: number;
 }
 
@@ -329,7 +324,7 @@ const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
         <button
           type="button"
           onClick={() => {
-            append('' as unknown as { title: string });
+            append({ title: '' });
           }}
           className={styles['add-more-button']}
         >
@@ -414,12 +409,10 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
         <button
           type="button"
           onClick={() => {
-            append(
-              '' as unknown as {
-                categoryName: string;
-                percentageAllocation: number;
-              }
-            );
+            append({
+              categoryName: '',
+              percentageAllocation: 0,
+            });
           }}
           className={styles['add-more-button']}
         >
