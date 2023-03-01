@@ -1,8 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Modal from 'components/Modal';
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
+import {
+  useForm,
+  SubmitHandler,
+  useFieldArray,
+  Control,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormGetValues,
+  FieldErrors,
+} from 'react-hook-form';
 import Select, { MultiValue } from 'react-select';
 import { Option } from 'components/Select';
 import timezoneData from 'assets/data/timezones.json';
@@ -16,34 +25,23 @@ interface ICreatePrjProps {
   orgId: number;
 }
 
-type Inputs = {
+interface Inputs {
   name: string;
   budget: number;
   description: string;
   timeOfCompletion: string;
   flResources: { title: string }[];
   flProjectCategory: { categoryName: string; percentageAllocation: number }[];
-};
+}
 
-type OptionsType = {
+interface OptionType {
   value: string;
   label: string;
-}[];
+}
+
+type OptionsTypes = Array<OptionType>;
 
 const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, orgId }) => {
-  const [options, setOptions] = useState<OptionsType | null>(null);
-
-  useEffect(() => {
-    const timezoneOptions = [] as OptionsType;
-    if (timezoneOptions && !timezoneOptions.length) {
-      timezoneData.forEach((element: { value: string; text: string }) => {
-        timezoneOptions.push({ value: element.value, label: element.text });
-      });
-      setOptions(timezoneOptions);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div className={styles['project-create-container']}>
       <Toaster />
@@ -55,7 +53,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, orgId }) => {
         title="Start a Project"
       >
         <FormComponent
-          options={options ?? ([{}] as OptionsType)}
+          options={timezoneData ?? ([{}] as OptionsTypes)}
           orgId={orgId}
         />
       </Modal>
@@ -69,7 +67,7 @@ const defaultValues = {
 };
 
 interface FormComponentProps {
-  options: OptionsType;
+  options: OptionsTypes;
   orgId: number;
 }
 
@@ -102,13 +100,10 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
     Object.assign(data, {
       organisationId: orgId,
       preferredTimeZones: selectedOptionsLabel?.join(', '),
+      timeOfCompletion: new Date(data.timeOfCompletion).toISOString(),
     });
 
-    const isoDate = new Date(data.timeOfCompletion);
-    const res = { ...data };
-
-    res.timeOfCompletion = isoDate.toISOString();
-    createProject.mutate(res);
+    createProject.mutate(data);
   };
 
   const handleSelectOptionsChange = (newValue: MultiValue<Option>): void => {
@@ -131,7 +126,7 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
               className={clsx(
                 styles['project-create-container--input'],
                 styles['name-field'],
-                styles[errors.name ? 'error' : '']
+                errors.name && styles.error
               )}
             />
             {errors.name && (
@@ -154,13 +149,13 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
                 className={clsx(
                   styles['project-create-container--input'],
                   styles['budget-field'],
-                  styles[errors.budget ? 'error' : '']
+                  errors.budget && styles.error
                 )}
               />
               <div
                 className={clsx(
                   styles['budget-currency'],
-                  styles[errors.budget ? 'error' : '']
+                  errors.budget && styles.error
                 )}
               >
                 <p>USDC</p>
@@ -182,7 +177,7 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
               {...register('description', { required: true })}
               className={clsx(
                 styles['project-create-container--input'],
-                styles[errors.budget ? 'error' : '']
+                errors.budget && styles.error
               )}
             />
             {errors.description && (
@@ -201,7 +196,7 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
               type="date"
               className={clsx(
                 styles['project-create-container--input'],
-                styles[errors.timeOfCompletion ? 'error' : '']
+                errors.timeOfCompletion && styles.error
               )}
             />
             {errors.timeOfCompletion && (
@@ -270,11 +265,11 @@ const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
 };
 
 interface MultipleInputFieldsProps {
-  control: any;
-  register: any;
-  setValue: any;
-  getValues: any;
-  errors: any;
+  control: Control<Inputs, any>;
+  register: UseFormRegister<Inputs>;
+  setValue: UseFormSetValue<Inputs>;
+  getValues: UseFormGetValues<Inputs>;
+  errors: FieldErrors<Inputs>;
 }
 
 const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
@@ -305,7 +300,7 @@ const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
                   className={clsx(
                     styles['project-create-container--input'],
                     styles['talents-input'],
-                    styles[errors.flResources ? 'error' : '']
+                    errors.flResources && styles.error
                   )}
                   placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
                 />
@@ -334,7 +329,7 @@ const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
         <button
           type="button"
           onClick={() => {
-            append('');
+            append('' as unknown as { title: string });
           }}
           className={styles['add-more-button']}
         >
@@ -367,14 +362,13 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
                 className={styles['project-create-container--list']}
               >
                 <input
-                  name="category"
                   {...register(`flProjectCategory.${index}.categoryName`, {
                     required: true,
                   })}
                   className={clsx(
                     styles['project-create-container--input'],
                     styles['category-field'],
-                    styles[errors.flProjectCategory ? 'error' : '']
+                    errors.flProjectCategory && styles.error
                   )}
                   placeholder="Category name (“Website Design”)"
                 />
@@ -391,7 +385,7 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
                   className={clsx(
                     styles['project-create-container--input'],
                     styles['category-allocate-input'],
-                    styles[errors.flProjectCategory ? 'error' : '']
+                    errors.flProjectCategory && styles.error
                   )}
                   placeholder="% of budget for this category"
                 />
@@ -420,7 +414,12 @@ const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
         <button
           type="button"
           onClick={() => {
-            append('');
+            append(
+              '' as unknown as {
+                categoryName: string;
+                percentageAllocation: number;
+              }
+            );
           }}
           className={styles['add-more-button']}
         >
