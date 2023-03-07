@@ -1,0 +1,70 @@
+.step1-container {
+  height: 553px;
+  text-align: center;
+
+  &--heading-text {
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 600;
+    font-size: 24px;
+  }
+
+  form {
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    flex-flow: column wrap;
+    align-items: center;
+    position: relative;
+    margin-top: 15px;
+    font-family: var(--font-family-inter);
+    font-weight: 500;
+    font-size: 20px;
+    input[type='button'] {
+      width: 380px;
+      height: 80px;
+      margin-bottom: 15px;
+    }
+    input[type='submit'] {
+      position: absolute;
+      bottom: -50px;
+    }
+  }
+
+  &--choice-buttons-wrapper {
+    width: 70vw;
+  }
+
+  &--form-submit-button {
+    font-family: var(--font-family-roboto-regular);
+    color: #fff;
+    font-size: 18px;
+    margin-top: 15px;
+    border: 0.7px solid #cf92ff;
+
+    box-shadow: none;
+    border-radius: 0px;
+
+    width: 179px;
+    height: 55px;
+    border-radius: 22px;
+    cursor: pointer;
+    background: linear-gradient(
+        89.58deg,
+        #826af7 2.95%,
+        #db5dde 56.19%,
+        #e87aaf 103.17%
+      ),
+      linear-gradient(0deg, #e49df4, #e49df4),
+      radial-gradient(
+        116.97% 116.97% at 34.87% -2.72%,
+        #ff9bfb 0%,
+        #ffffff 100%
+      ),
+      linear-gradient(
+        94.63deg,
+        rgba(255, 255, 255, 0.16) 4.94%,
+        rgba(255, 255, 255, 0.04) 93.94%
+      );
+  }
+}

@@ -1,5 +1,4 @@
 /* eslint-disable radix */
-import timezoneData from 'assets/data/timezones.json';
 
 const formatDateFunction = (date: any) => {
   return date?.substring(0, 10);
@@ -54,14 +53,6 @@ const normalizeFormData = (oldData: any) => {
     flResources: formattedFlResources,
     flProjectCategory: formattedFlProjectCategory,
   };
-};
-
-const formatTimeZones = () => {
-  const temp: any[] = [];
-  timezoneData.forEach(element => {
-    temp.push({ value: element.value, label: element.text });
-  });
-  return temp;
 };
 
 const formatToISODate = (date: any) => {
@@ -126,7 +117,6 @@ const handleSubmitBtn = (selectedTimeZones: any) => {
 };
 export {
   normalizeFormData,
-  formatTimeZones,
   formatToISODate,
   handleRemoveResource,
   handleSubmitBtn,

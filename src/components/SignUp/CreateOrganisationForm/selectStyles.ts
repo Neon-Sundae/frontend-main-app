@@ -17,22 +17,20 @@ export const customStyles: StylesConfig<Option> = {
   }),
   control: styles => ({
     ...styles,
-    backgroundColor: '#2d2d35',
-    borderWidth: 0.56491,
-    borderColor: '#fff',
+    backgroundColor: 'none',
+    border: '0.661017px solid #ffffff',
     borderRadius: '5.6491px',
-    minHeight: '41px',
+    height: '50px',
     width: '300px',
     padding: '0 20px',
     cursor: 'pointer',
+    marginBottom: '15px',
 
     ':hover': {
       ...styles[':hover'],
-      borderColor: '#3c3c3c',
     },
     ':active': {
       ...styles[':active'],
-      borderColor: '#3c3c3c',
     },
   }),
   menu: styles => ({
@@ -43,7 +41,7 @@ export const customStyles: StylesConfig<Option> = {
     overflow: 'auto',
     zIndex: 2,
     fontFamily: 'Roboto Flex',
-    fontSize: 14,
+    fontSize: 16,
   }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     return {
@@ -71,26 +69,22 @@ export const customStyles: StylesConfig<Option> = {
     ...styles,
     outline: 'none',
     color: 'white',
+    padding: 0,
+    margin: 0,
+    background: 'transparent',
   }),
   placeholder: styles => ({
     ...styles,
     fontFamily: "'Roboto Flex', sans-serif",
-    fontSize: 14,
+    fontSize: 16,
     color: 'white',
   }),
   singleValue: (styles, { data }) => ({
     ...styles,
     color: 'white',
     fontFamily: "'Roboto Flex', sans-serif",
-    fontSize: 14,
+    fontSize: 16,
   }),
-  multiValue: styles => ({
-    ...styles,
-    backgroundColor: 'none',
-  }),
-  multiValueLabel: styles => ({
-    ...styles,
-    color: 'white',
-  }),
+
   indicatorSeparator: styles => ({ ...styles, display: 'none' }),
 };

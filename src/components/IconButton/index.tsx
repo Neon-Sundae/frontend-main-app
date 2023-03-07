@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { FC } from 'react';
 import styles from './index.module.scss';
 
@@ -7,13 +8,20 @@ interface IconButtonFC {
   handleClick: () => void;
   // option prop
   style?: any;
+  active?: boolean;
 }
 
-const IconButton: FC<IconButtonFC> = ({ icon, text, handleClick, style }) => {
+const IconButton: FC<IconButtonFC> = ({
+  icon,
+  text,
+  handleClick,
+  style,
+  active,
+}) => {
   return (
     <button
       type="button"
-      className={styles.IconButton}
+      className={clsx(styles.IconButton, active && styles['IconButton-active'])}
       onClick={handleClick}
       // add font from step 1 here
       style={style}
@@ -27,6 +35,7 @@ const IconButton: FC<IconButtonFC> = ({ icon, text, handleClick, style }) => {
 // default prop for font
 IconButton.defaultProps = {
   style: undefined,
+  active: false,
 };
 
 export default IconButton;

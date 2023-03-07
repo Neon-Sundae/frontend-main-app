@@ -1,4 +1,5 @@
 // @ts-ignore
+import { useProvider } from '@arcana/auth-react';
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js';
 import { setWalletConnectProvider } from 'actions/app';
 import config from 'config';
@@ -11,6 +12,7 @@ import {
 } from 'utils/web3EventFn';
 
 const useSetAppMetadata = () => {
+  const { provider: arcanaProvider } = useProvider();
   const dispatch = useDispatch();
 
   // TODO - Use multiple rpcs and chain ids, testnet and mainnet
@@ -45,6 +47,9 @@ const useSetAppMetadata = () => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', handleChainChanged);
       window.ethereum.on('accountsChanged', handleAccountsChanged);
+      arcanaProvider.on('disconnect', () => {
+        console.log('here here');
+      });
     }
   }, []);
 };

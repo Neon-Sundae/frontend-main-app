@@ -3,7 +3,11 @@ import config from 'config';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { providers, ethers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleAddPolygonChain, signMessage } from 'utils/ethereumFn';
+import {
+  handleAddPolygonChain,
+  signMessage,
+  signArcanaMessage,
+} from 'utils/ethereumFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { setAccessToken } from 'utils/authFn';
 import { updateUser } from 'actions/user';
@@ -14,6 +18,7 @@ import {
   requestEthereumAccounts,
 } from 'utils/web3EventFn';
 import UAuth from '@uauth/js';
+import { EthereumProvider } from '@arcana/auth';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
@@ -261,4 +266,76 @@ const useUnstoppableDomains = () => {
   return { login, logout };
 };
 
-export { useMetamaskLogin, useWalletConnectLogin, useUnstoppableDomains };
+const useArcanaWallet = () => {
+  const ac = new AbortController();
+  const { signal } = ac;
+  const dispatch = useDispatch();
+
+  const loginSuccess = async (
+    walletId: string | undefined,
+    provider: EthereumProvider
+  ) => {
+    if (walletId) {
+      const payload = {
+        walletId,
+      };
+
+      const response = await fetch(
+        `${config.ApiBaseUrl}/auth/generate-nonce/arcana`,
+        {
+          signal,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const json: any = await handleApiErrors(response);
+
+      dispatch(updateUser(json.user));
+
+      const signature = await signArcanaMessage(
+        provider,
+        json.message,
+        walletId
+      );
+
+      if (signature) {
+        const payload2 = {
+          message: json.message,
+          walletId,
+          isFirstTimeUser: json.isFirstTimeUser,
+          signature,
+        };
+
+        const response2 = await fetch(
+          `${config.ApiBaseUrl}/auth/verify-signature`,
+          {
+            signal,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload2),
+          }
+        );
+
+        const json2: any = await handleApiErrors(response2);
+        console.log('json2', json2);
+        setAccessToken(json2.accessToken);
+        dispatch(updateFirstTimeUser(json.isFirstTimeUser));
+        dispatch(updateCurrentStep(2));
+      }
+    }
+  };
+  return { loginSuccess };
+};
+
+export {
+  useMetamaskLogin,
+  useWalletConnectLogin,
+  useUnstoppableDomains,
+  useArcanaWallet,
+};

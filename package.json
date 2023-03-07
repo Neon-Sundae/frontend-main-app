@@ -17,6 +17,8 @@
     "style-lint": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
+    "@arcana/auth": "^1.0.2",
+    "@arcana/auth-react": "^0.0.3",
     "@hedgedoc/html-to-react": "^1.4.5",
     "@metamask/detect-provider": "^1.2.0",
     "@tanstack/react-query": "4.16.1",
@@ -34,6 +36,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.0.0",
     "react-helmet-async": "^1.3.0",
+    "react-hook-form": "^7.43.3",
     "react-hot-toast": "^2.2.0",
     "react-loader-spinner": "^5.1.5",
     "react-qr-code": "^2.0.8",
