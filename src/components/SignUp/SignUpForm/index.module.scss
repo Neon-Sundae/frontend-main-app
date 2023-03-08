@@ -1,0 +1,93 @@
+.sign-up-form {
+  height: 553px;
+  width: 678px;
+  display: flex;
+  justify-content: space-between;
+  &--option-select {
+    margin: auto;
+    & > p {
+      margin-bottom: 25px;
+    }
+
+    & > button {
+      margin-bottom: 20px;
+    }
+  }
+
+  &--option-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 35px;
+    width: 400px;
+    text-align: center;
+
+    & > h2 {
+      font-family: var(--font-family-roboto-regular);
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    & > h3 {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    & > input {
+      color: #fff;
+      border: 0.661017px solid #ffffff;
+      border-radius: 6.61017px;
+      width: 300px;
+      height: 50px;
+      cursor: pointer;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 16px;
+      font-weight: 100;
+      color: #fbfbfb;
+      padding: 0 25px;
+      background: none;
+      box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(40px);
+      margin-bottom: 15px;
+    }
+
+    & > input::placeholder {
+      color: #fbfbfb;
+    }
+
+    & > button {
+      font-family: var(--font-family-roboto-regular);
+      color: #fff;
+      font-size: 18px;
+      margin-top: 15px;
+      border: 0.7px solid #cf92ff;
+      box-shadow: none;
+      border-radius: 0px;
+      width: 179px;
+      height: 55px;
+      border-radius: 22px;
+      cursor: pointer;
+      background: linear-gradient(
+          89.58deg,
+          #826af7 2.95%,
+          #db5dde 56.19%,
+          #e87aaf 103.17%
+        ),
+        linear-gradient(0deg, #e49df4, #e49df4),
+        radial-gradient(
+          116.97% 116.97% at 34.87% -2.72%,
+          #ff9bfb 0%,
+          #ffffff 100%
+        ),
+        linear-gradient(
+          94.63deg,
+          rgba(255, 255, 255, 0.16) 4.94%,
+          rgba(255, 255, 255, 0.04) 93.94%
+        );
+    }
+  }
+}

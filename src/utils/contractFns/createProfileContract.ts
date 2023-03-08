@@ -5,6 +5,9 @@ import { Dispatch, SetStateAction } from 'react';
 import { ethers } from 'ethers';
 import estimateGasPrice from 'utils/estimateGasFees';
 import { MetamaskError } from 'utils/error/MetamaskError';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import { useAuth, useProvider } from '@arcana/auth-react';
 
 const createProfileContract = async (
   address: string | undefined,
@@ -13,6 +16,8 @@ const createProfileContract = async (
   deploying: string,
   setDeploying: Dispatch<SetStateAction<string>>
 ) => {
+  // TODO: add check for arcana or anything else
+
   try {
     if (!address || !name || !title)
       throw new Error('Unable to create profile');
