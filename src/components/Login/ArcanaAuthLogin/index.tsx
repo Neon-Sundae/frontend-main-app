@@ -5,7 +5,7 @@ import DiscordIcon from 'assets/illustrations/icons/login/discord.png';
 import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
@@ -15,6 +15,14 @@ const ArcanaAuthLogin = () => {
   const { provider } = useProvider();
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const triggerLoginSuccess = async () => {
+      await loginSuccess(auth.user?.address, provider);
+    };
+    if (auth.user) triggerLoginSuccess();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
 
   const {
     register,
@@ -30,8 +38,6 @@ const ArcanaAuthLogin = () => {
 
   const socialLogin = async (option: string) => {
     await auth.loginWithSocial(option);
-
-    await loginSuccess(auth.user?.address, provider);
   };
 
   return (

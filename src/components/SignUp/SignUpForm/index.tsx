@@ -2,13 +2,16 @@ import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
-import { useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { LoginModalContent } from 'components/Login/LoginModal';
 import {
+  useArcanaWallet,
   useMetamaskLogin,
   useUnstoppableDomains,
   useWalletConnectLogin,
 } from 'components/Login/Step1/hooks';
+import { useAuth, useProvider } from '@arcana/auth-react';
+import { useForm } from 'react-hook-form';
 import styles from './index.module.scss';
 
 const style = {
@@ -26,15 +29,30 @@ const udStyle = {
 };
 
 const SignUpForm = () => {
+  const auth = useAuth();
+  const { loginSuccess } = useArcanaWallet();
+  const { provider } = useProvider();
+
+  useEffect(() => {
+    const triggerLoginSuccess = async () => {
+      await loginSuccess(auth.user?.address, provider);
+    };
+    if (auth.user) triggerLoginSuccess();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
 
   const [showMetamask, setShowMetamask] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const generateNonce = useMetamaskLogin();
   const walletConnectGenerateNonce = useWalletConnectLogin();
   const unstoppableDomains = useUnstoppableDomains();
+
+  const { handleSubmit } = useForm();
 
   const loginWithMetaMask = () => {
     setShowMetamask(true);
@@ -66,6 +84,15 @@ const SignUpForm = () => {
     setActive('emailLogin');
     setShowMetamask(false);
     setShowEmail(true);
+  };
+
+  const linkLogin = async () => {
+    await auth.loginWithLink(inputValue);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setInputValue(value);
   };
 
   return (
@@ -109,22 +136,31 @@ const SignUpForm = () => {
             <h2>Opening MetaMask...</h2>
             <p>Confirm connection in the extension</p>
             <br />
-            <button onClick={handleMetamaskLogin}>Retry</button>
+            <button
+              className={styles['retry-button']}
+              onClick={handleMetamaskLogin}
+            >
+              Retry
+            </button>
           </div>
         )}
         {showEmail && (
           <>
-            <h2>Signup with email</h2>
+            <h2>Sign up with email</h2>
             <h3>
               We&apos;ll email you with a login link for a password free sign
               in.
             </h3>
-
-            <input
-              className={styles['sign-up-form--option-details--email']}
-              placeholder="Enter email here"
-            />
-            <button>Get link</button>
+            <form onSubmit={handleSubmit(linkLogin)}>
+              <input
+                className={styles['sign-up-form--option-details--email']}
+                placeholder="Enter email here"
+                type="email"
+                onChange={handleEmailChange}
+                required
+              />
+              <button type="submit">Get link</button>
+            </form>
           </>
         )}
         {!showMetamask && !showEmail && <LoginModalContent />}

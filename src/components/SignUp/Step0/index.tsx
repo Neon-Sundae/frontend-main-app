@@ -1,5 +1,6 @@
 import { IChoice } from 'interfaces/auth';
 import { ChangeEvent, FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { setItem } from 'utils/localStorageFn';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
@@ -15,6 +16,7 @@ const choicesArray = [
 
 const Step0: FC<iStep0> = ({ setStep }) => {
   const [activeButton, setActiveButton] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -63,7 +65,8 @@ const Step0: FC<iStep0> = ({ setStep }) => {
         />
       </form>
       <footer className={styles['step0-container--footer']}>
-        Already have an account? Login
+        Already have an account?{' '}
+        <button onClick={() => navigate('/login')}>Login</button>
       </footer>
     </div>
   );

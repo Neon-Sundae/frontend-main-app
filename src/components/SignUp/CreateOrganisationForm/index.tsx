@@ -10,6 +10,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
 import Select, { SingleValue } from 'react-select';
 import { Option } from 'components/Select';
+import industryOptions from 'assets/data/industries.json';
+import { setItem } from 'utils/localStorageFn';
 import { customStyles } from './selectStyles';
 import styles from './index.module.scss';
 
@@ -28,6 +30,10 @@ interface ICreateOrganisationForm {
 
 const CreateOrganisationForm: FC<ICreateOrganisationForm> = ({ setStep }) => {
   const [fileData, setFileData] = useState<IFile | null>(null);
+  const [localFile, setLocalFile] = useState<string | ArrayBuffer | null>(null);
+
+  console.log('localFile', localFile);
+
   const {
     register,
     handleSubmit,
@@ -45,16 +51,20 @@ const CreateOrganisationForm: FC<ICreateOrganisationForm> = ({ setStep }) => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log('form data', data);
-    console.log('fileData', fileData);
-    console.log('selectedOption', selectedOption);
+    const orgData = { ...data, ...selectedOption };
+    setItem('orgData', JSON.stringify(orgData));
+    setItem('file', localFile);
     setStep('step3');
   };
 
   return (
     <div className={styles['create-organisation-form-container']}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FileUpload fileData={fileData} setFileData={setFileData} />
+        <FileUpload
+          fileData={fileData}
+          setFileData={setFileData}
+          setLocalFile={setLocalFile}
+        />
 
         <input
           type="text"
@@ -64,11 +74,7 @@ const CreateOrganisationForm: FC<ICreateOrganisationForm> = ({ setStep }) => {
         />
 
         <Select
-          options={[
-            { label: 'abc', value: 'abc' },
-            { label: 'abc2', value: 'abc2' },
-            { label: 'abc3', value: 'abc3' },
-          ]}
+          options={industryOptions}
           placeholder="Industry"
           styles={customStyles}
           onChange={newValue =>
@@ -93,12 +99,14 @@ interface IFileUploadProps {
   fileData: IFile | null;
 
   setFileData: Dispatch<SetStateAction<IFile | null>>;
+  setLocalFile: Dispatch<SetStateAction<string | ArrayBuffer | null>>;
 }
 
 const FileUpload: FC<IFileUploadProps> = ({
   fileData,
 
   setFileData,
+  setLocalFile,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const setFileState = (files: FileList | null) => {
@@ -116,7 +124,15 @@ const FileUpload: FC<IFileUploadProps> = ({
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { files } = e.target;
-    setFileState(files);
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      console.log('RESULT', reader.result);
+      setLocalFile(reader.result);
+    };
+    if (files) {
+      reader.readAsDataURL(files[0]);
+      setFileState(files);
+    }
   };
 
   const handleClick = (e: any) => {

@@ -30,8 +30,7 @@ const Step1: FC<IStep0> = ({ setStep }) => {
     });
 
     if (result) {
-      elementRef.current.children[1].children[choice.id].style.border =
-        '0.7px solid #cf92ff';
+      elementRef.current.children[1].children[choice.id].style.border = 'none';
       const filteredData = selected.filter(
         (elem: IChoice) => elem.id !== choice.id
       );

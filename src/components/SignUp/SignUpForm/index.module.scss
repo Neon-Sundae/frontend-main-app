@@ -1,8 +1,13 @@
 .sign-up-form {
   height: 553px;
-  width: 678px;
+  width: 770px;
   display: flex;
   justify-content: space-between;
+  background-color: #292932;
+  padding: 0 30px;
+  border-radius: 30px;
+  padding: 20px 0;
+
   &--option-select {
     margin: auto;
     & > p {
@@ -23,21 +28,23 @@
     width: 400px;
     text-align: center;
 
-    & > h2 {
+    h2 {
       font-family: var(--font-family-roboto-regular);
-      font-weight: 600;
+      font-weight: 400;
       font-size: 18px;
-      margin-bottom: 25px;
+      margin-bottom: 10px;
     }
 
-    & > h3 {
+    h3 {
       font-family: var(--font-family-roboto-flex);
       font-weight: 400;
-      font-size: 14px;
-      margin-bottom: 25px;
+      font-size: 16px;
+
+      margin-top: 25px;
+      margin-bottom: 10px;
     }
 
-    & > input {
+    input {
       color: #fff;
       border: 0.661017px solid #ffffff;
       border-radius: 6.61017px;
@@ -55,11 +62,38 @@
       margin-bottom: 15px;
     }
 
-    & > input::placeholder {
+    input::placeholder {
       color: #fbfbfb;
     }
 
-    & > button {
+    .retry-button {
+      height: 31px;
+      width: 56.9px;
+      margin: auto;
+      color: #fff;
+      border-width: 1px;
+      font-size: 12.7179px;
+      color: #fff;
+      border-radius: 23px;
+      border: 0.7px solid #fff;
+      cursor: pointer;
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      line-height: 23px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        126.59deg,
+        rgba(255, 198, 253, 0.133) 12.11%,
+        rgba(255, 255, 255, 0.07) 73.08%
+      );
+      box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+      backdrop-filter: blur(40px);
+      border-radius: 23px;
+    }
+
+    button {
       font-family: var(--font-family-roboto-regular);
       color: #fff;
       font-size: 18px;

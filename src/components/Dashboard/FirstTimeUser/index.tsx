@@ -5,10 +5,12 @@ import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neo
 import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
 import { handleLocalStorage } from 'utils/localStorageFn';
+import { useAuth } from '@arcana/auth-react';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
+  const auth = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState({
