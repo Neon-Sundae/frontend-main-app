@@ -12,6 +12,12 @@ import {
 } from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import { getItem } from 'utils/localStorageFn';
+import useCreateOrganisation from 'components/StartOrgModal/hook';
+import convertBase64ToFile from 'utils/base64ToFile';
+import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
 import styles from './index.module.scss';
 
 const style = {
@@ -28,10 +34,23 @@ const udStyle = {
   fontSize: '15px',
 };
 
+interface IFile {
+  id: string;
+  file: File;
+}
+
 const SignUpForm = () => {
+  const authState = useSelector((state: RootState) => state.auth);
+  const user = useSelector((state: RootState) => state.user.user);
+
   const auth = useAuth();
   const { loginSuccess } = useArcanaWallet();
   const { provider } = useProvider();
+  const [disableButton, setDisableButton] = useState(false);
+  const createProfile = useCreateProfile();
+
+  const [file, setFile] = useState<File | undefined>();
+  const createOrganisation = useCreateOrganisation(setDisableButton);
 
   useEffect(() => {
     const triggerLoginSuccess = async () => {
@@ -95,6 +114,29 @@ const SignUpForm = () => {
     setInputValue(value);
   };
 
+  // FIXME: this creates a bunch of organisations :/
+  if (authState.currentStep === 2) {
+    const orgData = JSON.parse(getItem('orgData'));
+    const localFile = getItem('file');
+
+    if (!file) convertBase64ToFile(localFile, setFile);
+
+    if (auth.user) {
+      const userEmail = auth.user.email || 'john@abc.xyz';
+      const userName = userEmail.substring(0, userEmail.indexOf('@'));
+
+      createProfile({ name: userName, email: userEmail });
+
+      createOrganisation({
+        name: orgData.name,
+        description: orgData.description,
+        userId: user?.userId?.toString() || '',
+        image: file,
+        industry: getItem('choices'),
+      });
+    }
+  }
+
   return (
     <div className={styles['sign-up-form']}>
       <section className={styles['sign-up-form--option-select']}>
@@ -144,6 +186,7 @@ const SignUpForm = () => {
             </button>
           </div>
         )}
+
         {showEmail && (
           <>
             <h2>Sign up with email</h2>
@@ -159,7 +202,9 @@ const SignUpForm = () => {
                 onChange={handleEmailChange}
                 required
               />
-              <button type="submit">Get link</button>
+              <button type="submit" disabled={disableButton}>
+                Get link
+              </button>
             </form>
           </>
         )}

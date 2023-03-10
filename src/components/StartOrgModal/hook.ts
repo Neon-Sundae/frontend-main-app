@@ -11,6 +11,7 @@ interface ICreateOrganisationPayload {
   description: string;
   userId: string;
   image: File | undefined;
+  industry?: string;
 }
 
 const useCreateOrganisation = (
