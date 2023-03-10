@@ -18,6 +18,7 @@ import { getItem } from 'utils/localStorageFn';
 import useCreateOrganisation from 'components/StartOrgModal/hook';
 import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
+import { getAccessToken } from 'utils/authFn';
 import styles from './index.module.scss';
 
 const style = {
@@ -47,6 +48,7 @@ const SignUpForm = () => {
   const { loginSuccess } = useArcanaWallet();
   const { provider } = useProvider();
   const [disableButton, setDisableButton] = useState(false);
+  const accessToken = getAccessToken();
   const createProfile = useCreateProfile();
 
   const [file, setFile] = useState<File | undefined>();
@@ -56,9 +58,16 @@ const SignUpForm = () => {
     const triggerLoginSuccess = async () => {
       await loginSuccess(auth.user?.address, provider);
     };
-    if (auth.user) triggerLoginSuccess();
+    if (auth.user) {
+      triggerLoginSuccess();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
+
+  useEffect(() => {
+    if (accessToken) saveOrgData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]);
 
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
@@ -115,7 +124,7 @@ const SignUpForm = () => {
   };
 
   // FIXME: this creates a bunch of organisations :/
-  if (authState.currentStep === 2) {
+  const saveOrgData = () => {
     const orgData = JSON.parse(getItem('orgData'));
     const localFile = getItem('file');
 
@@ -135,7 +144,7 @@ const SignUpForm = () => {
         industry: getItem('choices'),
       });
     }
-  }
+  };
 
   return (
     <div className={styles['sign-up-form']}>
