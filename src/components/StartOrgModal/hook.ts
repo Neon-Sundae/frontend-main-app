@@ -18,11 +18,11 @@ const useCreateOrganisation = (
   setDisableButton: Dispatch<SetStateAction<boolean>>
 ) => {
   const navigate = useNavigate();
-  const accessToken = getAccessToken();
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
 
   const createOrganisation = async (payload: ICreateOrganisationPayload) => {
     try {
+      const accessToken = getAccessToken();
       const { image, ...rest } = payload;
       const response = await fetch(`${config.ApiBaseUrl}/organisation`, {
         method: 'POST',

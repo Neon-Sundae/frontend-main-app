@@ -15,6 +15,7 @@ import { useAuth, useProvider } from '@arcana/auth-react';
 
 const useProfileManage = () => {
   const auth = useAuth();
+
   const { provider: arcanaProvider } = useProvider();
 
   const dispatch = useDispatch();
@@ -51,7 +52,8 @@ const useProfileManage = () => {
         deploying,
         setDeploying,
         user,
-        arcanaProvider
+        arcanaProvider,
+        auth
       );
 
       if (isContractDeployed !== 'Failed') {

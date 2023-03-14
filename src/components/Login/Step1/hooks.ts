@@ -20,7 +20,8 @@ import {
 import UAuth from '@uauth/js';
 import { EthereumProvider } from '@arcana/auth';
 import { useAuth } from '@arcana/auth-react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getItem } from 'utils/localStorageFn';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
@@ -28,7 +29,7 @@ interface IGenerateNonce {
 
 const useMetamaskLogin = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const generateNonce = async ({ setError }: IGenerateNonce) => {
     const ac = new AbortController();
     const { signal } = ac;
@@ -93,6 +94,7 @@ const useMetamaskLogin = () => {
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
+          navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -111,6 +113,7 @@ const useMetamaskLogin = () => {
 
 const useWalletConnectLogin = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const walletConnectProvider = useSelector(
     (state: RootState) => state.app.walletConnectProvider
   );
@@ -186,6 +189,7 @@ const useWalletConnectLogin = () => {
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
+          navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -208,6 +212,7 @@ const useUnstoppableDomains = () => {
   const ac = new AbortController();
   const { signal } = ac;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const uauth = new UAuth({
     clientID: import.meta.env.VITE_UD_CLIENT_KEY,
@@ -246,6 +251,7 @@ const useUnstoppableDomains = () => {
         setAccessToken(json.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
+        navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -265,8 +271,8 @@ const useUnstoppableDomains = () => {
 
 const useArcanaWallet = () => {
   const auth = useAuth();
-  const param = useParams();
-  console.log('param', param);
+  const navigate = useNavigate();
+
   const ac = new AbortController();
   const { signal } = ac;
   const dispatch = useDispatch();
@@ -326,7 +332,8 @@ const useArcanaWallet = () => {
 
         setAccessToken(json2.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-        dispatch(updateCurrentStep(2));
+
+        if (auth.isLoggedIn && !getItem('orgData')) navigate('/dashboard'); // builder login
       }
     }
   };

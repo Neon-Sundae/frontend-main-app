@@ -9,16 +9,17 @@ const getProfileContractAddress = async (
   address: string | undefined,
   auth: AuthContextType
 ) => {
-  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  let arcanaWeb3Instance;
+  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  else arcanaWeb3Instance = null;
+
   try {
     if (!address) throw new Error('Address not found');
 
     let web3;
-    if (arcanaWeb3Instance) {
-      web3 = arcanaWeb3Instance;
-    } else {
-      web3 = getWeb3Instance();
-    }
+    if (arcanaWeb3Instance && auth.isLoggedIn) web3 = arcanaWeb3Instance;
+    else web3 = getWeb3Instance();
+
     const gasPrice = await estimateGasPrice(web3);
 
     console.log('getting profile contract address');

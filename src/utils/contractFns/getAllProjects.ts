@@ -13,7 +13,9 @@ const getAllProjects = async (
   founderAddress: string,
   auth: AuthContextType
 ): Promise<IProjectInfo[]> => {
-  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  let arcanaWeb3Instance;
+  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  else arcanaWeb3Instance = null;
 
   try {
     let web3;

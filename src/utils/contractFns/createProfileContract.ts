@@ -7,6 +7,7 @@ import estimateGasPrice from 'utils/estimateGasFees';
 import { MetamaskError } from 'utils/error/MetamaskError';
 import { EthereumProvider } from '@arcana/auth';
 import { IUser } from 'interfaces/user';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
 const createProfileContract = async (
   address: string | undefined,
@@ -15,11 +16,15 @@ const createProfileContract = async (
   deploying: string,
   setDeploying: Dispatch<SetStateAction<string>>,
   user: Partial<IUser> | undefined,
-  arcanaProvider: EthereumProvider
+  arcanaProvider: EthereumProvider,
+  auth: AuthContextType
 ) => {
+  console.log('auth from createProfileContract', auth);
   const arcanaProviderWrapped = new ethers.providers.Web3Provider(
     arcanaProvider
   );
+
+  console.log('arcanaProviderWrapped', arcanaProviderWrapped);
 
   try {
     if (!address || !name || !title)

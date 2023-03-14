@@ -56,6 +56,7 @@ const SignUpForm = () => {
   useEffect(() => {
     const triggerLoginSuccess = async () => {
       await loginSuccess(auth.user?.address, provider);
+      await saveOrgData();
     };
     if (auth.user) {
       triggerLoginSuccess();
@@ -64,10 +65,10 @@ const SignUpForm = () => {
   }, [auth]);
 
   // FIXME: not triggering properly
-  useEffect(() => {
-    if (accessToken) saveOrgData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken]);
+  // useEffect(() => {
+  //   if (accessToken) ;
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [accessToken]);
 
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
@@ -123,25 +124,31 @@ const SignUpForm = () => {
     setInputValue(value);
   };
 
-  const saveOrgData = () => {
+  const saveOrgData = async () => {
     const orgData = JSON.parse(getItem('orgData'));
-    const localFile = getItem('file');
+    console.log('orgData', orgData);
 
-    if (!file) convertBase64ToFile(localFile, setFile);
+    if (orgData) {
+      const localFile = getItem('file');
 
-    if (auth.user) {
-      const userEmail = auth.user.email || 'john@abc.xyz';
-      const userName = userEmail.substring(0, userEmail.indexOf('@'));
+      if (!file) convertBase64ToFile(localFile, setFile);
+      console.log('auth', auth);
 
-      createProfile({ name: userName, email: userEmail });
+      if (auth.user) {
+        const userEmail = auth.user.email || '';
+        const userName = getItem('name');
 
-      createOrganisation({
-        name: orgData.name,
-        description: orgData.description,
-        userId: user?.userId?.toString() || '',
-        image: file,
-        industry: getItem('choices'),
-      });
+        createProfile.mutate({ name: userName, email: userEmail });
+        console.log('user', user);
+        if (user?.userId)
+          await createOrganisation({
+            name: orgData.name,
+            description: orgData.description,
+            userId: user.userId.toString(),
+            image: file,
+            industry: getItem('choices'),
+          });
+      }
     }
   };
 

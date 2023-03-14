@@ -8,7 +8,9 @@ const getUsdcBalance = async (
   address: string | undefined,
   auth: AuthContextType
 ) => {
-  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  let arcanaWeb3Instance;
+  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  else arcanaWeb3Instance = null;
 
   try {
     if (!address) return 0;

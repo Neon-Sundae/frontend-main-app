@@ -24,7 +24,7 @@ const FirstTimeUser: FC = () => {
     e.preventDefault();
     handleLocalStorage('started');
     if (validateCreateProfile(name, email, setError)) {
-      createProfile({ name, email });
+      createProfile.mutate({ name, email });
     }
   };
 

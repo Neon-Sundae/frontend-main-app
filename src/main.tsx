@@ -16,7 +16,7 @@ const provider = new AuthProvider(
       chainId: CHAIN.POLYGON_MUMBAI_TESTNET,
       rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
     },
-    alwaysVisible: false,
+    alwaysVisible: true,
   }
 );
 

@@ -28,7 +28,7 @@ const Step1: FC = () => {
   };
 
   const [error, setError] = useState('');
-
+  const [loginDone, setLoginDone] = useState(false);
   const provider = useProvider();
   const auth = useAuth();
 

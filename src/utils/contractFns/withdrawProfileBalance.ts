@@ -13,7 +13,9 @@ const withdrawProfileBalance = async (
   setDeploying: Dispatch<SetStateAction<string>>,
   auth: AuthContextType
 ) => {
-  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  let arcanaWeb3Instance;
+  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  else arcanaWeb3Instance = null;
   let web3;
   if (arcanaWeb3Instance) {
     web3 = arcanaWeb3Instance;

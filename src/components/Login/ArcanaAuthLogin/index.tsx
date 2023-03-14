@@ -5,7 +5,7 @@ import DiscordIcon from 'assets/illustrations/icons/login/discord.png';
 import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
@@ -15,6 +15,7 @@ const ArcanaAuthLogin = () => {
   const { provider } = useProvider();
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
+  const [loginDone, setLoginDone] = useState(false);
 
   useEffect(() => {
     const triggerLoginSuccess = async () => {
