@@ -10,6 +10,7 @@ import { ReactComponent as TimezoneIcon } from 'assets/illustrations/icons/proje
 import { ReactComponent as MoneyIcon } from 'assets/illustrations/icons/money.svg';
 import { ReactComponent as ResourceIcon } from 'assets/illustrations/icons/resource.svg';
 import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
+import { useAuth } from '@arcana/auth-react';
 import styles from './index.module.scss';
 
 interface DescriptionProps {
@@ -28,7 +29,7 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
     preferredTimeZones,
     flResources,
   } = props;
-
+  const auth = useAuth();
   const [projectBalance, setProjectBalance] = useState(0);
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
@@ -43,11 +44,11 @@ const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
   useEffect(() => {
     (async () => {
       if (selectedProjectAddress) {
-        const balance = await getUsdcBalance(selectedProjectAddress);
+        const balance = await getUsdcBalance(selectedProjectAddress, auth);
         setProjectBalance(balance);
       }
     })();
-  }, [selectedProjectAddress]);
+  }, [selectedProjectAddress, auth]);
 
   const getSmartContractAddress = () => {
     if (selectedProjectAddress) {

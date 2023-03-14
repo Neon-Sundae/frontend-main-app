@@ -20,7 +20,7 @@
     border-radius: 5px;
     color: white;
     font-family: var(--font-family-roboto-flex);
-    font-size: 18px;
+    font-size: 13.6px;
     padding: 12px;
   }
 
@@ -33,6 +33,11 @@
     color: #fff;
     font-family: var(--font-family-roboto-flex);
     font-size: 14px;
+  }
+
+  input[type='text'],
+  textarea {
+    font-size: 13.6px;
   }
 
   input[type='date'] {
@@ -92,13 +97,19 @@
   }
 
   &--input {
+    font-size: 13.6px;
+    display: block;
+  }
+
+  &--input[type='text'] {
+    font-size: 13.6px;
     display: block;
   }
 
   .name-field,
   .budget-field,
   .category-field {
-    min-width: 15em;
+    min-width: 21em;
   }
   .budget-field {
     border-right: none;

@@ -5,9 +5,6 @@ import { Dispatch, SetStateAction } from 'react';
 import { ethers } from 'ethers';
 import estimateGasPrice from 'utils/estimateGasFees';
 import { MetamaskError } from 'utils/error/MetamaskError';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
-import { useAuth, useProvider } from '@arcana/auth-react';
 import { EthereumProvider } from '@arcana/auth';
 import { IUser } from 'interfaces/user';
 
@@ -20,13 +17,9 @@ const createProfileContract = async (
   user: Partial<IUser> | undefined,
   arcanaProvider: EthereumProvider
 ) => {
-  // TODO: add check for arcana or anything else
-
-  console.log('authentication_method', user?.authentication_method);
-
-  const provider1 = new ethers.providers.Web3Provider(arcanaProvider);
-
-  console.log('arcanaProvider', provider1);
+  const arcanaProviderWrapped = new ethers.providers.Web3Provider(
+    arcanaProvider
+  );
 
   try {
     if (!address || !name || !title)
@@ -34,7 +27,14 @@ const createProfileContract = async (
 
     const provider = getEthersInstance();
     const web3 = getWeb3Instance();
-    const signer = provider1.getSigner();
+    let signer;
+
+    if (arcanaProviderWrapped) {
+      signer = arcanaProviderWrapped.getSigner();
+    } else {
+      signer = provider.getSigner();
+    }
+
     const gasPrice = await estimateGasPrice(web3);
 
     const ProfileFactory = new ethers.Contract(

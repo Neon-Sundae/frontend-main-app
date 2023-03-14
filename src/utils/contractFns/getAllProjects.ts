@@ -1,7 +1,8 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
 import config from 'config';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
 interface IProjectInfo {
   contractAddress: string;
@@ -9,10 +10,18 @@ interface IProjectInfo {
 }
 
 const getAllProjects = async (
-  founderAddress: string
+  founderAddress: string,
+  auth: AuthContextType
 ): Promise<IProjectInfo[]> => {
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+
   try {
-    const web3 = getWeb3Instance();
+    let web3;
+    if (arcanaWeb3Instance) {
+      web3 = arcanaWeb3Instance;
+    } else {
+      web3 = getWeb3Instance();
+    }
 
     console.log('getting all projects from chain');
 

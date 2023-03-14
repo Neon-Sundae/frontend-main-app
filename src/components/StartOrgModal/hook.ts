@@ -42,6 +42,7 @@ const useCreateOrganisation = (
           json.organisationId
         );
       }
+
       navigate(`/organisation/${json.organisationId}`);
     } catch (e) {
       console.log(e);

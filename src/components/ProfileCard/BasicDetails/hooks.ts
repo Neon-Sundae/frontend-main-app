@@ -29,7 +29,7 @@ const useProfileManage = () => {
     address: string | undefined
   ) => {
     try {
-      const isContractDeployed = await getProfileContractAddress(address);
+      const isContractDeployed = await getProfileContractAddress(address, auth);
 
       if (
         isContractDeployed !== '0x0000000000000000000000000000000000000000' &&

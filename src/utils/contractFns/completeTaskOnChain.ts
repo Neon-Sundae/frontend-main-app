@@ -1,11 +1,12 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import { Dispatch, SetStateAction } from 'react';
 import { UseMutationResult } from '@tanstack/react-query';
 import { IUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import config from 'config';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
 interface ICompleteTaskOnChain {
   walletId: string | undefined;
@@ -14,6 +15,7 @@ interface ICompleteTaskOnChain {
   selectedTask: any;
   updateTask: UseMutationResult<Response, any, IUpdateTaskStatus, unknown>;
   projectTaskAddress: string;
+  auth: AuthContextType;
 }
 
 const completeTaskOnChain = async ({
@@ -23,11 +25,19 @@ const completeTaskOnChain = async ({
   setPending,
   updateTask,
   projectTaskAddress,
+  auth,
 }: ICompleteTaskOnChain) => {
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+
   try {
     if (!walletId) throw new Error('Unable to complete the task');
 
-    const web3 = getWeb3Instance();
+    let web3;
+    if (arcanaWeb3Instance) {
+      web3 = arcanaWeb3Instance;
+    } else {
+      web3 = getWeb3Instance();
+    }
     const gasPrice = await estimateGasPrice(web3);
 
     console.log('complete task on chian');

@@ -1,19 +1,29 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import config from 'config';
 import toast from 'react-hot-toast';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
 const fundProjectTaskContract = async (
   amount: number,
   walletId: string | undefined,
-  projectAddress: string
+  projectAddress: string,
+  auth: AuthContextType
 ) => {
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+
   try {
     if (!walletId) throw new Error('Unable to fund project task');
 
-    const web3 = getWeb3Instance();
+    let web3;
+    if (arcanaWeb3Instance) {
+      web3 = arcanaWeb3Instance;
+    } else {
+      web3 = getWeb3Instance();
+    }
+
     const gasPrice = await estimateGasPrice(web3);
 
     // TODO - Instead of this, use ethers.utils.formatUnits(value, noOfDecimals)

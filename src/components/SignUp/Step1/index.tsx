@@ -24,10 +24,7 @@ const Step1: FC<IStep0> = ({ setStep }) => {
   const elementRef: any = useRef();
 
   const handleClick = (choice: IChoice) => {
-    const result = selected.find((obj: IChoice) => {
-      console.log(obj.id === choice.id);
-      return obj.id === choice.id;
-    });
+    const result = selected.find((obj: IChoice) => obj.id === choice.id);
 
     if (result) {
       elementRef.current.children[1].children[choice.id].style.border = 'none';

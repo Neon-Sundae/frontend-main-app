@@ -23,6 +23,7 @@ import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { IMemberData } from 'interfaces/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import { useAuth } from '@arcana/auth-react';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
@@ -43,6 +44,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   setOpen,
   members,
 }) => {
+  const auth = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const builderTaskApply = useBuilderTaskApply();
@@ -60,7 +62,8 @@ const TaskDetail: FC<ITaskDetail> = ({
     const getXP = async () => {
       const xp = await calculateTaskXP(
         user?.walletId,
-        selectedTask?.estimatedDifficulty
+        selectedTask?.estimatedDifficulty,
+        auth
       );
       dispatch({
         type: SET_TASK_XP,

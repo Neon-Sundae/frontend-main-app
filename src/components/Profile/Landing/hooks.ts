@@ -4,13 +4,13 @@ import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleError } from 'utils/handleUnAuthorization';
 import { IProfileApiResponse } from 'interfaces/profile';
 import { normalizeSkills } from 'utils/normalizeSkills';
 import { fillProfileSkillsData } from 'actions/skills';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import getProfileDetails from 'utils/contractFns/getProfileDetails';
+import { useAuth } from '@arcana/auth-react';
 
 const useProfile = () => {
   const dispatch = useDispatch();

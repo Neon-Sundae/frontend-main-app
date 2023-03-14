@@ -1,13 +1,24 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import config from 'config';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
-const getUsdcBalance = async (address: string | undefined) => {
+const getUsdcBalance = async (
+  address: string | undefined,
+  auth: AuthContextType
+) => {
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+
   try {
     if (!address) return 0;
 
-    const web3 = getWeb3Instance();
+    let web3;
+    if (arcanaWeb3Instance) {
+      web3 = arcanaWeb3Instance;
+    } else {
+      web3 = getWeb3Instance();
+    }
 
     const USDCContract = new web3.eth.Contract(
       USDCAbi.abi as AbiItem[],

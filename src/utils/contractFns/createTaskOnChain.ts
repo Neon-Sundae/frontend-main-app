@@ -3,6 +3,7 @@ import { getEthersInstance, getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import { ethers } from 'ethers';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { EthereumProvider } from '@arcana/auth';
 
 interface ICreateTaskOnChain {
   projectAddress: string;
@@ -11,6 +12,7 @@ interface ICreateTaskOnChain {
   taskName: string;
   price: number;
   xp: number;
+  arcanaProvider: EthereumProvider;
 }
 
 const createTaskOnChain = async ({
@@ -20,13 +22,24 @@ const createTaskOnChain = async ({
   taskName,
   price,
   xp,
+  arcanaProvider,
 }: ICreateTaskOnChain) => {
+  const arcanaProviderWrapped = new ethers.providers.Web3Provider(
+    arcanaProvider
+  );
+
   try {
     if (!walletId) throw new Error('Unable to complete the task');
 
     const provider = getEthersInstance();
     const web3 = getWeb3Instance();
-    const signer = provider.getSigner();
+    let signer;
+
+    if (arcanaProviderWrapped) {
+      signer = arcanaProviderWrapped.getSigner();
+    } else {
+      signer = provider.getSigner();
+    }
     const gasPrice = await estimateGasPrice(web3);
 
     const TaskContract = new ethers.Contract(

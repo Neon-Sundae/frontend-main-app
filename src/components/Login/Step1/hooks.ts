@@ -19,6 +19,8 @@ import {
 } from 'utils/web3EventFn';
 import UAuth from '@uauth/js';
 import { EthereumProvider } from '@arcana/auth';
+import { useAuth } from '@arcana/auth-react';
+import { useParams } from 'react-router-dom';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
@@ -74,8 +76,6 @@ const useMetamaskLogin = () => {
             signature,
           };
 
-          console.log(payload2);
-
           const response2 = await fetch(
             `${config.ApiBaseUrl}/auth/verify-signature`,
             {
@@ -122,7 +122,6 @@ const useWalletConnectLogin = () => {
     try {
       await walletConnectProvider.enable();
       const web3Provider = new providers.Web3Provider(walletConnectProvider);
-      console.log(web3Provider);
 
       const accounts = await web3Provider.listAccounts();
 
@@ -169,8 +168,6 @@ const useWalletConnectLogin = () => {
             isFirstTimeUser: json.isFirstTimeUser,
             signature,
           };
-
-          console.log(payload2);
 
           const response2 = await fetch(
             `${config.ApiBaseUrl}/auth/verify-signature`,
@@ -267,6 +264,9 @@ const useUnstoppableDomains = () => {
 };
 
 const useArcanaWallet = () => {
+  const auth = useAuth();
+  const param = useParams();
+  console.log('param', param);
   const ac = new AbortController();
   const { signal } = ac;
   const dispatch = useDispatch();
@@ -323,7 +323,7 @@ const useArcanaWallet = () => {
         );
 
         const json2: any = await handleApiErrors(response2);
-        console.log('json2', json2);
+
         setAccessToken(json2.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));

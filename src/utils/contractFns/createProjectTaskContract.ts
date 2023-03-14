@@ -1,27 +1,37 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import TaskFactoryAbi from 'contracts/abi/TaskFactory.sol/TaskFactory.json';
 import config from 'config';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { setProjectTaskContract } from 'actions/flProject';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
 interface ICreateProjectContract {
   projectAddress: string;
   walletId: string | undefined;
   dispatch: Dispatch<AnyAction>;
+  auth: AuthContextType;
 }
 
 const createProjectTaskContract = async ({
   projectAddress,
   walletId,
   dispatch,
+  auth,
 }: ICreateProjectContract) => {
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+
   try {
     if (!walletId) throw new Error('Unable to create project task');
 
-    const web3 = getWeb3Instance();
+    let web3;
+    if (arcanaWeb3Instance) {
+      web3 = arcanaWeb3Instance;
+    } else {
+      web3 = getWeb3Instance();
+    }
     const gasPrice = await estimateGasPrice(web3);
 
     const TaskFactory = new web3.eth.Contract(

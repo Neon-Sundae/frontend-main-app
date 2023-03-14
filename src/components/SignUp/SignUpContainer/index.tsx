@@ -2,6 +2,7 @@ import neonSundaeLogo from 'assets/illustrations/icons/neonSundaeMainLogo.png';
 import { useState } from 'react';
 import { getItem } from 'utils/localStorageFn';
 import BlurBlobs from 'components/BlurBlobs';
+import TopGradientBar from 'components/TopGradientBar';
 import Step0 from '../Step0';
 import Step1 from '../Step1';
 import Step2 from '../Step2';
@@ -13,6 +14,7 @@ const SignUpContainer = () => {
 
   return (
     <>
+      <TopGradientBar />
       <BlurBlobs />
       <div className={styles['sign-up-container']}>
         <div className={styles['sign-up-container--content']}>

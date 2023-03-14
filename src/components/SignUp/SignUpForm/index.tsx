@@ -41,7 +41,6 @@ interface IFile {
 }
 
 const SignUpForm = () => {
-  const authState = useSelector((state: RootState) => state.auth);
   const user = useSelector((state: RootState) => state.user.user);
 
   const auth = useAuth();
@@ -64,6 +63,7 @@ const SignUpForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
+  // FIXME: not triggering properly
   useEffect(() => {
     if (accessToken) saveOrgData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,7 +123,6 @@ const SignUpForm = () => {
     setInputValue(value);
   };
 
-  // FIXME: this creates a bunch of organisations :/
   const saveOrgData = () => {
     const orgData = JSON.parse(getItem('orgData'));
     const localFile = getItem('file');

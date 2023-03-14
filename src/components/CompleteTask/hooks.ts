@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { useUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import completeTaskOnChain from 'utils/contractFns/completeTaskOnChain';
+import { useAuth } from '@arcana/auth-react';
 
 const useCompleteTask = () => {
+  const auth = useAuth();
   const updateTask = useUpdateTaskStatus();
 
   const [pending, setPending] = useState('initial');
@@ -22,6 +24,7 @@ const useCompleteTask = () => {
         setPending,
         updateTask,
         projectTaskAddress,
+        auth,
       });
     } catch (err) {
       console.log(err);

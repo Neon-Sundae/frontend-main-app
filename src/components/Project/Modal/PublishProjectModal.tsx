@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Modal from 'components/Modal';
 import { toggleWalletDrawer } from 'actions/app';
+import { useProvider } from '@arcana/auth-react';
+import { EthereumProvider } from '@arcana/auth';
 import DepositFundsToWallet from './DepositFundsToWallet';
 import { useProject } from '../Landing/hooks';
 import styles from './index.module.scss';
@@ -22,6 +24,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
   projectId,
   budget,
 }) => {
+  const { provider: arcanaProvider } = useProvider();
   const { publishProject, setDeploying, deploying } = useProject();
 
   const { selectedProjectAddress, deploy_state } = useSelector(
@@ -61,8 +64,9 @@ const PublishProjectModal: FC<IPublishProject> = ({
           <GoLiveState
             budget={budget}
             projectId={projectId}
-            publishProject={publishProject}
+            publishProject={() => publishProject(projectId)}
             usdcBalance={usdcBalance}
+            arcanaProvider={arcanaProvider}
           />
         );
       case 'deploying':
@@ -100,7 +104,11 @@ interface IGoLiveState {
   budget: number;
   projectId: string;
   usdcBalance: number;
-  publishProject: (projectId: string) => Promise<void>;
+  publishProject: (
+    projectId: string,
+    arcanaProvider: EthereumProvider
+  ) => Promise<void>;
+  arcanaProvider: EthereumProvider;
 }
 
 const GoLiveState: FC<IGoLiveState> = ({
@@ -108,6 +116,7 @@ const GoLiveState: FC<IGoLiveState> = ({
   projectId,
   usdcBalance,
   publishProject,
+  arcanaProvider,
 }) => {
   return (
     <>
@@ -136,7 +145,7 @@ const GoLiveState: FC<IGoLiveState> = ({
       <div style={{ margin: '40px 141px' }}>
         <button
           className={styles['publish-go-live']}
-          onClick={() => publishProject(projectId)}
+          onClick={() => publishProject(projectId, arcanaProvider)}
         >
           Publish Project
         </button>

@@ -10,7 +10,6 @@ import styles from './index.module.scss';
 import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
-  const auth = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState({

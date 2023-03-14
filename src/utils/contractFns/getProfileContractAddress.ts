@@ -1,14 +1,24 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import ProfileFactoryAbi from 'contracts/abi/ProfileFactory.sol/ProfileFactory.json';
 import config from 'config';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
-const getProfileContractAddress = async (address: string | undefined) => {
+const getProfileContractAddress = async (
+  address: string | undefined,
+  auth: AuthContextType
+) => {
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
   try {
     if (!address) throw new Error('Address not found');
 
-    const web3 = getWeb3Instance();
+    let web3;
+    if (arcanaWeb3Instance) {
+      web3 = arcanaWeb3Instance;
+    } else {
+      web3 = getWeb3Instance();
+    }
     const gasPrice = await estimateGasPrice(web3);
 
     console.log('getting profile contract address');

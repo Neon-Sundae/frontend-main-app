@@ -1,17 +1,25 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
+import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import ProfileAbi from 'contracts/abi/Profile.sol/Profile.json';
 import { SetStateAction, Dispatch } from 'react';
 import toast from 'react-hot-toast';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 
 const withdrawProfileBalance = async (
   amount: number,
   contractAddress: string,
   userAddress: string,
-  setDeploying: Dispatch<SetStateAction<string>>
+  setDeploying: Dispatch<SetStateAction<string>>,
+  auth: AuthContextType
 ) => {
-  const web3 = getWeb3Instance();
+  const arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
+  let web3;
+  if (arcanaWeb3Instance) {
+    web3 = arcanaWeb3Instance;
+  } else {
+    web3 = getWeb3Instance();
+  }
   const gasPrice = await estimateGasPrice(web3);
 
   const withdrawAmount = amount * 10 ** 6;
