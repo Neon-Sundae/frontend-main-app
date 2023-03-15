@@ -1,11 +1,7 @@
 import clsx from 'clsx';
+import { IChoice } from 'interfaces/auth';
 import { FC } from 'react';
 import styles from './index.module.scss';
-
-interface IChoice {
-  id: number;
-  value: string;
-}
 
 interface iChoiceButton {
   selectObjective: (choice: IChoice) => void;

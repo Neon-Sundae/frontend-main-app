@@ -3,14 +3,18 @@ import { IChoice } from 'interfaces/auth';
 import { ChangeEvent, FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from 'reducers';
+
 import { setItem } from 'utils/sessionStorageFunc';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
 
 const choicesArray = [
-  { id: 0, value: 'I am a builder looking to build with projects 🧑‍💻' },
-  { id: 1, value: 'I have an organisation  🚀' },
+  {
+    id: 0,
+    type: 'builder',
+    value: 'I am a builder looking to build with projects 🧑‍💻',
+  },
+  { id: 1, type: 'organisation', value: 'I have an organisation  🚀' },
 ];
 
 const Step0: FC = () => {
@@ -25,12 +29,12 @@ const Step0: FC = () => {
   };
 
   const handleChoiceSelection = (choice: IChoice) => {
-    setActiveButton(`step${choice.id}`);
+    if (choice.type) setActiveButton(choice.type);
   };
 
   const handleSubmit = () => {
-    dispatch(updateCurrentSignUpStep(activeButton));
-    if (activeButton === 'step0') dispatch(updateCurrentSignUpStep('step3'));
+    if (activeButton === 'builder') dispatch(updateCurrentSignUpStep('step3'));
+    dispatch(updateCurrentSignUpStep('step1'));
   };
 
   return (
@@ -52,7 +56,7 @@ const Step0: FC = () => {
                 width="213px"
                 height="185px"
                 choice={choice}
-                activeButton={`step${choice.id}` === activeButton}
+                activeButton={choice.type === activeButton}
               />
             );
           })}
