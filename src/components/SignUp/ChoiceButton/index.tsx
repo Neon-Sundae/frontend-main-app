@@ -31,7 +31,7 @@ const ChoiceButton: FC<iChoiceButton> = ({
   return (
     <input
       type="button"
-      id={id.toString()} // FIXME:
+      id={id.toString()}
       className={clsx(
         styles['choice-button'],
         activeButton && styles['choice-button-active']

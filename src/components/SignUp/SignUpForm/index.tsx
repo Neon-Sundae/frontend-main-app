@@ -163,7 +163,6 @@ const SignUpForm = () => {
         <p>or sign up via email</p>
         <IconButton
           handleClick={handleEmailLogin}
-          icon={<></>}
           text="Verified Email"
           style={style}
           active={active === 'emailLogin'}

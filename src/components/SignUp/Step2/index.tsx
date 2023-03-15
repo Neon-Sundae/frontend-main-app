@@ -8,20 +8,7 @@ interface IStep2 {
   setStep: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-interface Inputs {
-  name: string;
-}
-
 const Step2: FC<IStep2> = ({ setStep }) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
-
   return (
     <div className={styles['step2-container']}>
       <h2>Let’s create your organisation</h2>

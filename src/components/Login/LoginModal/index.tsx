@@ -77,10 +77,8 @@ const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
           />
         </div>
         <div className={styles['login-modal--details']}>
-          {!getWalletShow && <LoginModalContent />}
           {getWalletShow && (
             <MetamaskLogin
-              setGetWalletShow={setGetWalletShow}
               handleMetamaskLogin={handleMetamaskLogin}
               showQr={showQr}
             />
@@ -131,13 +129,11 @@ export const LoginModalContent = () => {
 };
 
 interface MetamaskLoginProps {
-  setGetWalletShow: (getWalletShow: boolean) => void;
   handleMetamaskLogin: any;
   showQr: boolean;
 }
 
 const MetamaskLogin: FC<MetamaskLoginProps> = ({
-  setGetWalletShow,
   handleMetamaskLogin,
   showQr,
 }) => {

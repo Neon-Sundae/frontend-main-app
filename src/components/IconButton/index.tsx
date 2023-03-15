@@ -3,8 +3,8 @@ import { FC } from 'react';
 import styles from './index.module.scss';
 
 interface IconButtonFC {
-  icon: JSX.Element;
-  text: string;
+  icon?: JSX.Element;
+  text?: string;
   handleClick: () => void;
   // option prop
   style?: any;
@@ -43,6 +43,8 @@ IconButton.defaultProps = {
   style: undefined,
   active: false,
   showBorder: true,
+  text: '',
+  icon: <></>,
 };
 
 export default IconButton;

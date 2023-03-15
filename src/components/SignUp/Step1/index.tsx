@@ -1,5 +1,4 @@
 import { IChoice } from 'interfaces/auth';
-import _ from 'lodash';
 import { FC, useRef, useState } from 'react';
 import { setItem } from 'utils/localStorageFn';
 import ChoiceButton from '../ChoiceButton';
@@ -19,7 +18,7 @@ const choicesArray = [
 ];
 
 const Step1: FC<IStep0> = ({ setStep }) => {
-  const [selected, setSelected] = useState<any>([]);
+  const [selected, setSelected] = useState<IChoice[]>([]);
 
   const elementRef: any = useRef();
 

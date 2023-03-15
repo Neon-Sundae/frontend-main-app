@@ -15,7 +15,6 @@ const ArcanaAuthLogin = () => {
   const { provider } = useProvider();
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
-  const [loginDone, setLoginDone] = useState(false);
 
   useEffect(() => {
     const triggerLoginSuccess = async () => {
