@@ -27,7 +27,9 @@ interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
 }
 
-const useMetamaskLogin = () => {
+const useMetamaskLogin = (
+  setNewUserId?: React.Dispatch<React.SetStateAction<number>>
+) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const generateNonce = async ({ setError }: IGenerateNonce) => {
@@ -94,7 +96,8 @@ const useMetamaskLogin = () => {
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
-          navigate('/dashboard');
+          if (setNewUserId) setNewUserId(json.user.userId);
+          if (!getItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {

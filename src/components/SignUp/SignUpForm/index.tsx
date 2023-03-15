@@ -12,13 +12,10 @@ import {
 } from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { getItem } from 'utils/localStorageFn';
 import useCreateOrganisation from 'components/StartOrgModal/hook';
 import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
-import { getAccessToken } from 'utils/authFn';
 import styles from './index.module.scss';
 
 const style = {
@@ -32,23 +29,17 @@ const udStyle = {
   height: '58.12px',
   borderRadius: '20px',
   fontFamily: 'var(--font-family-montserrat)',
-  fontSize: '15px',
+  fontSize: '14px',
 };
 
-interface IFile {
-  id: string;
-  file: File;
-}
-
 const SignUpForm = () => {
-  const user = useSelector((state: RootState) => state.user.user);
-
   const auth = useAuth();
   const { loginSuccess } = useArcanaWallet();
   const { provider } = useProvider();
   const [disableButton, setDisableButton] = useState(false);
-  const accessToken = getAccessToken();
-  const createProfile = useCreateProfile();
+  const [newUserId, setNewUserId] = useState(0);
+
+  const createProfile = useCreateProfile(setNewUserId);
 
   const [file, setFile] = useState<File | undefined>();
   const createOrganisation = useCreateOrganisation(setDisableButton);
@@ -56,19 +47,21 @@ const SignUpForm = () => {
   useEffect(() => {
     const triggerLoginSuccess = async () => {
       await loginSuccess(auth.user?.address, provider);
-      await saveOrgData();
+      createProfile.mutate({
+        name: getItem('name'),
+        email: auth?.user?.email || '',
+      });
     };
-    if (auth.user) {
+    if (auth.isLoggedIn) {
       triggerLoginSuccess();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  // FIXME: not triggering properly
-  // useEffect(() => {
-  //   if (accessToken) ;
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [accessToken]);
+  useEffect(() => {
+    if (newUserId !== 0) saveOrgData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newUserId]);
 
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
@@ -77,7 +70,7 @@ const SignUpForm = () => {
   const [showEmail, setShowEmail] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  const generateNonce = useMetamaskLogin();
+  const generateNonce = useMetamaskLogin(setNewUserId);
   const walletConnectGenerateNonce = useWalletConnectLogin();
   const unstoppableDomains = useUnstoppableDomains();
 
@@ -90,7 +83,6 @@ const SignUpForm = () => {
 
   const handleMetamaskLogin = () => {
     setActive('metamask');
-
     setShowEmail(false);
     if (typeof window.ethereum !== 'undefined') {
       loginWithMetaMask();
@@ -126,29 +118,20 @@ const SignUpForm = () => {
 
   const saveOrgData = async () => {
     const orgData = JSON.parse(getItem('orgData'));
-    console.log('orgData', orgData);
 
     if (orgData) {
       const localFile = getItem('file');
 
       if (!file) convertBase64ToFile(localFile, setFile);
-      console.log('auth', auth);
 
-      if (auth.user) {
-        const userEmail = auth.user.email || '';
-        const userName = getItem('name');
-
-        createProfile.mutate({ name: userName, email: userEmail });
-        console.log('user', user);
-        if (user?.userId)
-          await createOrganisation({
-            name: orgData.name,
-            description: orgData.description,
-            userId: user.userId.toString(),
-            image: file,
-            industry: getItem('choices'),
-          });
-      }
+      if (!disableButton)
+        await createOrganisation({
+          name: orgData.name,
+          description: orgData.description,
+          userId: newUserId.toString(),
+          image: file,
+          industry: getItem('choices'),
+        });
     }
   };
 
