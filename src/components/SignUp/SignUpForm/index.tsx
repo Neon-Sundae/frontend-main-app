@@ -71,8 +71,8 @@ const SignUpForm = () => {
   const [inputValue, setInputValue] = useState('');
 
   const generateNonce = useMetamaskLogin(setNewUserId);
-  const walletConnectGenerateNonce = useWalletConnectLogin();
-  const unstoppableDomains = useUnstoppableDomains();
+  const walletConnectGenerateNonce = useWalletConnectLogin(setNewUserId);
+  const unstoppableDomains = useUnstoppableDomains(setNewUserId);
 
   const { handleSubmit } = useForm();
 
