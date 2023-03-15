@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import clsx from 'clsx';
 import StartOrgModal from 'components/StartOrgModal';
 import StartPrjModal from 'components/StartPrjModal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { removeItem } from 'utils/localStorageFn';
+
 import styles from './index.module.scss';
 import OnboardModal from '../OnboardModal';
 
@@ -23,13 +23,6 @@ const Banner: FC<IBanner> = ({
 
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showPrjModal, setShowPrjModal] = useState(false);
-
-  useEffect(() => {
-    removeItem('file');
-    removeItem('name');
-    removeItem('orgData');
-    removeItem('choices');
-  }, []);
 
   const handleOrgModalShow = () => {
     setShowOrgModal(true);

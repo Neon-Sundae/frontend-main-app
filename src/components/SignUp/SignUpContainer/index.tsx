@@ -1,6 +1,6 @@
 import neonSundaeLogo from 'assets/illustrations/icons/neonSundaeMainLogo.png';
 import { useState } from 'react';
-import { getItem } from 'utils/localStorageFn';
+import { getItem } from 'utils/sessionStorageFunc';
 import BlurBlobs from 'components/BlurBlobs';
 import TopGradientBar from 'components/TopGradientBar';
 import Step0 from '../Step0';

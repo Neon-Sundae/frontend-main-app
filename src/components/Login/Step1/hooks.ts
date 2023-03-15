@@ -21,7 +21,7 @@ import UAuth from '@uauth/js';
 import { EthereumProvider } from '@arcana/auth';
 import { useAuth } from '@arcana/auth-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getItem } from 'utils/localStorageFn';
+import { getItem } from 'utils/sessionStorageFunc';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;

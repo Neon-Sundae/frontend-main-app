@@ -1,4 +1,4 @@
-import { getItem } from 'utils/localStorageFn';
+import { getItem } from 'utils/sessionStorageFunc';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import { IChoice } from 'interfaces/auth';
 import { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setItem } from 'utils/localStorageFn';
+import { setItem } from 'utils/sessionStorageFunc';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
 

@@ -1,6 +1,6 @@
 import { IChoice } from 'interfaces/auth';
 import { FC, useRef, useState } from 'react';
-import { setItem } from 'utils/localStorageFn';
+import { setItem } from 'utils/sessionStorageFunc';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
 

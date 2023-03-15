@@ -11,7 +11,7 @@ import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg'
 import Select, { SingleValue } from 'react-select';
 import { Option } from 'components/Select';
 import industryOptions from 'assets/data/industries.json';
-import { setItem } from 'utils/localStorageFn';
+import { setItem } from 'utils/sessionStorageFunc';
 import { customStyles } from './selectStyles';
 import styles from './index.module.scss';
 

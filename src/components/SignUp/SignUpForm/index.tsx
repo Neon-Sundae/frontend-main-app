@@ -12,7 +12,7 @@ import {
 } from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
-import { getItem } from 'utils/localStorageFn';
+import { getItem } from 'utils/sessionStorageFunc';
 import useCreateOrganisation from 'components/StartOrgModal/hook';
 import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
