@@ -12,6 +12,8 @@ import Select, { SingleValue } from 'react-select';
 import { Option } from 'components/Select';
 import industryOptions from 'assets/data/industries.json';
 import { setItem } from 'utils/sessionStorageFunc';
+import { useDispatch } from 'react-redux';
+import { updateCurrentSignUpStep } from 'actions/auth';
 import { customStyles } from './selectStyles';
 import styles from './index.module.scss';
 
@@ -24,11 +26,10 @@ interface IFile {
   id: string;
   file: File;
 }
-interface ICreateOrganisationForm {
-  setStep: React.Dispatch<React.SetStateAction<string | null>>;
-}
 
-const CreateOrganisationForm: FC<ICreateOrganisationForm> = ({ setStep }) => {
+const CreateOrganisationForm: FC = () => {
+  const dispatch = useDispatch();
+
   const [fileData, setFileData] = useState<IFile | null>(null);
   const [localFile, setLocalFile] = useState<string | ArrayBuffer | null>(null);
 
@@ -54,7 +55,7 @@ const CreateOrganisationForm: FC<ICreateOrganisationForm> = ({ setStep }) => {
     const orgData = { ...data, ...selectedOption };
     setItem('orgData', JSON.stringify(orgData));
     setItem('file', localFile);
-    setStep('step3');
+    dispatch(updateCurrentSignUpStep('step3'));
   };
 
   return (

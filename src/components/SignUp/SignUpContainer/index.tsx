@@ -1,8 +1,8 @@
 import neonSundaeLogo from 'assets/illustrations/icons/neonSundaeMainLogo.png';
-import { useState } from 'react';
-import { getItem } from 'utils/sessionStorageFunc';
 import BlurBlobs from 'components/BlurBlobs';
 import TopGradientBar from 'components/TopGradientBar';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import Step0 from '../Step0';
 import Step1 from '../Step1';
 import Step2 from '../Step2';
@@ -10,7 +10,7 @@ import Step3 from '../Step3';
 import styles from './index.module.scss';
 
 const SignUpContainer = () => {
-  const [step, setStep] = useState(getItem('nextStep') || 'step0');
+  const auth = useSelector((state: RootState) => state.auth);
 
   return (
     <>
@@ -26,10 +26,10 @@ const SignUpContainer = () => {
           <p className={styles['sign-up-container--heading-text']}>
             Welcome to Neon Sundae
           </p>
-          {step === 'step0' && <Step0 setStep={setStep} />}
-          {step === 'step1' && <Step1 setStep={setStep} />}
-          {step === 'step2' && <Step2 setStep={setStep} />}
-          {step === 'step3' && <Step3 />}
+          {auth.currentSignUpStep === 'step0' && <Step0 />}
+          {auth.currentSignUpStep === 'step1' && <Step1 />}
+          {auth.currentSignUpStep === 'step2' && <Step2 />}
+          {auth.currentSignUpStep === 'step3' && <Step3 />}
         </div>
       </div>
     </>

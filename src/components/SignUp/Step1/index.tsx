@@ -1,12 +1,10 @@
+import { updateCurrentSignUpStep } from 'actions/auth';
 import { IChoice } from 'interfaces/auth';
 import { FC, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { setItem } from 'utils/sessionStorageFunc';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
-
-interface IStep0 {
-  setStep: React.Dispatch<React.SetStateAction<string | null>>;
-}
 
 const choicesArray = [
   { id: 0, value: 'Run Business Development with community' },
@@ -17,7 +15,8 @@ const choicesArray = [
   { id: 5, value: 'Host and Run Hackathons' },
 ];
 
-const Step1: FC<IStep0> = ({ setStep }) => {
+const Step1: FC = () => {
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState<IChoice[]>([]);
 
   const elementRef: any = useRef();
@@ -41,7 +40,7 @@ const Step1: FC<IStep0> = ({ setStep }) => {
 
   const handleSubmit = () => {
     setItem('choices', JSON.stringify(selected));
-    setStep('step2');
+    dispatch(updateCurrentSignUpStep('step2'));
   };
 
   return (
