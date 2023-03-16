@@ -10,6 +10,7 @@ import useFetchOrganisationOwner from 'hooks/useFetchOrganisationOwner';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import BlurBlobs from 'components/BlurBlobs';
+import OrganisationPublicView from 'components/OrganisationPublicView';
 import Banner from '../Banner';
 import styles from './index.module.scss';
 import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
@@ -124,10 +125,7 @@ const Landing: FC = () => {
           </div>
         </div>
       ) : (
-        <div className={styles['organisation-container']}>
-          <NavBar />
-          {tabSelector()}
-        </div>
+        <OrganisationPublicView organisation={organisation} />
       )}
     </>
   );

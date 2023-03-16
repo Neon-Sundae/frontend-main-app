@@ -1,0 +1,26 @@
+.horizontal-tabs {
+  // debug
+  color: #fff;
+  position: relative;
+  // correct ones
+
+  margin: auto;
+
+  @media (max-width: 1920px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+
+  // debug
+}

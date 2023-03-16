@@ -68,7 +68,6 @@
   font-family: var(--font-family-roboto-regular);
   font-size: 30px;
   color: white;
-  margin-bottom: 30px;
   line-height: 41px;
   font-weight: 600px;
 
@@ -140,6 +139,9 @@
       font-size: 20px;
       padding: 8px;
       width: 250px;
+    }
+    & > a {
+      margin-right: 15px;
     }
   }
 }

@@ -17,7 +17,7 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import styles from './index.module.scss';
@@ -30,14 +30,13 @@ interface IBanner {
 
 const Banner: FC<IBanner> = ({ organisation }) => {
   const { orgId } = useParams();
-  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
   const user = useSelector((state: RootState) => state.user.user);
 
-  const [nameLocal, setNameLocal] = useState(organisation.name ?? 'Polkadot');
+  const [nameLocal, setNameLocal] = useState(organisation.name ?? '');
   const [website, setWebsite] = useState(organisation.website ?? '');
   const [open, setOpen] = useState(false);
   const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
@@ -205,7 +204,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
 
         <div className={clsx(styles.center, styles['org-socials'])}>
           <div className={styles['socials-row']}>
-            <span className={styles['socials-header']}>Website:</span>
             {isEditable ? (
               <input
                 type="text"
@@ -226,7 +224,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
             )}
           </div>
           <div className={styles['socials-row']}>
-            <span className={styles['socials-header']}>Socials:</span>
             {isEditable ? (
               <span
                 className={styles['social-icon-container--edit']}
@@ -236,6 +233,15 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               </span>
             ) : (
               <span className={styles['social-icon-container']}>
+                {organisation.instagram ? (
+                  <a
+                    href={`${organisation.twitter}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Instagram width={30} height={30} />
+                  </a>
+                ) : null}
                 {organisation.linkedin ? (
                   <a
                     href={`${organisation.linkedin}`}
@@ -252,15 +258,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                     rel="noreferrer"
                   >
                     <Twitter width={30} height={30} />
-                  </a>
-                ) : null}
-                {organisation.instagram ? (
-                  <a
-                    href={`${organisation.twitter}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Instagram width={30} height={30} />
                   </a>
                 ) : null}
               </span>
