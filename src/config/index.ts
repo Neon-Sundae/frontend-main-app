@@ -67,18 +67,17 @@ const configs: Environment = {
   },
 };
 
+const environment = import.meta.env.VITE_APPLICATION_ENV;
+const config = configs[environment];
 export const provider = new AuthProvider(
   `${import.meta.env.VITE_ARCANA_AUTH_CLIENT_KEY}`,
   {
     chainConfig: {
-      chainId: CHAIN.POLYGON_MUMBAI_TESTNET, // FIXME: need to make it change as per env
+      chainId: config.chainId as CHAIN,
       rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
     },
     alwaysVisible: false,
   }
 );
-
-const environment = import.meta.env.VITE_APPLICATION_ENV;
-const config = configs[environment];
 
 export default config;

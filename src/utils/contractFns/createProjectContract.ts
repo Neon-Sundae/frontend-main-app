@@ -1,5 +1,4 @@
 import { AbiItem } from 'web3-utils';
-import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
@@ -9,6 +8,7 @@ import toast from 'react-hot-toast';
 import saveProjectContractAddress from 'hooks/saveProjectContractAddress';
 import estimateGasPrice from 'utils/estimateGasFees';
 import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 interface ICreateProjectContract {
   projectId: string;
@@ -25,20 +25,10 @@ const createProjectContract = async ({
   setDeploying,
   auth,
 }: ICreateProjectContract) => {
-  let arcanaWeb3Instance;
-  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
-  else arcanaWeb3Instance = null;
+  const web3: any = arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!walletId) throw new Error('Unable to create project');
-
-    let web3;
-
-    if (arcanaWeb3Instance) {
-      web3 = arcanaWeb3Instance;
-    } else {
-      web3 = getWeb3Instance();
-    }
 
     const gasPrice = await estimateGasPrice(web3);
 

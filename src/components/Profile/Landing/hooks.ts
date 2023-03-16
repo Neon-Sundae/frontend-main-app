@@ -13,12 +13,13 @@ import getProfileDetails from 'utils/contractFns/getProfileDetails';
 import { useAuth } from '@arcana/auth-react';
 
 const useProfile = () => {
+  const auth = useAuth();
   const dispatch = useDispatch();
 
   const fetchOnChainProfileData = async (address: string) => {
     try {
       if (address !== '0x0000000000000000000000000000000000000000' && address) {
-        const [, , , xp, usdc] = await getProfileDetails(address);
+        const [, , , xp, usdc] = await getProfileDetails(address, auth);
 
         dispatch(getXP(xp));
         dispatch(getUSDCBalance(usdc));

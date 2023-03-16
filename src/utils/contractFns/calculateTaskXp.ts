@@ -19,7 +19,7 @@ const calculateTaskXP = async (
       return 0;
     }
 
-    const [, , totalXP, ,] = await getProfileDetails(profileAddress);
+    const [, , totalXP, ,] = await getProfileDetails(profileAddress, auth);
 
     const LEVEL_INCREMENTOR = 1000;
     const LEVEL_20 = 20 * LEVEL_INCREMENTOR;

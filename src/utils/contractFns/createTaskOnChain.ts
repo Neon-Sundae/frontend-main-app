@@ -33,12 +33,9 @@ const createTaskOnChain = async ({
 
     const provider = getEthersInstance();
     const web3 = getWeb3Instance();
-    let signer;
-
+    let signer = provider.getSigner();
     if (arcanaProviderWrapped) {
       signer = arcanaProviderWrapped.getSigner();
-    } else {
-      signer = provider.getSigner();
     }
     const gasPrice = await estimateGasPrice(web3);
 

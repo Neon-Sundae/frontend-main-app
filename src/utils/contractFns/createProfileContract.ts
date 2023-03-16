@@ -19,25 +19,18 @@ const createProfileContract = async (
   arcanaProvider: EthereumProvider,
   auth: AuthContextType
 ) => {
-  console.log('auth from createProfileContract', auth);
   const arcanaProviderWrapped = new ethers.providers.Web3Provider(
     arcanaProvider
   );
-
-  console.log('arcanaProviderWrapped', arcanaProviderWrapped);
-
   try {
     if (!address || !name || !title)
       throw new Error('Unable to create profile');
 
     const provider = getEthersInstance();
     const web3 = getWeb3Instance();
-    let signer;
-
+    let signer = provider.getSigner();
     if (arcanaProviderWrapped) {
       signer = arcanaProviderWrapped.getSigner();
-    } else {
-      signer = provider.getSigner();
     }
 
     const gasPrice = await estimateGasPrice(web3);

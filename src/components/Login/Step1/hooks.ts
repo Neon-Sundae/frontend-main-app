@@ -20,7 +20,7 @@ import {
 import UAuth from '@uauth/js';
 import { EthereumProvider } from '@arcana/auth';
 import { useAuth } from '@arcana/auth-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getItem } from 'utils/sessionStorageFunc';
 
 interface IGenerateNonce {

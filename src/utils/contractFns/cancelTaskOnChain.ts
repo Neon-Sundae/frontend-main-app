@@ -1,8 +1,8 @@
 import { AbiItem } from 'web3-utils';
-import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import estimateGasPrice from 'utils/estimateGasFees';
 import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 interface ICancelTaskOnChain {
   walletId: string | undefined;
@@ -19,19 +19,10 @@ const cancelTaskOnChain = async ({
   builder,
   auth,
 }: ICancelTaskOnChain) => {
-  let arcanaWeb3Instance;
-  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
-  else arcanaWeb3Instance = null;
+  const web3: any = arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!walletId) throw new Error('Unable to complete the task');
-
-    let web3;
-    if (arcanaWeb3Instance) {
-      web3 = arcanaWeb3Instance;
-    } else {
-      web3 = getWeb3Instance();
-    }
 
     const gasPrice = await estimateGasPrice(web3);
 

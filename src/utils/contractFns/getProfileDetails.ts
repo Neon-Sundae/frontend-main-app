@@ -1,10 +1,14 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
 import ProfileAbi from 'contracts/abi/Profile.sol/Profile.json';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
-const getProfileDetails = async (profileAddress: string) => {
+const getProfileDetails = async (
+  profileAddress: string,
+  auth: AuthContextType
+) => {
   try {
-    const web3 = getWeb3Instance();
+    const web3: any = arcanaWeb3InstanceFunc(auth);
 
     const ProfileContract = new web3.eth.Contract(
       ProfileAbi.abi as AbiItem[],

@@ -1,26 +1,17 @@
 import { AbiItem } from 'web3-utils';
-import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
 import config from 'config';
 import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 const getFndrBalance = async (
   address: string | undefined,
   auth: AuthContextType
 ) => {
-  let arcanaWeb3Instance;
-  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
-  else arcanaWeb3Instance = null;
+  const web3: any = arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!address) return 0;
-
-    let web3;
-    if (arcanaWeb3Instance) {
-      web3 = arcanaWeb3Instance;
-    } else {
-      web3 = getWeb3Instance();
-    }
 
     console.log('Getting FNDR balance');
 

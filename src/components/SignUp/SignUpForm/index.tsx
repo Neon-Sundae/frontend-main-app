@@ -59,7 +59,7 @@ const SignUpForm = () => {
   }, [auth]);
 
   useEffect(() => {
-    if (newUserId !== 0) saveOrgData();
+    if (newUserId) saveOrgData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newUserId]);
 

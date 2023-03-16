@@ -1,5 +1,4 @@
 import { AbiItem } from 'web3-utils';
-import { getArcanaWeb3Instance, getWeb3Instance } from 'utils/web3EventFn';
 import ProjectAbi from 'contracts/abi/Project.sol/Project.json';
 import USDCAbi from 'contracts/abi/USDC.sol/USDC.json';
 import config from 'config';
@@ -7,6 +6,7 @@ import { SetStateAction, Dispatch } from 'react';
 import toast from 'react-hot-toast';
 import estimateGasPrice from 'utils/estimateGasFees';
 import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 const depositProjectFunds = async (
   amount: number,
@@ -15,15 +15,7 @@ const depositProjectFunds = async (
   setDeploying: Dispatch<SetStateAction<string>>,
   auth: AuthContextType
 ) => {
-  let arcanaWeb3Instance;
-  if (auth.isLoggedIn) arcanaWeb3Instance = await getArcanaWeb3Instance(auth);
-  else arcanaWeb3Instance = null;
-  let web3;
-  if (arcanaWeb3Instance) {
-    web3 = arcanaWeb3Instance;
-  } else {
-    web3 = getWeb3Instance();
-  }
+  const web3: any = arcanaWeb3InstanceFunc(auth);
   const gasPrice = await estimateGasPrice(web3);
   const depositAmount = amount * 10 ** 6;
 
