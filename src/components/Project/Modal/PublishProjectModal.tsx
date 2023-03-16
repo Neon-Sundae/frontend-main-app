@@ -104,10 +104,7 @@ interface IGoLiveState {
   budget: number;
   projectId: string;
   usdcBalance: number;
-  publishProject: (
-    projectId: string,
-    arcanaProvider: EthereumProvider
-  ) => Promise<void>;
+  publishProject: (projectId: string) => Promise<void>;
   arcanaProvider: EthereumProvider;
 }
 
@@ -145,7 +142,7 @@ const GoLiveState: FC<IGoLiveState> = ({
       <div style={{ margin: '40px 141px' }}>
         <button
           className={styles['publish-go-live']}
-          onClick={() => publishProject(projectId, arcanaProvider)}
+          onClick={() => publishProject(projectId)}
         >
           Publish Project
         </button>
