@@ -1,5 +1,4 @@
 import { ReactComponent as MoonPayIcon } from 'assets/illustrations/icons/moonpay.svg';
-import { ReactComponent as FtxIcon } from 'assets/illustrations/icons/ftx.svg';
 import { ReactComponent as WyreIcon } from 'assets/illustrations/icons/wyre.svg';
 import { ReactComponent as TransakIcon } from 'assets/illustrations/icons/transak.svg';
 import styles from './index.module.scss';
@@ -22,19 +21,7 @@ const DepositFundsToWallet = () => {
             <span>MoonPay</span>
           </div>
         </a>
-        <a
-          href="https://ftx.com"
-          target="_blank"
-          className={styles['wallet-item']}
-          rel="noreferrer"
-        >
-          <div className={styles['icon-holder']}>
-            <FtxIcon width={43} height={43} style={{ marginTop: '3px' }} />
-          </div>
-          <div>
-            <span>FTX</span>
-          </div>
-        </a>
+
         <a
           href="https://www.sendwyre.com/"
           target="_blank"

@@ -1,0 +1,127 @@
+.sign-up-form {
+  height: 553px;
+  width: 770px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #292932;
+  padding: 0 30px;
+  border-radius: 30px;
+  padding: 20px 0;
+
+  &--option-select {
+    margin: auto;
+    & > p {
+      margin-bottom: 25px;
+    }
+
+    & > button {
+      margin-bottom: 20px;
+    }
+  }
+
+  &--option-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 35px;
+    width: 400px;
+    text-align: center;
+
+    h2 {
+      font-family: var(--font-family-roboto-regular);
+      font-weight: 400;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      font-size: 16px;
+
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      color: #fff;
+      border: 0.661017px solid #ffffff;
+      border-radius: 6.61017px;
+      width: 300px;
+      height: 50px;
+      cursor: pointer;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 16px;
+      font-weight: 100;
+      color: #fbfbfb;
+      padding: 0 25px;
+      background: none;
+      box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(40px);
+      margin-bottom: 15px;
+    }
+
+    input::placeholder {
+      color: #fbfbfb;
+    }
+
+    .retry-button {
+      height: 31px;
+      width: 56.9px;
+      margin: auto;
+      color: #fff;
+      border-width: 1px;
+      font-size: 12.7179px;
+      color: #fff;
+      border-radius: 23px;
+      border: 0.7px solid #fff;
+      cursor: pointer;
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 400;
+      line-height: 23px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        126.59deg,
+        rgba(255, 198, 253, 0.133) 12.11%,
+        rgba(255, 255, 255, 0.07) 73.08%
+      );
+      box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+      backdrop-filter: blur(40px);
+      border-radius: 23px;
+    }
+
+    button {
+      font-family: var(--font-family-roboto-regular);
+      color: #fff;
+      font-size: 18px;
+      margin-top: 15px;
+      border: 0.7px solid #cf92ff;
+      box-shadow: none;
+      border-radius: 0px;
+      width: 179px;
+      height: 55px;
+      border-radius: 22px;
+      cursor: pointer;
+      background: linear-gradient(
+          89.58deg,
+          #826af7 2.95%,
+          #db5dde 56.19%,
+          #e87aaf 103.17%
+        ),
+        linear-gradient(0deg, #e49df4, #e49df4),
+        radial-gradient(
+          116.97% 116.97% at 34.87% -2.72%,
+          #ff9bfb 0%,
+          #ffffff 100%
+        ),
+        linear-gradient(
+          94.63deg,
+          rgba(255, 255, 255, 0.16) 4.94%,
+          rgba(255, 255, 255, 0.04) 93.94%
+        );
+    }
+  }
+}

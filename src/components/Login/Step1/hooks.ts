@@ -3,7 +3,11 @@ import config from 'config';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { providers, ethers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleAddPolygonChain, signMessage } from 'utils/ethereumFn';
+import {
+  handleAddPolygonChain,
+  signMessage,
+  signArcanaMessage,
+} from 'utils/ethereumFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { setAccessToken } from 'utils/authFn';
 import { updateUser } from 'actions/user';
@@ -14,14 +18,20 @@ import {
   requestEthereumAccounts,
 } from 'utils/web3EventFn';
 import UAuth from '@uauth/js';
+import { EthereumProvider } from '@arcana/auth';
+import { useAuth } from '@arcana/auth-react';
+import { useNavigate } from 'react-router-dom';
+import { getItem } from 'utils/sessionStorageFunc';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
 }
 
-const useMetamaskLogin = () => {
+const useMetamaskLogin = (
+  setNewUserId?: React.Dispatch<React.SetStateAction<number>>
+) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const generateNonce = async ({ setError }: IGenerateNonce) => {
     const ac = new AbortController();
     const { signal } = ac;
@@ -69,8 +79,6 @@ const useMetamaskLogin = () => {
             signature,
           };
 
-          console.log(payload2);
-
           const response2 = await fetch(
             `${config.ApiBaseUrl}/auth/verify-signature`,
             {
@@ -88,6 +96,8 @@ const useMetamaskLogin = () => {
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
+          if (setNewUserId) setNewUserId(json.user.userId);
+          if (!getItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -104,8 +114,11 @@ const useMetamaskLogin = () => {
   return generateNonce;
 };
 
-const useWalletConnectLogin = () => {
+const useWalletConnectLogin = (
+  setNewUserId?: React.Dispatch<React.SetStateAction<number>>
+) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const walletConnectProvider = useSelector(
     (state: RootState) => state.app.walletConnectProvider
   );
@@ -117,7 +130,6 @@ const useWalletConnectLogin = () => {
     try {
       await walletConnectProvider.enable();
       const web3Provider = new providers.Web3Provider(walletConnectProvider);
-      console.log(web3Provider);
 
       const accounts = await web3Provider.listAccounts();
 
@@ -165,8 +177,6 @@ const useWalletConnectLogin = () => {
             signature,
           };
 
-          console.log(payload2);
-
           const response2 = await fetch(
             `${config.ApiBaseUrl}/auth/verify-signature`,
             {
@@ -184,6 +194,8 @@ const useWalletConnectLogin = () => {
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
+          if (setNewUserId) setNewUserId(json.user.userId);
+          if (!getItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -202,10 +214,13 @@ const useWalletConnectLogin = () => {
   return walletConnectGenerateNonce;
 };
 
-const useUnstoppableDomains = () => {
+const useUnstoppableDomains = (
+  setNewUserId?: React.Dispatch<React.SetStateAction<number>>
+) => {
   const ac = new AbortController();
   const { signal } = ac;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const uauth = new UAuth({
     clientID: import.meta.env.VITE_UD_CLIENT_KEY,
@@ -244,6 +259,8 @@ const useUnstoppableDomains = () => {
         setAccessToken(json.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
+        if (setNewUserId) setNewUserId(json.user.userId);
+        if (!getItem('orgData')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -261,4 +278,80 @@ const useUnstoppableDomains = () => {
   return { login, logout };
 };
 
-export { useMetamaskLogin, useWalletConnectLogin, useUnstoppableDomains };
+const useArcanaWallet = () => {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const ac = new AbortController();
+  const { signal } = ac;
+  const dispatch = useDispatch();
+
+  const loginSuccess = async (
+    walletId: string | undefined,
+    provider: EthereumProvider
+  ) => {
+    if (walletId) {
+      const payload = {
+        walletId,
+      };
+
+      const response = await fetch(
+        `${config.ApiBaseUrl}/auth/generate-nonce/arcana`,
+        {
+          signal,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const json: any = await handleApiErrors(response);
+
+      dispatch(updateUser(json.user));
+
+      const signature = await signArcanaMessage(
+        provider,
+        json.message,
+        walletId
+      );
+
+      if (signature) {
+        const payload2 = {
+          message: json.message,
+          walletId,
+          isFirstTimeUser: json.isFirstTimeUser,
+          signature,
+        };
+
+        const response2 = await fetch(
+          `${config.ApiBaseUrl}/auth/verify-signature`,
+          {
+            signal,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload2),
+          }
+        );
+
+        const json2: any = await handleApiErrors(response2);
+
+        setAccessToken(json2.accessToken);
+        dispatch(updateFirstTimeUser(json.isFirstTimeUser));
+
+        if (auth.isLoggedIn && !getItem('orgData')) navigate('/dashboard'); // builder login
+      }
+    }
+  };
+  return { loginSuccess };
+};
+
+export {
+  useMetamaskLogin,
+  useWalletConnectLogin,
+  useUnstoppableDomains,
+  useArcanaWallet,
+};

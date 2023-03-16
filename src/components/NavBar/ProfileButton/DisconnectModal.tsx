@@ -5,6 +5,7 @@ import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import Modal from 'components/Modal';
 import { revokeAccess } from 'utils/handleUnAuthorization';
+import { useAuth } from '@arcana/auth-react';
 import useUpdateUserProfileEmail from './hooks';
 import styles from './index.module.scss';
 
@@ -21,12 +22,18 @@ const DisconnectModal: FC<IDisconnectModal> = ({
   pictureFunc,
   getFormattedDomainName,
 }) => {
+  const auth = useAuth();
   const { user } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState<string | null | undefined>(
     user && user.email
   );
 
   const updateProfileDetails = useUpdateUserProfileEmail();
+
+  const revokeAccessFunc = () => {
+    revokeAccess();
+    auth.logout();
+  };
 
   const handleCopyAddress = () => {
     if (user?.domain) {
@@ -80,7 +87,7 @@ const DisconnectModal: FC<IDisconnectModal> = ({
             </a>
           </div>
         </div>
-        <button onClick={revokeAccess}>Disconnect</button>
+        <button onClick={revokeAccessFunc}>Disconnect</button>
       </div>
 
       <p className={styles['disconnect-connected-text']}>Account Details</p>

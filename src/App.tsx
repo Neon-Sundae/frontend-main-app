@@ -10,6 +10,7 @@ import { useProfile } from 'components/Profile/Landing/hooks';
 import ErrorPage from 'containers/error';
 
 const Login = lazy(() => import('containers/login'));
+const SignUp = lazy(() => import('containers/signUp'));
 const Dashboard = lazy(() => import('containers/dashboard'));
 const Profile = lazy(() => import('containers/profile'));
 const Organisation = lazy(() => import('containers/organisation'));
@@ -50,6 +51,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<RootPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/sign_up" element={<SignUp />} />
           <Route
             path="/dashboard"
             element={

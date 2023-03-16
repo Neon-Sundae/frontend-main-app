@@ -47,7 +47,7 @@ const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
   };
 
   if (!showModal) return null;
-  console.log(typeof window.ethereum !== 'undefined');
+
   return (
     <Modal
       onClose={() => setShowModal(false)}
@@ -77,12 +77,8 @@ const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
           />
         </div>
         <div className={styles['login-modal--details']}>
-          {!getWalletShow && (
-            <LoginModalContent setGetWalletShow={setGetWalletShow} />
-          )}
           {getWalletShow && (
             <MetamaskLogin
-              setGetWalletShow={setGetWalletShow}
               handleMetamaskLogin={handleMetamaskLogin}
               showQr={showQr}
             />
@@ -93,13 +89,7 @@ const LoginModal: FC<LoginModalProps> = ({ showModal, setShowModal }) => {
   );
 };
 
-interface LoginModalContentProps {
-  setGetWalletShow: (getWalletShow: boolean) => void;
-}
-
-const LoginModalContent: FC<LoginModalContentProps> = ({
-  setGetWalletShow,
-}) => {
+export const LoginModalContent = () => {
   return (
     <>
       <h2 className={styles['login-modal--section-heading']}>
@@ -119,10 +109,19 @@ const LoginModalContent: FC<LoginModalContentProps> = ({
           A New Way to Log In
         </h3>
         <p>
-          In the decentralised world you don't need to create a new account and
-          password all the time for every app. Login with a single wallet across
-          multiple apps and maintain ownership of your data. Welcome to the
-          Neonverse! 🍦
+          In the decentralised world you don&apos;t need to create a new account
+          and password all the time for every app. Login with a single wallet
+          across multiple apps and maintain ownership of your data. Welcome to
+          the Neonverse! 🍦
+        </p>
+      </span>
+      <span>
+        <h3 className={styles['login-modal--section-sub-heading']}>
+          Can I use email?
+        </h3>
+        <p>
+          If you don&apos;t have a wallet, you can use email to signup. We will
+          make automatically create a wallet for you.
         </p>
       </span>
     </>
@@ -130,13 +129,11 @@ const LoginModalContent: FC<LoginModalContentProps> = ({
 };
 
 interface MetamaskLoginProps {
-  setGetWalletShow: (getWalletShow: boolean) => void;
   handleMetamaskLogin: any;
   showQr: boolean;
 }
 
 const MetamaskLogin: FC<MetamaskLoginProps> = ({
-  setGetWalletShow,
   handleMetamaskLogin,
   showQr,
 }) => {

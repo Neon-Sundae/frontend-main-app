@@ -4,13 +4,16 @@ import { validateCreateProfile } from 'validations/auth';
 import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
+import { getItem } from 'utils/sessionStorageFunc';
 import { handleLocalStorage } from 'utils/localStorageFn';
+import { useAuth } from '@arcana/auth-react';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const auth = useAuth();
+  const [name, setName] = useState(getItem('name') ?? '');
+  const [email, setEmail] = useState(auth?.user?.email ?? '');
   const [error, setError] = useState({
     nameError: false,
     emailError: false,
@@ -22,7 +25,7 @@ const FirstTimeUser: FC = () => {
     e.preventDefault();
     handleLocalStorage('started');
     if (validateCreateProfile(name, email, setError)) {
-      createProfile({ name, email });
+      createProfile.mutate({ name, email });
     }
   };
 
@@ -64,6 +67,7 @@ const FirstTimeUser: FC = () => {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                disabled={!!getItem('name')}
               />
             </label>
             {error.nameError && (
@@ -77,6 +81,7 @@ const FirstTimeUser: FC = () => {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                disabled={!!auth?.user?.email}
               />
             </label>
             {error.emailError && (
