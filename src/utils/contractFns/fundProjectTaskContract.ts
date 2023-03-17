@@ -12,7 +12,7 @@ const fundProjectTaskContract = async (
   projectAddress: string,
   auth: AuthContextType
 ) => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!walletId) throw new Error('Unable to fund project task');

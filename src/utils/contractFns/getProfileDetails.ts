@@ -8,7 +8,7 @@ const getProfileDetails = async (
   auth: AuthContextType
 ) => {
   try {
-    const web3: any = arcanaWeb3InstanceFunc(auth);
+    const web3: any = await arcanaWeb3InstanceFunc(auth);
 
     const ProfileContract = new web3.eth.Contract(
       ProfileAbi.abi as AbiItem[],

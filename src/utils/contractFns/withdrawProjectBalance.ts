@@ -13,7 +13,7 @@ const withdrawProjectBalance = async (
   setDeploying: Dispatch<SetStateAction<string>>,
   auth: AuthContextType
 ) => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   const gasPrice = await estimateGasPrice(web3);
 

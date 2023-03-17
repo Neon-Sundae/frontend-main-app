@@ -9,7 +9,7 @@ const checkProjectExist = async (
   projectId: string,
   auth: AuthContextType
 ): Promise<boolean | null> => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!walletId) return null;
