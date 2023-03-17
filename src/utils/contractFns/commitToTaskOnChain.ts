@@ -36,7 +36,7 @@ const commitToTaskOnChain = async ({
   profile,
   auth,
 }: ICommitToTaskOnChain) => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!walletId && !profile?.profileSmartContractId)

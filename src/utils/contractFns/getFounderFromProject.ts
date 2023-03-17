@@ -8,7 +8,7 @@ const getFounderFromProject = async (
   projectAddress: string,
   auth: AuthContextType
 ): Promise<string> => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     const ProjectFactory = new web3.eth.Contract(

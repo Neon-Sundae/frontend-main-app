@@ -27,7 +27,7 @@ const completeTaskOnChain = async ({
   projectTaskAddress,
   auth,
 }: ICompleteTaskOnChain) => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!walletId) throw new Error('Unable to complete the task');

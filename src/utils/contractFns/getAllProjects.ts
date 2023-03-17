@@ -13,7 +13,7 @@ const getAllProjects = async (
   founderAddress: string,
   auth: AuthContextType
 ): Promise<IProjectInfo[]> => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     console.log('getting all projects from chain');

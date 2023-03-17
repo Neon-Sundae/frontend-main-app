@@ -8,7 +8,7 @@ const getFndrBalance = async (
   address: string | undefined,
   auth: AuthContextType
 ) => {
-  const web3: any = arcanaWeb3InstanceFunc(auth);
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
   try {
     if (!address) return 0;
