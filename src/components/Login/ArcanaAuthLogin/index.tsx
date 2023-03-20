@@ -6,6 +6,8 @@ import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
 import { useEffect, useRef, useState } from 'react';
+import { revokeAccess } from 'utils/handleUnAuthorization';
+import useFetchUsersViaEmail from './hooks';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
@@ -16,13 +18,31 @@ const ArcanaAuthLogin = () => {
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
 
+  const [inputEmail, setInputEmail] = useState<string>('');
+  const [isUser, setIsUser] = useState<null | boolean>(null);
+  const { checkExistingUser } = useFetchUsersViaEmail(inputEmail, setIsUser);
+
+  useEffect(() => {
+    if (isUser && inputEmail) auth.loginWithLink(inputEmail);
+
+    // checking for "false" not null
+    if (isUser === false) {
+      revokeAccess();
+      auth.logout();
+      navigate('/sign_up');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUser]);
+
   useEffect(() => {
     const triggerLoginSuccess = async () => {
-      await loginSuccess(auth.user?.address, provider);
+      setInputEmail(auth.user?.email || '');
+      if (isUser === true) await loginSuccess(auth.user?.address, provider);
     };
+
     if (auth.user) triggerLoginSuccess();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, [auth, isUser]);
 
   const {
     register,
@@ -31,12 +51,14 @@ const ArcanaAuthLogin = () => {
     formState: { errors },
   } = useForm();
 
-  const linkLogin = async (data: any) => {
-    const { email } = data;
-    await auth.loginWithLink(email);
+  const linkLogin = async (formData: any) => {
+    const { email } = formData;
+    setInputEmail(email);
+    const res = checkExistingUser;
   };
 
   const socialLogin = async (option: string) => {
+    const res = checkExistingUser;
     await auth.loginWithSocial(option);
   };
 
@@ -53,13 +75,14 @@ const ArcanaAuthLogin = () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('email', { required: true })}
           />
-          {errors.email && <span>This field is required</span>}
+
           <button type="submit">
             <i className={clsx('material-icons', styles['chevron-right'])}>
               chevron_right
             </i>
           </button>
         </form>
+        {errors.email && <span>* This field is required</span>}
       </span>
       <p className={styles[`arcana-auth--section-heading`]}>or continue with</p>
       <div className={styles[`arcana-auth--social`]}>

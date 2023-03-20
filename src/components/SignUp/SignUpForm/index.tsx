@@ -189,7 +189,9 @@ const SignUpForm = () => {
             <h2>Sign up with email</h2>
             <h3>
               We&apos;ll email you with a login link for a password free sign
-              in.
+              in. Please do take note that an underlying Arcana Wallet will be
+              created automatically so you can perform transactions and give
+              permissions on Neon Sundae.
             </h3>
             <form onSubmit={handleSubmit(linkLogin)}>
               <input

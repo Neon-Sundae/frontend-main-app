@@ -76,7 +76,7 @@ export const provider = new AuthProvider(
       chainId: config.chainId as CHAIN,
       rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
     },
-    alwaysVisible: false,
+    alwaysVisible: true,
   }
 );
 
