@@ -6,8 +6,6 @@ import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
 import { useEffect, useRef, useState } from 'react';
-import { revokeAccess } from 'utils/handleUnAuthorization';
-import useFetchUsersViaEmail from './hooks';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
@@ -18,49 +16,37 @@ const ArcanaAuthLogin = () => {
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
 
-  const [inputEmail, setInputEmail] = useState<string>('');
-  const [isUser, setIsUser] = useState<null | boolean>(null);
-  const { checkExistingUser } = useFetchUsersViaEmail(inputEmail, setIsUser);
-
-  useEffect(() => {
-    if (isUser && inputEmail) auth.loginWithLink(inputEmail);
-
-    // checking for "false" not null
-    if (isUser === false) {
-      revokeAccess();
-      auth.logout();
-      navigate('/sign_up');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUser]);
-
-  useEffect(() => {
-    const triggerLoginSuccess = async () => {
-      setInputEmail(auth.user?.email || '');
-      if (isUser === true) await loginSuccess(auth.user?.address, provider);
-    };
-
-    if (auth.user) triggerLoginSuccess();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth, isUser]);
+  const [error, setError] = useState('');
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    const triggerLoginSuccess = async () => {
+      await loginSuccess(auth.user?.address, provider, setError);
+    };
+
+    if (auth.user) triggerLoginSuccess();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   const linkLogin = async (formData: any) => {
     const { email } = formData;
-    setInputEmail(email);
-    const res = checkExistingUser;
+    await auth.loginWithLink(email);
   };
 
   const socialLogin = async (option: string) => {
-    const res = checkExistingUser;
     await auth.loginWithSocial(option);
   };
+
+  if (error) {
+    auth.logout();
+    navigate('/sign_up');
+  }
 
   return (
     <div className={styles[`arcana-auth`]}>

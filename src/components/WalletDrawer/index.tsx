@@ -15,7 +15,6 @@ import { gsap, Elastic } from 'gsap';
 import { RootState } from 'reducers';
 import bg from 'assets/illustrations/home/wallet-bg.svg';
 import withdrawProjectBalance from 'utils/contractFns/withdrawProjectBalance';
-import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as USDCVariant1Icon } from 'assets/illustrations/icons/usdc-variant-1.svg';
 import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
 import depositProjectFunds from 'utils/contractFns/depositProjectFunds';
@@ -332,7 +331,7 @@ const DepositStep1: FC<IDepositStep1> = ({
             className={styles['use-metamask-btn']}
             onClick={() => setCurrentState(2)}
           >
-            <MetamaskIcon width={24} height={21.6} /> Metamask
+            Connected Wallet
           </button>
         </div>
       ) : (

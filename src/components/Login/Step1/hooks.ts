@@ -54,7 +54,7 @@ const useMetamaskLogin = (
         };
 
         const response = await fetch(
-          `${config.ApiBaseUrl}/auth/generate-nonce`,
+          `${config.ApiBaseUrl}/auth/generate-nonce/login`,
           {
             signal,
             method: 'POST',
@@ -107,7 +107,7 @@ const useMetamaskLogin = (
         setError(e.message);
       } else if (e.message === 'Previous request already in progress') {
         setError(e.message);
-      }
+      } else setError(e.message);
     }
   };
 
@@ -228,7 +228,9 @@ const useUnstoppableDomains = (
     scope: 'openid wallet profile:optional',
   });
 
-  const login = async () => {
+  const login = async (
+    setError: React.Dispatch<React.SetStateAction<string>>
+  ) => {
     try {
       const authorization = await uauth.loginWithPopup();
       if (
@@ -254,6 +256,7 @@ const useUnstoppableDomains = (
             }),
           }
         );
+        setError(response.statusText);
         const json: any = await handleApiErrors(response);
         dispatch(updateUser(json.user));
         setAccessToken(json.accessToken);
@@ -288,7 +291,8 @@ const useArcanaWallet = () => {
 
   const loginSuccess = async (
     walletId: string | undefined,
-    provider: EthereumProvider
+    provider: EthereumProvider,
+    setError: React.Dispatch<React.SetStateAction<string>>
   ) => {
     if (walletId) {
       const payload = {
@@ -296,7 +300,7 @@ const useArcanaWallet = () => {
       };
 
       const response = await fetch(
-        `${config.ApiBaseUrl}/auth/generate-nonce/arcana`,
+        `${config.ApiBaseUrl}/auth/login/generate-nonce/arcana`,
         {
           signal,
           method: 'POST',
@@ -306,7 +310,7 @@ const useArcanaWallet = () => {
           body: JSON.stringify(payload),
         }
       );
-
+      setError(response.statusText);
       const json: any = await handleApiErrors(response);
 
       dispatch(updateUser(json.user));

@@ -98,7 +98,7 @@ const SignUpForm = () => {
 
   const loginWithUd = () => {
     setActive('udLogin');
-    unstoppableDomains.login();
+    unstoppableDomains.login(setError);
   };
 
   const handleEmailLogin = () => {

@@ -3,32 +3,32 @@ import config from 'config';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 
-const useFetchUsersViaEmail = (
-  email: string | null,
-  setIsUser: React.Dispatch<React.SetStateAction<boolean | null>>
+const useArcanaLogin = (
+  walletId: string | null,
+  setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
   const { data } = useQuery(
-    ['user_from_email'],
+    ['arcana_login'],
     async () => {
-      const response = await fetch(`${config.ApiBaseUrl}/user/email`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        `${config.ApiBaseUrl}/auth/login/generate-nonce/arcana`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({ walletId }),
+        }
+      );
       const json = await handleApiErrors(response);
-      console.log(json);
       return json;
     },
     {
       retry: 0,
-      enabled: !!email,
+      enabled: !!walletId,
       refetchOnWindowFocus: false,
-      onSuccess: (res: any) => {
-        setIsUser(!!res.userExists);
-      },
       onError: (error: any) => {
+        setError(error);
         handleError({
           error,
           explicitMessage: 'Unable to find any user',
@@ -36,7 +36,7 @@ const useFetchUsersViaEmail = (
       },
     }
   );
-  return { checkExistingUser: data };
+  return { data };
 };
 
-export default useFetchUsersViaEmail;
+export default useArcanaLogin;
