@@ -51,7 +51,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const triggerSignUp = async () => {
-      await signup(auth.user?.address, provider, setError);
+      await signup(auth.user?.address, provider);
       createProfile.mutate({
         name: getItem('name'),
         email: auth?.user?.email || '',
