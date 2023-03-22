@@ -11,11 +11,18 @@
   &--section-heading {
     font-family: var(--font-family-roboto-regular);
     font-size: 14px;
-    margin: 7px 0;
+    margin: 10px 0;
   }
 
   &--email {
     position: relative;
+
+    & > span {
+      font-family: var(--font-family-roboto-regular);
+      font-size: 14px;
+      text-align: left;
+    }
+
     input:nth-child(1) {
       color: #fff;
       border-radius: 15px;
@@ -35,6 +42,7 @@
       box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(40px);
     }
+
     input:nth-child(1)::placeholder {
       color: #fbfbfb;
     }
@@ -85,7 +93,7 @@
   &--footer {
     font-family: var(--font-family-roboto-regular);
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 10px;
     button {
       background: none;
       color: inherit;

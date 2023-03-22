@@ -6,33 +6,39 @@ import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
 const ArcanaAuthLogin = () => {
+  const st = useSelector((state: RootState) => state);
+
   const buttonRef = useRef<HTMLButtonElement>(null);
   const auth = useAuth();
+
   const { provider } = useProvider();
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     const triggerLoginSuccess = async () => {
       await loginSuccess(auth.user?.address, provider);
     };
-    if (auth.user) triggerLoginSuccess();
+    if (auth.user) {
+      triggerLoginSuccess();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
-  const linkLogin = async (data: any) => {
-    const { email } = data;
+  const linkLogin = async (formData: any) => {
+    const { email } = formData;
     await auth.loginWithLink(email);
   };
 
@@ -53,13 +59,14 @@ const ArcanaAuthLogin = () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('email', { required: true })}
           />
-          {errors.email && <span>This field is required</span>}
+
           <button type="submit">
             <i className={clsx('material-icons', styles['chevron-right'])}>
               chevron_right
             </i>
           </button>
         </form>
+        {errors.email && <span>* This field is required</span>}
       </span>
       <p className={styles[`arcana-auth--section-heading`]}>or continue with</p>
       <div className={styles[`arcana-auth--social`]}>
