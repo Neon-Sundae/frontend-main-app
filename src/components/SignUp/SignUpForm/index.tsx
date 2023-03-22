@@ -2,13 +2,13 @@ import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { LoginModalContent } from 'components/Login/LoginModal';
 import {
   useArcanaWallet,
-  useMetamaskLogin,
+  useMetamaskSignup,
   useUnstoppableDomains,
-  useWalletConnectLogin,
+  useWalletConnectSignup,
 } from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
@@ -16,6 +16,10 @@ import { getItem } from 'utils/sessionStorageFunc';
 import useCreateOrganisation from 'components/StartOrgModal/hook';
 import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import DiscordIcon from 'assets/illustrations/icons/login/discord.png';
+import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import styles from './index.module.scss';
 
 const style = {
@@ -33,8 +37,9 @@ const udStyle = {
 };
 
 const SignUpForm = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const auth = useAuth();
-  const { loginSuccess } = useArcanaWallet();
+  const { signup } = useArcanaWallet();
   const { provider } = useProvider();
   const [disableButton, setDisableButton] = useState(false);
   const [newUserId, setNewUserId] = useState(0);
@@ -45,15 +50,15 @@ const SignUpForm = () => {
   const createOrganisation = useCreateOrganisation(setDisableButton);
 
   useEffect(() => {
-    const triggerLoginSuccess = async () => {
-      await loginSuccess(auth.user?.address, provider);
+    const triggerSignUp = async () => {
+      await signup(auth.user?.address, provider, setError);
       createProfile.mutate({
         name: getItem('name'),
         email: auth?.user?.email || '',
       });
     };
-    if (auth.isLoggedIn) {
-      triggerLoginSuccess();
+    if (auth.user) {
+      triggerSignUp();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
@@ -68,20 +73,25 @@ const SignUpForm = () => {
 
   const [showMetamask, setShowMetamask] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-  const [inputValue, setInputValue] = useState('');
 
-  const generateNonce = useMetamaskLogin(setNewUserId);
-  const walletConnectGenerateNonce = useWalletConnectLogin(setNewUserId);
+  const generateNonce = useMetamaskSignup(setNewUserId);
+  const walletConnectGenerateNonce = useWalletConnectSignup(setNewUserId);
   const unstoppableDomains = useUnstoppableDomains(setNewUserId);
 
-  const { handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const loginWithMetaMask = () => {
+    setError('');
     setShowMetamask(true);
     generateNonce({ setError });
   };
 
-  const handleMetamaskLogin = () => {
+  const handleMetamaskSignup = () => {
+    setError('');
     setActive('metamask');
     setShowEmail(false);
     if (typeof window.ethereum !== 'undefined') {
@@ -91,29 +101,28 @@ const SignUpForm = () => {
     }
   };
 
-  const loginWithWalletConnect = async () => {
+  const signupWithWalletConnect = async () => {
+    setError('');
     setActive('walletConnect');
     walletConnectGenerateNonce({ setError });
   };
 
-  const loginWithUd = () => {
+  const signUpWithUD = () => {
+    setError('');
     setActive('udLogin');
-    unstoppableDomains.login(setError);
+    unstoppableDomains.signup(setError);
   };
 
-  const handleEmailLogin = () => {
+  const handleEmailSignUp = () => {
+    setError('');
     setActive('emailLogin');
     setShowMetamask(false);
     setShowEmail(true);
   };
 
-  const linkLogin = async () => {
-    await auth.loginWithLink(inputValue);
-  };
-
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setInputValue(value);
+  const linkSignUp = async (formData: any) => {
+    const { email } = formData;
+    await auth.loginWithLink(email);
   };
 
   const saveOrgData = async () => {
@@ -135,26 +144,34 @@ const SignUpForm = () => {
     }
   };
 
+  if (error === 'Bad Request' || error === 'User Already Exist!') {
+    toast(t => <LoginButton setError={setError} />);
+  }
+
+  const socialLogin = async (option: string) => {
+    await auth.loginWithSocial(option);
+  };
+
   return (
     <div className={styles['sign-up-form']}>
       <section className={styles['sign-up-form--option-select']}>
-        <p>Select wallet to sign-up</p>
+        <p>Select wallet to sign up</p>
         <IconButton
-          handleClick={handleMetamaskLogin}
+          handleClick={handleMetamaskSignup}
           icon={<MetamaskIcon width={26.98} height={24.32} />}
           text="&nbsp; Metamask"
           style={style}
           active={active === 'metamask'}
         />
         <IconButton
-          handleClick={loginWithWalletConnect}
+          handleClick={signupWithWalletConnect}
           icon={<WalletConnectIcon width={26.98} height={24.32} />}
           text="&nbsp; Wallet Connect"
           style={style}
           active={active === 'walletConnect'}
         />
         <IconButton
-          handleClick={loginWithUd}
+          handleClick={signUpWithUD}
           icon={<UDIcon width={26.98} height={24.32} />}
           text="&nbsp; UNSTOPPABLE DOMAINS"
           style={udStyle}
@@ -162,11 +179,28 @@ const SignUpForm = () => {
         />
         <p>or sign up via email</p>
         <IconButton
-          handleClick={handleEmailLogin}
+          handleClick={handleEmailSignUp}
           text="Verified Email"
           style={style}
           active={active === 'emailLogin'}
         />
+        <p>or sign up via socials</p>
+        {auth.availableLogins.map((option: string) => (
+          <button
+            key={`${option}-key`}
+            onClick={() => socialLogin(option)}
+            ref={buttonRef}
+            id={`${option}-key`}
+            className={styles['social-login']}
+          >
+            {option === 'discord' && (
+              <img src={DiscordIcon} alt="Discord Login Button" />
+            )}
+            {option === 'google' && (
+              <img src={GoogleIcon} alt="Google Login Button" />
+            )}
+          </button>
+        ))}
       </section>
 
       <section className={styles['sign-up-form--option-details']}>
@@ -177,7 +211,7 @@ const SignUpForm = () => {
             <br />
             <button
               className={styles['retry-button']}
-              onClick={handleMetamaskLogin}
+              onClick={handleMetamaskSignup}
             >
               Retry
             </button>
@@ -193,13 +227,14 @@ const SignUpForm = () => {
               created automatically so you can perform transactions and give
               permissions on Neon Sundae.
             </h3>
-            <form onSubmit={handleSubmit(linkLogin)}>
+            <form onSubmit={handleSubmit(linkSignUp)}>
               <input
                 className={styles['sign-up-form--option-details--email']}
                 placeholder="Enter email here"
                 type="email"
-                onChange={handleEmailChange}
                 required
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...register('email', { required: true })}
               />
               <button type="submit" disabled={disableButton}>
                 Get link
@@ -210,6 +245,29 @@ const SignUpForm = () => {
         {!showMetamask && !showEmail && <LoginModalContent />}
       </section>
     </div>
+  );
+};
+
+interface ILoginButton {
+  setError: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const LoginButton: FC<ILoginButton> = ({ setError }) => {
+  const navigate = useNavigate();
+
+  return (
+    <span>
+      User already exists, click to
+      <button
+        onClick={() => {
+          setError('');
+          navigate('/login');
+        }}
+        className={styles['toast-button']}
+      >
+        Login
+      </button>
+    </span>
   );
 };
 

@@ -11,11 +11,29 @@
   &--option-select {
     margin: auto;
     & > p {
-      margin-bottom: 25px;
+      margin-bottom: 10px;
     }
 
     & > button {
       margin-bottom: 20px;
+    }
+    & > .social-login {
+      background: none;
+      border-radius: 15px;
+      border: 0.7px solid #cf92ff;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      margin-right: 15px;
+      background: linear-gradient(
+        126.59deg,
+        rgba(255, 198, 253, 0.133) 12.11%,
+        rgba(255, 255, 255, 0.07) 73.08%
+      );
+      img {
+        width: 25px;
+        height: 25px;
+      }
     }
   }
 
@@ -42,6 +60,7 @@
 
       margin-top: 25px;
       margin-bottom: 10px;
+      line-height: 1.5em;
     }
 
     input {
@@ -124,4 +143,27 @@
         );
     }
   }
+}
+.toast-button {
+  font-family: var(--font-family-roboto-regular);
+  color: #fff;
+  margin-left: 10px;
+  border: 0.7px solid #cf92ff;
+  background: linear-gradient(
+      89.58deg,
+      #826af7 2.95%,
+      #db5dde 56.19%,
+      #e87aaf 103.17%
+    ),
+    linear-gradient(0deg, #e49df4, #e49df4),
+    radial-gradient(116.97% 116.97% at 34.87% -2.72%, #ff9bfb 0%, #ffffff 100%),
+    linear-gradient(
+      94.63deg,
+      rgba(255, 255, 255, 0.16) 4.94%,
+      rgba(255, 255, 255, 0.04) 93.94%
+    );
+  width: 80px;
+  height: 25px;
+  border-radius: 22px;
+  cursor: pointer;
 }

@@ -34,7 +34,7 @@ const Step0: FC = () => {
 
   const handleSubmit = () => {
     if (activeButton === 'builder') dispatch(updateCurrentSignUpStep('step3'));
-    dispatch(updateCurrentSignUpStep('step1'));
+    else dispatch(updateCurrentSignUpStep('step1'));
   };
 
   return (

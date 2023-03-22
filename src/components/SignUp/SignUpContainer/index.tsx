@@ -1,6 +1,7 @@
 import neonSundaeLogo from 'assets/illustrations/icons/neonSundaeMainLogo.png';
 import BlurBlobs from 'components/BlurBlobs';
 import TopGradientBar from 'components/TopGradientBar';
+import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import Step0 from '../Step0';
@@ -16,6 +17,7 @@ const SignUpContainer = () => {
     <>
       <TopGradientBar />
       <BlurBlobs />
+      <Toaster />
       <div className={styles['sign-up-container']}>
         <div className={styles['sign-up-container--content']}>
           <img

@@ -28,11 +28,11 @@ const useArcanaLogin = (
       enabled: !!walletId,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
-        setError(error);
         handleError({
           error,
           explicitMessage: 'Unable to find any user',
         });
+        setError(error.explicitMessage);
       },
     }
   );

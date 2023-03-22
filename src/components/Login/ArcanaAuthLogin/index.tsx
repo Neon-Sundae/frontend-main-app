@@ -6,17 +6,20 @@ import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
 const ArcanaAuthLogin = () => {
+  const st = useSelector((state: RootState) => state);
+
   const buttonRef = useRef<HTMLButtonElement>(null);
   const auth = useAuth();
+
   const { provider } = useProvider();
   const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
-
-  const [error, setError] = useState('');
 
   const {
     register,
@@ -26,11 +29,11 @@ const ArcanaAuthLogin = () => {
 
   useEffect(() => {
     const triggerLoginSuccess = async () => {
-      await loginSuccess(auth.user?.address, provider, setError);
+      await loginSuccess(auth.user?.address, provider);
     };
-
-    if (auth.user) triggerLoginSuccess();
-
+    if (auth.user) {
+      triggerLoginSuccess();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
@@ -42,11 +45,6 @@ const ArcanaAuthLogin = () => {
   const socialLogin = async (option: string) => {
     await auth.loginWithSocial(option);
   };
-
-  if (error) {
-    auth.logout();
-    navigate('/sign_up');
-  }
 
   return (
     <div className={styles[`arcana-auth`]}>
