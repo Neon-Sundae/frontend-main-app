@@ -11,4 +11,8 @@ const BlurBlobs: FC = () => {
   );
 };
 
+BlurBlobs.defaultProps = {
+  showTopGradient: true,
+};
+
 export default BlurBlobs;

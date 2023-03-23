@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import { ethers } from 'ethers';
 import config from 'config';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
 import { getAccessToken } from './authFn';
 import decodeToken from './decodeToken';
 import { revokeAccess } from './handleUnAuthorization';
@@ -101,7 +102,15 @@ export const getWeb3Instance = () => {
   return web3Instance;
 };
 
+export const getArcanaWeb3Instance = async (auth: AuthContextType) => {
+  const arcanaProvider: any = await auth.connect();
+  const arcanaWeb3Instance = new Web3(arcanaProvider);
+  return arcanaWeb3Instance;
+};
+
 export const getEthersInstance = () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   return provider;
 };
+
+export const handleArcanaLogout = () => revokeAccess();

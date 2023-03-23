@@ -17,6 +17,8 @@
     "style-lint": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
+    "@arcana/auth": "^1.0.2",
+    "@arcana/auth-react": "^0.0.3",
     "@hedgedoc/html-to-react": "^1.4.5",
     "@metamask/detect-provider": "^1.2.0",
     "@tanstack/react-query": "4.16.1",
@@ -81,6 +83,7 @@
     "stylelint-order": "^6.0.1",
     "stylelint-scss": "^4.3.0",
     "typescript": "^4.6.3",
-    "vite": "^2.9.5"
+    "vite": "^2.9.5",
+    "@walletconnect/types": "^2.4.7"
   }
 }

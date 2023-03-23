@@ -1,0 +1,30 @@
+.choice-button {
+  padding: 10px 20px;
+  border-width: 1px;
+  // background: #504b64;
+  color: #fff;
+  border-radius: 23px;
+  border: none;
+  width: 318px;
+  height: 65px;
+  cursor: pointer;
+  font-family: var(--font-family-inter);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 198, 253, 0.133) 12.11%,
+    rgba(255, 255, 255, 0.07) 73.08%
+  );
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(40px);
+  white-space: normal;
+  border-radius: 19.4491px;
+}
+.choice-button-active {
+  border: 2.43px solid;
+}

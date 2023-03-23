@@ -1,5 +1,4 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
 import { Dispatch, SetStateAction } from 'react';
@@ -9,6 +8,8 @@ import config from 'config';
 import toast from 'react-hot-toast';
 import { IProfile } from 'interfaces/profile';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 interface ICommitToTaskOnChain {
   walletId: string | undefined;
@@ -20,6 +21,7 @@ interface ICommitToTaskOnChain {
   setHash: Dispatch<SetStateAction<string>>;
   setPending: Dispatch<SetStateAction<string>>;
   profile: IProfile | null;
+  auth: AuthContextType;
 }
 
 const commitToTaskOnChain = async ({
@@ -32,12 +34,14 @@ const commitToTaskOnChain = async ({
   setHash,
   setPending,
   profile,
+  auth,
 }: ICommitToTaskOnChain) => {
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
+
   try {
     if (!walletId && !profile?.profileSmartContractId)
       throw new Error('Unable to commit the task');
 
-    const web3 = getWeb3Instance();
     const gasPrice = await estimateGasPrice(web3);
 
     const payload = {

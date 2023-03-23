@@ -1,10 +1,12 @@
 import {
   UPDATE_CURRENT_STEP,
   UPDATE_FIRST_TIME_USER,
+  UPDATE_CURRENT_SIGN_UP_STEP,
 } from 'actions/auth/types';
 
 interface State {
   currentStep: number;
+  currentSignUpStep: string;
   isFirstTimeUser: boolean | undefined;
 }
 
@@ -16,11 +18,16 @@ type Action =
   | {
       type: typeof UPDATE_FIRST_TIME_USER;
       isFirstTimeUser: boolean;
+    }
+  | {
+      type: typeof UPDATE_CURRENT_SIGN_UP_STEP;
+      currentSignUpStep: string;
     };
 
 const initialState: State = {
   currentStep: 1,
   isFirstTimeUser: undefined,
+  currentSignUpStep: 'step0',
 };
 
 const auth = (state = initialState, action: Action): State => {
@@ -34,6 +41,11 @@ const auth = (state = initialState, action: Action): State => {
       return {
         ...state,
         isFirstTimeUser: action.isFirstTimeUser,
+      };
+    case UPDATE_CURRENT_SIGN_UP_STEP:
+      return {
+        ...state,
+        currentSignUpStep: action.currentSignUpStep,
       };
     default:
       return { ...state };

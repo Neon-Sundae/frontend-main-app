@@ -19,8 +19,10 @@ import getFounderFromProject from 'utils/contractFns/getFounderFromProject';
 import createProjectContract from 'utils/contractFns/createProjectContract';
 import createProjectTaskContract from 'utils/contractFns/createProjectTaskContract';
 import saveProjectContractAddress from 'hooks/saveProjectContractAddress';
+import { useAuth } from '@arcana/auth-react';
 
 const useProject = () => {
+  const auth = useAuth();
   const dispatch = useDispatch();
 
   const [deploying, setDeploying] = useState('go_live');
@@ -29,7 +31,7 @@ const useProject = () => {
 
   const getUSDCBalance = async () => {
     try {
-      const balance = await getUsdcBalance(walletId);
+      const balance = await getUsdcBalance(walletId, auth);
       dispatch({
         type: GET_WALLET_USDC_BALANCE,
         payload: balance,
@@ -43,7 +45,8 @@ const useProject = () => {
     // * Discuss
     // * This check is done on smart contract also
     // * Discuss whether this check is again needed or not here
-    const result = await checkProjectExist(walletId, projectId);
+
+    const result = await checkProjectExist(walletId, projectId, auth);
 
     if (result) {
       toast.error('Project already exist');
@@ -55,12 +58,14 @@ const useProject = () => {
       walletId,
       dispatch,
       setDeploying,
+      auth,
     });
 
     const projectTaskAddress = await createProjectTaskContract({
       walletId,
       projectAddress,
       dispatch,
+      auth,
     });
 
     await saveProjectContractAddress(
@@ -71,7 +76,7 @@ const useProject = () => {
 
   const fetchFounder = async (project_address: string) => {
     try {
-      const result = await getFounderFromProject(project_address);
+      const result = await getFounderFromProject(project_address, auth);
       dispatch({
         type: GET_PROJECT_FOUNDER,
         payload: result,
