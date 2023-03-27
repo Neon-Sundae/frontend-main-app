@@ -547,8 +547,6 @@ const useArcanaWallet = () => {
         }
         const json: any = await handleApiErrors(response);
 
-        // FIXME: break here in case of error
-
         dispatch(updateUser(json.user));
 
         const signature = await signArcanaMessage(
@@ -581,6 +579,7 @@ const useArcanaWallet = () => {
 
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
+          if (!getItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (error) {
