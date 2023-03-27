@@ -4,6 +4,7 @@ import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import styles from './index.module.scss';
 import {
   useUnstoppableDomains,
@@ -45,7 +46,12 @@ const Step1: FC = () => {
     borderRadius: '20px',
   };
 
-  if (error === 'Not Found') navigate('/sign_up');
+  if (error === 'Not Found') {
+    toast.error('No account');
+    setTimeout(() => {
+      navigate('/sign_up');
+    }, 2000);
+  }
 
   return (
     <>
