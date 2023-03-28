@@ -1,7 +1,7 @@
-const setItem = (key: string, value: any): void =>
+const setSessionStorageItem = (key: string, value: any): void =>
   sessionStorage.setItem(key, value);
 
-const getItem = (key: string, type = 'none') => {
+const getSessionStorageItem = (key: string, type = 'none') => {
   if (type === 'json') {
     const value = sessionStorage.getItem(key);
     if (value) {
@@ -16,4 +16,4 @@ const getItem = (key: string, type = 'none') => {
   return value;
 };
 
-export { getItem, setItem };
+export { getSessionStorageItem, setSessionStorageItem };

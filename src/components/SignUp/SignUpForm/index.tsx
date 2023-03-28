@@ -12,7 +12,7 @@ import {
 } from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
-import { getItem } from 'utils/sessionStorageFunc';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import useCreateOrganisation from 'components/StartOrgModal/hook';
 import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
@@ -53,7 +53,7 @@ const SignUpForm = () => {
     const triggerSignUp = async () => {
       await signup(auth.user?.address, provider);
       createProfile.mutate({
-        name: getItem('name'),
+        name: getSessionStorageItem('name'),
         email: auth?.user?.email || '',
       });
     };
@@ -126,10 +126,10 @@ const SignUpForm = () => {
   };
 
   const saveOrgData = async () => {
-    const orgData = JSON.parse(getItem('orgData'));
+    const orgData = JSON.parse(getSessionStorageItem('orgData'));
 
     if (orgData) {
-      const localFile = getItem('file');
+      const localFile = getSessionStorageItem('file');
 
       if (!file) convertBase64ToFile(localFile, setFile);
 
@@ -139,7 +139,7 @@ const SignUpForm = () => {
           description: orgData.description,
           userId: newUserId.toString(),
           image: file,
-          industry: getItem('choices'),
+          industry: getSessionStorageItem('choices'),
         });
     }
   };

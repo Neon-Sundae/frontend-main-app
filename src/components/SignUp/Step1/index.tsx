@@ -2,7 +2,7 @@ import { updateCurrentSignUpStep } from 'actions/auth';
 import { IChoice } from 'interfaces/auth';
 import { FC, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setItem } from 'utils/sessionStorageFunc';
+import { setSessionStorageItem } from 'utils/sessionStorageFunc';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
 
@@ -39,7 +39,7 @@ const Step1: FC = () => {
   };
 
   const handleSubmit = () => {
-    setItem('choices', JSON.stringify(selected));
+    setSessionStorageItem('choices', JSON.stringify(selected));
     dispatch(updateCurrentSignUpStep('step2'));
   };
 
