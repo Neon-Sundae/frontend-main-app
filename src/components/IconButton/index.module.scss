@@ -1,28 +1,30 @@
 .IconButton {
   $self: &;
-
   border-width: 1px;
   // background: #504b64;
   color: #fff;
   border-radius: 23px;
-  border: 0.7px solid #cf92ff;
+  border: none;
   width: 318px;
   height: 65px;
   cursor: pointer;
-  font-family: var(--font-family-roboto-medium);
-  font-size: 20px;
+  font-family: var(--font-family-roboto-flex);
+  font-size: 15.48px;
   font-weight: 500;
   line-height: 23px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 35px;
-  background: linear-gradient(126.59deg, rgba(255, 198, 253, 0.133) 12.11%, rgba(255, 255, 255, 0.07) 73.08%);
+  background: linear-gradient(
+    126.59deg,
+    rgba(255, 198, 253, 0.133) 12.11%,
+    rgba(255, 255, 255, 0.07) 73.08%
+  );
   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
-/* Note: backdrop-filter has minimal browser support */
+  /* Note: backdrop-filter has minimal browser support */
 
-border-radius: 23px;
+  border-radius: 23px;
 
   &:disabled {
     background: #ebebe4;
@@ -30,7 +32,18 @@ border-radius: 23px;
   }
 
   & > svg {
-    margin-right: 32px;
-    margin-bottom: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // margin-left: 25px;
+    // margin-bottom: 6px;
   }
+}
+
+.IconButton-active {
+  border: 0.7px solid #fff;
+}
+
+.show-border {
+  border: 0.7px solid #cf92ff;
 }

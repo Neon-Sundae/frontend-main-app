@@ -1,18 +1,18 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
 import config from 'config';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 const checkProjectExist = async (
   walletId: string | undefined,
-  projectId: string
+  projectId: string,
+  auth: AuthContextType
 ): Promise<boolean | null> => {
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
+
   try {
     if (!walletId) return null;
-
-    const web3 = getWeb3Instance();
-
-    console.log('check project exist on chain');
 
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],

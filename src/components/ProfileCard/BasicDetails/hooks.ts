@@ -11,8 +11,13 @@ import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
 import errorEventBeacon from 'utils/analyticsFns/errorEventBeacon';
 import { MetamaskError } from 'utils/error/MetamaskError';
+import { useAuth, useProvider } from '@arcana/auth-react';
 
 const useProfileManage = () => {
+  const auth = useAuth();
+
+  const { provider: arcanaProvider } = useProvider();
+
   const dispatch = useDispatch();
   const [deploying, setDeploying] = useState('mint');
   const user = useSelector((state: RootState) => state.user.user);
@@ -25,7 +30,7 @@ const useProfileManage = () => {
     address: string | undefined
   ) => {
     try {
-      const isContractDeployed = await getProfileContractAddress(address);
+      const isContractDeployed = await getProfileContractAddress(address, auth);
 
       if (
         isContractDeployed !== '0x0000000000000000000000000000000000000000' &&
@@ -45,13 +50,12 @@ const useProfileManage = () => {
         name,
         title,
         deploying,
-        setDeploying
+        setDeploying,
+        user,
+        arcanaProvider,
+        auth
       );
 
-      console.log(
-        'Deployed profile contract address: ',
-        profileContractAddress
-      );
       if (isContractDeployed !== 'Failed') {
         dispatch({
           type: GET_PROFILE_CONTRACT_ADDRESS,

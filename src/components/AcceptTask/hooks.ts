@@ -15,6 +15,7 @@ import { useUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import cancelTaskOnChain from 'utils/contractFns/cancelTaskOnChain';
 import createTaskOnChain from 'utils/contractFns/createTaskOnChain';
 import fundProjectTaskContract from 'utils/contractFns/fundProjectTaskContract';
+import { useAuth, useProvider } from '@arcana/auth-react';
 
 const useFetchTaskData = (taskId: number | undefined) => {
   const { data } = useQuery(
@@ -44,6 +45,8 @@ const useFetchTaskData = (taskId: number | undefined) => {
 };
 
 const useSelectBuilder = () => {
+  const auth = useAuth();
+  const { provider: arcanaProvider } = useProvider();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -70,9 +73,10 @@ const useSelectBuilder = () => {
         taskName,
         walletId: builderInfo?.Profile?.user?.walletId,
         xp,
+        arcanaProvider,
       });
 
-      await fundProjectTaskContract(price, walletId, projectAddress);
+      await fundProjectTaskContract(price, walletId, projectAddress, auth);
 
       await saveTaskTokenId(taskId, tokenId);
       await saveAcceptedBuilder(taskId, builderInfo?.profileId);
@@ -200,6 +204,7 @@ const useUpdateTaskChecklist = (taskChecklistId: number) => {
 };
 
 const useCancelTask = () => {
+  const auth = useAuth();
   const accessToken = getAccessToken();
 
   const updateTask = useUpdateTaskStatus();
@@ -242,6 +247,7 @@ const useCancelTask = () => {
           selectedTask,
           walletId,
           builder: acceptedBuilder[0],
+          auth,
         });
 
         await updateTask.mutateAsync({

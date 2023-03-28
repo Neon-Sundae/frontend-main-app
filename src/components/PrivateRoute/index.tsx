@@ -2,7 +2,7 @@ import useFetchCurrentUserProfilePicture from 'hooks/useFetchCurrentUserProfileP
 import useFetchOffChainProfile from 'hooks/useFetchOffChainProfile';
 import useGetUserByWalletId from 'hooks/useGetUserByWalletId';
 import { FC, ReactElement } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { getAccessToken } from 'utils/authFn';
 
 interface ComponentProps {
@@ -11,6 +11,7 @@ interface ComponentProps {
 
 const PrivateRoute: FC<ComponentProps> = ({ children }) => {
   const accessToken = getAccessToken();
+  const location = useLocation();
   useGetUserByWalletId();
   useFetchOffChainProfile();
   useFetchCurrentUserProfilePicture();
@@ -24,7 +25,7 @@ const PrivateRoute: FC<ComponentProps> = ({ children }) => {
     return children;
   }
 
-  return <Navigate to="/login" />;
+  return <Navigate to="/login" replace state={{ from: location }} />;
 };
 
 export default PrivateRoute;

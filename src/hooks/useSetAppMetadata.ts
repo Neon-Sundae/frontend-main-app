@@ -1,19 +1,21 @@
 // @ts-ignore
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js';
+import { useProvider } from '@arcana/auth-react';
 import { setWalletConnectProvider } from 'actions/app';
 import config from 'config';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   handleAccountsChanged,
+  handleArcanaLogout,
   handleChainChanged,
   handleSwitchChange,
 } from 'utils/web3EventFn';
 
 const useSetAppMetadata = () => {
+  const { provider: arcanaProvider } = useProvider();
   const dispatch = useDispatch();
 
-  // TODO - Use multiple rpcs and chain ids, testnet and mainnet
   const provider = new WalletConnectProvider({
     rpc: {
       137: 'https://polygon-rpc.com',
@@ -45,7 +47,9 @@ const useSetAppMetadata = () => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', handleChainChanged);
       window.ethereum.on('accountsChanged', handleAccountsChanged);
+      arcanaProvider.on('disconnect', handleArcanaLogout);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

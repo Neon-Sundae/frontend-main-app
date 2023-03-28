@@ -27,6 +27,7 @@ import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import isOwner from 'utils/accessFns/isOwner';
+import { useAuth } from '@arcana/auth-react';
 import styles from './index.module.scss';
 import CreatePrjModalWithData from '../../StartPrjModal/CreatePrjModalWithData';
 
@@ -38,6 +39,7 @@ interface IHeaderProps {
 }
 
 const Header: FC<IHeaderProps> = props => {
+  const auth = useAuth();
   let peopleCount = 0;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,7 +93,10 @@ const Header: FC<IHeaderProps> = props => {
 
   const handlePublishProject = async () => {
     try {
-      const profileAddress = await getProfileContractAddress(user?.walletId);
+      const profileAddress = await getProfileContractAddress(
+        user?.walletId,
+        auth
+      );
 
       if (profileAddress !== '0x0000000000000000000000000000000000000000') {
         dispatch({

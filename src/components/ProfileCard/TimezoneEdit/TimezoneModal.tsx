@@ -26,8 +26,8 @@ const TimezoneModal: FC<IProfileSkills> = ({ setOpen }) => {
       <div className={styles['timezone-data-container']}>
         {timezoneData.map(t => (
           <TimezoneRow
-            key={`${t.value}-${t.abbr}`}
-            value={t.text}
+            key={`${t.value}-${t.value}`}
+            value={t.label}
             handleSelect={handleSelect}
           />
         ))}

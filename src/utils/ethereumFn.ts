@@ -1,6 +1,8 @@
+import { EthereumProvider } from '@arcana/auth';
+import { useProvider } from '@arcana/auth-react';
 import { ethers } from 'ethers';
 
-export const handleAddPolygonChain = async (provider: any) => {
+export const handleAddPolygonChain = async (provider: EthereumProvider) => {
   try {
     await provider.request({
       method: 'wallet_addEthereumChain',
@@ -28,13 +30,40 @@ export const handleAddPolygonChain = async (provider: any) => {
   }
 };
 
-export const signMessage = async (provider: any, message: string) => {
+export const signMessage = async (
+  provider: EthereumProvider,
+  message: string
+) => {
   try {
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner();
     const signature = await signer.signMessage(message);
 
     return signature;
+  } catch (err) {
+    console.log(err);
+  }
+
+  return null;
+};
+
+export const signArcanaMessage = async (
+  provider: EthereumProvider,
+  message: string,
+  walletAddress: string
+) => {
+  try {
+    if (provider) {
+      const signature = await provider.request({
+        method: 'personal_sign',
+        params: [
+          ethers.utils.hexlify(ethers.utils.toUtf8Bytes(message)),
+          walletAddress,
+        ],
+      });
+
+      return signature;
+    }
   } catch (err) {
     console.log(err);
   }
