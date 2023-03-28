@@ -43,7 +43,7 @@ const TaskSkills: FC<ITaskSkills> = ({
     const newSkills = taskSkills.filter(x => x.value !== skillsId);
     setTaskSkills(newSkills);
   };
-  console.log(showModal);
+
   return (
     <div className={styles['task-skills-container']}>
       <h4 className={styles['difficulty-price-label']}>Skills Needed</h4>

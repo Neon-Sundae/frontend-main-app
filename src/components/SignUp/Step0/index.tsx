@@ -1,10 +1,10 @@
 import { updateCurrentSignUpStep } from 'actions/auth';
 import { IChoice } from 'interfaces/auth';
 import { ChangeEvent, FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { setItem } from 'utils/sessionStorageFunc';
+import { setSessionStorageItem } from 'utils/sessionStorageFunc';
 import ChoiceButton from '../ChoiceButton';
 import styles from './index.module.scss';
 
@@ -25,7 +25,7 @@ const Step0: FC = () => {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setItem('name', value);
+    setSessionStorageItem('name', value);
   };
 
   const handleChoiceSelection = (choice: IChoice) => {

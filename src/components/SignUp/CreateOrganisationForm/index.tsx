@@ -11,7 +11,7 @@ import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg'
 import Select, { SingleValue } from 'react-select';
 import { Option } from 'components/Select';
 import industryOptions from 'assets/data/industries.json';
-import { setItem } from 'utils/sessionStorageFunc';
+import { setSessionStorageItem } from 'utils/sessionStorageFunc';
 import { useDispatch } from 'react-redux';
 import { updateCurrentSignUpStep } from 'actions/auth';
 import { customStyles } from './selectStyles';
@@ -53,8 +53,8 @@ const CreateOrganisationForm: FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     const orgData = { ...data, ...selectedOption };
-    setItem('orgData', JSON.stringify(orgData));
-    setItem('file', localFile);
+    setSessionStorageItem('orgData', JSON.stringify(orgData));
+    setSessionStorageItem('file', localFile);
     dispatch(updateCurrentSignUpStep('step3'));
   };
 

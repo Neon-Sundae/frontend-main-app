@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleError } from 'utils/handleUnAuthorization';
-import { getItem } from 'utils/sessionStorageFunc';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 
 interface ICreateProfile {
   name: string;
@@ -43,7 +43,7 @@ const useCreateProfile = (
         if (setNewUserId) setNewUserId(body.userId);
         dispatch(updateUser(body));
         dispatch(updateFirstTimeUser(false));
-        if (!getItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
       },
     }
   );

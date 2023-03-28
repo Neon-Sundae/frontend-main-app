@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import BaseBlob from 'components/BaseBlob';
+import { Toaster } from 'react-hot-toast';
 import Step1 from '../Step1';
 import Step2 from '../Step2';
 import styles from './index.module.scss';
@@ -35,6 +36,7 @@ const LoginContainer: FC = () => {
   return (
     <div className={styles.LoginContainer}>
       <div className={styles.StepContainer}>
+        <Toaster />
         <NeonSundaeLogo
           width={131}
           height={100}

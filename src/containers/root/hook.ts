@@ -1,4 +1,4 @@
-import { getItem } from 'utils/sessionStorageFunc';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,7 +6,7 @@ const useConditionalRender = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accessToken = getItem('access_token');
+    const accessToken = getSessionStorageItem('access_token');
 
     if (accessToken) {
       navigate('/dashboard');

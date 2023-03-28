@@ -5,15 +5,11 @@ import DiscordIcon from 'assets/illustrations/icons/login/discord.png';
 import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
 import { ProgressBar } from 'react-loader-spinner';
-import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useEffect, useRef } from 'react';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
 const ArcanaAuthLogin = () => {
-  const st = useSelector((state: RootState) => state);
-
   const buttonRef = useRef<HTMLButtonElement>(null);
   const auth = useAuth();
 

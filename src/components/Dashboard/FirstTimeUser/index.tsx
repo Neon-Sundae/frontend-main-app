@@ -4,7 +4,7 @@ import { validateCreateProfile } from 'validations/auth';
 import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
-import { getItem } from 'utils/sessionStorageFunc';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import { handleLocalStorage } from 'utils/localStorageFn';
 import { useAuth } from '@arcana/auth-react';
 import styles from './index.module.scss';
@@ -12,7 +12,7 @@ import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
   const auth = useAuth();
-  const [name, setName] = useState(getItem('name') ?? '');
+  const [name, setName] = useState(getSessionStorageItem('name') ?? '');
   const [email, setEmail] = useState(auth?.user?.email ?? '');
   const [error, setError] = useState({
     nameError: false,
@@ -67,7 +67,7 @@ const FirstTimeUser: FC = () => {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                disabled={!!getItem('name')}
+                disabled={!!getSessionStorageItem('name')}
               />
             </label>
             {error.nameError && (

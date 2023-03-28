@@ -1,7 +1,7 @@
 import { updateCurrentStep, updateFirstTimeUser } from 'actions/auth';
 import config from 'config';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { providers, ethers } from 'ethers';
+import { Dispatch, SetStateAction } from 'react';
+import { providers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   handleAddPolygonChain,
@@ -21,7 +21,8 @@ import UAuth from '@uauth/js';
 import { EthereumProvider } from '@arcana/auth';
 import { useAuth } from '@arcana/auth-react';
 import { useNavigate } from 'react-router-dom';
-import { getItem } from 'utils/sessionStorageFunc';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
+import toast from 'react-hot-toast';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
@@ -97,7 +98,7 @@ const useMetamaskLogin = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -184,7 +185,7 @@ const useMetamaskSignup = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -282,7 +283,7 @@ const useWalletConnectSignup = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -382,7 +383,7 @@ const useWalletConnectLogin = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -451,7 +452,7 @@ const useUnstoppableDomains = (
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
-        if (!getItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -493,7 +494,7 @@ const useUnstoppableDomains = (
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
-        if (!getItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -542,12 +543,13 @@ const useArcanaWallet = () => {
         );
 
         if (response.status === 400) {
-          auth.logout();
-          navigate('/login');
+          toast.error('User already exists!', { id: 'error' });
+          setTimeout(() => {
+            navigate('/login');
+            auth.logout();
+          }, 3000);
         }
         const json: any = await handleApiErrors(response);
-
-        // FIXME: break here in case of error
 
         dispatch(updateUser(json.user));
 
@@ -581,6 +583,7 @@ const useArcanaWallet = () => {
 
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
+          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
         }
       }
     } catch (error) {
@@ -610,8 +613,11 @@ const useArcanaWallet = () => {
           }
         );
         if (response.status === 404) {
-          auth.logout();
-          navigate('/sign_up');
+          toast.error("User doesn't exist!", { id: 'error' });
+          setTimeout(() => {
+            navigate('/sign_up');
+            auth.logout();
+          }, 3000);
         }
         const json: any = await handleApiErrors(response);
 
