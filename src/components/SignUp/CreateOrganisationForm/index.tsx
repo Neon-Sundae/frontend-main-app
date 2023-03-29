@@ -33,8 +33,6 @@ const CreateOrganisationForm: FC = () => {
   const [fileData, setFileData] = useState<IFile | null>(null);
   const [localFile, setLocalFile] = useState<string | ArrayBuffer | null>(null);
 
-  console.log('localFile', localFile);
-
   const {
     register,
     handleSubmit,

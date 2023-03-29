@@ -66,7 +66,7 @@ const SignUpForm = () => {
   useEffect(() => {
     if (newUserId) saveOrgData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newUserId]);
+  }, [newUserId, file]);
 
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
@@ -131,7 +131,7 @@ const SignUpForm = () => {
     if (orgData) {
       const localFile = getSessionStorageItem('file');
 
-      if (!file) convertBase64ToFile(localFile, setFile);
+      if (!file) await convertBase64ToFile(localFile, setFile);
 
       if (!disableButton)
         await createOrganisation({
