@@ -1,18 +1,20 @@
 // @ts-ignore
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js';
-import { useProvider } from '@arcana/auth-react';
+import { useAuth, useProvider } from '@arcana/auth-react';
 import { setWalletConnectProvider } from 'actions/app';
 import config from 'config';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   handleAccountsChanged,
+  handleArcanaDisconnectedEvent,
   handleArcanaLogout,
   handleChainChanged,
   handleSwitchChange,
 } from 'utils/web3EventFn';
 
 const useSetAppMetadata = () => {
+  const auth: any = useAuth();
   const { provider: arcanaProvider } = useProvider();
   const dispatch = useDispatch();
 
@@ -25,6 +27,7 @@ const useSetAppMetadata = () => {
 
   useEffect(() => {
     dispatch(setWalletConnectProvider(provider));
+    if (!auth.provider.connected) handleArcanaDisconnectedEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -24,11 +24,7 @@ const ProfileButton: FC = () => {
     );
   };
 
-  const handleNavigation = () => {
-    navigate(`/profile/${user?.userId}`);
-    // * To reload the page because with SPA navigation, the data was not refreshing
-    navigate(0);
-  };
+  const handleNavigation = () => navigate(`/profile/${user?.userId}`);
 
   const getFormattedWalletId = () => {
     if (user?.walletId) {

@@ -4,7 +4,7 @@ import config from 'config';
 import { AuthContextType } from '@arcana/auth-react/types/typings';
 import { getAccessToken } from './authFn';
 import decodeToken from './decodeToken';
-import { revokeAccess } from './handleUnAuthorization';
+import { handleArcanaDisconnect, revokeAccess } from './handleUnAuthorization';
 
 export const handleChainChanged = (chainId: any) => {
   console.log('chain changed');
@@ -114,3 +114,5 @@ export const getEthersInstance = () => {
 };
 
 export const handleArcanaLogout = () => revokeAccess();
+
+export const handleArcanaDisconnectedEvent = () => handleArcanaDisconnect();
