@@ -1,6 +1,9 @@
 .job-card-wrap {
   color: #a9a9a9;
-  border: 0.42px solid #d39bff;
+  border: 1px solid;
+border-image: radial-gradient(circle at center, #FFFFFF 100%, #FF78FA 100%) 100%,
+              linear-gradient(30deg, #FFFFFF 0%) 0%;
+border-image-slice: 1;
   border-radius: 16.94px;
   display: flex;
   justify-content: space-between;
