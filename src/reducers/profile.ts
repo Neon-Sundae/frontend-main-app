@@ -1,14 +1,11 @@
 import {
-  ADD_PROFILE_EDUCATION,
   ADD_PROFILE_SKILL,
   ADD_PROFILE_WORKPLACE,
   EDIT_PROFILE,
   FILL_PROFILE_DATA,
-  REMOVE_PROFILE_EDUCATION,
   REMOVE_PROFILE_SKILL,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_EDUCATION,
   UPDATE_PROFILE_SOCIALS,
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
@@ -72,20 +69,6 @@ type Action =
   | {
       type: typeof UPDATE_PROFILE_TIMEZONE;
       timezone: string;
-    }
-  | {
-      type: typeof ADD_PROFILE_EDUCATION;
-      education: IProfileEducation;
-    }
-  | {
-      type: typeof REMOVE_PROFILE_EDUCATION;
-      educationId: number;
-    }
-  | {
-      type: typeof UPDATE_PROFILE_EDUCATION;
-      educationId: number;
-      name: string;
-      value: string;
     }
   | {
       type: typeof ADD_PROFILE_WORKPLACE;
@@ -204,32 +187,6 @@ const profile = (state = initialState, action: Action): State => {
         };
       }
       return { ...state };
-    case ADD_PROFILE_EDUCATION:
-      return {
-        ...state,
-        education: [...state.education, action.education],
-      };
-    case REMOVE_PROFILE_EDUCATION: {
-      const newEducationData = state.education.filter(
-        x => x.educationId !== action.educationId
-      );
-      return {
-        ...state,
-        education: newEducationData,
-      };
-    }
-    case UPDATE_PROFILE_EDUCATION:
-      return {
-        ...state,
-        education: state.education.map(e =>
-          e.educationId === action.educationId
-            ? {
-                ...e,
-                [action.name]: action.value,
-              }
-            : e
-        ),
-      };
     case ADD_PROFILE_WORKPLACE:
       return {
         ...state,

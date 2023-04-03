@@ -1,20 +1,13 @@
 import { ISkills } from 'actions/skills';
+import { IProfileApiResponse, IProfileWorkplace } from 'interfaces/profile';
 import {
-  IProfileApiResponse,
-  IProfileEducation,
-  IProfileWorkplace,
-} from 'interfaces/profile';
-import {
-  ADD_PROFILE_EDUCATION,
   ADD_PROFILE_SKILL,
   ADD_PROFILE_WORKPLACE,
   EDIT_PROFILE,
   FILL_PROFILE_DATA,
-  REMOVE_PROFILE_EDUCATION,
   REMOVE_PROFILE_SKILL,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_EDUCATION,
   UPDATE_PROFILE_SOCIALS,
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
@@ -93,27 +86,6 @@ export const updateProfileSocialAction = (
 export const updateProfileTimezoneAction = (timezone: string) => ({
   type: UPDATE_PROFILE_TIMEZONE,
   timezone,
-});
-
-export const addProfileEducationAction = (education: IProfileEducation) => ({
-  type: ADD_PROFILE_EDUCATION,
-  education,
-});
-
-export const removeProfileEducationAction = (educationId: number) => ({
-  type: REMOVE_PROFILE_EDUCATION,
-  educationId,
-});
-
-export const updateProfileEducationAction = (
-  educationId: number,
-  name: string,
-  value: string
-) => ({
-  type: UPDATE_PROFILE_EDUCATION,
-  educationId,
-  name,
-  value,
 });
 
 export const addProfileWorkplaceAction = (workplace: IProfileWorkplace) => ({
