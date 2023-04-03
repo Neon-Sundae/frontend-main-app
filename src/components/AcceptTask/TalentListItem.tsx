@@ -36,7 +36,7 @@ const TalentListItem: FC<ITalentListItem> = ({
 
   const handleNavigation = () => {
     navigate(`/profile/${data.profileId}`);
-    navigate(0);
+    // navigate(0);
   };
   return (
     <div

@@ -31,6 +31,8 @@ export interface IProfileEducation {
   university: string;
   startDate: string;
   endDate: string;
+  createdAt: string;
+  updatedAt: string;
   profileId: number;
 }
 

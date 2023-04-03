@@ -9,55 +9,78 @@ import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete.
 import numberRange from 'utils/numberRange';
 import months from 'utils/getMonthsArray';
 import {
-  useAddProfileEducation,
+  useCreateProfileEducation,
+  useFetchProfileEducation,
   useRemoveProfileEducation,
   useUpdateProfileEducation,
-} from './hooks';
+} from 'queries/profile';
+import { useParams } from 'react-router-dom';
 import styles from './index.module.scss';
 
 const Education: FC = () => {
-  const education = useSelector((state: RootState) => state.profile.education);
+  const params = useParams();
+
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
 
-  const addProfileEducation = useAddProfileEducation();
+  const createProfile = useCreateProfileEducation({
+    profileId: params.profileId,
+  });
 
-  return (
-    <div className={styles['education-container']}>
-      {education.map(d =>
-        isEditable ? (
-          <EducationCardEdit
-            key={d.educationId}
-            educationId={d.educationId}
-            degree={d.degree}
-            university={d.university}
-            startDate={d.startDate}
-            endDate={d.endDate}
-          />
-        ) : (
-          <EducationCard
-            key={d.educationId}
-            educationId={d.educationId}
-            degree={d.degree}
-            university={d.university}
-            startDate={d.startDate}
-            endDate={d.endDate}
-          />
-        )
-      )}
-      {isEditable ? (
-        <div className={styles['add-more-btn']} onClick={addProfileEducation}>
-          <p>Add more</p>
-          <i className="material-icons">add</i>
-        </div>
-      ) : null}
-    </div>
-  );
+  const { data, isLoading, isError } = useFetchProfileEducation({
+    profileId: params.profileId,
+  });
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (isError) {
+    return <p>Failed to fetch</p>;
+  }
+
+  if (data) {
+    return (
+      <div className={styles['education-container']}>
+        {data.map(d =>
+          isEditable ? (
+            <EducationCardEdit
+              key={d.educationId}
+              educationId={d.educationId}
+              degree={d.degree}
+              university={d.university}
+              startDate={d.startDate}
+              endDate={d.endDate}
+              profileId={params.profileId}
+            />
+          ) : (
+            <EducationCard
+              key={d.educationId}
+              degree={d.degree}
+              university={d.university}
+              startDate={d.startDate}
+              endDate={d.endDate}
+            />
+          )
+        )}
+        {isEditable ? (
+          <div
+            className={styles['add-more-btn']}
+            onClick={() => createProfile.mutate()}
+          >
+            <p>Add more</p>
+            <i className="material-icons">add</i>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  return null;
 };
 
 interface IEducation {
-  educationId: number;
   degree: string;
   university: string;
   startDate: string;
@@ -65,7 +88,6 @@ interface IEducation {
 }
 
 const EducationCard: FC<IEducation> = ({
-  educationId,
   degree,
   university,
   startDate,
@@ -86,21 +108,22 @@ const EducationCard: FC<IEducation> = ({
   );
 };
 
-interface IEditPayload {
-  name: string;
-  value: string;
-  degreeEdit: string;
-  universityEdit: string;
-  startDateEdit: string;
-  endDateEdit: string;
+interface IEducationEdit {
+  educationId: number;
+  degree: string;
+  university: string;
+  startDate: string;
+  endDate: string;
+  profileId: string | undefined;
 }
 
-const EducationCardEdit: FC<IEducation> = ({
+const EducationCardEdit: FC<IEducationEdit> = ({
   educationId,
   degree,
   university,
   startDate,
   endDate,
+  profileId,
 }) => {
   const now = new Date();
   const [degreeLocal, setDegreeLocal] = useState(degree);
@@ -108,15 +131,11 @@ const EducationCardEdit: FC<IEducation> = ({
   const [startDateLocal, setStartDateLocal] = useState(startDate);
   const [endDateLocal, setEndDateLocal] = useState(endDate);
 
-  const removeProfileEducation = useRemoveProfileEducation();
-  const updateProfileEducation = useUpdateProfileEducation();
+  const updateEducation = useUpdateProfileEducation({ educationId, profileId });
+  const removeEducation = useRemoveProfileEducation({ educationId, profileId });
 
   const handleDebounceFn = (name: string, value: string) => {
-    updateProfileEducation({
-      educationId,
-      name,
-      value,
-    });
+    updateEducation.mutate({ name, value });
   };
 
   const debounceFn: any = useRef(
@@ -169,7 +188,7 @@ const EducationCardEdit: FC<IEducation> = ({
     debounceFn(name, tempDate);
   };
 
-  const handleDelete = () => removeProfileEducation(educationId);
+  const handleDelete = () => removeEducation.mutate();
 
   const getStartMonthDefault = (value: number) =>
     value === new Date(startDateLocal).getMonth() + 1;
