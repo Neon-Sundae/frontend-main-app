@@ -4,16 +4,25 @@ import { useProvider } from '@arcana/auth-react';
 import { setWalletConnectProvider } from 'actions/app';
 import config from 'config';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   handleAccountsChanged,
+  handleArcanaDisconnectedEvent,
   handleArcanaLogout,
   handleChainChanged,
   handleSwitchChange,
 } from 'utils/web3EventFn';
+import { RootState } from 'reducers';
 
 const useSetAppMetadata = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+
   const { provider: arcanaProvider } = useProvider();
+
+  if (user?.authentication_method === 'arcana_network') {
+    if (!(arcanaProvider as any).connected) handleArcanaDisconnectedEvent();
+  }
+
   const dispatch = useDispatch();
 
   const provider = new WalletConnectProvider({
@@ -34,13 +43,13 @@ const useSetAppMetadata = () => {
         const chainId = await window.ethereum.request({
           method: 'eth_chainId',
         });
-        console.log(chainId);
-
+        console.log('chainId', chainId);
         if (chainId !== config.chainId) {
           handleSwitchChange(window.ethereum, config.chainId);
         }
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

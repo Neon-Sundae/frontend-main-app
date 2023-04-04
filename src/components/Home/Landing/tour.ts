@@ -9,8 +9,8 @@ const TourHomePage = () => {
   const handleStepOne = () => {
     tour.cancel();
     navigate(`/profile/${profile?.profileId}`);
-    navigate(0);
   };
+
   const tour = new Shepherd.Tour({
     useModalOverlay: true,
     defaultStepOptions: {
@@ -18,6 +18,7 @@ const TourHomePage = () => {
       scrollTo: true,
     },
   });
+
   tour.addStep({
     id: 'step0',
     arrow: true,
