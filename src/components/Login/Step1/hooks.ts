@@ -222,9 +222,7 @@ const useWalletConnectSignup = (
       const accounts = await web3Provider.listAccounts();
 
       const { chainId } = await web3Provider.getNetwork();
-      console.log(chainId);
       await walletConnectProvider.disconnect();
-      console.log(accounts);
 
       // TODO - Use testnet and mainnet chain ID check
       if (chainId !== 137) {
@@ -324,7 +322,6 @@ const useWalletConnectLogin = (
       const { chainId } = await web3Provider.getNetwork();
       console.log(chainId);
       await walletConnectProvider.disconnect();
-      console.log(accounts);
 
       // TODO - Use testnet and mainnet chain ID check
       if (chainId !== 137) {
