@@ -205,26 +205,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
         <div className={clsx(styles.center, styles['org-socials'])}>
           <div className={styles['socials-row']}>
             {isEditable ? (
-              <input
-                type="text"
-                name="website"
-                className={styles['organisation-website--edit']}
-                value={website}
-                onChange={handleWebsiteChange}
-              />
-            ) : (
-              <a
-                href={`https://${website}` ?? '#'}
-                target="_blank"
-                rel="noreferrer"
-                className={styles['organisation-website']}
-              >
-                {website}
-              </a>
-            )}
-          </div>
-          <div className={styles['socials-row']}>
-            {isEditable ? (
               <span
                 className={styles['social-icon-container--edit']}
                 onClick={() => setOpen(true)}

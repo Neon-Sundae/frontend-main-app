@@ -1,5 +1,4 @@
 import NavBar from 'components/NavBar';
-import bg from 'assets/illustrations/gradients/bg.png';
 import { useParams } from 'react-router-dom';
 import config from 'config';
 import { useQuery } from '@tanstack/react-query';

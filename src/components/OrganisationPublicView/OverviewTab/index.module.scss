@@ -1,3 +1,51 @@
 .overview-tab {
   color: #fff;
+  position: relative;
+  height: 45vh;
+  margin: auto;
+  margin-top: 50px;
+
+  @media (max-width: 1920px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 82%;
+  }
+
+  &--heading {
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 400;
+    font-size: 20.7511px;
+    margin-bottom: 10px;
+  }
+
+  &--description {
+    & > p {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 12.5743px;
+      margin-bottom: 20px;
+    }
+  }
+
+  &--whitepaper {
+    & > a {
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 500;
+      font-size: 12.8301px;
+      color: #fff;
+    }
+    & > a:hover {
+      text-decoration: underline;
+    }
+  }
 }

@@ -19,11 +19,14 @@ const OrganisationPublicView: FC<IOrganisationPublicView> = ({
   organisation,
 }) => {
   const org = useSelector((state: RootState) => state.org);
+  const { description, whitepaper } = organisation;
 
   const renderTab = () => {
     switch (org.selectedTab) {
       case 0:
-        return <OverviewTab />;
+        return (
+          <OverviewTab description={description} whitepaper={whitepaper} />
+        );
       case 1:
         return <ProjectsTab />;
       case 2:
