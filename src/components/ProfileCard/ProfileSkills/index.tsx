@@ -10,7 +10,7 @@ const ProfileSkills: FC = () => {
 
   return (
     <div className={styles['profile-skills-container']}>
-      {profileSkills.map(skill => (
+      {profileSkills?.map(skill => (
         <ProfileSkillTag key={skill.skillsId} name={skill.name} />
       ))}
     </div>

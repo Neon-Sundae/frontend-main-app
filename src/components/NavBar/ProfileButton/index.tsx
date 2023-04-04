@@ -1,21 +1,59 @@
-import { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import config from 'config';
+import { getAccessToken } from 'utils/authFn';
+import { useQuery } from '@tanstack/react-query';
+import { fillProfileData } from 'actions/profile';
+import { normalizeSkills } from 'utils/normalizeSkills';
+import { fillProfileSkillsData } from 'actions/skills';
 import styles from './index.module.scss';
 import DisconnectModal from './DisconnectModal';
 
 const ProfileButton: FC = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
+  const navigate = useNavigate();
+
+  const { profileId } = useParams();
+
   const { user } = useSelector((state: RootState) => state.user);
+
   const currentUserProfilePicture = useSelector(
     (state: RootState) => state.profile.currentUserProfilePicture
   );
+
+  const { data, refetch } = useQuery(
+    ['user-profile-data', profileId],
+    () =>
+      fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }).then(response => response.json()),
+    {
+      enabled: false,
+      refetchOnMount: false,
+    }
+  );
+
+  useEffect(() => {
+    if (profileId) refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileId]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(fillProfileData(data));
+      const skillsData = normalizeSkills(data?.profileSkills);
+      dispatch(fillProfileSkillsData(skillsData));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const pictureFunc = () => {
     return (
@@ -25,9 +63,11 @@ const ProfileButton: FC = () => {
   };
 
   const handleNavigation = () => {
+    dispatch(fillProfileData(data));
+    const skillsData = normalizeSkills(data?.profileSkills);
+    dispatch(fillProfileSkillsData(skillsData));
+
     navigate(`/profile/${user?.userId}`);
-    // * To reload the page because with SPA navigation, the data was not refreshing
-    navigate(0);
   };
 
   const getFormattedWalletId = () => {
@@ -49,7 +89,6 @@ const ProfileButton: FC = () => {
         user.domain.length
       )}`;
     }
-
     return '';
   };
 

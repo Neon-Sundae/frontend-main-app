@@ -188,11 +188,7 @@ const Header: FC<IHeaderProps> = props => {
         <div className={styles['org-edit-project-row']}>
           <span className={styles['by-org-name']}>
             <div
-              onClick={() =>
-                window.open(
-                  `${config.AppDomain}/organisation/${props.organisationId}`
-                )
-              }
+              onClick={() => navigate(`/organisation/${props.organisationId}`)}
             >
               <p className={styles['founder-name']}>
                 by&nbsp;&nbsp;{props.organisationName}

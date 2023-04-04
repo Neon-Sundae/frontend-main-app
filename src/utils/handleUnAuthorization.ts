@@ -9,6 +9,10 @@ export const revokeAccess = () => {
   window.location.reload();
 };
 
+export const handleArcanaDisconnect = () => {
+  removeAccessToken();
+};
+
 export const handleUnAuthorization = (err: any) => {
   if (err.message === 'Unauthorized') {
     toast.error('Something went wrong');

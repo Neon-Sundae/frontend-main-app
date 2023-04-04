@@ -1,7 +1,7 @@
 import { INormalizeSkills, ISkills } from 'actions/skills';
 
 const normalizeSkills = (skills: ISkills[]) => {
-  const data = skills.map(skill => ({
+  const data = skills?.map(skill => ({
     label: skill.name,
     value: skill.skillsId,
   }));

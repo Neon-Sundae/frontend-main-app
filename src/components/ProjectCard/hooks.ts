@@ -11,7 +11,7 @@ const useFetchUserProjects = () => {
   const accessToken = getAccessToken();
 
   const { data, isLoading } = useQuery(
-    ['userOrgs'],
+    ['userProjects'],
     async ({ signal }) => {
       const response = await fetch(
         `${config.ApiBaseUrl}/organisation/user-projects/${profileId}`,
