@@ -10,7 +10,6 @@ export const revokeAccess = () => {
 };
 
 export const handleArcanaDisconnect = () => {
-  toast.error("Couldn't connect to Arcana!");
   removeAccessToken();
 };
 

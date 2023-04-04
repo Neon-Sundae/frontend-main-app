@@ -1,18 +1,26 @@
 /* eslint-disable no-underscore-dangle */
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
+import { useEffect } from 'react';
 import styles from './index.module.scss';
 import useFetchUserOrgs from './hooks';
 
 const OrganisationCard = () => {
-  const userOrgs = useFetchUserOrgs();
+  const { data: userOrgs, refetch } = useFetchUserOrgs();
+  const { profileId } = useParams();
+
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileId]);
+
   const navigate = useNavigate();
 
   return (
     <div className={styles['profile-organisation-container']}>
-      {userOrgs?.data?.length === 0 && <p>No Organisations</p>}
-      {userOrgs?.data?.map((org: any) => {
+      {userOrgs?.length === 0 && <p>No Organisations</p>}
+      {userOrgs?.map((org: any) => {
         return (
           <div
             key={org.organisationId}
