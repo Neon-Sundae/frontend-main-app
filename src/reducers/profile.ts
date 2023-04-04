@@ -128,13 +128,10 @@ const initialState: State = {
 const profile = (state = initialState, action: Action): State => {
   switch (action.type) {
     case FILL_PROFILE_DATA: {
-      const { certifications, education, workplaces, profileSkills, ...rest } =
-        action.profile;
+      const { workplaces, profileSkills, ...rest } = action.profile;
       return {
         ...state,
         profile: rest,
-        certifications,
-        education,
         workplaces,
         profileSkills,
         navbarProfile: {

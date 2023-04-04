@@ -9,31 +9,32 @@ import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import { useMutation } from '@tanstack/react-query';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import useProfileManage from '../BasicDetails/hooks';
+import { useParams } from 'react-router-dom';
+import { useFetchProfileDetailsWrapper } from 'queries/profile';
 import styles from './index.module.scss';
 import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
-  const { profile, xp } = useSelector((state: RootState) => state.profile);
+  const params = useParams();
+  const profileData = useFetchProfileDetailsWrapper(params.profileId);
 
-  const profileId = profile?.profileId ? profile.profileId : 0;
+  const { xp } = useSelector((state: RootState) => state.profile);
+
   const user = useSelector((state: RootState) => state.user.user);
-  const [name, setName] = useState(
-    profile?.user?.name ? profile?.user.name : ''
-  );
-  const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
+  const [name, setName] = useState(profileData?.user?.name || '');
+  const [title, setTitle] = useState(profileData?.title || 'Product Designer');
   const [bio, setBio] = useState(
-    profile?.description ??
+    profileData?.description ||
       `Lorem imsum text is here imsum text is here imsum text is here imsum
   text is here imsum text is here imsum text is here imsum text is here
   imsum.`
   );
-  const [picture, setPicture] = useState<any>(profile?.picture ?? null);
+  const [picture, setPicture] = useState<any>(profileData?.picture || null);
   const updateProfileDetails = useUpdateProfileDetails();
   const { mutate: updateProfilePicture } = useMutation(
     async () => {
-      return fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
+      return fetch(`${config.ApiBaseUrl}/profile/${profileData?.profileId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
@@ -55,7 +56,7 @@ const BasicDetailsEdit: FC = () => {
   const handleSave = () => {
     updateProfileDetails({
       userId: user?.userId,
-      profileId: profile?.profileId,
+      profileId: profileData?.profileId,
       name,
       title,
       description: bio,
@@ -76,7 +77,7 @@ const BasicDetailsEdit: FC = () => {
         <ExperiencePoints xp={xp} />
         <ProfileAddressChain
           name={name}
-          profileSmartContractId={profile?.profileSmartContractId}
+          profileSmartContractId={profileData?.profileSmartContractId}
           walletId={user?.walletId}
           title={title}
         />

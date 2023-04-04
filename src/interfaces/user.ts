@@ -10,6 +10,11 @@ export interface IUser {
   domain: string | null;
 }
 
+export interface IUserApiResponse {
+  user: IUser;
+  userExists: boolean;
+}
+
 export interface IUpdateUser {
   userId: number;
   discordId: string;

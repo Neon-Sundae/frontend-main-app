@@ -52,8 +52,6 @@ export interface IProfileSkills {
 }
 
 export interface IProfileApiResponse extends IProfile {
-  certifications: IProfileCertifications[];
-  education: IProfileEducation[];
   workplaces: IProfileWorkplace[];
   profileSkills: IProfileSkills[];
 }

@@ -1,5 +1,5 @@
 import config from 'config';
-import { IProfileEducation } from 'interfaces/profile';
+import { IProfileApiResponse, IProfileEducation } from 'interfaces/profile';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 
@@ -107,9 +107,47 @@ const updateProfileEducation = async ({
   return json;
 };
 
+interface IFetchProfileDetials {
+  profileId: string | undefined;
+}
+
+const fetchProfileDetails = async ({ profileId }: IFetchProfileDetials) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const json: IProfileApiResponse = await handleApiErrors(response);
+  return json;
+};
+
+interface IFetchProfileDetailsByUser {
+  userId: number | undefined;
+}
+
+const fetchProfileDetailsByUser = async ({
+  userId,
+}: IFetchProfileDetailsByUser) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(`${config.ApiBaseUrl}/profile/user/${userId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const json: IProfileApiResponse = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchProfileEducation,
   createProfileEducation,
   removeProfileEducation,
   updateProfileEducation,
+  fetchProfileDetails,
+  fetchProfileDetailsByUser,
 };

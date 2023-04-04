@@ -25,7 +25,6 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
 
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
 
-  // const appSkills = useSelector((state: RootState) => state.skills.appSkills);
   const profileSkills = useSelector(
     (state: RootState) => state.skills.profileSkills
   );
@@ -40,7 +39,6 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
   ) => {
     if (newValue) {
       const found = profileSkills?.some(el => el.label === newValue.label);
-      console.log(profileSkills);
       if (!found && profileSkills.length < 5) {
         setSelectedSkill(newValue);
         addProfileSkill(newValue);
@@ -71,7 +69,6 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
           name="ProfileSkills"
           onSelectChange={handleSelectChange}
           isMulti={false}
-
         />
       </div>
       <div className={styles['profile-skill-modal-tag-container']}>

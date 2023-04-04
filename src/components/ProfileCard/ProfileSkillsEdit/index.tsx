@@ -1,14 +1,13 @@
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useFetchProfileDetailsWrapper } from 'queries/profile';
+import { useParams } from 'react-router-dom';
 import styles from './index.module.scss';
 import ProfileSkillsModal from './ProfileSkillsModal';
 
 const ProfileSkillsEdit: FC = () => {
+  const params = useParams();
+  const profileData = useFetchProfileDetailsWrapper(params.profileId);
   const [open, setOpen] = useState(false);
-  const profileSkills = useSelector(
-    (state: RootState) => state.profile.profileSkills
-  );
 
   const handleOpenModal = () => setOpen(true);
 
@@ -18,8 +17,8 @@ const ProfileSkillsEdit: FC = () => {
         className={styles['profile-skills-container']}
         onClick={handleOpenModal}
       >
-        {profileSkills.length > 0 ? (
-          profileSkills.map(skill => (
+        {profileData?.profileSkills ? (
+          profileData?.profileSkills.map(skill => (
             <ProfileSkillTag key={skill.skillsId} name={skill.name} />
           ))
         ) : (
