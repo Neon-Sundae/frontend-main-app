@@ -1,12 +1,6 @@
-import { fillProfileData, getUSDCBalance, getXP } from 'actions/profile';
-import { useDispatch, useSelector } from 'react-redux';
+import { getUSDCBalance, getXP } from 'actions/profile';
+import { useDispatch } from 'react-redux';
 import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
-import { useQuery } from '@tanstack/react-query';
-import config from 'config';
-import { handleApiErrors } from 'utils/handleApiErrors';
-import { IProfileApiResponse } from 'interfaces/profile';
-import { RootState } from 'reducers';
-import { getAccessToken } from 'utils/authFn';
 import getProfileDetails from 'utils/contractFns/getProfileDetails';
 
 const useProfile = () => {
