@@ -15,7 +15,7 @@ import {
   UPDATE_PROFILE_CONTRACT_ADDRESS,
   SET_CURRENT_USER_PROFILE_PICTURE,
 } from 'actions/profile/types';
-import { ISkills } from 'actions/skills';
+import { ISkills } from 'interfaces/skills';
 import {
   IProfile,
   IProfileApiResponse,

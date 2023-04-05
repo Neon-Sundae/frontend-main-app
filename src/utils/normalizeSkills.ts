@@ -1,4 +1,4 @@
-import { INormalizeSkills, ISkills } from 'actions/skills';
+import { INormalizeSkills, ISkills } from 'interfaces/skills';
 
 const normalizeSkills = (skills: ISkills[]) => {
   const data = skills.map(skill => ({

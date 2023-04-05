@@ -1,4 +1,4 @@
-import { ISkills } from 'actions/skills';
+import { ISkills } from 'interfaces/skills';
 import { IProfileApiResponse, IProfileWorkplace } from 'interfaces/profile';
 import {
   ADD_PROFILE_SKILL,

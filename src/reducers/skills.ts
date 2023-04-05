@@ -1,4 +1,4 @@
-import { INormalizeSkills } from 'actions/skills';
+import { INormalizeSkills } from 'interfaces/skills';
 import {
   ADD_PROFILE_NORMALIZE_SKILL,
   FILL_PROFILE_SKILLS,

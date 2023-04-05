@@ -1,16 +1,18 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useFetchProfileDetailsWrapper } from 'queries/profile';
+import { useFetchProfileSkills } from 'queries/profile';
 import styles from './index.module.scss';
 
 const ProfileSkills: FC = () => {
   const params = useParams();
-  const profileData = useFetchProfileDetailsWrapper(params.profileId);
+  const { data: profileSkills } = useFetchProfileSkills({
+    profileId: params.profileId,
+  });
 
   return (
     <div className={styles['profile-skills-container']}>
-      {profileData?.profileSkills?.map(skill => (
-        <ProfileSkillTag key={skill.skillsId} name={skill.name} />
+      {profileSkills?.map(skill => (
+        <ProfileSkillTag key={skill.value} name={skill.label} />
       ))}
     </div>
   );

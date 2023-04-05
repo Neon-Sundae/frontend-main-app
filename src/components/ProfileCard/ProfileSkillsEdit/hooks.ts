@@ -5,7 +5,6 @@ import {
 import {
   addProfileNormalizeSkill,
   fillProfileSkillsData,
-  INormalizeSkills,
 } from 'actions/skills';
 import { Option } from 'components/Select';
 import config from 'config';
@@ -19,6 +18,7 @@ import {
   handleUnAuthorization,
 } from 'utils/handleUnAuthorization';
 import { deNormalizeSkills, normalizeSkills } from 'utils/normalizeSkills';
+import { INormalizeSkills } from 'interfaces/skills';
 
 const useFetchAppSkills = () => {
   const { data } = useQuery(
@@ -105,7 +105,7 @@ const useRemoveProfileSkill = () => {
 
   const removeProfileSkill = (
     skillsId: number,
-    profileSkills: INormalizeSkills[]
+    profileSkills: INormalizeSkills[] | undefined
   ) => {
     const accessToken = getAccessToken();
 
@@ -131,11 +131,11 @@ const useRemoveProfileSkill = () => {
           });
           await handleApiErrors(response);
 
-          const newSkills = profileSkills.filter(el => el.value !== skillsId);
-          dispatch(fillProfileSkillsData(newSkills));
+          // const newSkills = profileSkills.filter(el => el.value !== skillsId);
+          // dispatch(fillProfileSkillsData(newSkills));
 
-          const deNormalizedSkills = deNormalizeSkills(newSkills);
-          dispatch(removeProfileSkillAction(deNormalizedSkills));
+          // const deNormalizedSkills = deNormalizeSkills(newSkills);
+          // dispatch(removeProfileSkillAction(deNormalizedSkills));
         } catch (err: any) {
           console.log(err);
           handleUnAuthorization(err);

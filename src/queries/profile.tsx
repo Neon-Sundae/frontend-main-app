@@ -1,12 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  addProfileSkill,
   createProfileEducation,
   fetchProfileDetails,
   fetchProfileDetailsByUser,
   fetchProfileEducation,
+  fetchProfileSkills,
   removeProfileEducation,
+  removeProfileSkill,
   updateProfileEducation,
 } from 'api/profile';
+import { Option } from 'components/Select';
 import { IProfileApiResponse, IProfileEducation } from 'interfaces/profile';
 
 interface IUseFetchProfileEducation {
@@ -132,6 +136,60 @@ const useFetchProfileDetailsByUser = ({
   });
 };
 
+const useFetchProfileSkills = ({ profileId }: IUseFetchProfileEducation) => {
+  return useQuery({
+    queryKey: ['profile-skills', profileId],
+    queryFn: () => fetchProfileSkills({ profileId }),
+    enabled: profileId !== undefined,
+  });
+};
+
+interface IUseAddProfileSkill {
+  selectedValue: Option;
+}
+
+const useAddProfileSkill = ({ profileId }: IUseFetchProfileEducation) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ selectedValue }: IUseAddProfileSkill) =>
+      addProfileSkill({ profileId: Number(profileId), selectedValue }),
+    onSuccess: newSkill => {
+      queryClient.setQueryData(
+        ['profile-skills', profileId],
+        (old: Option[] | undefined) => {
+          if (old) {
+            return [...old, newSkill];
+          }
+          return [newSkill];
+        }
+      );
+    },
+  });
+};
+
+interface IUseRemoveProfileSkill {
+  skillsId: number;
+}
+
+const useRemoveProfileSkill = ({ profileId }: IUseFetchProfileEducation) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ skillsId }: IUseRemoveProfileSkill) =>
+      removeProfileSkill({ profileId: Number(profileId), skillsId }),
+    onSuccess: skillsId => {
+      queryClient.setQueryData(
+        ['profile-skills', profileId],
+        (old: Option[] | undefined) => {
+          if (old) {
+            return old.filter(x => x.value !== skillsId);
+          }
+          return [];
+        }
+      );
+    },
+  });
+};
+
 export {
   useFetchProfileEducation,
   useCreateProfileEducation,
@@ -140,4 +198,7 @@ export {
   useFetchProfileDetails,
   useFetchProfileDetailsWrapper,
   useFetchProfileDetailsByUser,
+  useFetchProfileSkills,
+  useAddProfileSkill,
+  useRemoveProfileSkill,
 };

@@ -3,15 +3,16 @@ import { ActionMeta, SingleValue } from 'react-select';
 import toast from 'react-hot-toast';
 import Modal from 'components/Modal';
 import Select, { Option } from 'components/Select';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import clsx from 'clsx';
 import GradientBtn from 'components/GradientBtn';
+import { useFetchAppSkills } from 'queries/skills';
+import { useParams } from 'react-router-dom';
 import {
   useAddProfileSkill,
-  useFetchAppSkills,
+  useFetchProfileSkills,
   useRemoveProfileSkill,
-} from './hooks';
+} from 'queries/profile';
+
 import styles from './index.module.scss';
 
 interface IProfileSkills {
@@ -19,15 +20,17 @@ interface IProfileSkills {
 }
 
 const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
-  const { appSkills } = useFetchAppSkills();
-  const addProfileSkill = useAddProfileSkill();
-  const removeProfileSkill = useRemoveProfileSkill();
+  const params = useParams();
+  const { data: profileSkills } = useFetchProfileSkills({
+    profileId: params.profileId,
+  });
+  const { data: appSkills } = useFetchAppSkills();
+  const addProfileSkill = useAddProfileSkill({ profileId: params.profileId });
+  const removeProfileSkill = useRemoveProfileSkill({
+    profileId: params.profileId,
+  });
 
   const [selectedSkill, setSelectedSkill] = useState<Option | null>(null);
-
-  const profileSkills = useSelector(
-    (state: RootState) => state.skills.profileSkills
-  );
 
   const handleClose = () => {
     setOpen(false);
@@ -39,19 +42,18 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
   ) => {
     if (newValue) {
       const found = profileSkills?.some(el => el.label === newValue.label);
-      if (!found && profileSkills.length < 5) {
+      if (!found && profileSkills && profileSkills?.length < 5) {
         setSelectedSkill(newValue);
-        addProfileSkill(newValue);
+        addProfileSkill.mutate({ selectedValue: newValue });
       }
-      if (profileSkills.length === 5) {
-        const a = toast.error('Cannot add more skills');
-        console.log(a);
+      if (profileSkills?.length === 5) {
+        toast.error('Cannot add more skills');
       }
     }
   };
 
   const handleSkillRemove = (skillsId: number) => {
-    removeProfileSkill(skillsId, profileSkills);
+    removeProfileSkill.mutate({ skillsId });
   };
 
   return (
@@ -63,7 +65,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
       </p>
       <div className={styles['skills-select-container']}>
         <Select
-          options={appSkills ?? []}
+          options={appSkills || []}
           placeholder="Select Skills"
           value={selectedSkill}
           name="ProfileSkills"
@@ -72,7 +74,7 @@ const ProfileSkillsModal: FC<IProfileSkills> = ({ setOpen }) => {
         />
       </div>
       <div className={styles['profile-skill-modal-tag-container']}>
-        {profileSkills.map(profileSkill => (
+        {profileSkills?.map(profileSkill => (
           <SkillTag
             key={profileSkill.value}
             name={profileSkill.label}
