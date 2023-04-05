@@ -90,14 +90,14 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/tasks"
             element={
               // <PrivateRoute>
               <Tasks />
               // </PrivateRoute>
             }
-          />
+          /> */}
           <Route
             path="/tasks/all"
             element={

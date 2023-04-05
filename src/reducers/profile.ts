@@ -1,9 +1,7 @@
 import {
-  ADD_PROFILE_SKILL,
   ADD_PROFILE_WORKPLACE,
   EDIT_PROFILE,
   FILL_PROFILE_DATA,
-  REMOVE_PROFILE_SKILL,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
   UPDATE_PROFILE_SOCIALS,
@@ -15,13 +13,11 @@ import {
   UPDATE_PROFILE_CONTRACT_ADDRESS,
   SET_CURRENT_USER_PROFILE_PICTURE,
 } from 'actions/profile/types';
-import { ISkills } from 'interfaces/skills';
 import {
   IProfile,
   IProfileApiResponse,
   IProfileCertifications,
   IProfileEducation,
-  IProfileSkills,
   IProfileWorkplace,
 } from 'interfaces/profile';
 
@@ -30,7 +26,6 @@ interface State {
   certifications: IProfileCertifications[];
   education: IProfileEducation[];
   workplaces: IProfileWorkplace[];
-  profileSkills: IProfileSkills[];
   isEditable: boolean;
   xp: number;
   usdcBalance: number;
@@ -49,14 +44,6 @@ type Action =
   | {
       type: typeof EDIT_PROFILE;
       isEditable: boolean;
-    }
-  | {
-      type: typeof ADD_PROFILE_SKILL;
-      skill: ISkills;
-    }
-  | {
-      type: typeof REMOVE_PROFILE_SKILL;
-      skills: ISkills[];
     }
   | {
       type: typeof UPDATE_PROFILE_SOCIALS;
@@ -117,7 +104,6 @@ const initialState: State = {
   certifications: [],
   education: [],
   workplaces: [],
-  profileSkills: [],
   isEditable: false,
   xp: 0,
   usdcBalance: 0,
@@ -128,28 +114,17 @@ const initialState: State = {
 const profile = (state = initialState, action: Action): State => {
   switch (action.type) {
     case FILL_PROFILE_DATA: {
-      const { workplaces, profileSkills, ...rest } = action.profile;
+      const { workplaces, ...rest } = action.profile;
       return {
         ...state,
         profile: rest,
         workplaces,
-        profileSkills,
         navbarProfile: {
           profileId: rest.profileId,
           image: rest.picture,
         },
       };
     }
-    case ADD_PROFILE_SKILL:
-      return {
-        ...state,
-        profileSkills: [...state.profileSkills, action.skill],
-      };
-    case REMOVE_PROFILE_SKILL:
-      return {
-        ...state,
-        profileSkills: action.skills,
-      };
     case EDIT_PROFILE:
       return {
         ...state,

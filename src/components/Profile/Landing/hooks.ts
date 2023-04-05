@@ -4,10 +4,7 @@ import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleError } from 'utils/handleUnAuthorization';
 import { IProfileApiResponse } from 'interfaces/profile';
-import { normalizeSkills } from 'utils/normalizeSkills';
-import { fillProfileSkillsData } from 'actions/skills';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import getProfileDetails from 'utils/contractFns/getProfileDetails';
@@ -64,9 +61,7 @@ const useFetchPublicProfile = (profileId: string | undefined) => {
         }
       );
       const json: IProfileApiResponse = await handleApiErrors(response);
-      const skillsData = normalizeSkills(json.profileSkills);
       dispatch(fillProfileData(json));
-      dispatch(fillProfileSkillsData(skillsData));
     },
     {
       retry: 1,
