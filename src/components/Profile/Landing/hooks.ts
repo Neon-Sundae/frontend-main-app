@@ -43,41 +43,4 @@ const useProfile = () => {
   };
 };
 
-const useFetchPublicProfile = (profileId: string | undefined) => {
-  const dispatch = useDispatch();
-  const accessToken = getAccessToken();
-  const user = useSelector((state: RootState) => state.user.user);
-
-  useQuery(
-    ['public_profile'],
-    async () => {
-      const response = await fetch(
-        `${config.ApiBaseUrl}/profile/${profileId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const json: IProfileApiResponse = await handleApiErrors(response);
-      dispatch(fillProfileData(json));
-    },
-    {
-      retry: 1,
-      enabled:
-        user !== undefined &&
-        profileId !== undefined &&
-        user.userId !== parseInt(profileId, 10),
-      refetchOnWindowFocus: false,
-      onError: (error: any) => {
-        // handleError({
-        //   error,
-        //   explicitMessage: 'Unable to fetch profile data',
-        // });
-      },
-    }
-  );
-};
-
-export { useProfile, useFetchPublicProfile };
+export { useProfile };
