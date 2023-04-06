@@ -6,9 +6,12 @@ import GradientBtn from 'components/GradientBtn';
 import isValidUrl from 'utils/isValidUrl';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import { useFetchProfileDetailsWrapper } from 'queries/profile';
+import {
+  useFetchProfileDetailsWrapper,
+  useUpdateProfileDetails,
+} from 'queries/profile';
+import { useFetchUserDetailsWrapper, useUpdateUserDetails } from 'queries/user';
 import styles from './index.module.scss';
-import { useUpdateProfileSocial, useUpdateUserDiscordUserName } from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -16,6 +19,7 @@ interface IProfileSkills {
 
 const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
   const params = useParams();
+  const userData = useFetchUserDetailsWrapper();
   const profileData = useFetchProfileDetailsWrapper(params.profileId);
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -26,36 +30,50 @@ const ProfileSocialsModal: FC<IProfileSkills> = ({ setOpen }) => {
   const [github, setGithub] = useState(profileData?.github ?? '');
   const [discordId, setDiscordId] = useState(user?.discordId ?? '');
 
-  const updateProfileSocial = useUpdateProfileSocial();
-  const updateDiscordUserName = useUpdateUserDiscordUserName();
+  const updateProfileDetails = useUpdateProfileDetails({
+    profileId: params.profileId,
+  });
+  const updateUserDetails = useUpdateUserDetails({
+    userId: userData?.user.userId,
+  });
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSave = () => {
-    if (
-      (twitter && !isValidUrl(twitter)) ||
-      (linkedin && !isValidUrl(linkedin)) ||
-      (instagram && !isValidUrl(instagram)) ||
-      (portfolio && !isValidUrl(portfolio)) ||
-      (github && !isValidUrl(github))
-    )
-      toast.error('Please input full url.');
-    else
-      updateProfileSocial({
-        portfolio,
-        linkedin,
-        twitter,
-        instagram,
-        github,
-        setOpen,
-      });
-    if (user && user.userId)
-      updateDiscordUserName({
-        userId: user.userId,
-        discordId,
-      });
+  const handleSave = async () => {
+    try {
+      if (
+        (twitter && !isValidUrl(twitter)) ||
+        (linkedin && !isValidUrl(linkedin)) ||
+        (instagram && !isValidUrl(instagram)) ||
+        (portfolio && !isValidUrl(portfolio)) ||
+        (github && !isValidUrl(github))
+      ) {
+        toast.error('Please input full url.');
+      } else {
+        await updateProfileDetails.mutateAsync({
+          payload: {
+            portfolio,
+            linkedin,
+            twitter,
+            instagram,
+            github,
+          },
+        });
+      }
+      if (userData?.user.discordId !== discordId) {
+        await updateUserDetails.mutateAsync({
+          payload: {
+            discordId,
+          },
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      handleClose();
+    }
   };
 
   return (

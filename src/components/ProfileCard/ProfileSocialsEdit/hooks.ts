@@ -7,6 +7,7 @@ import config from 'config';
 import { IUpdateUser } from 'interfaces/user';
 import { Dispatch, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
@@ -17,8 +18,8 @@ interface FunctionParameters {
 }
 
 const useUpdateProfileSocial = () => {
+  const params = useParams();
   const dispatch = useDispatch();
-  const profile = useSelector((state: RootState) => state.profile.profile);
 
   const updateProfileSocial = ({
     portfolio,
@@ -45,7 +46,7 @@ const useUpdateProfileSocial = () => {
           };
 
           const response = await fetch(
-            `${config.ApiBaseUrl}/profile/${profile?.profileId}`,
+            `${config.ApiBaseUrl}/profile/${Number(params.profileId)}`,
             {
               signal,
               method: 'PATCH',

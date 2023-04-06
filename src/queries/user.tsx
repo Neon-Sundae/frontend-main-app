@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { updateFirstTimeUser } from 'actions/auth';
 import { updateUser } from 'actions/user';
-import { fetchUserDetailsByWallet } from 'api/user';
+import { fetchUserDetailsByWallet, updateUserDetails } from 'api/user';
+import { IUserApiResponse } from 'interfaces/user';
 import { useDispatch } from 'react-redux';
 import { getAccessToken } from 'utils/authFn';
 import { handleError } from 'utils/handleUnAuthorization';
@@ -27,4 +28,48 @@ const useFetchUserDetailsByWallet = () => {
   });
 };
 
-export { useFetchUserDetailsByWallet };
+const useFetchUserDetailsWrapper = (): IUserApiResponse | undefined => {
+  const queryClient = useQueryClient();
+  return queryClient.getQueryData(['user-details']);
+};
+
+interface IUseUserId {
+  userId: number | undefined;
+}
+
+interface IUseUpdateUserDetails {
+  payload: {
+    [key: string]: string | number | undefined;
+  };
+}
+
+const useUpdateUserDetails = ({ userId }: IUseUserId) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ payload }: IUseUpdateUserDetails) =>
+      updateUserDetails({ userId, payload }),
+    onSuccess: newDetails => {
+      queryClient.setQueryData(
+        ['user-details'],
+        (old: IUserApiResponse | undefined) => {
+          if (old) {
+            return {
+              ...old,
+              user: {
+                ...old.user,
+                ...newDetails,
+              },
+            };
+          }
+          return newDetails;
+        }
+      );
+    },
+  });
+};
+
+export {
+  useFetchUserDetailsByWallet,
+  useFetchUserDetailsWrapper,
+  useUpdateUserDetails,
+};

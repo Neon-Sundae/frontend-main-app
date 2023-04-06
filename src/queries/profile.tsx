@@ -8,6 +8,7 @@ import {
   fetchProfileSkills,
   removeProfileEducation,
   removeProfileSkill,
+  updateProfileDetails,
   updateProfileEducation,
 } from 'api/profile';
 import { Option } from 'components/Select';
@@ -190,6 +191,31 @@ const useRemoveProfileSkill = ({ profileId }: IUseFetchProfileEducation) => {
   });
 };
 
+interface IUseUpdateProfileDetails {
+  payload: {
+    [key: string]: string | number | undefined;
+  };
+}
+
+const useUpdateProfileDetails = ({ profileId }: IUseFetchProfileEducation) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ payload }: IUseUpdateProfileDetails) =>
+      updateProfileDetails({ profileId, payload }),
+    onSuccess: newDetails => {
+      queryClient.setQueryData(
+        ['profile-details', profileId],
+        (old: IProfileApiResponse | undefined) => {
+          if (old) {
+            return { ...old, ...newDetails };
+          }
+          return newDetails;
+        }
+      );
+    },
+  });
+};
+
 export {
   useFetchProfileEducation,
   useCreateProfileEducation,
@@ -201,4 +227,5 @@ export {
   useFetchProfileSkills,
   useAddProfileSkill,
   useRemoveProfileSkill,
+  useUpdateProfileDetails,
 };

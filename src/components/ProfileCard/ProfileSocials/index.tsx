@@ -5,16 +5,15 @@ import { ReactComponent as TwitterIcon } from 'assets/illustrations/profile/twit
 import { ReactComponent as PortfolioIcon } from 'assets/illustrations/profile/portfolio.svg';
 import { ReactComponent as GithubIcon } from 'assets/illustrations/profile/github.svg';
 import { ReactComponent as DiscordIcon } from 'assets/illustrations/profile/discord.svg';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { useParams } from 'react-router-dom';
 import { useFetchProfileDetailsWrapper } from 'queries/profile';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import styles from './index.module.scss';
 
 const ProfileSocials: FC = () => {
   const params = useParams();
   const profileData = useFetchProfileDetailsWrapper(params.profileId);
-  const user = useSelector((state: RootState) => state.user.user);
+  const userData = useFetchUserDetailsWrapper();
 
   return (
     <div className={styles['profile-socials-container']}>
@@ -37,8 +36,10 @@ const ProfileSocials: FC = () => {
           <PortfolioIcon width={25.36} height={25.36} />
         )}
       </a>
-      <a href={`${user?.discordId}`} target="_blank" rel="noreferrer">
-        {user?.discordId && <DiscordIcon width={25.36} height={25.36} />}
+      <a href={`${userData?.user?.discordId}`} target="_blank" rel="noreferrer">
+        {userData?.user?.discordId && (
+          <DiscordIcon width={25.36} height={25.36} />
+        )}
       </a>
     </div>
   );

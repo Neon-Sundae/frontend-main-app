@@ -222,6 +222,33 @@ const removeProfileSkill = async ({
   return skillsId;
 };
 
+interface IUpdateProfileDetails extends IFetchProfileDetials {
+  payload: {
+    [key: string]: string | number | undefined;
+  };
+}
+
+const updateProfileDetails = async ({
+  profileId,
+  payload,
+}: IUpdateProfileDetails) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/profile/${Number(profileId)}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+  const json: IProfileApiResponse = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchProfileEducation,
   createProfileEducation,
@@ -232,4 +259,5 @@ export {
   fetchProfileSkills,
   addProfileSkill,
   removeProfileSkill,
+  updateProfileDetails,
 };

@@ -24,4 +24,26 @@ const fetchUserDetailsByWallet = async () => {
   return json;
 };
 
-export { fetchUserDetailsByWallet };
+interface IUpdateUserDetails {
+  userId: number | undefined;
+  payload: {
+    [key: string]: string | number | undefined;
+  };
+}
+
+const updateUserDetails = async ({ userId, payload }: IUpdateUserDetails) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(`${config.ApiBaseUrl}/user/${userId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  const json: IUserApiResponse = await handleApiErrors(response);
+  return json;
+};
+
+export { fetchUserDetailsByWallet, updateUserDetails };
