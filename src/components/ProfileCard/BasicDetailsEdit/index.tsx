@@ -5,23 +5,29 @@ import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
-import config from 'config';
-import { getAccessToken } from 'utils/authFn';
-import { useMutation } from '@tanstack/react-query';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useParams } from 'react-router-dom';
-import { useFetchProfileDetailsWrapper } from 'queries/profile';
+import {
+  useFetchProfileDetailsWrapper,
+  useUpdateProfileDetails,
+} from 'queries/profile';
+import { useFetchUserDetailsWrapper, useUpdateUserDetails } from 'queries/user';
 import styles from './index.module.scss';
-import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
   const params = useParams();
+  const userData = useFetchUserDetailsWrapper();
   const profileData = useFetchProfileDetailsWrapper(params.profileId);
+  const updateProfileDetails = useUpdateProfileDetails({
+    profileId: params.profileId,
+  });
+  const updateUserDetails = useUpdateUserDetails({
+    userId: userData?.user?.userId,
+  });
 
   const { xp } = useSelector((state: RootState) => state.profile);
 
-  const user = useSelector((state: RootState) => state.user.user);
   const [name, setName] = useState(profileData?.user?.name || '');
   const [title, setTitle] = useState(profileData?.title || 'Product Designer');
   const [bio, setBio] = useState(
@@ -31,39 +37,24 @@ const BasicDetailsEdit: FC = () => {
   imsum.`
   );
   const [picture, setPicture] = useState<any>(profileData?.picture || null);
-  const updateProfileDetails = useUpdateProfileDetails();
-  const { mutate: updateProfilePicture } = useMutation(
-    async () => {
-      return fetch(`${config.ApiBaseUrl}/profile/${profileData?.profileId}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ picture }),
-      });
-    },
-    {
-      onSuccess: (res: any) => {
-        console.log('success', res);
-      },
-      onError: (err: any) => {
-        console.log('err', err);
-      },
-    }
-  );
 
-  const handleSave = () => {
-    updateProfileDetails({
-      userId: user?.userId,
-      profileId: profileData?.profileId,
-      name,
-      title,
-      description: bio,
-      picture,
+  const handleSave = async () => {
+    const promise1 = updateProfileDetails.mutateAsync({
+      payload: {
+        title,
+        description: bio,
+        picture,
+      },
     });
-    updateProfilePicture();
+    const promise2 = updateUserDetails.mutateAsync({
+      payload: {
+        name,
+      },
+    });
+
+    await Promise.allSettled([promise1, promise2]);
   };
+
   return (
     <>
       <ProfileImage picture={picture} setPicture={setPicture} />
@@ -76,10 +67,7 @@ const BasicDetailsEdit: FC = () => {
       <div id="user-profile-mint">
         <ExperiencePoints xp={xp} />
         <ProfileAddressChain
-          name={name}
           profileSmartContractId={profileData?.profileSmartContractId}
-          walletId={user?.walletId}
-          title={title}
         />
       </div>
       <ProfileBio bio={bio || 'Add your bio'} setBio={setBio} />
@@ -191,16 +179,10 @@ const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
 
 interface IProfileAddressChain {
   profileSmartContractId: string | null | undefined;
-  name: string;
-  walletId: string | undefined;
-  title: string;
 }
 
 const ProfileAddressChain: FC<IProfileAddressChain> = ({
   profileSmartContractId,
-  name,
-  walletId,
-  title,
 }) => {
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profileSmartContractId ?? '');
