@@ -2,17 +2,25 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addProfileSkill,
   createProfileEducation,
+  createProfileWorkplace,
   fetchProfileDetails,
   fetchProfileDetailsByUser,
   fetchProfileEducation,
   fetchProfileSkills,
+  fetchProfileWorkplaces,
   removeProfileEducation,
   removeProfileSkill,
+  removeProfileWorkplace,
   updateProfileDetails,
   updateProfileEducation,
+  updateProfileWorkplace,
 } from 'api/profile';
 import { Option } from 'components/Select';
-import { IProfileApiResponse, IProfileEducation } from 'interfaces/profile';
+import {
+  IProfileApiResponse,
+  IProfileEducation,
+  IProfileWorkplace,
+} from 'interfaces/profile';
 
 interface IUseFetchProfileEducation {
   profileId: string | undefined;
@@ -216,6 +224,91 @@ const useUpdateProfileDetails = ({ profileId }: IUseFetchProfileEducation) => {
   });
 };
 
+const useFetchProfileWorkplace = ({ profileId }: IUseFetchProfileEducation) => {
+  return useQuery({
+    queryKey: ['profile-workplace', profileId],
+    queryFn: () => fetchProfileWorkplaces({ profileId }),
+    enabled: profileId !== undefined,
+  });
+};
+
+const useCreateProfileWorkplace = ({
+  profileId,
+}: IUseFetchProfileEducation) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => createProfileWorkplace({ profileId: Number(profileId) }),
+    onSuccess: newWorkplace => {
+      queryClient.setQueryData(
+        ['profile-workplace', profileId],
+        (old: IProfileWorkplace[] | undefined) => {
+          if (old) {
+            return [...old, newWorkplace];
+          }
+          return [newWorkplace];
+        }
+      );
+    },
+  });
+};
+
+interface IUseRemoveProfileWorkplace extends IUseFetchProfileEducation {
+  workplaceId: number;
+}
+
+const useRemoveProfileWorkplace = ({
+  workplaceId,
+  profileId,
+}: IUseRemoveProfileWorkplace) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => removeProfileWorkplace({ workplaceId }),
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ['profile-workplace', profileId],
+        (old: IProfileWorkplace[] | undefined) => {
+          if (old) {
+            return old.filter(x => x.workplaceId !== workplaceId);
+          }
+          return [];
+        }
+      );
+    },
+  });
+};
+
+const useUpdateProfileWorkplace = ({
+  workplaceId,
+  profileId,
+}: IUseRemoveProfileWorkplace) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ name, value }: IUseUpdateProfileEducation) => {
+      return updateProfileWorkplace({
+        workplaceId,
+        name,
+        value,
+      });
+    },
+    onSuccess: newWorkplace => {
+      queryClient.setQueryData(
+        ['profile-workplace', profileId],
+        (old: IProfileWorkplace[] | undefined) => {
+          if (old) {
+            return old.map(x => {
+              if (x.workplaceId === newWorkplace.workplaceId) {
+                return newWorkplace;
+              }
+              return x;
+            });
+          }
+          return [newWorkplace];
+        }
+      );
+    },
+  });
+};
+
 export {
   useFetchProfileEducation,
   useCreateProfileEducation,
@@ -228,4 +321,8 @@ export {
   useAddProfileSkill,
   useRemoveProfileSkill,
   useUpdateProfileDetails,
+  useFetchProfileWorkplace,
+  useCreateProfileWorkplace,
+  useRemoveProfileWorkplace,
+  useUpdateProfileWorkplace,
 };

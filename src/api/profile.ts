@@ -3,6 +3,7 @@ import {
   IProfileApiResponse,
   IProfileEducation,
   IProfileSkills,
+  IProfileWorkplace,
 } from 'interfaces/profile';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
@@ -249,6 +250,105 @@ const updateProfileDetails = async ({
   return json;
 };
 
+const fetchProfileWorkplaces = async ({
+  profileId,
+}: IFetchProfileEducation) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/profile/workplace/${profileId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  const json: IProfileWorkplace[] = await handleApiErrors(response);
+  return json;
+};
+
+const createProfileWorkplace = async ({
+  profileId,
+}: ICreateProfileEducation) => {
+  const accessToken = getAccessToken();
+  const now = new Date();
+
+  const payload = {
+    role: 'Creative Designer',
+    name: 'Google Corporation',
+    description: 'Add a brief information about the workplace.',
+    startDate: now.toISOString(),
+    endDate: now.toISOString(),
+    profileId,
+  };
+
+  const response = await fetch(`${config.ApiBaseUrl}/profile/workplace`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  const json = await handleApiErrors(response);
+  return json;
+};
+
+interface IRemoveProfileWorkplace {
+  workplaceId: number;
+}
+
+const removeProfileWorkplace = async ({
+  workplaceId,
+}: IRemoveProfileWorkplace) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/profile/workplace/${workplaceId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  await handleApiErrors(response);
+};
+
+interface IUpdateProfileWorkplace {
+  workplaceId: number;
+  name: string;
+  value: string;
+}
+
+const updateProfileWorkplace = async ({
+  workplaceId,
+  name,
+  value,
+}: IUpdateProfileWorkplace) => {
+  const accessToken = getAccessToken();
+
+  const payload = {
+    [name]: value,
+  };
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/profile/workplace/${workplaceId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchProfileEducation,
   createProfileEducation,
@@ -260,4 +360,8 @@ export {
   addProfileSkill,
   removeProfileSkill,
   updateProfileDetails,
+  fetchProfileWorkplaces,
+  createProfileWorkplace,
+  removeProfileWorkplace,
+  updateProfileWorkplace,
 };

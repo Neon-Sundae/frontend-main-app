@@ -24,7 +24,7 @@ const Education: FC = () => {
     (state: RootState) => state.profile.isEditable
   );
 
-  const createProfile = useCreateProfileEducation({
+  const createProfileEducation = useCreateProfileEducation({
     profileId: params.profileId,
   });
 
@@ -67,7 +67,7 @@ const Education: FC = () => {
         {isEditable ? (
           <div
             className={styles['add-more-btn']}
-            onClick={() => createProfile.mutate()}
+            onClick={() => createProfileEducation.mutate()}
           >
             <p>Add more</p>
             <i className="material-icons">add</i>
