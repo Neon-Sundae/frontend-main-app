@@ -1,7 +1,6 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
@@ -13,9 +12,9 @@ import {
   useUpdateProfileDetails,
 } from 'queries/profile';
 import { useFetchUserDetailsWrapper, useUpdateUserDetails } from 'queries/user';
+import { editProfile } from 'actions/profile';
 import styles from './index.module.scss';
 import ProfilePictureModal from '../ProfilePictureModal';
-import { editProfile } from 'actions/profile';
 
 const BasicDetailsEdit: FC = () => {
   const params = useParams();
