@@ -4,7 +4,6 @@ import {
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_SOCIALS,
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
   GET_USDC_BALANCE,
@@ -44,14 +43,6 @@ type Action =
   | {
       type: typeof EDIT_PROFILE;
       isEditable: boolean;
-    }
-  | {
-      type: typeof UPDATE_PROFILE_SOCIALS;
-      portfolio: string;
-      linkedin: string;
-      twitter: string;
-      instagram: string;
-      github: string;
     }
   | {
       type: typeof UPDATE_PROFILE_TIMEZONE;
@@ -130,24 +121,6 @@ const profile = (state = initialState, action: Action): State => {
         ...state,
         isEditable: action.isEditable,
       };
-    case UPDATE_PROFILE_SOCIALS: {
-      const { portfolio, linkedin, twitter, instagram, github } = action;
-
-      if (state.profile) {
-        return {
-          ...state,
-          profile: {
-            ...state.profile,
-            portfolio,
-            linkedin,
-            twitter,
-            instagram,
-            github,
-          },
-        };
-      }
-      return { ...state };
-    }
     case UPDATE_PROFILE_TIMEZONE:
       if (state.profile) {
         return {

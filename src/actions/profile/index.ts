@@ -5,7 +5,6 @@ import {
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_SOCIALS,
   UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
   GET_USER_XP,
@@ -45,29 +44,6 @@ export const updateProfileDetailsAction = (
   description,
   picture,
   name,
-});
-
-export interface IUpdateProfileSocial {
-  portfolio: string;
-  linkedin: string;
-  twitter: string;
-  instagram: string;
-  github: string;
-}
-
-export const updateProfileSocialAction = (
-  portfolio: string,
-  linkedin: string,
-  twitter: string,
-  instagram: string,
-  github: string
-) => ({
-  type: UPDATE_PROFILE_SOCIALS,
-  portfolio,
-  linkedin,
-  twitter,
-  instagram,
-  github,
 });
 
 export const updateProfileTimezoneAction = (timezone: string) => ({
