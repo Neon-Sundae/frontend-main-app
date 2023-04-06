@@ -7,7 +7,6 @@ import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import toast from 'react-hot-toast';
-import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
 import errorEventBeacon from 'utils/analyticsFns/errorEventBeacon';
 
@@ -85,7 +84,7 @@ const useProfileManage = () => {
         }
       );
       await handleApiErrors(response);
-      dispatch(updateProfileContractAddressAction(address));
+      // dispatch(updateProfileContractAddressAction(address));
     } catch (err) {
       console.log(err);
     }

@@ -1,14 +1,7 @@
-import { IProfileApiResponse, IProfileWorkplace } from 'interfaces/profile';
 import {
-  ADD_PROFILE_WORKPLACE,
   EDIT_PROFILE,
-  FILL_PROFILE_DATA,
-  REMOVE_PROFILE_WORKPLACE,
-  UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_WORKPLACE,
   GET_USER_XP,
   GET_USDC_BALANCE,
-  UPDATE_PROFILE_CONTRACT_ADDRESS,
   SET_CURRENT_USER_PROFILE_PICTURE,
 } from './types';
 
@@ -22,53 +15,9 @@ export const getUSDCBalance = (usdc: number) => ({
   payload: usdc,
 });
 
-export const fillProfileData = (profile: IProfileApiResponse) => ({
-  type: FILL_PROFILE_DATA,
-  profile,
-});
-
 export const editProfile = (isEditable: boolean) => ({
   type: EDIT_PROFILE,
   isEditable,
-});
-
-export const updateProfileDetailsAction = (
-  title: string,
-  description: string,
-  picture: string,
-  name: string
-) => ({
-  type: UPDATE_PROFILE_DETAILS,
-  title,
-  description,
-  picture,
-  name,
-});
-
-export const addProfileWorkplaceAction = (workplace: IProfileWorkplace) => ({
-  type: ADD_PROFILE_WORKPLACE,
-  workplace,
-});
-
-export const removeProfileWorkplaceAction = (workplaceId: number) => ({
-  type: REMOVE_PROFILE_WORKPLACE,
-  workplaceId,
-});
-
-export const updateProfileWorkplaceAction = (
-  workplaceId: number,
-  keyName: string,
-  value: string
-) => ({
-  type: UPDATE_PROFILE_WORKPLACE,
-  workplaceId,
-  keyName,
-  value,
-});
-
-export const updateProfileContractAddressAction = (address: string) => ({
-  type: UPDATE_PROFILE_CONTRACT_ADDRESS,
-  address,
 });
 
 export const setCurrentUserProfilePicture = (
