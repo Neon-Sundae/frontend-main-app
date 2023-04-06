@@ -1,6 +1,7 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
@@ -14,9 +15,11 @@ import {
 import { useFetchUserDetailsWrapper, useUpdateUserDetails } from 'queries/user';
 import styles from './index.module.scss';
 import ProfilePictureModal from '../ProfilePictureModal';
+import { editProfile } from 'actions/profile';
 
 const BasicDetailsEdit: FC = () => {
   const params = useParams();
+  const dispatch = useDispatch();
   const userData = useFetchUserDetailsWrapper();
   const profileData = useFetchProfileDetailsWrapper(params.profileId);
   const updateProfileDetails = useUpdateProfileDetails({
@@ -53,6 +56,7 @@ const BasicDetailsEdit: FC = () => {
     });
 
     await Promise.allSettled([promise1, promise2]);
+    dispatch(editProfile(false));
   };
 
   return (
