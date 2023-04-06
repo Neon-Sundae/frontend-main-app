@@ -4,7 +4,6 @@ import {
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
   GET_USDC_BALANCE,
   GET_PROFILE_CONTRACT_ADDRESS,
@@ -43,10 +42,6 @@ type Action =
   | {
       type: typeof EDIT_PROFILE;
       isEditable: boolean;
-    }
-  | {
-      type: typeof UPDATE_PROFILE_TIMEZONE;
-      timezone: string;
     }
   | {
       type: typeof ADD_PROFILE_WORKPLACE;
@@ -121,17 +116,6 @@ const profile = (state = initialState, action: Action): State => {
         ...state,
         isEditable: action.isEditable,
       };
-    case UPDATE_PROFILE_TIMEZONE:
-      if (state.profile) {
-        return {
-          ...state,
-          profile: {
-            ...state.profile,
-            timezone: action.timezone,
-          },
-        };
-      }
-      return { ...state };
     case ADD_PROFILE_WORKPLACE:
       return {
         ...state,

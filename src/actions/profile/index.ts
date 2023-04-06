@@ -5,7 +5,6 @@ import {
   FILL_PROFILE_DATA,
   REMOVE_PROFILE_WORKPLACE,
   UPDATE_PROFILE_DETAILS,
-  UPDATE_PROFILE_TIMEZONE,
   UPDATE_PROFILE_WORKPLACE,
   GET_USER_XP,
   GET_USDC_BALANCE,
@@ -44,11 +43,6 @@ export const updateProfileDetailsAction = (
   description,
   picture,
   name,
-});
-
-export const updateProfileTimezoneAction = (timezone: string) => ({
-  type: UPDATE_PROFILE_TIMEZONE,
-  timezone,
 });
 
 export const addProfileWorkplaceAction = (workplace: IProfileWorkplace) => ({
