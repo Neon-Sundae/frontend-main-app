@@ -8,7 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
 import { useFetchUserDetailsByWallet } from 'queries/user';
-import { useFetchProfileDetails } from 'queries/profile';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import { getAccessToken } from 'utils/authFn';
 import { customStyles } from './selectStyles';
 import styles from './index.module.scss';
@@ -23,8 +23,8 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   const navigate = useNavigate();
 
   const { data: userData } = useFetchUserDetailsByWallet();
-  const { data: profileData } = useFetchProfileDetails({
-    profileId: userData?.profileId.toString(),
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
   });
 
   const temp: any = [];

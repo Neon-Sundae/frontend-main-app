@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import { getAccessToken } from 'utils/authFn';
 import getProfileProjects from 'utils/getProfileProjects';
 import getRandomString from 'utils/getRandomString';
@@ -14,13 +14,16 @@ interface IProps {
 
 const useFetchWalletProjects = ({ open }: IProps) => {
   const accessToken = getAccessToken();
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user.userId,
+  });
 
   const { data } = useQuery(
     ['userOrgs'],
     async ({ signal }) => {
       const response = await fetch(
-        `${config.ApiBaseUrl}/organisation/user-projects/${profile?.profileId}`,
+        `${config.ApiBaseUrl}/organisation/user-projects/${userData?.profileId}`,
         {
           signal,
           headers: {
@@ -34,7 +37,7 @@ const useFetchWalletProjects = ({ open }: IProps) => {
       return normalizedProjectData;
     },
     {
-      enabled: profile?.profileId !== undefined && open,
+      enabled: userData?.profileId !== undefined && open,
       refetchOnWindowFocus: false,
       onError: (error: any) => {
         handleError({
@@ -50,7 +53,7 @@ const useFetchWalletProjects = ({ open }: IProps) => {
       {
         id: getRandomString(5),
         name: 'My Profile',
-        smartContractId: profile?.profileSmartContractId,
+        smartContractId: profileData?.profileSmartContractId,
         type: 'profile_contract',
       },
     ];

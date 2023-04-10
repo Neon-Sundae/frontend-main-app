@@ -1,20 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { handleError } from 'utils/handleUnAuthorization';
 
 const useFetchUserTasks = () => {
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user.userId,
+  });
   const accessToken = getAccessToken();
 
   const { data } = useQuery(
     ['userTasks'],
     async ({ signal }) => {
       const response = await fetch(
-        `${config.ApiBaseUrl}/task/user/${profile?.profileId}`,
+        `${config.ApiBaseUrl}/task/user/${profileData?.profileId}`,
         {
           signal,
           headers: {
@@ -27,8 +30,7 @@ const useFetchUserTasks = () => {
       return json;
     },
     {
-      enabled: profile !== null,
-      refetchOnWindowFocus: false,
+      enabled: profileData !== null,
       onError: (error: any) => {
         handleError({
           error,

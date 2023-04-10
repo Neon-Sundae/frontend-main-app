@@ -10,7 +10,6 @@ import clsx from 'clsx';
 import { RootState } from 'reducers';
 import { ReactComponent as ProjectIcon } from 'assets/illustrations/icons/project.svg';
 import { ReactComponent as CategoryIcon } from 'assets/illustrations/icons/category.svg';
-import { ReactComponent as CoinIcon } from 'assets/illustrations/icons/coin.svg';
 import { ReactComponent as CheckmarkIcon } from 'assets/illustrations/icons/carbon_checkmark-filled-warning.svg';
 import { ReactComponent as CheckIcon } from 'assets/illustrations/icons/check.svg';
 import calculateTaskXP from 'utils/contractFns/calculateTaskXp';
@@ -23,6 +22,8 @@ import { ReactComponent as XPIcon } from 'assets/illustrations/icons/xp.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { IMemberData } from 'interfaces/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import TaskChecklistEdit from './TaskChecklistEdit';
 import FileSkillsCard from './FileSkillsCard';
 import styles from './index.module.scss';
@@ -48,18 +49,19 @@ const TaskDetail: FC<ITaskDetail> = ({
   const builderTaskApply = useBuilderTaskApply();
   const { deleteTask } = useDeleteTask(setOpen);
   const [isCancel, setIsCancel] = useState(false);
-  const [taskEdit, setTaskEdit] = useState(false);
   const { selectedTask, taskXP } = useSelector(
     (state: RootState) => state.flProject
   );
 
-  const profile = useSelector((state: RootState) => state.profile.profile);
-  const { user } = useSelector((state: RootState) => state.user);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
 
   useEffect(() => {
     const getXP = async () => {
       const xp = await calculateTaskXP(
-        user?.walletId,
+        userData?.user?.walletId,
         selectedTask?.estimatedDifficulty
       );
       dispatch({
@@ -73,7 +75,7 @@ const TaskDetail: FC<ITaskDetail> = ({
   }, [selectedTask]);
 
   const applyToTask = () => {
-    if (profile && profile.profileSmartContractId) {
+    if (profileData && profileData.profileSmartContractId) {
       builderTaskApply.mutate({
         taskId: selectedTask.taskId,
       });
@@ -81,7 +83,7 @@ const TaskDetail: FC<ITaskDetail> = ({
       setOpen(false);
     } else {
       toast.error('Please mint your profile');
-      navigate(`/profile/${profile?.profileId}`);
+      navigate(`/profile/${profileData?.profileId}`);
     }
   };
 
@@ -303,21 +305,21 @@ const TaskDetail: FC<ITaskDetail> = ({
           </div>
           <TaskChecklistEdit selectedTask={selectedTask} />
           <div className={styles['project-action-delete']}>
-            {isOrganisationMember(user, members) ? (
+            {isOrganisationMember(userData?.user, members) ? (
               founderTaskAction()
             ) : (
               <div>
                 {selectedTask?.status === 'open' &&
                 selectedTask?.profileTask.filter(
                   (item: any) =>
-                    item?.Profile?.user?.walletId === user?.walletId
+                    item?.Profile?.user?.walletId === userData?.user?.walletId
                 ).length === 0 ? (
                   <button onClick={applyToTask}>Apply for task</button>
                 ) : selectedTask?.status === 'open' &&
                   selectedTask?.profileTask.filter(
                     (item: any) =>
                       item?.Profile?.user?.walletId.toLowerCase() ===
-                        user?.walletId?.toLowerCase() &&
+                        userData?.user?.walletId?.toLowerCase() &&
                       item?.applicationStatus === 'accepted'
                   ).length > 0 ? (
                   <button onClick={handleCommit}>Commit to task</button>

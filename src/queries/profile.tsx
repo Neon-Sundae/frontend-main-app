@@ -145,6 +145,13 @@ const useFetchProfileDetailsByUser = ({
   });
 };
 
+const useFetchProfileDetailsByUserWrapper = ({
+  userId,
+}: IUseFetchProfileDetailsByUser): IProfileApiResponse | undefined => {
+  const queryClient = useQueryClient();
+  return queryClient.getQueryData(['profile-details-by-user', userId]);
+};
+
 const useFetchProfileSkills = ({ profileId }: IUseFetchProfileEducation) => {
   return useQuery({
     queryKey: ['profile-skills', profileId],
@@ -317,6 +324,7 @@ export {
   useFetchProfileDetails,
   useFetchProfileDetailsWrapper,
   useFetchProfileDetailsByUser,
+  useFetchProfileDetailsByUserWrapper,
   useFetchProfileSkills,
   useAddProfileSkill,
   useRemoveProfileSkill,

@@ -30,6 +30,8 @@ import getRandomString from 'utils/getRandomString';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import { IMemberData } from 'interfaces/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import { useFetchProjectTasks, useUpdateTaskStatus } from './hooks';
 import styles from './index.module.scss';
 import { notAllowedCases, onDragEnd } from './dndMethods';
@@ -355,8 +357,10 @@ const Card: FC<ICard> = ({
   members,
 }) => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user.user);
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
   const builderTaskApply = useBuilderTaskApply();
   const title = useMemo(() => `${item.name}`, []);
   const difficultyArray = useMemo(
@@ -367,20 +371,20 @@ const Card: FC<ICard> = ({
   const applyToTask = (e: MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
-    if (profile && profile.profileSmartContractId) {
+    if (profileData && profileData.profileSmartContractId) {
       builderTaskApply.mutate({
         taskId: item.taskId,
       });
     } else {
       toast.error('Please mint your profile');
-      navigate(`/profile/${profile?.profileId}`);
+      navigate(`/profile/${profileData?.profileId}`);
     }
   };
 
   const getTextOrAvatar = () => {
     switch (item.status) {
       case 'open':
-        if (isOrganisationMember(user, members)) {
+        if (isOrganisationMember(userData?.user, members)) {
           return <Avatars appliedBuilders={appliedBuilders} />;
         }
         return (
@@ -393,7 +397,9 @@ const Card: FC<ICard> = ({
           <div className={styles['avatar-image-wrapper']}>
             <img
               alt="user"
-              src={getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())}
+              src={getDefaultAvatarSrc(
+                userData?.user?.name?.charAt(0).toUpperCase()
+              )}
             />
           </div>
         );
