@@ -1,7 +1,18 @@
+import OrganisationPeopleCard from 'components/OrganisationPeopleCard';
+import { IMemberData } from 'interfaces/organisation';
+import { FC } from 'react';
 import styles from './index.module.scss';
 
-const PeopleTab = () => {
-  return <div className={styles['people-tab']}>PeopleTab</div>;
+interface IPeopleTab {
+  members: IMemberData;
+}
+
+const PeopleTab: FC<IPeopleTab> = ({ members }) => {
+  return (
+    <div className={styles['people-tab']}>
+      <OrganisationPeopleCard members={members} />
+    </div>
+  );
 };
 
 export default PeopleTab;

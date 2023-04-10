@@ -49,6 +49,7 @@ export interface IOwnerData {
     profile: {
       profileId: number;
       title: string | null;
+      description: string | null;
       picture: string | null;
       createdAt: string;
     };
@@ -58,6 +59,18 @@ export interface IOwnerData {
 export interface IMember {
   userId: number;
   role: string;
+  user: {
+    name: string;
+    email: string;
+    userId: number;
+    profile: {
+      profileId: number;
+      title: string | null;
+      description: string | null;
+      picture: string | null;
+      createdAt: string;
+    };
+  };
 }
 
 export interface IMemberData {

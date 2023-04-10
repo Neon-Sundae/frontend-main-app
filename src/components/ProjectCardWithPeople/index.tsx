@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { OrganisationProjects } from 'interfaces/organisation';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
 interface IProjectCardWithPeople {
@@ -18,6 +19,7 @@ const ProjectCardWithPeople: FC<IProjectCardWithPeople> = ({ flProjects }) => {
         <div
           className={styles[`project-card-with-people--card`]}
           onClick={() => navigate(`/project/${flProject.flProject_uuid}`)}
+          key={getRandomString(5)}
         >
           <BrandImage
             width={54.07}

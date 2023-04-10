@@ -4,6 +4,7 @@ import { IOrganisation } from 'interfaces/organisation';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import styles from './index.module.scss';
 import HorizontalTabs from './HorizontalTabs';
 import OverviewTab from './OverviewTab';
@@ -19,6 +20,9 @@ const OrganisationPublicView: FC<IOrganisationPublicView> = ({
   organisation,
 }) => {
   const org = useSelector((state: RootState) => state.org);
+  const { members } = useFetchOrganisationOwnerManager(
+    organisation.organisationId.toString()
+  );
   const { description, whitepaper, flProjects } = organisation;
 
   const renderTab = () => {
@@ -30,11 +34,13 @@ const OrganisationPublicView: FC<IOrganisationPublicView> = ({
       case 1:
         return <ProjectsTab flProjects={flProjects} />;
       case 2:
-        return <PeopleTab />;
+        return <PeopleTab members={members} />;
       case 3:
         return <JobsTab />;
       default:
-        return null;
+        return (
+          <OverviewTab description={description} whitepaper={whitepaper} />
+        );
     }
   };
 
