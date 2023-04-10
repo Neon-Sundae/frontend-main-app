@@ -105,7 +105,7 @@ const OrganisationTeam: FC = () => {
                       src={
                         member.user.profile.picture ||
                         getDefaultAvatarSrc(
-                          member.user.name.charAt(0).toUpperCase()
+                          member.user.name?.charAt(0).toUpperCase()
                         )
                       }
                     />

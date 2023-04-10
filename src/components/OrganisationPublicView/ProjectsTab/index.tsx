@@ -1,7 +1,18 @@
+import ProjectCardWithPeople from 'components/ProjectCardWithPeople';
+import { OrganisationProjects } from 'interfaces/organisation';
+import { FC } from 'react';
 import styles from './index.module.scss';
 
-const ProjectsTab = () => {
-  return <div className={styles['projects-tab']}>Projects Tab</div>;
+interface IProjectsTab {
+  flProjects: OrganisationProjects[];
+}
+
+const ProjectsTab: FC<IProjectsTab> = ({ flProjects }) => {
+  return (
+    <div className={styles['projects-tab']}>
+      <ProjectCardWithPeople flProjects={flProjects} />
+    </div>
+  );
 };
 
 export default ProjectsTab;

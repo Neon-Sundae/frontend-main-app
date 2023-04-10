@@ -11,11 +11,16 @@ interface OrganisationUser {
   };
 }
 
-interface OrganisationProjects {
+export interface IProjectPerson {
+  profileId: number;
+  picture: string | undefined;
+}
+export interface OrganisationProjects {
   flProject_uuid: string;
   flProjectName: string;
   flProjectDescription: string;
   taskCount: number;
+  projectPeople: IProjectPerson[];
 }
 
 export interface IOrganisation {
