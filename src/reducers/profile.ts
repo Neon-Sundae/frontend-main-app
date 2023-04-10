@@ -1,9 +1,7 @@
 import {
   EDIT_PROFILE,
   GET_USDC_BALANCE,
-  GET_PROFILE_CONTRACT_ADDRESS,
   GET_USER_XP,
-  SET_CURRENT_USER_PROFILE_PICTURE,
 } from 'actions/profile/types';
 
 interface State {
@@ -25,10 +23,6 @@ type Action =
   | {
       type: typeof GET_USDC_BALANCE;
       payload: number;
-    }
-  | {
-      type: typeof SET_CURRENT_USER_PROFILE_PICTURE;
-      currentUserProfilePicture: string | null;
     };
 
 const initialState: State = {
@@ -54,11 +48,6 @@ const profile = (state = initialState, action: Action): State => {
       return {
         ...state,
         usdcBalance: action.payload,
-      };
-    case SET_CURRENT_USER_PROFILE_PICTURE:
-      return {
-        ...state,
-        currentUserProfilePicture: action.currentUserProfilePicture,
       };
     default:
       return { ...state };
