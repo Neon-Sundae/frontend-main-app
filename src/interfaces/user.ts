@@ -13,6 +13,7 @@ export interface IUser {
 export interface IUserApiResponse {
   user: IUser;
   userExists: boolean;
+  profileId: number;
 }
 
 export interface IUpdateUser {

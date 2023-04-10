@@ -1,6 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { RootState } from 'reducers';
-import { useSelector } from 'react-redux';
 import Modal from 'components/Modal';
 import Select from 'react-select';
 import timezoneData from 'assets/data/timezones.json';
@@ -9,6 +7,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
 import config from 'config';
 import { useNavigate } from 'react-router-dom';
+import { useFetchUserDetailsByWallet } from 'queries/user';
+import { useFetchProfileDetails } from 'queries/profile';
 import { getAccessToken } from 'utils/authFn';
 import { customStyles } from './selectStyles';
 import styles from './index.module.scss';
@@ -22,9 +22,14 @@ interface ICreatePrjProps {
 const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   const navigate = useNavigate();
 
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const { data: userData } = useFetchUserDetailsByWallet();
+  const { data: profileData } = useFetchProfileDetails({
+    profileId: userData?.profileId.toString(),
+  });
 
   const temp: any = [];
+  let timer: NodeJS.Timeout | undefined;
+
   useEffect(() => {
     if (!temp.length) {
       timezoneData.forEach(element => {
@@ -32,6 +37,10 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       });
       setOptions(temp);
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   const [formData, setFormData] = useState<any>({
@@ -210,7 +219,7 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
   };
 
   const handleAddProject = (e: any) => {
-    if (profile && profile.profileSmartContractId) {
+    if (profileData && profileData.profileSmartContractId) {
       if (error.message !== '') toast.error(error.message);
       if (error.message === '') {
       }
@@ -231,10 +240,15 @@ const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
       });
       setSubmit(true);
     } else {
-      toast.error('Please mint your profile');
-      navigate(`/profile/${profile?.profileId}`);
+      toast.error('Mint your profile. Redirecting to profile page...', {
+        duration: 2000,
+      });
+      timer = setTimeout(() => {
+        navigate(`/profile/${profileData?.profileId}`);
+      }, 3000);
     }
   };
+
   return (
     <>
       <Toaster />
