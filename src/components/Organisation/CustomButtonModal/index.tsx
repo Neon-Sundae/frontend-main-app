@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styles from './index.module.scss';
-import useUpdateCustomButton from './hooks';
 
 interface ICustomButtonModal {
   handleClose: () => void;
