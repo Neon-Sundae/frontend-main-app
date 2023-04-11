@@ -59,10 +59,6 @@ const Landing: FC = () => {
           <>
             <Banner organisation={organisation} />
             <BasicDetails organisation={organisation} owner={owner} />
-            <div className={styles['organisation-project-jobs-wrap']}>
-              <OrganisationProjects organisation={organisation} />
-              <OrganisationJobs organisationId={organisation.organisationId} />
-            </div>
           </>
         );
       case 'projects':

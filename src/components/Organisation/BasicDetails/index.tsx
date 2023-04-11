@@ -11,6 +11,7 @@ import { RootState } from 'reducers';
 import _debounce from 'lodash/debounce';
 import styles from './index.module.scss';
 import { useUpdateOrganisation } from '../Banner/hooks';
+import CustomButtonModal from '../CustomButtonModal';
 
 interface IBasicDetails {
   organisation: IOrganisation;
@@ -24,6 +25,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
   const [description, setDescription] = useState(
     organisation.description ?? ''
   );
+  const [open, setOpen] = useState(false);
 
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
 
@@ -57,16 +59,21 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
     debounceFn(name, value);
   };
 
+  const handleCustomButtonClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className={styles.content}>
       <section className={styles.section}>
-        <div className={styles['organisation-profile-created']}>
-          <h3 className={styles['organisation-heading']}>Profile Created By</h3>
-          {owner && <CreatedBy owner={owner} />}
-        </div>
         <div className={styles['organisation-name-description']}>
+          <button onClick={handleCustomButtonClick}>Click</button>
           <h3 className={styles['organisation-heading']}>
-            Company Description
+            Project Description
           </h3>
           <div
             className={clsx(
@@ -115,6 +122,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
           </div>
         </div>
       </section>
+      {open && <CustomButtonModal handleClose={handleClose} />}
     </div>
   );
 };

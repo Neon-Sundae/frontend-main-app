@@ -5,9 +5,10 @@
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   margin-top: 50px;
+  position: relative;
 
   @media (max-width: 1920px) {
-    width: 70%;
+    width: 50%;
   }
 
   @media (max-width: 1680px) {
@@ -15,7 +16,7 @@
   }
 
   @media (max-width: 1440px) {
-    width: 80%;
+    width: 62%;
   }
 
   @media (max-width: 1024px) {
