@@ -319,7 +319,7 @@ const TaskDetail: FC<ITaskDetail> = ({
                 ) : selectedTask?.status === 'open' &&
                   selectedTask?.profileTask.filter(
                     (item: any) =>
-                      item?.Profile?.user?.walletId.toLowerCase() ===
+                      item?.Profile?.user?.walletId?.toLowerCase() ===
                         user?.walletId?.toLowerCase() &&
                       item?.applicationStatus === 'accepted'
                   ).length > 0 ? (
