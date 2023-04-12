@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import _debounce from 'lodash/debounce';
+import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import styles from './index.module.scss';
 import { useUpdateOrganisation } from '../Banner/hooks';
 import CustomButtonModal from '../CustomButtonModal';
@@ -60,7 +61,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
   };
 
   const handleCustomButtonClick = () => {
-    setOpen(true);
+    if (isEditable) setOpen(true);
   };
 
   const handleClose = () => {
@@ -71,10 +72,36 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
     <div className={styles.content}>
       <section className={styles.section}>
         <div className={styles['organisation-name-description']}>
-          <button onClick={handleCustomButtonClick}>Click</button>
-          <h3 className={styles['organisation-heading']}>
-            Project Description
-          </h3>
+          <span>
+            <h3 className={styles['organisation-heading']}>
+              Project Description
+            </h3>
+
+            <button
+              onClick={handleCustomButtonClick}
+              className={clsx(
+                styles.button,
+                isEditable && styles['button--edit']
+              )}
+            >
+              {organisation.customButtonLink && (
+                <a
+                  href={`${organisation.customButtonLink}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {organisation.customButtonLabel ?? 'Custom Button'}
+                </a>
+              )}
+
+              {!organisation.customButtonLink && (
+                <>{organisation.customButtonLabel ?? 'Custom Button'}</>
+              )}
+
+              {isEditable && <EditIcon width={50} height={50} />}
+            </button>
+          </span>
+
           <div
             className={clsx(
               styles.description,
@@ -122,7 +149,13 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
           </div>
         </div>
       </section>
-      {open && <CustomButtonModal handleClose={handleClose} />}
+      {open && (
+        <CustomButtonModal
+          handleClose={handleClose}
+          customButtonLabel={organisation.customButtonLabel || ''}
+          customButtonLink={organisation.customButtonLink || ''}
+        />
+      )}
     </div>
   );
 };

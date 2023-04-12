@@ -38,6 +38,8 @@ export interface IOrganisation {
   bannerImage: string | null;
   OrganisationUser: OrganisationUser[];
   flProjects: OrganisationProjects[];
+  customButtonLabel: string | null;
+  customButtonLink: string | null;
 }
 
 export interface IOwnerData {

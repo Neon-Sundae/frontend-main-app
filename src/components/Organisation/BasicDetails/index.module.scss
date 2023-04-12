@@ -29,6 +29,62 @@
     min-height: 100px;
     display: flex;
   }
+  & > span {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > h3 {
+      margin-bottom: 0;
+    }
+
+    & > button {
+      padding: 2px;
+      text-align: center;
+      color: #fff;
+      font-family: var(--font-family-roboto-regular);
+
+      font-size: 18px;
+      border: 0.94px solid #ff9bfb;
+      border-radius: 22px;
+      height: 50px;
+      width: 195px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: linear-gradient(
+          89.58deg,
+          #826af7 2.95%,
+          #db5dde 56.19%,
+          #e87aaf 103.17%
+        ),
+        linear-gradient(0deg, #e49df4, #e49df4),
+        radial-gradient(
+            116.97% 116.97% at 34.87% -2.72%,
+            #ff9bfb 0%,
+            #ffffff 100%
+          )
+          /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+        linear-gradient(
+          94.63deg,
+          rgba(255, 255, 255, 0.16) 4.94%,
+          rgba(255, 255, 255, 0.04) 93.94%
+        );
+      & > a {
+        color: #fff;
+      }
+    }
+    & > .button--edit {
+      cursor: pointer;
+      background: linear-gradient(
+        94.3deg,
+        rgba(255, 255, 255, 0.12) 8.58%,
+        rgba(255, 255, 255, 0.03) 96.04%
+      );
+    }
+  }
 }
 
 .organisation-profile-created {
@@ -77,6 +133,7 @@
 .description {
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
   // padding: 41px 43px;
   // z-index: 2;
 
