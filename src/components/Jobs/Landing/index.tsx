@@ -81,6 +81,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
       >
         {!hideNavbar && <NavBar />}
         <Toaster />
+        <h2 className={styles['container-heading']}>Jobs</h2>
         <div className={styles['job-cards-all-wrap']}>
           <div className={styles['jobs-cards-wrap']}>
             {isOrganisationMember(user, members) && (

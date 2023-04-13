@@ -1,6 +1,6 @@
 import { selectedOrganisationPageTab } from 'actions/organisation';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './index.module.scss';
 
@@ -16,7 +16,15 @@ interface TabItem {
   text: string;
 }
 
-const HorizontalTabs = () => {
+interface IHorizontalTabs {
+  customButtonLabel: string;
+  customButtonLink: string;
+}
+
+const HorizontalTabs: FC<IHorizontalTabs> = ({
+  customButtonLabel,
+  customButtonLink,
+}) => {
   const dispatch = useDispatch();
   const [buttonSelected, setButtonSelected] = useState(0);
 
@@ -41,7 +49,11 @@ const HorizontalTabs = () => {
         </button>
       ))}
 
-      <button className={styles['custom-button']}>Custom Button</button>
+      <button className={styles['custom-button']}>
+        <a href={customButtonLink} target="_blank" rel="noreferrer">
+          {customButtonLabel}
+        </a>
+      </button>
     </div>
   );
 };

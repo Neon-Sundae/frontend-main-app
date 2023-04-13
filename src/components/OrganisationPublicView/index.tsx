@@ -23,7 +23,13 @@ const OrganisationPublicView: FC<IOrganisationPublicView> = ({
   const { members } = useFetchOrganisationOwnerManager(
     organisation.organisationId.toString()
   );
-  const { description, whitepaper, flProjects } = organisation;
+  const {
+    description,
+    whitepaper,
+    flProjects,
+    customButtonLabel,
+    customButtonLink,
+  } = organisation;
 
   const renderTab = () => {
     switch (org.selectedTab) {
@@ -48,7 +54,10 @@ const OrganisationPublicView: FC<IOrganisationPublicView> = ({
     <div className={styles[`organisation-public-view`]}>
       <NavBar />
       <Banner organisation={organisation} />
-      <HorizontalTabs />
+      <HorizontalTabs
+        customButtonLabel={customButtonLabel || 'custom button'}
+        customButtonLink={customButtonLink || 'link'}
+      />
       {renderTab()}
     </div>
   );

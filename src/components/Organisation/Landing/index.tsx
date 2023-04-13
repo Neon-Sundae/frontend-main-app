@@ -30,6 +30,7 @@ const Landing: FC = () => {
   const [tabSelected, setTabSelected] = useState(searchParams.get('show'));
 
   const user = useSelector((state: RootState) => state.user.user);
+  const publicView = useSelector((state: RootState) => state.org.publicView);
 
   useEffect(() => {
     if (!searchParams.get('show')) {
@@ -102,7 +103,7 @@ const Landing: FC = () => {
   return (
     <>
       <BlurBlobs />
-      {isOrganisationMember(user, members) ? (
+      {isOrganisationMember(user, members, publicView) ? (
         <div
           className={clsx(
             styles['organisation-container'],
