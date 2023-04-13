@@ -45,7 +45,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
         >
           <h3 className={styles['organisation-heading']}>Projects</h3>
           <button onClick={() => setShowProjectCreate(true)}>
-            Add new
+            Add new project
             <i className={clsx('material-icons', styles['add-icon'])}>add</i>
           </button>
         </span>
@@ -71,6 +71,7 @@ const OrganisationProjects: FC<IOrganisationProjects> = ({
               : styles['organisation-project-cards-container-alternate']
           )}
         >
+          {flProjects.length === 0 && <p>You may want to add project(s).</p>}
           {flProjects.length > 0
             ? flProjects.map(flProject => (
                 <OrganisationProjectCard
