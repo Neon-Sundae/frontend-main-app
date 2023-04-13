@@ -26,7 +26,7 @@ const OrganisationSidebar: FC<OrganisationSidebarProps> = ({
   allOrgData,
 }) => {
   const { orgId } = useParams();
-  const [expandSidebar, setExpandSidebar] = useState(false);
+  const [expandSidebar, setExpandSidebar] = useState(true);
   const [isExpanded, setExpanded] = useState(false);
   const [currentOrg, setCurrentOrg] = useState(
     allOrgData?.find(x => x.organisationId === orgId)

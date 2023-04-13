@@ -13,8 +13,12 @@
     font-weight: 400;
     font-size: 20.7511px;
     margin-bottom: 15px;
+    padding-top: 10px;
     position: absolute;
-    left: 10%;
+    left: 15rem;
+    @media (min-width: 1024px) and (max-width: 1440px) {
+      left: 8rem;
+    }
   }
 
   .job-cards-all-wrap {
