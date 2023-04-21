@@ -1,20 +1,9 @@
 .chat-prompts-container {
-  width: 70%;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  hr {
-    clear: both;
-    border: none;
-  }
-
   &--chat-message {
     width: 82%;
     margin: auto;
     display: flex;
-
+    margin-top: 100px;
     & > .user-image {
       background: #000;
       border-radius: 50%;
@@ -40,7 +29,7 @@
         display: flex;
         justify-content: space-between;
         width: 520px;
-        min-height: 89px;
+        min-height: 108px;
         margin-top: 25px;
         font-family: var(--font-family-roboto-regular);
         font-weight: 400;

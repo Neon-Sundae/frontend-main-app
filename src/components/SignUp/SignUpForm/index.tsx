@@ -1,9 +1,8 @@
-import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import { FC, useEffect, useRef, useState } from 'react';
-import { LoginModalContent } from 'components/Login/LoginModal';
+
 import {
   useArcanaWallet,
   useMetamaskSignup,
@@ -18,23 +17,9 @@ import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import DiscordIcon from 'assets/illustrations/icons/login/discord.png';
-import GoogleIcon from 'assets/illustrations/icons/login/google.png';
+
+import IconButton from '../IconButton';
 import styles from './index.module.scss';
-
-const style = {
-  width: '268.65px',
-  height: '58.12px',
-  borderRadius: '20px',
-};
-
-const udStyle = {
-  width: '268.65px',
-  height: '58.12px',
-  borderRadius: '20px',
-  fontFamily: 'var(--font-family-montserrat)',
-  fontSize: '14px',
-};
 
 const SignUpForm = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -148,101 +133,49 @@ const SignUpForm = () => {
     toast(t => <LoginButton setError={setError} />);
   }
 
-  const socialLogin = async (option: string) => {
-    await auth.loginWithSocial(option);
-  };
-
   return (
     <div className={styles['sign-up-form']}>
       <section className={styles['sign-up-form--option-select']}>
-        <p>Select wallet to sign up</p>
-        <IconButton
-          handleClick={handleMetamaskSignup}
-          icon={<MetamaskIcon width={26.98} height={24.32} />}
-          text="&nbsp; Metamask"
-          style={style}
-          active={active === 'metamask'}
-        />
-        <IconButton
-          handleClick={signupWithWalletConnect}
-          icon={<WalletConnectIcon width={26.98} height={24.32} />}
-          text="&nbsp; Wallet Connect"
-          style={style}
-          active={active === 'walletConnect'}
-        />
-        <IconButton
-          handleClick={signUpWithUD}
-          icon={<UDIcon width={26.98} height={24.32} />}
-          text="&nbsp; UNSTOPPABLE DOMAINS"
-          style={udStyle}
-          active={active === 'udLogin'}
-        />
-        <p>or sign up via email</p>
-        <IconButton
-          handleClick={handleEmailSignUp}
-          text="Verified Email"
-          style={style}
-          active={active === 'emailLogin'}
-        />
-        <p>or sign up via socials</p>
-        {auth.availableLogins.map((option: string) => (
-          <button
-            key={`${option}-key`}
-            onClick={() => socialLogin(option)}
-            ref={buttonRef}
-            id={`${option}-key`}
-            className={styles['social-login']}
-          >
-            {option === 'discord' && (
-              <img src={DiscordIcon} alt="Discord Login Button" />
-            )}
-            {option === 'google' && (
-              <img src={GoogleIcon} alt="Google Login Button" />
-            )}
+        <p>Signup via your wallet</p>
+        <div className={styles['buttons-container']}>
+          <IconButton
+            handleClick={handleMetamaskSignup}
+            icon={<MetamaskIcon width={26.98} height={24.32} />}
+            text="&nbsp; Metamask"
+            active={active === 'metamask'}
+          />
+          <IconButton
+            handleClick={signupWithWalletConnect}
+            icon={<WalletConnectIcon width={26.98} height={24.32} />}
+            text="&nbsp; Wallet Connect"
+            active={active === 'walletConnect'}
+          />
+          <IconButton
+            handleClick={signUpWithUD}
+            icon={<UDIcon width={26.98} height={24.32} />}
+            text="Unstoppable Domains"
+            active={active === 'udLogin'}
+          />
+        </div>
+
+        <p>Or create a wallet with your email and sign up</p>
+        <form
+          className={styles['sign-up-form']}
+          onSubmit={handleSubmit(linkSignUp)}
+        >
+          <button>Use</button>
+          <input
+            className={styles['sign-up-form-email']}
+            placeholder="emailabcd@gmail.com"
+            type="email"
+            required
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...register('email', { required: true })}
+          />
+          <button type="submit" disabled={disableButton}>
+            Get link
           </button>
-        ))}
-      </section>
-
-      <section className={styles['sign-up-form--option-details']}>
-        {showMetamask && (
-          <div>
-            <h2>Opening MetaMask...</h2>
-            <p>Confirm connection in the extension</p>
-            <br />
-            <button
-              className={styles['retry-button']}
-              onClick={handleMetamaskSignup}
-            >
-              Retry
-            </button>
-          </div>
-        )}
-
-        {showEmail && (
-          <>
-            <h2>Sign up with email</h2>
-            <h3>
-              We&apos;ll email you with a login link for a password free sign
-              in. Please do take note that an underlying Arcana Wallet will be
-              created automatically so you can perform transactions and give
-              permissions on Neon Sundae.
-            </h3>
-            <form onSubmit={handleSubmit(linkSignUp)}>
-              <input
-                className={styles['sign-up-form--option-details--email']}
-                placeholder="Enter email here"
-                type="email"
-                required
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('email', { required: true })}
-              />
-              <button type="submit" disabled={disableButton}>
-                Get link
-              </button>
-            </form>
-          </>
-        )}
-        {!showMetamask && !showEmail && <LoginModalContent />}
+        </form>
       </section>
     </div>
   );

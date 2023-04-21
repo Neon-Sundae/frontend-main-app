@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { TypeAnimation } from 'react-type-animation';
 import { FC } from 'react';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
@@ -12,6 +11,23 @@ import WalletIcon from './Icons/WalletIcon';
 const StepProgressBar = () => {
   const step = useSelector((state: RootState) => state.user.step);
 
+  const fillCalc = () => {
+    switch (step) {
+      case 1:
+        return 25;
+      case 2:
+        return 50;
+      case 3:
+        return 75;
+      case 4:
+        return 75;
+      case 5:
+        return 100;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={styles['step-progress-bar-container']}>
       <div
@@ -23,30 +39,31 @@ const StepProgressBar = () => {
         <div
           className={clsx(
             styles[`progress-indicator`],
-            styles[`fill-progress-${25}`]
+            styles[`fill-progress-${fillCalc()}`]
           )}
         />
       </div>
 
       <div className={styles['step-progress-bar-container--step-icons']}>
         <span className={styles['step-icons-message-container']}>
-          <WorkIcon />
+          <WorkIcon active={step === 1} />
           {step === 1 && <StepMessage message="Let's  Go! 🚀" />}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <CategoryIcon />
+          <CategoryIcon active={step === 2} />
           {step === 2 && <StepMessage message="You're amazing 👍" />}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <TeamIcon />
+          <TeamIcon active={step === 3 || step === 4} />
           {step === 3 && <StepMessage message="Making Work Fun 🍦" />}
+          {step === 4 && <StepMessage message="Making Work Fun 🍦" />}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <WalletIcon />
-          {step === 4 && <StepMessage message="Into The Neonverse 🔥" />}
+          <WalletIcon active={step === 5} />
+          {step === 5 && <StepMessage message="Into The Neonverse 🔥" />}
         </span>
       </div>
     </div>
@@ -60,16 +77,7 @@ interface IStepMessage {
 const StepMessage: FC<IStepMessage> = ({ message }) => {
   return (
     <div className={styles['step-message']}>
-      <TypeAnimation
-        sequence={[
-          message,
-          1500,
-          () => {
-            console.log('Sequence completed');
-          },
-        ]}
-        cursor={false}
-      />
+      <p>{message}</p>
     </div>
   );
 };
