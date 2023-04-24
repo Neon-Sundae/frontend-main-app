@@ -1,8 +1,12 @@
+.auto {
+  margin: auto;
+}
 .chat-prompts-container {
   width: 70%;
   color: #fff;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: relative;
 
   hr {

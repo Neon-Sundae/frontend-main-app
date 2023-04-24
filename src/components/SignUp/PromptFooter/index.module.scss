@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 124.4px;
+  height: 88.6px;
   border-top: 1px solid #484848;
 
   &--back-button {
@@ -52,5 +52,10 @@
   &--continue-button:hover {
     transition: transform 125ms;
     transform: translateY(-2px);
+  }
+
+  &--continue-button:disabled {
+    cursor: default;
+    background: none;
   }
 }

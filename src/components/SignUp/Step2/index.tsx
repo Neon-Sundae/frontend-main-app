@@ -1,6 +1,10 @@
 import { TypeAnimation } from 'react-type-animation';
 import { FC, useEffect } from 'react';
 import clsx from 'clsx';
+import {
+  getSessionStorageItem,
+  setSessionStorageItem,
+} from 'utils/sessionStorageFunc';
 import styles from './index.module.scss';
 
 interface IStep2 {
@@ -10,7 +14,7 @@ interface IStep2 {
   active: string;
 }
 
-const choices = [
+const choicesBuilder = [
   'Engineering',
   'Product Design',
   'Creative',
@@ -29,6 +33,8 @@ const Step2: FC<IStep2> = ({
   showOptions,
   active,
 }) => {
+  const name = getSessionStorageItem('name');
+
   useEffect(() => {
     setActive('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,10 +49,9 @@ const Step2: FC<IStep2> = ({
             style={{
               whiteSpace: 'pre-line',
               display: 'block',
-              marginBottom: '25px',
             }}
             sequence={[
-              'Great [Name]! ✨ \n \n What best describes the work that you do?',
+              `Great ${name}! ✨ \n  What best describes the work that you do?`,
               500,
               () => {
                 setShowOptions(true);
@@ -58,18 +63,14 @@ const Step2: FC<IStep2> = ({
           {showOptions && (
             <>
               <span>
-                {choices.map((choice, i) => {
-                  console.log(choice);
-
-                  return (
-                    <ChoiceButton
-                      id={(i + 1).toString()}
-                      setActive={setActive}
-                      active={active}
-                      text={choice}
-                    />
-                  );
-                })}
+                {choicesBuilder.map((choice, i) => (
+                  <ChoiceButton
+                    id={(i + 1).toString()}
+                    setActive={setActive}
+                    active={active}
+                    text={choice}
+                  />
+                ))}
               </span>
             </>
           )}
@@ -89,6 +90,7 @@ interface IChoiceButton {
 const ChoiceButton: FC<IChoiceButton> = ({ id, setActive, active, text }) => {
   const handleChoiceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.target as HTMLInputElement;
+    setSessionStorageItem('work', button.innerText);
     setActive(button.id);
   };
 

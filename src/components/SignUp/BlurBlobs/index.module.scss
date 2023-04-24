@@ -10,9 +10,9 @@
     width: 500px;
     height: 300px;
     border-radius: 75%;
-    background: #7f6aff;
-    bottom: 5%;
-    right: 44%;
+    background: #a799ff;
+    bottom: -10%;
+    right: 30%;
     opacity: 0.5;
   }
 
@@ -20,21 +20,10 @@
     position: absolute;
     width: 500px;
     height: 300px;
-    background: #fc78ff;
-    top: 30%;
+    background: #f799ff;
+    top: 50%;
     right: 5%;
     animation-delay: 1s;
-    opacity: 0.4;
-  }
-
-  .window-blob-dark-purple {
-    position: absolute;
-    width: 500px;
-    height: 300px;
-    background: #9b6de5;
-    top: 58%;
-    right: 15%;
-    animation-delay: 2s;
     opacity: 0.4;
   }
 }

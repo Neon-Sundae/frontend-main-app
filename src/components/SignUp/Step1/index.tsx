@@ -2,6 +2,10 @@ import { TypeAnimation } from 'react-type-animation';
 import clsx from 'clsx';
 import { ReactComponent as TeamIcon } from 'assets/illustrations/icons/team.svg';
 import { FC } from 'react';
+import {
+  getSessionStorageItem,
+  setSessionStorageItem,
+} from 'utils/sessionStorageFunc';
 import styles from './index.module.scss';
 
 interface IStep1 {
@@ -19,8 +23,11 @@ const Step1: FC<IStep1> = ({
 }) => {
   const handleChoiceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.target as HTMLInputElement;
+    setSessionStorageItem('flow', button.id === '1' ? 'builder' : 'founder');
     setActive(button.id);
   };
+
+  const name = getSessionStorageItem('name');
 
   return (
     <div className={styles['chat-prompts-container--chat-message']}>
@@ -32,7 +39,7 @@ const Step1: FC<IStep1> = ({
             display: 'block',
           }}
           sequence={[
-            'Hey [Name], welcome to the Neonverse! ✨ \n We’re excited to get you started, how you are planning to use Neon Sundae?',
+            `Hey ${name}, welcome to the Neonverse! ✨ \n We’re excited to get you started, how you are planning to use Neon Sundae?`,
             500,
             () => {
               setShowOptions(true);

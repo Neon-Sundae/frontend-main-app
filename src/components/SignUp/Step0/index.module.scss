@@ -1,0 +1,90 @@
+.step0-container {
+  height: 100%;
+  position: relative;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2%;
+
+  & > form {
+    & > .submit-button {
+      text-align: center;
+      cursor: pointer;
+      border: 0.94px solid;
+      border-image-source: linear-gradient(0deg, #555555, #555555),
+        radial-gradient(
+            116.97% 116.97% at 34.87% -2.72%,
+            #ff9bfb 0%,
+            #ffffff 100%
+          )
+          /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+      width: 207px;
+      height: 55px;
+      background: linear-gradient(
+          94.63deg,
+          rgba(255, 255, 255, 0.16) 4.94%,
+          rgba(255, 255, 255, 0.04) 93.94%
+        ),
+        linear-gradient(
+          89.58deg,
+          #826af7 2.95%,
+          #db5dde 56.19%,
+          #e87aaf 103.17%
+        );
+      box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+      border-radius: 22px;
+      font-family: var(--font-family-roboto-regular);
+      font-weight: 400;
+      font-size: 18px;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    & > .submit-button:disabled {
+      background: none;
+      cursor: default;
+    }
+  }
+
+  & > form > div {
+    min-height: 60px;
+
+    & > p {
+      margin-top: 10px;
+      color: #ff8383;
+      font-family: var(--font-family-roboto-flex);
+      font-weight: 300;
+      font-size: 12px;
+    }
+    & > h2 {
+      margin-top: 40px;
+      font-family: var(--font-family-roboto-regular);
+      font-weight: 400;
+      font-size: 22px;
+
+      & > input {
+        font-family: var(--font-family-roboto-regular);
+        font-size: 22px;
+        color: #fff;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        border-bottom: 1px solid #fff;
+        width: 140px;
+        margin: 0 5px;
+      }
+
+      .error {
+        border-bottom: 2px solid #ff8383;
+      }
+
+      & > input::placeholder {
+        font-family: var(--font-family-roboto-flex);
+        color: #fff;
+        opacity: 0.5;
+      }
+    }
+  }
+}
