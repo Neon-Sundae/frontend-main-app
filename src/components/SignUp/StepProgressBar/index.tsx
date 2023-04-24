@@ -21,12 +21,29 @@ const StepProgressBar = () => {
         return 75;
       case 4:
         return 75;
+
+      case 7:
+        return 75;
+      case 8:
+        return 75;
+      case 9:
+        return 75;
+      case 10:
+        return 75;
+      case 11:
+        return 75;
+      case 12:
+        return 75;
       case 5:
+        return 100;
+      case 13:
         return 100;
       default:
         return null;
     }
   };
+
+  if (step === 0) return null;
 
   return (
     <div className={styles['step-progress-bar-container']}>
@@ -51,19 +68,39 @@ const StepProgressBar = () => {
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <CategoryIcon active={step === 2} />
-          {step === 2 && <StepMessage message="You're amazing 👍" />}
+          <CategoryIcon active={step === 2 || step === 6} />
+          {(step === 2 || step === 6) && (
+            <StepMessage message="You're amazing 👍" />
+          )}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <TeamIcon active={step === 3 || step === 4} />
-          {step === 3 && <StepMessage message="Making Work Fun 🍦" />}
-          {step === 4 && <StepMessage message="Making Work Fun 🍦" />}
+          <TeamIcon
+            active={
+              step === 3 ||
+              step === 4 ||
+              step === 7 ||
+              step === 8 ||
+              step === 10 ||
+              step === 11 ||
+              step === 12
+            }
+          />
+          {(step === 3 ||
+            step === 4 ||
+            step === 7 ||
+            step === 8 ||
+            step === 9 ||
+            step === 10 ||
+            step === 11 ||
+            step === 12) && <StepMessage message="Making Work Fun 🍦" />}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <WalletIcon active={step === 5} />
-          {step === 5 && <StepMessage message="Into The Neonverse 🔥" />}
+          <WalletIcon active={step === 5 || step === 13} />
+          {(step === 5 || step === 13) && (
+            <StepMessage message="Into The Neonverse 🔥" />
+          )}
         </span>
       </div>
     </div>

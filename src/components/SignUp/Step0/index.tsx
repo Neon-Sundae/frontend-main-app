@@ -35,7 +35,7 @@ const Step0 = () => {
         title="video"
         width="1072"
         height="571"
-        src="https://www.youtube.com/embed/KhKc3R4VI2g"
+        src="https://www.loom.com/embed/eb1b9c6f21444b64940a632e2935007d"
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>

@@ -6,6 +6,8 @@ import {
 } from 'utils/sessionStorageFunc';
 
 import { useForm, useWatch } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
 interface IStep4 {
@@ -15,12 +17,13 @@ interface IStep4 {
   active: string;
 }
 
-const Step4: FC<IStep4> = ({
+const Step7: FC<IStep4> = ({
   setActive,
   setShowOptions,
   showOptions,
   active,
 }) => {
+  const step = useSelector((state: RootState) => state.user.step);
   useEffect(() => {
     setActive('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,7 +32,6 @@ const Step4: FC<IStep4> = ({
   const {
     register,
     control,
-    handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
@@ -54,7 +56,7 @@ const Step4: FC<IStep4> = ({
   }
 
   return (
-    <div className={styles['step4-container']}>
+    <div className={styles['step7-container']}>
       <div className={styles['chat-prompts-container--chat-message']}>
         <div className={styles['user-image']} />
         <div className={styles['user-choices']}>
@@ -105,4 +107,4 @@ const Step4: FC<IStep4> = ({
   );
 };
 
-export default Step4;
+export default Step7;

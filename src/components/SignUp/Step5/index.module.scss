@@ -1,10 +1,11 @@
-.step4-container {
+.step5-container {
   .chat-prompts-container {
+    border: 2px solid red;
     &--chat-message {
       width: 82%;
       margin: auto;
       display: flex;
-      height: 77vh;
+      min-height: 77vh;
       margin-top: 100px;
 
       & > .user-image {
@@ -21,7 +22,7 @@
         padding: 25px 50px;
         height: 280px;
         width: 647px;
-
+        position: relative;
         & > p {
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
@@ -86,16 +87,13 @@
               font-family: var(--font-family-roboto-flex);
               color: #fff;
               font-size: 18.7042px;
-
               font-weight: 200;
             }
 
             & > p {
               font-family: var(--font-family-roboto-flex);
-
               font-weight: 300;
               font-size: 12px;
-
               color: #ff8383;
               margin-top: 10px;
             }

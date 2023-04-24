@@ -19,7 +19,7 @@
         background: rgba(0, 0, 0, 0.25);
         border-radius: 18.5481px;
         padding: 25px 50px;
-        height: 635px;
+        height: 620px;
         width: 647px;
 
         & > p {
@@ -33,7 +33,9 @@
           font-family: var(--font-family-roboto-regular);
           font-style: normal;
           font-size: 16px;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
+          animation: messageShow;
+          animation-duration: 1s;
         }
 
         & > span {
