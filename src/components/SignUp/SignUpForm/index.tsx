@@ -160,7 +160,7 @@ const SignUpForm = () => {
           className={styles['sign-up-form']}
           onSubmit={e => e.preventDefault()}
         >
-          <button>Use</button>
+          <button aria-label="Use">Use</button>
           <input
             className={styles['sign-up-form-email']}
             defaultValue={email}
