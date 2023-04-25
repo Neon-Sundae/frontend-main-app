@@ -6,12 +6,12 @@ import {
 } from 'utils/sessionStorageFunc';
 
 import { useForm, useWatch } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import Select, { Option } from 'components/Select';
 import options from 'assets/data/orgOptions.json';
-import { setSignUpStep } from 'actions/user';
+
 import { SingleValue } from 'react-select';
 import clsx from 'clsx';
 import styles from './index.module.scss';
@@ -23,16 +23,14 @@ interface IStep6 {
   active: string;
 }
 
-const Step6: FC<IStep6> = ({
-  setActive,
-  setShowOptions,
-  showOptions,
-  active,
-}) => {
-  const dispatch = useDispatch();
+const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
   const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
-  const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
+
+  const [file, setFile] = useState<File | undefined>();
+  const [localFile, setLocalFile] = useState<string | ArrayBuffer | null>(null);
+
+  const [showSelectMenu, setShowSelectMenu] = useState(1);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
@@ -42,12 +40,16 @@ const Step6: FC<IStep6> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    setSessionStorageItem('file', localFile);
+  }, [localFile]);
+
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>();
+  const [organisationDescription, setOrganisationDescription] = useState('');
 
   const {
     register,
     control,
-    handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
@@ -61,12 +63,9 @@ const Step6: FC<IStep6> = ({
   }
 
   if (Object.keys(errors).length === 0) {
-    setSessionStorageItem('orgName', orgName);
+    setSessionStorageItem('organisationName', orgName);
+    setSessionStorageItem('organisationDescription', organisationDescription);
     setActive('1');
-  }
-
-  if (step % 2 === 0) {
-    setActive('');
   }
 
   const handleClick = (e: any) => {
@@ -76,8 +75,19 @@ const Step6: FC<IStep6> = ({
 
   const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    if (files) setOrgLogoFileData(files[0]);
+    if (files) setFile(files[0]);
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      setLocalFile(reader.result);
+    };
+    if (files) {
+      reader.readAsDataURL(files[0]);
+    }
   };
+
+  if (selectedOption?.label) {
+    setSessionStorageItem('organisationVertical', selectedOption.label);
+  }
 
   return (
     <>
@@ -143,7 +153,7 @@ const Step6: FC<IStep6> = ({
                   `${orgName}`,
                   1000,
                   () => {
-                    dispatch(setSignUpStep(step + 1));
+                    // dispatch(setSignUpStep(step + 1));
                   },
                 ]}
                 cursor={false}
@@ -173,28 +183,28 @@ const Step6: FC<IStep6> = ({
                     `Which industry vertical does your \n organisation fall under?`,
                     500,
                     () => {
-                      setShowOptions(true);
+                      setShowSelectMenu(2);
                       divRef.current?.scrollIntoView({ behavior: 'smooth' });
                     },
                   ]}
                   cursor={false}
                   speed={80}
                 />
-                {showOptions && (
+                {showSelectMenu === 2 && (
                   <Select
                     options={options}
                     placeholder="Choose your organisation industry"
                     value={
                       selectedOption || {
-                        value: '',
-                        label: '',
+                        value: 'Select Option',
+                        label: 'Select Option',
                       }
                     }
                     onSelectChange={newVal => setSelectedOption(newVal)}
                     name="Location"
                     borderRadius={10}
                     height={50}
-                    width="300px"
+                    width="330px"
                     isMulti={false}
                   />
                 )}
@@ -211,12 +221,12 @@ const Step6: FC<IStep6> = ({
                   500,
                   () => {
                     setTimeout(() => {
-                      dispatch(setSignUpStep(step + 1));
+                      setShowSelectMenu(3);
                     }, 1000);
                   },
                 ]}
                 cursor={false}
-                speed={80}
+                speed={50}
               />
               <img
                 src={getDefaultAvatarSrc(name?.charAt(0).toUpperCase())}
@@ -269,6 +279,7 @@ const Step6: FC<IStep6> = ({
                     {...register('description', {
                       required: true,
                     })}
+                    onChange={e => setOrganisationDescription(e.target.value)}
                     style={{
                       border:
                         Object.keys(errors).length && '0.56px solid #FF8383',
@@ -289,9 +300,7 @@ const Step6: FC<IStep6> = ({
                   Add Logo
                 </button>
 
-                {orgLogoFileData && (
-                  <img src={URL.createObjectURL(orgLogoFileData)} alt="" />
-                )}
+                {file && <img src={URL.createObjectURL(file)} alt="" />}
               </div>
             </span>
           )}

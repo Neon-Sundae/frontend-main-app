@@ -100,7 +100,8 @@ const useMetamaskLogin = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -130,7 +131,6 @@ const useUserOnboardData = () => {
       const objectives = data.data[0].map(function (item: any) {
         return item.choice;
       });
-      console.log('objectives', objectives);
       const response = await fetch(
         `${config.ApiBaseUrl}/user/signup-objective`,
         {
@@ -165,6 +165,7 @@ const useMetamaskSignup = (
   setNewUserId?: React.Dispatch<React.SetStateAction<number>>
 ) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const generateNonce = async ({ setError }: IGenerateNonce) => {
     const ac = new AbortController();
     const { signal } = ac;
@@ -202,8 +203,6 @@ const useMetamaskSignup = (
 
         dispatch(updateUser(json.user));
 
-        console.log('json.user', json.user);
-
         const signature = await signMessage(provider, json.message);
 
         if (signature) {
@@ -233,6 +232,8 @@ const useMetamaskSignup = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -328,7 +329,8 @@ const useWalletConnectSignup = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -427,7 +429,8 @@ const useWalletConnectLogin = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -488,7 +491,6 @@ const useUnstoppableDomains = (
             }),
           }
         );
-        console.log('response.statusText', response.statusText);
         setError(response.statusText);
         const json: any = await handleApiErrors(response);
         dispatch(updateUser(json.user));
@@ -496,7 +498,7 @@ const useUnstoppableDomains = (
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
-        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('organisationName')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -538,7 +540,7 @@ const useUnstoppableDomains = (
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
-        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('organisationName')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -627,7 +629,8 @@ const useArcanaWallet = () => {
 
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (error) {

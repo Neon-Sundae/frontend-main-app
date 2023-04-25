@@ -7,6 +7,7 @@ import {
   useArcanaWallet,
   useMetamaskSignup,
   useUnstoppableDomains,
+  useUserOnboardData,
   useWalletConnectSignup,
 } from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
@@ -18,20 +19,25 @@ import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
 
 const SignUpForm = () => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const user = useSelector((state: RootState) => state.user.user);
+  const email = getSessionStorageItem('email');
   const auth = useAuth();
   const { signup } = useArcanaWallet();
   const { provider } = useProvider();
   const [disableButton, setDisableButton] = useState(false);
-  const [newUserId, setNewUserId] = useState(0);
+  const [newUserId, setNewUserId] = useState(user?.userId ?? 0);
 
   const createProfile = useCreateProfile(setNewUserId);
-
+  const onboardDataSave = useUserOnboardData();
   const [file, setFile] = useState<File | undefined>();
+
+  const [userOnboardData, setUserOnboardData] = useState<any>([]);
   const createOrganisation = useCreateOrganisation(setDisableButton);
 
   useEffect(() => {
@@ -39,7 +45,8 @@ const SignUpForm = () => {
       await signup(auth.user?.address, provider);
       createProfile.mutate({
         name: getSessionStorageItem('name'),
-        email: auth?.user?.email || '',
+        email: auth?.user?.email || email,
+        work: getSessionStorageItem('work'),
       });
     };
     if (auth.user) {
@@ -49,46 +56,33 @@ const SignUpForm = () => {
   }, [auth]);
 
   useEffect(() => {
-    if (newUserId) saveOrgData();
+    if (newUserId) {
+      onboardDataSave.mutateAsync({ data: userOnboardData });
+      if (getSessionStorageItem('organisationName')) saveOrgData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newUserId, file]);
 
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
 
-  const [showMetamask, setShowMetamask] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
-
   const generateNonce = useMetamaskSignup(setNewUserId);
   const walletConnectGenerateNonce = useWalletConnectSignup(setNewUserId);
   const unstoppableDomains = useUnstoppableDomains(setNewUserId);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register } = useForm();
 
   const loginWithMetaMask = () => {
-    setError('');
-    setShowMetamask(true);
-    generateNonce({ setError });
+    saveUserOnboardData();
   };
 
   const handleMetamaskSignup = () => {
-    setError('');
-    setActive('metamask');
-    setShowEmail(false);
     if (typeof window.ethereum !== 'undefined') {
       loginWithMetaMask();
-    } else {
-      setShowMetamask(true);
     }
   };
 
   const signupWithWalletConnect = async () => {
-    setError('');
-    setActive('walletConnect');
     walletConnectGenerateNonce({ setError });
   };
 
@@ -98,35 +92,38 @@ const SignUpForm = () => {
     unstoppableDomains.signup(setError);
   };
 
-  const handleEmailSignUp = () => {
-    setError('');
-    setActive('emailLogin');
-    setShowMetamask(false);
-    setShowEmail(true);
-  };
-
-  const linkSignUp = async (formData: any) => {
-    const { email } = formData;
-    await auth.loginWithLink(email);
+  const linkSignUp = async (userEmail: string) => {
+    await auth.loginWithLink(userEmail);
   };
 
   const saveOrgData = async () => {
-    const orgData = JSON.parse(getSessionStorageItem('orgData'));
+    const organisationName = getSessionStorageItem('organisationName');
+    const organisationDescription = getSessionStorageItem(
+      'organisationDescription'
+    );
 
-    if (orgData) {
+    if (organisationName && organisationDescription && newUserId) {
       const localFile = getSessionStorageItem('file');
-
       if (!file) await convertBase64ToFile(localFile, setFile);
-
       if (!disableButton)
         await createOrganisation({
-          name: orgData.name,
-          description: orgData.description,
+          name: organisationName,
+          description: organisationDescription,
           userId: newUserId.toString(),
           image: file,
           industry: getSessionStorageItem('choices'),
         });
     }
+  };
+
+  const saveUserOnboardData = async () => {
+    const data: any[] = [];
+    const choices = getSessionStorageItem('choices');
+    const flow = getSessionStorageItem('flow');
+    const work = getSessionStorageItem('work');
+    data.push(JSON.parse(choices), flow, work);
+    setUserOnboardData(data);
+    if (data.length > 0) generateNonce({ setError });
   };
 
   if (error === 'Bad Request' || error === 'User Already Exist!') {
@@ -161,18 +158,22 @@ const SignUpForm = () => {
         <p>Or create a wallet with your email and sign up</p>
         <form
           className={styles['sign-up-form']}
-          onSubmit={handleSubmit(linkSignUp)}
+          onSubmit={e => e.preventDefault()}
         >
           <button>Use</button>
           <input
             className={styles['sign-up-form-email']}
-            placeholder="emailabcd@gmail.com"
+            defaultValue={email}
             type="email"
             required
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('email', { required: true })}
           />
-          <button type="submit" disabled={disableButton}>
+          <button
+            type="submit"
+            disabled={disableButton}
+            onClick={() => linkSignUp(email)}
+          >
             Get link
           </button>
         </form>
