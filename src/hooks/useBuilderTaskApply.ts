@@ -1,11 +1,11 @@
 import config from 'config';
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleError } from 'utils/handleUnAuthorization';
 import { handleApiErrors } from 'utils/handleApiErrors';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 
 interface IBuilderTaskApply {
   taskId: number;
@@ -13,8 +13,10 @@ interface IBuilderTaskApply {
 
 const useBuilderTaskApply = () => {
   const accessToken = getAccessToken();
-
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user.userId,
+  });
 
   const builderTaskApply = useMutation(
     async (payload: IBuilderTaskApply) => {
@@ -25,14 +27,13 @@ const useBuilderTaskApply = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          profileId: profile?.profileId,
+          profileId: profileData?.profileId,
           taskId: payload.taskId,
         }),
       });
       await handleApiErrors(response);
     },
     {
-      retry: 1,
       onError: (error: any) => {
         handleError({ error });
       },
