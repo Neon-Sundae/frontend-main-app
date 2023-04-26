@@ -26,7 +26,9 @@ import styles from './index.module.scss';
 
 const SignUpForm = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const email = getSessionStorageItem('email');
+  const email =
+    getSessionStorageItem('email') ??
+    getSessionStorageItem('organisationEmail');
   const auth = useAuth();
   const { signup } = useArcanaWallet();
   const { provider } = useProvider();
@@ -48,6 +50,8 @@ const SignUpForm = () => {
         email: auth?.user?.email || email,
         work: getSessionStorageItem('work'),
       });
+      onboardDataSave.mutateAsync({ data: userOnboardData });
+      if (getSessionStorageItem('organisationName')) saveOrgData();
     };
     if (auth.user) {
       triggerSignUp();

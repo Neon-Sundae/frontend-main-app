@@ -11,7 +11,10 @@ import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
   const [name, setName] = useState(getSessionStorageItem('name') ?? '');
-  const [email, setEmail] = useState(getSessionStorageItem('email') ?? '');
+  const [email, setEmail] = useState(
+    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
+  );
+
   const [error, setError] = useState({
     nameError: false,
     emailError: false,
