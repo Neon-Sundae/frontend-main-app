@@ -81,8 +81,7 @@
             }
           }
 
-          & > .choice-option:hover,
-          .active {
+          & > .active {
             border: 0.94px solid #555555;
             transition: transform 125ms;
             transform: translateY(-4px);
@@ -99,22 +98,9 @@
               );
             box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
           }
-          .active {
-            border: 0.94px solid #555555;
+          & > .choice-option:hover {
             transition: transform 125ms;
             transform: translateY(-4px);
-            background: linear-gradient(
-                94.63deg,
-                rgba(255, 255, 255, 0.16) 4.94%,
-                rgba(255, 255, 255, 0.04) 93.94%
-              ),
-              linear-gradient(
-                89.58deg,
-                #826af7 2.95%,
-                #db5dde 56.19%,
-                #e87aaf 103.17%
-              );
-            box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
           }
         }
       }

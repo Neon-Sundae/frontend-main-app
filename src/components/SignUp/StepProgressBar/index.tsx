@@ -18,20 +18,12 @@ const StepProgressBar = () => {
       case 2:
         return 50;
       case 3:
-        return 75;
       case 4:
-        return 75;
-
       case 7:
-        return 75;
       case 8:
-        return 75;
       case 9:
-        return 75;
       case 10:
-        return 75;
       case 11:
-        return 75;
       case 12:
         return 75;
       case 5:

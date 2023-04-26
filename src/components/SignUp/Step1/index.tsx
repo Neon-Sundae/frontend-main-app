@@ -54,7 +54,7 @@ const Step1: FC<IStep1> = ({
               id="1"
               className={clsx(
                 styles['choice-option'],
-                active === '1' ? styles.active : undefined
+                active === '1' && styles.active
               )}
               onClick={handleChoiceClick}
             >
@@ -64,7 +64,7 @@ const Step1: FC<IStep1> = ({
               id="2"
               className={clsx(
                 styles['choice-option'],
-                active === '2' ? styles.active : undefined
+                active === '2' && styles.active
               )}
               onClick={handleChoiceClick}
             >

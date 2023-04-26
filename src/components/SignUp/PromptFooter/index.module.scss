@@ -23,11 +23,6 @@
     transition: transform 450ms;
   }
 
-  &--back-button:hover {
-    transition: transform 125ms;
-    transform: translateY(-2px);
-  }
-
   &--continue-button {
     border: 1px solid #e49df4;
     cursor: pointer;

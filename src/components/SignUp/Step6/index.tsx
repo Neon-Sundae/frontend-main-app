@@ -252,9 +252,6 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                   sequence={[
                     `Tell us more about what your oragnisation does`,
                     500,
-                    () => {
-                      // setShowOptions(true);
-                    },
                   ]}
                   cursor={false}
                   speed={80}

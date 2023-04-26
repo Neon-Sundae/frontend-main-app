@@ -17,16 +17,12 @@ const Step0 = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
-  const handleClick = () => {
-    dispatch(setSignUpStep(step + 1));
-  };
 
   const onSubmit = (data: any) => {
     setSessionStorageItem('name', data.name);
-    if (!errors.name) handleClick();
+    if (!errors.name) dispatch(setSignUpStep(step + 1));
   };
 
   return (

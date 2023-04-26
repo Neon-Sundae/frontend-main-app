@@ -8,6 +8,7 @@ import {
 import { useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import regexEmail from 'utils/regex/email';
 import styles from './index.module.scss';
 
 interface IStep4 {
@@ -47,7 +48,7 @@ const Step7: FC<IStep4> = ({
   }
 
   if (Object.keys(errors).length === 0) {
-    setSessionStorageItem('email', email);
+    setSessionStorageItem('organisationEmail', email);
     setActive('1');
   }
 
@@ -79,7 +80,7 @@ const Step7: FC<IStep4> = ({
           />
           {showOptions && (
             <span className={styles['input-wrapper']}>
-              <form>
+              <form onSubmit={e => e.preventDefault()}>
                 <input
                   type="text"
                   placeholder="email"
@@ -87,8 +88,7 @@ const Step7: FC<IStep4> = ({
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('email', {
                     required: true,
-                    pattern:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    pattern: regexEmail,
                   })}
                   style={{
                     border:

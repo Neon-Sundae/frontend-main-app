@@ -6,6 +6,7 @@ import {
 } from 'utils/sessionStorageFunc';
 
 import { useForm, useWatch } from 'react-hook-form';
+import regexEmail from 'utils/regex/email';
 import styles from './index.module.scss';
 
 interface IStep4 {
@@ -85,8 +86,7 @@ const Step4: FC<IStep4> = ({
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('email', {
                     required: true,
-                    pattern:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    pattern: regexEmail,
                   })}
                   style={{
                     border:

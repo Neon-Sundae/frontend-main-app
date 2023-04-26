@@ -35,6 +35,7 @@ const useMetamaskLogin = (
 ) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const generateNonce = async ({ setError }: IGenerateNonce) => {
     const ac = new AbortController();
     const { signal } = ac;
@@ -128,6 +129,7 @@ const useUserOnboardData = () => {
   const navigate = useNavigate();
   const onboardDataSave = useMutation(
     async (data: IUserOnboardData) => {
+      console.log('data', data);
       const objectives = data.data[0].map(function (item: any) {
         return item.choice;
       });
