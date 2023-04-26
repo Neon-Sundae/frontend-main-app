@@ -23,7 +23,7 @@ const ChatPrompts = () => {
     <div
       className={clsx(
         styles['chat-prompts-container'],
-        styles[`${step === 0 ? 'auto' : ''}`]
+        step === 0 && styles.auto
       )}
     >
       {step === 0 && <Step0 />}
