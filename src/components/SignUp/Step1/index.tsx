@@ -1,7 +1,7 @@
 import { TypeAnimation } from 'react-type-animation';
 import clsx from 'clsx';
 import { ReactComponent as TeamIcon } from 'assets/illustrations/icons/team.svg';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import {
   getSessionStorageItem,
   setSessionStorageItem,
@@ -9,8 +9,8 @@ import {
 import styles from './index.module.scss';
 
 interface IStep1 {
-  setActive: React.Dispatch<React.SetStateAction<string>>;
-  setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   active: string;
 }

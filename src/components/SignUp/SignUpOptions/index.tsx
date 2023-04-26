@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import styles from './index.module.scss';
 import SignUpForm from '../SignUpForm';
 
 interface ISignUpOptions {
-  setActive: React.Dispatch<React.SetStateAction<string>>;
-  setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   active: string;
 }

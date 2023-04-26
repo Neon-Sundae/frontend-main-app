@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import clsx from 'clsx';
 import {
@@ -10,8 +10,8 @@ import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
 interface IStep3 {
-  setActive: React.Dispatch<React.SetStateAction<string>>;
-  setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   active: string;
 }
@@ -106,7 +106,7 @@ const Step3: FC<IStep3> = ({
 
 interface IChoiceButton {
   id: string;
-  setActive: React.Dispatch<React.SetStateAction<string>>;
+  setActive: Dispatch<SetStateAction<string>>;
   active: string;
   text: string;
   activeButtons: any[];

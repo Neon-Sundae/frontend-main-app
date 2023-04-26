@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import {
   getSessionStorageItem,
@@ -12,8 +12,8 @@ import regexEmail from 'utils/regex/email';
 import styles from './index.module.scss';
 
 interface IStep4 {
-  setActive: React.Dispatch<React.SetStateAction<string>>;
-  setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   active: string;
 }

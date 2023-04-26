@@ -1,5 +1,5 @@
 import { TypeAnimation } from 'react-type-animation';
-import { FC, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import clsx from 'clsx';
 import {
   getSessionStorageItem,
@@ -8,8 +8,8 @@ import {
 import styles from './index.module.scss';
 
 interface IStep2 {
-  setActive: React.Dispatch<React.SetStateAction<string>>;
-  setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   active: string;
 }
@@ -82,7 +82,7 @@ const Step2: FC<IStep2> = ({
 
 interface IChoiceButton {
   id: string;
-  setActive: React.Dispatch<React.SetStateAction<string>>;
+  setActive: Dispatch<SetStateAction<string>>;
   active: string;
   text: string;
 }

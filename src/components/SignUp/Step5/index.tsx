@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { setSessionStorageItem } from 'utils/sessionStorageFunc';
 
@@ -6,8 +6,8 @@ import { useForm, useWatch } from 'react-hook-form';
 import styles from './index.module.scss';
 
 interface IStep5 {
-  setActive: React.Dispatch<React.SetStateAction<string>>;
-  setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   active: string;
 }
