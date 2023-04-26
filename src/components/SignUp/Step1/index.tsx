@@ -46,7 +46,7 @@ const Step1: FC<IStep1> = ({
             },
           ]}
           cursor={false}
-          speed={80}
+          speed={99}
         />
         {showOptions && (
           <span>
