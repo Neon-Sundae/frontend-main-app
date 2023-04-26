@@ -1,78 +1,81 @@
-import { updateCurrentSignUpStep } from 'actions/auth';
-import { IChoice } from 'interfaces/auth';
-import { FC, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSessionStorageItem } from 'utils/sessionStorageFunc';
-import ChoiceButton from '../ChoiceButton';
+import { TypeAnimation } from 'react-type-animation';
+import clsx from 'clsx';
+import { ReactComponent as TeamIcon } from 'assets/illustrations/icons/team.svg';
+import { Dispatch, FC, SetStateAction } from 'react';
+import {
+  getSessionStorageItem,
+  setSessionStorageItem,
+} from 'utils/sessionStorageFunc';
 import styles from './index.module.scss';
 
-const choicesArray = [
-  { id: 0, value: 'Run Business Development with community' },
-  { id: 1, value: 'Manage Projects with the community' },
-  { id: 2, value: 'Use Neon Sundae Tools to build my product' },
-  { id: 3, value: 'Easily Manage my online communities' },
-  { id: 4, value: 'Post Jobs and Hire Superstars' },
-  { id: 5, value: 'Host and Run Hackathons' },
-];
+interface IStep1 {
+  setActive: Dispatch<SetStateAction<string>>;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
+  showOptions: boolean;
+  active: string;
+}
 
-const Step1: FC = () => {
-  const dispatch = useDispatch();
-  const [selected, setSelected] = useState<IChoice[]>([]);
-
-  const elementRef: any = useRef();
-
-  const handleClick = (choice: IChoice) => {
-    const result = selected.find((obj: IChoice) => obj.id === choice.id);
-
-    if (result) {
-      elementRef.current.children[1].children[choice.id].style.border = 'none';
-      const filteredData = selected.filter(
-        (elem: IChoice) => elem.id !== choice.id
-      );
-      setSelected(filteredData);
-    } else {
-      elementRef.current.children[1].children[choice.id].style.border =
-        '2px solid #fff';
-      const filteredData = [...selected, choice];
-      setSelected(filteredData);
-    }
+const Step1: FC<IStep1> = ({
+  setActive,
+  setShowOptions,
+  showOptions,
+  active,
+}) => {
+  const handleChoiceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const button = event.target as HTMLInputElement;
+    setSessionStorageItem('flow', button.id === '1' ? 'builder' : 'founder');
+    setActive(button.id);
   };
 
-  const handleSubmit = () => {
-    setSessionStorageItem('choices', JSON.stringify(selected));
-    dispatch(updateCurrentSignUpStep('step2'));
-  };
+  const name = getSessionStorageItem('name');
 
   return (
-    <>
-      <div className={styles['step1-container']} ref={elementRef}>
-        <p className={styles['step1-container--heading-text']}>
-          What do you want to do on Neon Sundae?
-        </p>
-        <form
-          className={styles['step1-container--form']}
-          onSubmit={handleSubmit}
-        >
-          {choicesArray?.map((choice: IChoice) => (
-            <ChoiceButton
-              key={choice.id}
-              width="380px"
-              height="80px"
-              selectObjective={handleClick}
-              choice={choice}
-              activeButton={false}
-            />
-          ))}
-
-          <input
-            className={styles['step1-container--form-submit-button']}
-            type="submit"
-            value="Next"
-            disabled={!selected.length}
-          />
-        </form>
+    <div className={styles['chat-prompts-container--chat-message']}>
+      <div className={styles['user-image']} />
+      <div className={styles['user-choices']}>
+        <TypeAnimation
+          style={{
+            whiteSpace: 'pre-line',
+            display: 'block',
+          }}
+          sequence={[
+            `Hey ${name}, welcome to the Neonverse! ✨ \n We’re excited to get you started, how you are planning to use Neon Sundae?`,
+            500,
+            () => {
+              setShowOptions(true);
+            },
+          ]}
+          cursor={false}
+          speed={99}
+        />
+        {showOptions && (
+          <span>
+            <button
+              id="1"
+              className={clsx(
+                styles['choice-option'],
+                active === '1' && styles.active
+              )}
+              onClick={handleChoiceClick}
+            >
+              ‍‍‍👨‍💻 <hr /> For Personal Use
+            </button>
+            <button
+              id="2"
+              className={clsx(
+                styles['choice-option'],
+                active === '2' && styles.active
+              )}
+              onClick={handleChoiceClick}
+            >
+              <TeamIcon height={50} width={50} />
+              <hr />
+              For My Team
+            </button>
+          </span>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

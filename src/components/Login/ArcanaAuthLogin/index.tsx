@@ -64,33 +64,7 @@ const ArcanaAuthLogin = () => {
         </form>
         {errors.email && <span>* This field is required</span>}
       </span>
-      <p className={styles[`arcana-auth--section-heading`]}>or continue with</p>
-      <div className={styles[`arcana-auth--social`]}>
-        {auth.loading && (
-          <ProgressBar
-            ariaLabel="loading-indicator"
-            height={50}
-            width={50}
-            borderColor="#cf92ff"
-            barColor="#fcfcfc"
-          />
-        )}
-        {auth.availableLogins.map((option: string) => (
-          <button
-            key={`${option}-key`}
-            onClick={() => socialLogin(option)}
-            ref={buttonRef}
-            id={`${option}-key`}
-          >
-            {option === 'discord' && (
-              <img src={DiscordIcon} alt="Discord Login Button" />
-            )}
-            {option === 'google' && (
-              <img src={GoogleIcon} alt="Google Login Button" />
-            )}
-          </button>
-        ))}
-      </div>
+
       <span className={styles[`arcana-auth--footer`]}>
         <p>
           Don&apos;t have an account? &nbsp;

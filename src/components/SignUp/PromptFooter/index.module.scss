@@ -1,0 +1,56 @@
+.prompt-footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88.6px;
+  border-top: 1px solid #484848;
+
+  &--back-button {
+    cursor: pointer;
+    color: #e49df4;
+    background: linear-gradient(
+      94.63deg,
+      rgba(255, 255, 255, 0.16) 4.94%,
+      rgba(255, 255, 255, 0.04) 93.94%
+    );
+    box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+    border-radius: 22px;
+    width: 55px;
+    height: 55px;
+    margin-left: 10%;
+    border: 1px solid #e49df4;
+    will-change: transform;
+    transition: transform 450ms;
+  }
+
+  &--continue-button {
+    border: 1px solid #e49df4;
+    cursor: pointer;
+    font-family: var(--font-family-roboto-regular);
+    color: #fff;
+    font-size: 18px;
+    background: linear-gradient(
+        94.63deg,
+        rgba(255, 255, 255, 0.16) 4.94%,
+        rgba(255, 255, 255, 0.04) 93.94%
+      ),
+      linear-gradient(89.58deg, #826af7 2.95%, #db5dde 56.19%, #e87aaf 103.17%);
+    box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+    border-radius: 22px;
+    width: 165px;
+    height: 55px;
+    margin-right: 10%;
+    will-change: transform;
+    transition: transform 450ms;
+  }
+
+  &--continue-button:hover {
+    transition: transform 125ms;
+    transform: translateY(-2px);
+  }
+
+  &--continue-button:disabled {
+    cursor: default;
+    background: none;
+  }
+}

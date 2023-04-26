@@ -4,6 +4,7 @@ import {
   UPDATE_USER_NAME,
   UPDATE_USER_EMAIL,
   UPDATE_USER_DISCORD,
+  SIGN_UP_STEP,
 } from './types';
 
 export const updateUser = (user: Partial<IUser>) => ({
@@ -20,7 +21,13 @@ export const updateUserDiscord = (discordId: string) => ({
   type: UPDATE_USER_DISCORD,
   discordId,
 });
+
 export const updateUserEmail = (email: string) => ({
   type: UPDATE_USER_EMAIL,
   email,
+});
+
+export const setSignUpStep = (step: number) => ({
+  type: SIGN_UP_STEP,
+  step,
 });

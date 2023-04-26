@@ -32,8 +32,9 @@ const IconButton: FC<IconButtonFC> = ({
       // add font from step 1 here
       style={style}
     >
-      {icon}
-      {text}
+      <div>{icon}</div>
+
+      <p>{text}</p>
     </button>
   );
 };
@@ -43,8 +44,8 @@ IconButton.defaultProps = {
   style: undefined,
   active: false,
   showBorder: true,
-  text: undefined,
-  icon: undefined,
+  text: '',
+  icon: <></>,
 };
 
 export default IconButton;

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { ActionMeta, MultiValue, SingleValue } from 'react-select';
+import { ActionMeta, SingleValue } from 'react-select';
 import Select, { Option } from 'components/Select';
 import { useFetchAppSkills } from 'components/ProfileCard/ProfileSkillsEdit/hooks';
 import styles from './index.module.scss';

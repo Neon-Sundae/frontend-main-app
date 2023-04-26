@@ -6,6 +6,7 @@ import {
   GET_WALLET_USDC_BALANCE,
   UPDATE_USER_DISCORD,
   UPDATE_USER_EMAIL,
+  SIGN_UP_STEP,
 } from 'actions/user/types';
 
 interface State {
@@ -13,6 +14,7 @@ interface State {
   wallet_address: string;
   wallet_usdc_balance: number;
   discordId: string;
+  step: number;
 }
 
 type Action =
@@ -39,6 +41,10 @@ type Action =
   | {
       type: typeof UPDATE_USER_EMAIL;
       email: string;
+    }
+  | {
+      type: typeof SIGN_UP_STEP;
+      step: number;
     };
 
 const initialState: State = {
@@ -46,6 +52,7 @@ const initialState: State = {
   wallet_address: '',
   wallet_usdc_balance: 0,
   discordId: '',
+  step: 0,
 };
 
 const user = (state = initialState, action: Action): State => {
@@ -92,6 +99,11 @@ const user = (state = initialState, action: Action): State => {
         };
       }
       return { ...state };
+    case SIGN_UP_STEP:
+      return {
+        ...state,
+        step: action.step,
+      };
     default:
       return { ...state };
   }

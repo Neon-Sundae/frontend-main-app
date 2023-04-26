@@ -1,0 +1,121 @@
+.step4-container {
+  .chat-prompts-container {
+    &--chat-message {
+      width: 82%;
+      margin: auto;
+      display: flex;
+      height: 77vh;
+      margin-top: 100px;
+
+      & > .user-image {
+        background: #000;
+        border-radius: 50%;
+        width: 108px;
+        height: 108px;
+        margin-right: 25px;
+      }
+
+      & > .user-choices {
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 18.5481px;
+        padding: 25px 50px;
+        height: 280px;
+        width: 647px;
+
+        & > p {
+          font-family: var(--font-family-roboto-regular);
+          font-weight: 400;
+          font-size: 24.0034px;
+        }
+
+        p,
+        &--text {
+          font-family: var(--font-family-roboto-regular);
+          font-style: normal;
+          font-size: 16px;
+          margin-bottom: 20px;
+        }
+
+        & > span {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          width: 560px;
+          min-height: 110px;
+          font-family: var(--font-family-roboto-regular);
+          font-weight: 400;
+          font-size: 24.0034px;
+        }
+
+        & > .input-wrapper {
+          animation: messageShow;
+          animation-duration: 1s;
+          padding: 0 20px;
+          display: flex;
+          justify-content: center;
+
+          & > form {
+            & > input {
+              width: 400px;
+              text-align: center;
+              border-width: 1px;
+              color: #fff;
+              border-radius: 15px;
+              border: 0.7px solid #fff;
+              padding: 10px 15px;
+              height: 50px;
+              cursor: pointer;
+              font-family: var(--font-family-roboto-medium);
+              font-size: 20px;
+              font-weight: 500;
+              line-height: 23px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: linear-gradient(
+                126.59deg,
+                rgba(255, 198, 253, 0.133) 12.11%,
+                rgba(255, 255, 255, 0.07) 73.08%
+              );
+              box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+
+              backdrop-filter: blur(40px);
+            }
+
+            & > input::placeholder {
+              font-family: var(--font-family-roboto-flex);
+              color: #fff;
+              font-size: 18.7042px;
+
+              font-weight: 200;
+            }
+
+            & > p {
+              font-family: var(--font-family-roboto-flex);
+
+              font-weight: 300;
+              font-size: 12px;
+
+              color: #ff8383;
+              margin-top: 10px;
+            }
+          }
+        }
+
+        @keyframes messageShow {
+          0% {
+            transform: translateY(32px);
+            opacity: 0;
+            visibility: hidden;
+          }
+
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}
