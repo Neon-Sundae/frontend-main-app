@@ -10,23 +10,32 @@ import useFetchOrganisationOwner from 'hooks/useFetchOrganisationOwner';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import BlurBlobs from 'components/BlurBlobs';
-import Banner from '../Banner';
-import styles from './index.module.scss';
-import { useFetchOrganisation, useFetchUserOrganisation } from './hooks';
+import {
+  useFetchOrganisationDetail,
+  useFetchUserOrganisations,
+} from 'queries/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import BasicDetails from '../BasicDetails';
 import OrganisationProjects from '../OrganisationProjects';
 import OrganisationJobs from '../OrganisationJobs';
 import OrganisationSidebar from '../OrganisationSidebar';
 import OrganisationTeam from '../OrganisationTeam';
+import Banner from '../Banner';
+import styles from './index.module.scss';
 
 const Landing: FC = () => {
-  const { orgId } = useParams();
+  const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { organisation, isLoading } = useFetchOrganisation(orgId);
-  const { data, isLoading: isLoading2 } = useFetchUserOrganisation();
-  const { owner } = useFetchOrganisationOwner(orgId);
-  const { members } = useFetchOrganisationOwnerManager(orgId);
   const [tabSelected, setTabSelected] = useState(searchParams.get('show'));
+
+  const userData = useFetchUserDetailsWrapper();
+  const { data: organisationDetail, isLoading } = useFetchOrganisationDetail(
+    params.orgId
+  );
+  const { data: userOrganisations, isLoading: isLoading2 } =
+    useFetchUserOrganisations(userData?.user.userId);
+  const { owner } = useFetchOrganisationOwner(params.orgId);
+  const { members } = useFetchOrganisationOwnerManager(params.orgId);
 
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -56,18 +65,23 @@ const Landing: FC = () => {
       case 'home':
         return (
           <>
-            <Banner organisation={organisation} />
-            <BasicDetails organisation={organisation} owner={owner} />
+            <Banner organisation={organisationDetail} />
+            <BasicDetails organisation={organisationDetail} owner={owner} />
             <div className={styles['organisation-project-jobs-wrap']}>
-              <OrganisationProjects organisation={organisation} />
-              <OrganisationJobs organisationId={organisation.organisationId} />
+              <OrganisationProjects organisation={organisationDetail} />
+              <OrganisationJobs
+                organisationId={organisationDetail.organisationId}
+              />
             </div>
           </>
         );
       case 'projects':
         return (
           <div className={styles['organisation-projects-wrap']}>
-            <OrganisationProjects organisation={organisation} showAddBtn />
+            <OrganisationProjects
+              organisation={organisationDetail}
+              showAddBtn
+            />
           </div>
         );
       case 'jobs':
@@ -81,7 +95,7 @@ const Landing: FC = () => {
           <div className={styles['organisation-templates-wrap']}>
             <CreateUsingProjectTemplate
               onClose={() => {}}
-              orgId={organisation.organisationId}
+              orgId={organisationDetail.organisationId}
               onNext={() => {}}
             />
           </div>
@@ -91,11 +105,13 @@ const Landing: FC = () => {
       default:
         return (
           <>
-            <Banner organisation={organisation} />
-            <BasicDetails organisation={organisation} owner={owner} />
+            <Banner organisation={organisationDetail} />
+            <BasicDetails organisation={organisationDetail} owner={owner} />
             <div className={styles['organisation-project-jobs-wrap']}>
-              <OrganisationProjects organisation={organisation} />
-              <OrganisationJobs organisationId={organisation.organisationId} />
+              <OrganisationProjects organisation={organisationDetail} />
+              <OrganisationJobs
+                organisationId={organisationDetail.organisationId}
+              />
             </div>
           </>
         );
@@ -114,7 +130,7 @@ const Landing: FC = () => {
         >
           <OrganisationSidebar
             tabSelected={tabSelected}
-            allOrgData={data}
+            allOrgData={userOrganisations}
             setOrganisationTab={setOrganisationTab}
             setOrganisation={setOrganisation}
           />

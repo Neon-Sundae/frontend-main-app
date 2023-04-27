@@ -17,9 +17,6 @@ const InvitationAction: FC = () => {
   const acceptOrganisationInvitation = useAcceptOrganisationInvitation();
   const rejectOrganisationInvitation = useRejectOrganisationInvitation();
 
-  console.log(searchParams.get('invitation_token'));
-  console.log(searchParams.get('invitation_type'));
-
   const headerText = () => {
     if (searchParams.get('invitation_type') === 'transfer-owner') {
       return 'take ownership';

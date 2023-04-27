@@ -17,6 +17,36 @@ const fetchAllOrganisations = async () => {
   return normalizedData;
 };
 
+const fetchOrganisationDetails = async (organisationId: string | undefined) => {
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/${organisationId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json;
+};
+
+const fetchUserOrganisations = async (userId: number | undefined) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/user/${userId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json;
+};
+
 const acceptOrganisationInvitation = async (
   invitationToken: string
 ): Promise<number> => {
@@ -56,6 +86,8 @@ const rejectOrganisationInvitation = async (invitationToken: string) => {
 
 export {
   fetchAllOrganisations,
+  fetchOrganisationDetails,
+  fetchUserOrganisations,
   acceptOrganisationInvitation,
   rejectOrganisationInvitation,
 };
