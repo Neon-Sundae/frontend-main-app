@@ -17,4 +17,45 @@ const fetchAllOrganisations = async () => {
   return normalizedData;
 };
 
-export { fetchAllOrganisations };
+const acceptOrganisationInvitation = async (
+  invitationToken: string
+): Promise<number> => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/invitation/accept`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ invitationToken }),
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json.organisationId;
+};
+
+const rejectOrganisationInvitation = async (invitationToken: string) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/invitation/reject`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ invitationToken }),
+    }
+  );
+  await handleApiErrors(response);
+};
+
+export {
+  fetchAllOrganisations,
+  acceptOrganisationInvitation,
+  rejectOrganisationInvitation,
+};

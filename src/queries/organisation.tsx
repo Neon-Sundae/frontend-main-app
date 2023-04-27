@@ -1,5 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchAllOrganisations } from 'api/organisation';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  acceptOrganisationInvitation,
+  fetchAllOrganisations,
+  rejectOrganisationInvitation,
+} from 'api/organisation';
 
 const useFetchAllOrganisations = () => {
   return useQuery({
@@ -8,4 +12,22 @@ const useFetchAllOrganisations = () => {
   });
 };
 
-export { useFetchAllOrganisations };
+const useAcceptOrganisationInvitation = () => {
+  return useMutation({
+    mutationFn: (invitationToken: string) =>
+      acceptOrganisationInvitation(invitationToken),
+  });
+};
+
+const useRejectOrganisationInvitation = () => {
+  return useMutation({
+    mutationFn: (invitationToken: string) =>
+      rejectOrganisationInvitation(invitationToken),
+  });
+};
+
+export {
+  useFetchAllOrganisations,
+  useAcceptOrganisationInvitation,
+  useRejectOrganisationInvitation,
+};

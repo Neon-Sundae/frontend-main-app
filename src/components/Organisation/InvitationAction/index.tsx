@@ -1,17 +1,21 @@
 import { FC } from 'react';
 import { getAccessToken } from 'utils/authFn';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import config from 'config';
 import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import BaseBlob from 'components/BaseBlob';
 import { Toaster } from 'react-hot-toast';
-import { useAcceptInvitation, useRejectInvitation } from './hook';
+import {
+  useAcceptOrganisationInvitation,
+  useRejectOrganisationInvitation,
+} from 'queries/organisation';
 import styles from './index.module.scss';
 
 const InvitationAction: FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const acceptInvitation = useAcceptInvitation();
-  const rejectInvitation = useRejectInvitation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const acceptOrganisationInvitation = useAcceptOrganisationInvitation();
+  const rejectOrganisationInvitation = useRejectOrganisationInvitation();
 
   console.log(searchParams.get('invitation_token'));
   console.log(searchParams.get('invitation_type'));
@@ -30,7 +34,7 @@ const InvitationAction: FC = () => {
     return 'Manager';
   };
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     const accessToken = getAccessToken();
 
     if (accessToken === null) {
@@ -45,11 +49,14 @@ const InvitationAction: FC = () => {
 
     const token = searchParams.get('invitation_token');
     if (token) {
-      acceptInvitation(token);
+      const organisationId = await acceptOrganisationInvitation.mutateAsync(
+        token
+      );
+      navigate(`/organisation/${organisationId}?show=teams`);
     }
   };
 
-  const handleReject = () => {
+  const handleReject = async () => {
     const accessToken = getAccessToken();
 
     if (accessToken === null) {
@@ -64,7 +71,8 @@ const InvitationAction: FC = () => {
 
     const token = searchParams.get('invitation_token');
     if (token) {
-      rejectInvitation(token);
+      await rejectOrganisationInvitation.mutateAsync(token);
+      navigate('/login');
     }
   };
 
