@@ -1,10 +1,15 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   acceptOrganisationInvitation,
+  addOrganisationMemberInvitation,
+  deleteOrganisationMember,
+  deleteUserInvitation,
   fetchAllOrganisations,
   fetchOrganisationDetails,
+  fetchOrganisationMembers,
   fetchUserOrganisations,
   rejectOrganisationInvitation,
+  transferOwnershipInvitation,
 } from 'api/organisation';
 
 const useFetchAllOrganisations = () => {
@@ -44,10 +49,69 @@ const useRejectOrganisationInvitation = () => {
   });
 };
 
+const useFetchOrganisationMembers = (organisationId: string | undefined) => {
+  return useQuery({
+    queryKey: ['organisation-members', organisationId],
+    queryFn: () => fetchOrganisationMembers(organisationId),
+    enabled: organisationId !== undefined,
+  });
+};
+
+const useAddOrganisationMember = (organisationId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (email: string) =>
+      addOrganisationMemberInvitation(organisationId, email),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['organisation-members', organisationId]);
+    },
+  });
+};
+
+const useTransferOwnership = (organisationId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (email: string) =>
+      transferOwnershipInvitation(organisationId, email),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['organisation-members', organisationId]);
+    },
+  });
+};
+
+const useDeleteOrganisationMember = (organisationId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (memberId: string) => deleteOrganisationMember(memberId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['organisation-members', organisationId]);
+    },
+  });
+};
+
+const useDeleteUserInvitation = (organisationId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (memberId: string) => deleteUserInvitation(memberId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['organisation-members', organisationId]);
+    },
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
   useFetchUserOrganisations,
   useAcceptOrganisationInvitation,
   useRejectOrganisationInvitation,
+  useFetchOrganisationMembers,
+  useAddOrganisationMember,
+  useTransferOwnership,
+  useDeleteOrganisationMember,
+  useDeleteUserInvitation,
 };

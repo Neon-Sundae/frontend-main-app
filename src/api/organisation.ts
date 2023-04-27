@@ -84,10 +84,110 @@ const rejectOrganisationInvitation = async (invitationToken: string) => {
   await handleApiErrors(response);
 };
 
+const fetchOrganisationMembers = async (organisationId: string | undefined) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/members/${organisationId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json;
+};
+
+const addOrganisationMemberInvitation = async (
+  organisationId: string | undefined,
+  email: string
+) => {
+  const accessToken = getAccessToken();
+
+  const payload = {
+    email,
+    organisationId: Number(organisationId),
+  };
+
+  const response = await fetch(`${config.ApiBaseUrl}/organisation/add-member`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+  await handleApiErrors(response);
+};
+
+const transferOwnershipInvitation = async (
+  organisationId: string | undefined,
+  email: string
+) => {
+  const accessToken = getAccessToken();
+
+  const payload = {
+    email,
+    organisationId: Number(organisationId),
+  };
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/transfer-ownership`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+  await handleApiErrors(response);
+};
+
+const deleteOrganisationMember = async (memberId: string) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/member/delete/${memberId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  await handleApiErrors(response);
+};
+
+const deleteUserInvitation = async (memberId: string) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/invitation/delete/${memberId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  await handleApiErrors(response);
+};
+
 export {
   fetchAllOrganisations,
   fetchOrganisationDetails,
   fetchUserOrganisations,
   acceptOrganisationInvitation,
   rejectOrganisationInvitation,
+  fetchOrganisationMembers,
+  addOrganisationMemberInvitation,
+  transferOwnershipInvitation,
+  deleteOrganisationMember,
+  deleteUserInvitation,
 };
