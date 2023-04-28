@@ -7,11 +7,14 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
+import { TypeAnimation } from 'react-type-animation';
+import { useState } from 'react';
 import styles from './index.module.scss';
 
 const Step0 = () => {
   const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
+  const [showInput, setShowInput] = useState(false);
 
   const dispatch = useDispatch();
   const {
@@ -29,22 +32,45 @@ const Step0 = () => {
     <div className={styles['step0-container']}>
       <iframe
         title="video"
-        width="1072"
-        height="571"
+        width="900"
+        height="480"
         src="https://www.loom.com/embed/eb1b9c6f21444b64940a632e2935007d"
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
-            Hey,
-            <input
-              type="text"
-              defaultValue={name}
-              placeholder="name"
-              {...register('name', { required: true })}
-              className={errors.name ? styles.error : ''}
-            />
-            👋🏼
+            Hey 👋
+            {!showInput && (
+              <TypeAnimation
+                style={{
+                  display: 'inline',
+                  cursor: 'pointer',
+                  width: '180px',
+                }}
+                sequence={[
+                  ' Priya',
+                  1000,
+                  ' Michelle',
+                  1000,
+                  ' Natalia',
+                  1000,
+                  () => {
+                    setShowInput(true); // Place optional callbacks anywhere in the array
+                  },
+                ]}
+                cursor
+                speed={80}
+              />
+            )}
+            {showInput && (
+              <input
+                type="text"
+                defaultValue={name}
+                placeholder="Name "
+                {...register('name', { required: true })}
+                className={errors.name ? styles.error : ''}
+              />
+            )}
           </h2>
           {errors.name && <p>* Your name is required</p>}
         </div>
@@ -52,7 +78,7 @@ const Step0 = () => {
           type="submit"
           value="Get Started 🎉"
           className={styles['submit-button']}
-          disabled={!!errors.name}
+          disabled={!!errors.name || !showInput}
         />
       </form>
     </div>

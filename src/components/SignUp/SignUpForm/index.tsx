@@ -1,83 +1,79 @@
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import {
-  useArcanaWallet,
-  useMetamaskSignup,
-  useUnstoppableDomains,
-  useUserOnboardData,
-  useWalletConnectSignup,
-} from 'components/Login/Step1/hooks';
 import { useAuth, useProvider } from '@arcana/auth-react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
-import useCreateOrganisation from 'components/StartOrgModal/hook';
+
 import convertBase64ToFile from 'utils/base64ToFile';
-import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
+
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import useCreateOrganisation from 'components/StartOrgModal/hook';
+import regexEmail from 'utils/regex/email';
+import { EthereumProvider } from '@arcana/auth';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
+import useMetamaskOnboardUser from './hooks/useMetamaskOnboardUser';
+import useArcanaOnboardUser from './hooks/useArcanaOnboardUser';
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
-  const email =
-    getSessionStorageItem('email') ??
-    getSessionStorageItem('organisationEmail');
-  const auth = useAuth();
-  const { signup } = useArcanaWallet();
-  const { provider } = useProvider();
+  const [emailFromSessionStorage, setEmail] = useState(
+    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
+  );
+
   const [disableButton, setDisableButton] = useState(false);
-  const [newUserId, setNewUserId] = useState(user?.userId ?? 0);
-
-  const createProfile = useCreateProfile(setNewUserId);
-  const onboardDataSave = useUserOnboardData();
-  const [file, setFile] = useState<File | undefined>();
-
-  const [userOnboardData, setUserOnboardData] = useState<any>([]);
+  const provider = useProvider();
   const createOrganisation = useCreateOrganisation(setDisableButton);
+  const [apiStep, setApiStep] = useState(0);
+  const auth = useAuth();
+  const { createUser, updateProfile, saveUserOnboardData } =
+    useMetamaskOnboardUser(setApiStep);
+  const createArcanaUser = useArcanaOnboardUser(setApiStep);
 
   useEffect(() => {
-    const triggerSignUp = async () => {
-      await signup(auth.user?.address, provider);
-      createProfile.mutate({
-        name: getSessionStorageItem('name'),
-        email: auth?.user?.email || email,
-        work: getSessionStorageItem('work'),
-      });
-      onboardDataSave.mutateAsync({ data: userOnboardData });
-      if (getSessionStorageItem('organisationName')) saveOrgData();
-    };
-    if (auth.user) {
-      triggerSignUp();
+    if (apiStep === 2) updateUserProfile();
+    if (apiStep === 3) {
+      saveUserOnboardDataFunc();
+      if (!getSessionStorageItem('organisationName')) {
+        navigate('/dashboard');
+      } else {
+        saveOrgData();
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiStep]);
+
+  useEffect(() => {
+    if (auth.user) createArcanaUser.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
-
-  useEffect(() => {
-    if (newUserId) {
-      onboardDataSave.mutateAsync({ data: userOnboardData });
-      if (getSessionStorageItem('organisationName')) saveOrgData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newUserId, file]);
 
   const [error, setError] = useState('');
   const [active, setActive] = useState('');
 
-  const generateNonce = useMetamaskSignup(setNewUserId);
-  const walletConnectGenerateNonce = useWalletConnectSignup(setNewUserId);
-  const unstoppableDomains = useUnstoppableDomains(setNewUserId);
+  // const generateNonce = useMetamaskSignup(setNewUserId);
 
-  const { register } = useForm();
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useForm({ mode: 'onChange' });
+
+  const email = useWatch({
+    control,
+    name: 'email',
+  });
 
   const loginWithMetaMask = () => {
-    saveUserOnboardData();
+    createUser.mutate();
   };
 
   const handleMetamaskSignup = () => {
@@ -87,13 +83,13 @@ const SignUpForm = () => {
   };
 
   const signupWithWalletConnect = async () => {
-    walletConnectGenerateNonce({ setError });
+    // walletConnectGenerateNonce({ setError });
   };
 
   const signUpWithUD = () => {
     setError('');
     setActive('udLogin');
-    unstoppableDomains.signup(setError);
+    // unstoppableDomains.signup(setError);
   };
 
   const linkSignUp = async (userEmail: string) => {
@@ -106,40 +102,58 @@ const SignUpForm = () => {
       'organisationDescription'
     );
 
-    if (organisationName && organisationDescription && newUserId) {
+    if (organisationName && organisationDescription) {
       const localFile = getSessionStorageItem('file');
-      if (!file) await convertBase64ToFile(localFile, setFile);
-      if (!disableButton)
+      const convertedFile = await convertBase64ToFile(localFile);
+      if (user?.userId)
         await createOrganisation({
           name: organisationName,
           description: organisationDescription,
-          userId: newUserId.toString(),
-          image: file,
+          userId: user.userId.toString(),
+          image: convertedFile || undefined,
           industry: getSessionStorageItem('choices'),
         });
     }
   };
 
-  const saveUserOnboardData = async () => {
+  const saveUserOnboardDataFunc = () => {
     const data: any[] = [];
     const choices = getSessionStorageItem('choices');
     const flow = getSessionStorageItem('flow');
     const work = getSessionStorageItem('work');
-    data.push(JSON.parse(choices), flow, work);
-    setUserOnboardData(data);
-    if (data.length > 0) generateNonce({ setError });
+
+    data.push(JSON.parse(choices), flow, work, { userId: user?.userId });
+
+    saveUserOnboardData.mutate(data);
+  };
+
+  const updateUserProfile = () => {
+    console.log('inside updateUserProfile');
+    updateProfile.mutate({
+      userId: user?.userId,
+      name:
+        getSessionStorageItem('name') ??
+        getSessionStorageItem('organisationName'),
+      email:
+        getSessionStorageItem('email') ??
+        getSessionStorageItem('organisationEmail'),
+      work:
+        getSessionStorageItem('work') ??
+        getSessionStorageItem('organisationVertical'),
+    });
   };
 
   if (error === 'Bad Request' || error === 'User Already Exist!') {
     toast(t => <LoginButton setError={setError} />);
   }
 
-  console.log('data', userOnboardData);
+  console.log('apiStep', apiStep);
 
   return (
     <div className={styles['sign-up-form']}>
       <section className={styles['sign-up-form--option-select']}>
         <p>Signup via your wallet</p>
+
         <div className={styles['buttons-container']}>
           <IconButton
             handleClick={handleMetamaskSignup}
@@ -169,19 +183,29 @@ const SignUpForm = () => {
           <button aria-label="Use">Use</button>
           <input
             className={styles['sign-up-form-email']}
-            defaultValue={email}
+            defaultValue={emailFromSessionStorage}
             type="email"
             required
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('email', { required: true })}
+            {...register('email', { required: true, pattern: regexEmail })}
+            style={{
+              border: Object.keys(errors).length && '0.56px solid #FF8383',
+            }}
           />
           <button
             type="submit"
             disabled={disableButton}
-            onClick={() => linkSignUp(email)}
+            onClick={() => {
+              linkSignUp(email ?? emailFromSessionStorage);
+            }}
           >
             Get link
           </button>
+          {Object.keys(errors).length > 0 && (
+            <p className={styles['sign-up-form-email-error']}>
+              * Your email looks so wrong!
+            </p>
+          )}
         </form>
       </section>
     </div>

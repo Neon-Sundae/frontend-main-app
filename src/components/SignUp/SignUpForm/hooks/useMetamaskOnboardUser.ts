@@ -25,7 +25,7 @@ interface IVerifySignature {
   signature: string | null;
 }
 
-const useOnboardMetamaskUser = (
+const useMetamaskOnboardUser = (
   setApiStep: Dispatch<SetStateAction<number>>
 ) => {
   const accessToken = getAccessToken();
@@ -161,4 +161,4 @@ const useOnboardMetamaskUser = (
   };
 };
 
-export default useOnboardMetamaskUser;
+export default useMetamaskOnboardUser;

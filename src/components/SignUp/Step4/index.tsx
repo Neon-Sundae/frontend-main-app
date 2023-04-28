@@ -1,10 +1,10 @@
-import { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
-
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { useForm, useWatch } from 'react-hook-form';
 import regexEmail from 'utils/regex/email';
 import styles from './index.module.scss';
@@ -22,8 +22,12 @@ const Step4: FC<IStep4> = ({
   showOptions,
   active,
 }) => {
+  const [emailFromSessionStorage, setEmail] = useState(
+    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
+  );
+  const [showStepFourOptions, setShowStepFourOptions] = useState(false);
   useEffect(() => {
-    setActive('');
+    setActive(emailFromSessionStorage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,8 +42,6 @@ const Step4: FC<IStep4> = ({
     control,
     name: 'email',
   });
-
-  const emailFromSessionStorage = getSessionStorageItem('email');
 
   if (Object.keys(errors).length > 0) {
     setActive('');
@@ -57,7 +59,9 @@ const Step4: FC<IStep4> = ({
   return (
     <div className={styles['step4-container']}>
       <div className={styles['chat-prompts-container--chat-message']}>
-        <div className={styles['user-image']} />
+        <div className={styles['user-image']}>
+          <NeonSundaeMainLogo width={70} height={85.75} />
+        </div>
         <div className={styles['user-choices']}>
           <TypeAnimation
             style={{
@@ -70,18 +74,18 @@ const Step4: FC<IStep4> = ({
               'Your workspace is almost ready 🚀 \n Drop your email below to keep up to date with all \n your projects, tasks and community',
               500,
               () => {
-                setShowOptions(true);
+                setShowStepFourOptions(true);
               },
             ]}
             cursor={false}
             speed={80}
           />
-          {showOptions && (
+          {showStepFourOptions && (
             <span className={styles['input-wrapper']}>
               <form>
                 <input
                   type="text"
-                  placeholder="email"
+                  placeholder="email address here"
                   defaultValue={emailFromSessionStorage}
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('email', {
@@ -94,7 +98,7 @@ const Step4: FC<IStep4> = ({
                   }}
                 />
                 {Object.keys(errors).length > 0 && (
-                  <p>* Your email looks wrong!</p>
+                  <p>* Your email looks so wrong!</p>
                 )}
               </form>
             </span>

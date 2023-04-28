@@ -22,8 +22,8 @@
     margin: auto;
     & > p {
       font-family: var(--font-family-roboto-regular);
-      font-size: 15.8027px;
-      margin-top: 20px;
+      font-size: 14px;
+      margin-top: 40px;
       margin-bottom: 20px;
     }
     & > p:first-child {
@@ -100,7 +100,7 @@
       color: #fff;
       border-radius: 15px;
       border: 0.7px solid #fff;
-      width: 440px;
+      width: 388px;
       height: 62px;
       cursor: pointer;
       font-family: var(--font-family-roboto-regular);
@@ -118,6 +118,17 @@
     input::placeholder {
       text-align: center;
       color: #fff;
+    }
+    .sign-up-form-email-error {
+      font-family: var(--font-family-roboto-flex);
+
+      font-weight: 300;
+      font-size: 12px;
+
+      color: #ff8383;
+      position: absolute;
+      left: 25px;
+      top: 70px;
     }
   }
 }

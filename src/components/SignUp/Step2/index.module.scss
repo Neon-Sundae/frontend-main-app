@@ -1,10 +1,10 @@
 .step-2-container {
   .chat-prompts-container {
     &--chat-message {
-      width: 82%;
+      width: 79%;
       margin: auto;
       display: flex;
-      height: 77vh;
+
       margin-top: 100px;
 
       & > .user-image {
@@ -13,19 +13,20 @@
         width: 108px;
         height: 108px;
         margin-right: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       & > .user-choices {
         background: rgba(0, 0, 0, 0.25);
         border-radius: 18.5481px;
         padding: 25px 50px;
-        height: 590px;
-        width: 647px;
 
         & > p {
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
         }
 
         & > span {
@@ -33,10 +34,10 @@
           flex-wrap: wrap;
           justify-content: space-between;
           width: 560px;
-          min-height: 108px;
+          min-height: 85px;
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
 
           & > .choice-option {
             color: #fff;
@@ -56,7 +57,7 @@
             font-family: var(--font-family-inter-regular);
             font-style: normal;
             font-weight: 500;
-            font-size: 21.8212px;
+            font-size: 16px;
             will-change: transform;
             transition: transform 450ms;
             animation: messageShow;

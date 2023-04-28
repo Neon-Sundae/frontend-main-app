@@ -126,6 +126,7 @@ interface IUserOnboardData {
 const useUserOnboardData = () => {
   const accessToken = getAccessToken();
   const user = useSelector((state: RootState) => state.user.user);
+
   const navigate = useNavigate();
   const onboardDataSave = useMutation(
     async (data: IUserOnboardData) => {
