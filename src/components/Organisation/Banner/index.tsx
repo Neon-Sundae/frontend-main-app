@@ -20,9 +20,10 @@ import StartPrjModal from 'components/StartPrjModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import { useFetchOrganisationOwnerManager } from 'queries/organisation';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
-import { useUpdateOrganisation, useUpdateOrganisationImage } from './hooks';
+import { useUpdateOrganisation } from './hooks';
 
 interface IBanner {
   organisation: IOrganisation;

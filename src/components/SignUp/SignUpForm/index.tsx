@@ -18,7 +18,7 @@ import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useCreateOrganisation } from 'queries/organisation';
-import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import { useFetchUserDetailsWrapper } from 'queries/user';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';

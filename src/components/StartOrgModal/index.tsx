@@ -11,7 +11,7 @@ import BaseModal from 'components/Home/BaseModal';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
 import clsx from 'clsx';
 import { useCreateOrganisation } from 'queries/organisation';
-import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import { useNavigate } from 'react-router-dom';
 import { useFetchUserDetailsWrapper } from 'queries/user';
 import styles from './index.module.scss';
