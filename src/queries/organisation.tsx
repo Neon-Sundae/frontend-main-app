@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  IUpdateOrganisationDetailsPayload,
   acceptOrganisationInvitation,
   addOrganisationMemberInvitation,
   createOrganisation,
@@ -14,11 +15,13 @@ import {
   fetchUserProjects,
   rejectOrganisationInvitation,
   transferOwnershipInvitation,
+  updateOrganisationDetails,
 } from 'api/organisation';
 import {
   ICreateOrganisationPayload,
   IMember,
   IMemberData,
+  IOrganisationDetails,
 } from 'interfaces/organisation';
 import { Dispatch, SetStateAction } from 'react';
 import getRandomString from 'utils/getRandomString';
@@ -204,6 +207,23 @@ const useCreateOrganisation = (
   });
 };
 
+const useUpdateOrganisationDetails = (
+  organisationId: string | undefined,
+  setOpen?: Dispatch<SetStateAction<boolean>>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: IUpdateOrganisationDetailsPayload) =>
+      updateOrganisationDetails({ organisationId, payload }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['organisation-detail', organisationId]);
+    },
+    onSettled: () => {
+      if (setOpen) setOpen(false);
+    },
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
@@ -220,4 +240,5 @@ export {
   useFetchOrganisationOwner,
   useFetchOrganisationOwnerManager,
   useCreateOrganisation,
+  useUpdateOrganisationDetails,
 };

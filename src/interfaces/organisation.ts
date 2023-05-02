@@ -72,3 +72,18 @@ export interface ICreateOrganisationPayload {
   userId: string;
   industry?: string;
 }
+
+export interface IOrganisationDetails {
+  bannerImage: string | null;
+  description: string;
+  flProjects: any[];
+  industry: string | null;
+  instagram: string | null;
+  linkedin: string | null;
+  name: string;
+  organisationId: number;
+  profileImage: string | null;
+  twitter: string | null;
+  website: string | null;
+  whitepaper: string | null;
+}

@@ -247,6 +247,36 @@ const createOrganisation = async (payload: ICreateOrganisationPayload) => {
   return json;
 };
 
+export interface IUpdateOrganisationDetailsPayload {
+  [key: string]: string | null;
+}
+
+interface IUpdateOrganisationDetails {
+  organisationId: string | undefined;
+  payload: IUpdateOrganisationDetailsPayload;
+}
+
+const updateOrganisationDetails = async ({
+  organisationId,
+  payload,
+}: IUpdateOrganisationDetails) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/${organisationId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchAllOrganisations,
   fetchOrganisationDetails,
@@ -262,4 +292,5 @@ export {
   fetchOrganisaionOwner,
   fetchOrganisationOwnerManager,
   createOrganisation,
+  updateOrganisationDetails,
 };

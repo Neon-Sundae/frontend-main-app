@@ -4,8 +4,9 @@ import GradientBtn from 'components/GradientBtn';
 import { IOrganisation } from 'interfaces/organisation';
 import isValidUrl from 'utils/isValidUrl';
 import toast from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
+import { useUpdateOrganisationDetails } from 'queries/organisation';
 import styles from './index.module.scss';
-import { useUpdateOrgSocials } from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -16,8 +17,9 @@ const OrganisationSocialModal: FC<IProfileSkills> = ({
   setOpen,
   organisation,
 }) => {
-  const updateOrgSocials = useUpdateOrgSocials(
-    organisation.organisationId,
+  const params = useParams();
+  const updateOrganisationDetails = useUpdateOrganisationDetails(
+    params.orgId,
     setOpen
   );
 
@@ -37,7 +39,7 @@ const OrganisationSocialModal: FC<IProfileSkills> = ({
     )
       toast.error('Please input full url.');
     else
-      updateOrgSocials.mutate({
+      updateOrganisationDetails.mutate({
         linkedin,
         instagram,
         twitter,
