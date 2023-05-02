@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
@@ -9,6 +10,7 @@ import {
 } from 'utils/sessionStorageFunc';
 import { TypeAnimation } from 'react-type-animation';
 import { useState } from 'react';
+import videoSrc from 'assets/videos/intro.mp4';
 import styles from './index.module.scss';
 
 const Step0 = () => {
@@ -30,12 +32,11 @@ const Step0 = () => {
 
   return (
     <div className={styles['step0-container']}>
-      <iframe
-        title="video"
-        width="900"
-        height="480"
-        src="https://www.loom.com/embed/eb1b9c6f21444b64940a632e2935007d"
-      />
+      <div className={styles['video-frame']}>
+        <video autoPlay loop className={styles['background-video-container']}>
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
@@ -76,7 +77,7 @@ const Step0 = () => {
         </div>
         <input
           type="submit"
-          value="Get Started 🎉"
+          value="Get Started&nbsp;&nbsp;🎉"
           className={styles['submit-button']}
           disabled={!!errors.name || !showInput}
         />
