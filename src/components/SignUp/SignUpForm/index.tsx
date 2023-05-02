@@ -16,11 +16,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import useCreateOrganisation from 'components/StartOrgModal/hook';
 import regexEmail from 'utils/regex/email';
-import { EthereumProvider } from '@arcana/auth';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
 import useMetamaskOnboardUser from './hooks/useMetamaskOnboardUser';
 import useArcanaOnboardUser from './hooks/useArcanaOnboardUser';
+import useUdOnboardUser from './hooks/useUdOnboardUser';
+import useWalletConnectOnboardUser from './hooks/useWalletConnectOnboardUser';
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ const SignUpForm = () => {
   const { createUser, updateProfile, saveUserOnboardData } =
     useMetamaskOnboardUser(setApiStep);
   const createArcanaUser = useArcanaOnboardUser(setApiStep);
+  const createUdUser = useUdOnboardUser(setApiStep);
+  const createWdUser = useWalletConnectOnboardUser();
 
   useEffect(() => {
     if (apiStep === 2) updateUserProfile();
@@ -83,13 +86,11 @@ const SignUpForm = () => {
   };
 
   const signupWithWalletConnect = async () => {
-    // walletConnectGenerateNonce({ setError });
+    createWdUser(setApiStep);
   };
 
   const signUpWithUD = () => {
-    setError('');
-    setActive('udLogin');
-    // unstoppableDomains.signup(setError);
+    createUdUser.mutate();
   };
 
   const linkSignUp = async (userEmail: string) => {

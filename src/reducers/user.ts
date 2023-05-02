@@ -59,7 +59,7 @@ const initialState: State = {
   wallet_address: '',
   wallet_usdc_balance: 0,
   discordId: '',
-  step: 0,
+  step: 13,
 };
 
 const user = (state = initialState, action: Action): State => {
