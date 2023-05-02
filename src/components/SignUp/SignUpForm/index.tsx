@@ -1,7 +1,7 @@
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import {
   useArcanaWallet,
@@ -13,19 +13,19 @@ import {
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
-import useCreateOrganisation from 'components/StartOrgModal/hook';
 import convertBase64ToFile from 'utils/base64ToFile';
 import useCreateProfile from 'components/Dashboard/FirstTimeUser/hooks';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useCreateOrganisation } from 'queries/organisation';
+import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
 
 const SignUpForm = () => {
-  const user = useSelector((state: RootState) => state.user.user);
+  const navigate = useNavigate();
+  const userData = useFetchUserDetailsWrapper();
   const email =
     getSessionStorageItem('email') ??
     getSessionStorageItem('organisationEmail');
@@ -33,7 +33,7 @@ const SignUpForm = () => {
   const { signup } = useArcanaWallet();
   const { provider } = useProvider();
   const [disableButton, setDisableButton] = useState(false);
-  const [newUserId, setNewUserId] = useState(user?.userId ?? 0);
+  const [newUserId, setNewUserId] = useState(userData?.user?.userId ?? 0);
 
   const createProfile = useCreateProfile(setNewUserId);
   const onboardDataSave = useUserOnboardData();
@@ -41,6 +41,7 @@ const SignUpForm = () => {
 
   const [userOnboardData, setUserOnboardData] = useState<any>([]);
   const createOrganisation = useCreateOrganisation(setDisableButton);
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
 
   useEffect(() => {
     const triggerSignUp = async () => {
@@ -109,14 +110,25 @@ const SignUpForm = () => {
     if (organisationName && organisationDescription && newUserId) {
       const localFile = getSessionStorageItem('file');
       if (!file) await convertBase64ToFile(localFile, setFile);
-      if (!disableButton)
-        await createOrganisation({
+      if (!disableButton) {
+        const createOrgData = await createOrganisation.mutateAsync({
           name: organisationName,
           description: organisationDescription,
           userId: newUserId.toString(),
-          image: file,
           industry: getSessionStorageItem('choices'),
         });
+
+        if (file) {
+          await updateOrganisationImageHandler(
+            file,
+            'profileImage',
+            'profile',
+            createOrgData.organisationId
+          );
+        }
+
+        navigate(`/organisation/${createOrgData.organisationId}`);
+      }
     }
   };
 

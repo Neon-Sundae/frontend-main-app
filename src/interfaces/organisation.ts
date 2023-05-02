@@ -65,3 +65,10 @@ export interface IOrganisationSelectData {
   label: string;
   value: string;
 }
+
+export interface ICreateOrganisationPayload {
+  name: string;
+  description: string;
+  userId: string;
+  industry?: string;
+}

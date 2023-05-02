@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   acceptOrganisationInvitation,
   addOrganisationMemberInvitation,
+  createOrganisation,
   deleteOrganisationMember,
   deleteUserInvitation,
   fetchAllOrganisations,
@@ -14,7 +15,12 @@ import {
   rejectOrganisationInvitation,
   transferOwnershipInvitation,
 } from 'api/organisation';
-import { IMember, IMemberData } from 'interfaces/organisation';
+import {
+  ICreateOrganisationPayload,
+  IMember,
+  IMemberData,
+} from 'interfaces/organisation';
+import { Dispatch, SetStateAction } from 'react';
 import getRandomString from 'utils/getRandomString';
 
 const useFetchAllOrganisations = () => {
@@ -186,6 +192,18 @@ const useFetchOrganisationOwnerManager = (
   });
 };
 
+const useCreateOrganisation = (
+  setDisableButton: Dispatch<SetStateAction<boolean>>
+) => {
+  return useMutation({
+    mutationFn: (payload: ICreateOrganisationPayload) =>
+      createOrganisation(payload),
+    onError: () => {
+      setDisableButton(false);
+    },
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
@@ -201,4 +219,5 @@ export {
   useFetchUserWalletProjects,
   useFetchOrganisationOwner,
   useFetchOrganisationOwnerManager,
+  useCreateOrganisation,
 };

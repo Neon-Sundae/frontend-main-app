@@ -1,5 +1,5 @@
 import config from 'config';
-import { IMember } from 'interfaces/organisation';
+import { ICreateOrganisationPayload, IMember } from 'interfaces/organisation';
 import { getAccessToken } from 'utils/authFn';
 import getProfileProjects from 'utils/getProfileProjects';
 import { handleApiErrors } from 'utils/handleApiErrors';
@@ -232,6 +232,21 @@ const fetchOrganisationOwnerManager = async (
   return json;
 };
 
+const createOrganisation = async (payload: ICreateOrganisationPayload) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(`${config.ApiBaseUrl}/organisation`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+  const json = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchAllOrganisations,
   fetchOrganisationDetails,
@@ -246,4 +261,5 @@ export {
   fetchUserProjects,
   fetchOrganisaionOwner,
   fetchOrganisationOwnerManager,
+  createOrganisation,
 };

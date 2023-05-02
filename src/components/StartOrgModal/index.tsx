@@ -7,13 +7,14 @@ import {
   useRef,
   DragEvent,
 } from 'react';
-import { RootState } from 'reducers';
-import { useSelector } from 'react-redux';
 import BaseModal from 'components/Home/BaseModal';
 import { ReactComponent as Stroke } from 'assets/illustrations/icons/stroke.svg';
 import clsx from 'clsx';
+import { useCreateOrganisation } from 'queries/organisation';
+import { useUpdateOrganisationImage } from 'components/Organisation/Banner/hooks';
+import { useNavigate } from 'react-router-dom';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import styles from './index.module.scss';
-import useCreateOrganisation from './hook';
 
 interface ComponentProps {
   onClose: () => void;
@@ -25,22 +26,34 @@ export interface IFile {
 }
 
 const StartOrgModal: FC<ComponentProps> = ({ onClose }) => {
-  const user = useSelector((state: RootState) => state.user.user);
+  const navigate = useNavigate();
   const [orgName, setOrgName] = useState('');
   const [orgDesc, setOrgDesc] = useState('');
   const [fileData, setFileData] = useState<IFile | null>(null);
   const [disableButton, setDisableButton] = useState(false);
   const [showStepTwo, setShowStepTwo] = useState(false);
+  const userData = useFetchUserDetailsWrapper();
   const createOrganisation = useCreateOrganisation(setDisableButton);
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
 
   const handleCreateOrganisation = async () => {
-    if (orgName && orgDesc && user?.userId) {
-      await createOrganisation({
+    if (orgName && orgDesc && userData?.user?.userId) {
+      const createOrgData = await createOrganisation.mutateAsync({
         name: orgName,
         description: orgDesc,
-        userId: user.userId.toString(),
-        image: fileData?.file,
+        userId: userData?.user.userId.toString(),
       });
+
+      if (fileData?.file) {
+        await updateOrganisationImageHandler(
+          fileData?.file,
+          'profileImage',
+          'profile',
+          createOrgData.organisationId
+        );
+      }
+
+      navigate(`/organisation/${createOrgData.organisationId}`);
     }
   };
 
