@@ -12,6 +12,7 @@ import {
   rejectOrganisationInvitation,
   transferOwnershipInvitation,
 } from 'api/organisation';
+import getRandomString from 'utils/getRandomString';
 
 const useFetchAllOrganisations = () => {
   return useQuery({
@@ -112,6 +113,36 @@ const useFetchUserProjects = (userId: number | undefined) => {
   });
 };
 
+interface IUseFetchUserProjects {
+  userId: number | undefined;
+  profileSmartContractId: string | null | undefined;
+  open: boolean;
+}
+
+const useFetchUserWalletProjects = ({
+  userId,
+  profileSmartContractId,
+  open,
+}: IUseFetchUserProjects) => {
+  return useQuery({
+    queryKey: ['user-projects', userId],
+    queryFn: () => fetchUserProjects(userId),
+    enabled: userId !== undefined && open,
+    select: data => {
+      const baseProjectList = [
+        {
+          id: getRandomString(5),
+          name: 'My Profile',
+          smartContractId: profileSmartContractId,
+          type: 'profile_contract',
+        },
+      ];
+
+      return [...baseProjectList, ...data];
+    },
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
@@ -124,4 +155,5 @@ export {
   useDeleteOrganisationMember,
   useDeleteUserInvitation,
   useFetchUserProjects,
+  useFetchUserWalletProjects,
 };
