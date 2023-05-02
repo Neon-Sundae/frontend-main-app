@@ -216,7 +216,7 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                     name="Location"
                     borderRadius={10}
                     height={50}
-                    width="330px"
+                    width="400px"
                     isMulti={false}
                   />
                 )}
@@ -233,7 +233,7 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                   500,
                   () => {
                     setTimeout(() => {
-                      setShowSelectMenu(3);
+                      setShowSelectMenu(2);
                     }, 1000);
                   },
                 ]}

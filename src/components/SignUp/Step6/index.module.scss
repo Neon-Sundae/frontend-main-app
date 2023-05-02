@@ -15,7 +15,6 @@
       height: 77vh;
       margin-top: 100px;
       flex-direction: column;
-      overflow-y: scroll;
 
       padding-right: 10px;
       & > span {
@@ -98,6 +97,10 @@
                 margin-top: 25px;
               }
 
+              & > input:focus {
+                outline: none;
+              }
+
               & > input::placeholder {
                 font-family: var(--font-family-roboto-flex);
                 color: #fff;
@@ -167,13 +170,14 @@
     .chat-message {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       font-family: var(--font-family-roboto-regular);
       font-weight: 400;
       font-size: 1.25rem;
       background: rgba(0, 0, 0, 0.25);
       border-radius: 18.5481px;
       padding: 25px 50px;
-      min-height: 240px;
+
       width: 510px;
       margin-bottom: 25px;
       & > div {

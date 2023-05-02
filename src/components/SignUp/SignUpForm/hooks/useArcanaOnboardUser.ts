@@ -1,25 +1,14 @@
-import { EthereumProvider } from '@arcana/auth';
-import { useAuth, useProvider } from '@arcana/auth-react';
+import { useAuth } from '@arcana/auth-react';
 import { useMutation } from '@tanstack/react-query';
 import { updateFirstTimeUser } from 'actions/auth';
 import { updateUser } from 'actions/user';
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
-import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getAccessToken, setAccessToken } from 'utils/authFn';
-import { signArcanaMessage, signMessage } from 'utils/ethereumFn';
-import { handleApiErrors } from 'utils/handleApiErrors';
+import { signArcanaMessage } from 'utils/ethereumFn';
 import { handleError } from 'utils/handleUnAuthorization';
-import { requestEthereumAccounts } from 'utils/web3EventFn';
-
-interface ICreateProfile {
-  userId: number | undefined;
-  name: string;
-  email: string;
-  work?: string;
-}
 
 interface IVerifySignature {
   userId: number;
@@ -62,7 +51,6 @@ const useArcanaOnboardUser = (setApiStep: Dispatch<SetStateAction<number>>) => {
         );
         dispatch(updateUser(body.user));
         setApiStep(1);
-        console.log('signature', signature);
 
         verifyArcanaSignature.mutate({
           userId: body.user.userId,
@@ -94,7 +82,7 @@ const useArcanaOnboardUser = (setApiStep: Dispatch<SetStateAction<number>>) => {
       onSuccess: async res => {
         const body = await res.json();
         setAccessToken(body.accessToken);
-        dispatch(updateFirstTimeUser(body.isFirstTimeUser));
+        dispatch(updateFirstTimeUser(true));
         setApiStep(2);
       },
     }

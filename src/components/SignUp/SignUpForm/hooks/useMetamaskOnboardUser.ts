@@ -95,7 +95,7 @@ const useMetamaskOnboardUser = (
       onSuccess: async res => {
         const body = await res.json();
         setAccessToken(body.accessToken);
-        dispatch(updateFirstTimeUser(body.isFirstTimeUser));
+        dispatch(updateFirstTimeUser(true));
         setApiStep(2);
       },
     }

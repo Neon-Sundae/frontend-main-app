@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
 import ProfileCard from 'components/ProfileCard';
-import { removeItem } from 'utils/localStorageFn';
+import { setItem } from 'utils/localStorageFn';
 import BlurBlobs from 'components/BlurBlobs';
 import TourProfilePage from './tour';
 
@@ -15,18 +15,20 @@ const Landing: FC = () => {
     localStorage.getItem('onboardStatus')
   );
   const { tourStep, tourStart } = TourProfilePage();
+
   window.addEventListener('storage', () => {
     setOnboardStatus(localStorage.getItem('onboardStatus'));
   });
+
   useEffect(() => {
     if (onboardStatus === 'started') {
       setTimeout(() => {
         tourStart();
+        setItem('onboardStatus', 'done');
       }, 1000);
     }
     if (onboardStatus === 'partial') {
       tourStep('step3');
-      removeItem('onboardStatus');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onboardStatus]);
