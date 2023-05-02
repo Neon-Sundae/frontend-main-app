@@ -9,8 +9,10 @@ import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
-import { useFetchOrganisationDetail } from 'queries/organisation';
+import {
+  useFetchOrganisationDetail,
+  useFetchOrganisationOwnerManager,
+} from 'queries/organisation';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
@@ -33,7 +35,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   const { data: organisationDetail, isLoading } = useFetchOrganisationDetail(
     params.orgId
   );
-  const { members } = useFetchOrganisationOwnerManager(params.orgId);
+  const { data: members } = useFetchOrganisationOwnerManager(params.orgId);
 
   const {
     data,

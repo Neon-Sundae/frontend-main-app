@@ -27,7 +27,7 @@ import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import getRandomString from 'utils/getRandomString';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import { IMemberData } from 'interfaces/organisation';
 import { useFetchUserDetailsWrapper } from 'queries/user';
@@ -56,7 +56,7 @@ const TaskManagement: FC<ITaskManagement> = ({
 
   const user = useSelector((state: RootState) => state.user.user);
   const { projectData } = useFetchProjects(create);
-  const { members } = useFetchOrganisationOwnerManager(
+  const { data: members } = useFetchOrganisationOwnerManager(
     projectData?.organisationId
   );
 
@@ -156,7 +156,7 @@ interface ITaskManagementBoard {
   project_budget: number;
   flProjectCategory?: any;
   projectData: any;
-  members: IMemberData;
+  members: IMemberData | undefined;
 }
 
 const TaskManagementBoard: FC<ITaskManagementBoard> = ({
@@ -302,7 +302,7 @@ interface IColumn {
   prefix: string;
   organisationName: string;
   setOpenTask: any;
-  members: IMemberData;
+  members: IMemberData | undefined;
 }
 
 const Column: FC<IColumn> = ({
@@ -345,7 +345,7 @@ interface ICard {
   organisationName: string;
   setOpenTask: any;
   appliedBuilders: any;
-  members: IMemberData;
+  members: IMemberData | undefined;
 }
 
 const Card: FC<ICard> = ({

@@ -24,7 +24,7 @@ import { getAccessToken } from 'utils/authFn';
 import _ from 'lodash';
 import getRandomString from 'utils/getRandomString';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import isOwner from 'utils/accessFns/isOwner';
 import { useAuth } from '@arcana/auth-react';
@@ -55,7 +55,9 @@ const Header: FC<IHeaderProps> = props => {
     useState(false);
   const [currentProjectTasks, setCurrentProjectTasks] = useState<any[]>([]);
 
-  const { members } = useFetchOrganisationOwnerManager(props.organisationId);
+  const { data: members } = useFetchOrganisationOwnerManager(
+    props.organisationId
+  );
 
   const { data } = useQuery(
     ['userTasksData'],

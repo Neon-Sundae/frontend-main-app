@@ -19,7 +19,7 @@ import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
 import { useUpdateOrganisation, useUpdateOrganisationImage } from './hooks';
@@ -46,7 +46,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [imageLoading, setImageLoading] = useState(false);
   const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
 
-  const { members } = useFetchOrganisationOwnerManager(orgId);
+  const { data: members } = useFetchOrganisationOwnerManager(orgId);
 
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
   const payload = {

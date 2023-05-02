@@ -35,7 +35,7 @@ interface ITaskDetail {
   project_name?: string;
   handleCommit: any;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  members: IMemberData;
+  members: IMemberData | undefined;
 }
 
 const TaskDetail: FC<ITaskDetail> = ({

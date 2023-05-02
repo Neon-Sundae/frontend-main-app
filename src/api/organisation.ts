@@ -1,4 +1,5 @@
 import config from 'config';
+import { IMember } from 'interfaces/organisation';
 import { getAccessToken } from 'utils/authFn';
 import getProfileProjects from 'utils/getProfileProjects';
 import { handleApiErrors } from 'utils/handleApiErrors';
@@ -213,6 +214,24 @@ const fetchOrganisaionOwner = async (organisationId: string | undefined) => {
   return json;
 };
 
+const fetchOrganisationOwnerManager = async (
+  organisationId: string | undefined
+) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/${organisationId}/owner-managers`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  const json: IMember[] = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchAllOrganisations,
   fetchOrganisationDetails,
@@ -226,4 +245,5 @@ export {
   deleteUserInvitation,
   fetchUserProjects,
   fetchOrganisaionOwner,
+  fetchOrganisationOwnerManager,
 };

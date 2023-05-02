@@ -8,11 +8,13 @@ import {
   fetchOrganisaionOwner,
   fetchOrganisationDetails,
   fetchOrganisationMembers,
+  fetchOrganisationOwnerManager,
   fetchUserOrganisations,
   fetchUserProjects,
   rejectOrganisationInvitation,
   transferOwnershipInvitation,
 } from 'api/organisation';
+import { IMember, IMemberData } from 'interfaces/organisation';
 import getRandomString from 'utils/getRandomString';
 
 const useFetchAllOrganisations = () => {
@@ -152,6 +154,38 @@ const useFetchOrganisationOwner = (organisationId: string | undefined) => {
   });
 };
 
+const useFetchOrganisationOwnerManager = (
+  organisationId: string | undefined
+) => {
+  return useQuery({
+    queryKey: ['organisation-owner-manager', organisationId],
+    queryFn: () => fetchOrganisationOwnerManager(organisationId),
+    enabled: organisationId !== undefined,
+    select: (data: IMember[]): IMemberData => {
+      const managers: IMember[] = data.filter(
+        (d: IMember) => d.role === 'Type.Manager'
+      );
+      const owner: IMember[] = data.filter(
+        (d: IMember) => d.role === 'Type.Owner'
+      );
+
+      if (data) {
+        return {
+          managers,
+          owner,
+          all: data,
+        };
+      }
+
+      return {
+        managers: [],
+        owner: [],
+        all: [],
+      };
+    },
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
@@ -166,4 +200,5 @@ export {
   useFetchUserProjects,
   useFetchUserWalletProjects,
   useFetchOrganisationOwner,
+  useFetchOrganisationOwnerManager,
 };
