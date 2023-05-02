@@ -11,18 +11,10 @@ import styles from './index.module.scss';
 
 interface IStep4 {
   setActive: Dispatch<SetStateAction<string>>;
-  setShowOptions: Dispatch<SetStateAction<boolean>>;
-  showOptions: boolean;
-  active: string;
 }
 
-const Step4: FC<IStep4> = ({
-  setActive,
-  setShowOptions,
-  showOptions,
-  active,
-}) => {
-  const [emailFromSessionStorage, setEmail] = useState(
+const Step4: FC<IStep4> = ({ setActive }) => {
+  const [emailFromSessionStorage] = useState(
     getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
   );
   const [showStepFourOptions, setShowStepFourOptions] = useState(false);
@@ -34,7 +26,6 @@ const Step4: FC<IStep4> = ({
   const {
     register,
     control,
-    handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
@@ -82,7 +73,7 @@ const Step4: FC<IStep4> = ({
           />
           {showStepFourOptions && (
             <span className={styles['input-wrapper']}>
-              <form>
+              <form autoComplete="off">
                 <input
                   type="text"
                   placeholder="email address here"

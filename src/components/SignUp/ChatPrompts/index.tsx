@@ -62,23 +62,11 @@ const ChatPrompts = () => {
       )}
       {step === 4 && (
         <>
-          <Step4
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
+          <Step4 setActive={setActive} />
           <PromptFooter active={active === ''} />
         </>
       )}
-      {(step === 5 || step === 13) && (
-        <SignUpOptions
-          setShowOptions={setShowOptions}
-          setActive={setActive}
-          active={active}
-          showOptions={showOptions}
-        />
-      )}
+      {(step === 5 || step === 13) && <SignUpOptions />}
       {step === 6 && (
         <>
           <Step3
@@ -96,12 +84,7 @@ const ChatPrompts = () => {
         step === 10 ||
         step === 11) && (
         <>
-          <Step6
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
+          <Step6 setActive={setActive} />
           <PromptFooter active={active === ''} />
         </>
       )}
@@ -110,7 +93,6 @@ const ChatPrompts = () => {
           <Step7
             setShowOptions={setShowOptions}
             setActive={setActive}
-            active={active}
             showOptions={showOptions}
           />
           <PromptFooter active={active === ''} />
