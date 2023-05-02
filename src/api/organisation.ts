@@ -197,6 +197,22 @@ const fetchUserProjects = async (userId: number | undefined) => {
   return normalizedProjectData;
 };
 
+const fetchOrganisaionOwner = async (organisationId: string | undefined) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/${organisationId}/owner`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  const json = await handleApiErrors(response);
+  return json;
+};
+
 export {
   fetchAllOrganisations,
   fetchOrganisationDetails,
@@ -209,4 +225,5 @@ export {
   deleteOrganisationMember,
   deleteUserInvitation,
   fetchUserProjects,
+  fetchOrganisaionOwner,
 };

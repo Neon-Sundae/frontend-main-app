@@ -6,12 +6,12 @@ import JobsLanding from 'components/Jobs/Landing';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
-import useFetchOrganisationOwner from 'hooks/useFetchOrganisationOwner';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import BlurBlobs from 'components/BlurBlobs';
 import {
   useFetchOrganisationDetail,
+  useFetchOrganisationOwner,
   useFetchUserOrganisations,
 } from 'queries/organisation';
 import { useFetchUserDetailsWrapper } from 'queries/user';
@@ -34,7 +34,7 @@ const Landing: FC = () => {
   );
   const { data: userOrganisations, isLoading: isLoading2 } =
     useFetchUserOrganisations(userData?.user.userId);
-  const { owner } = useFetchOrganisationOwner(params.orgId);
+  const { data: owner } = useFetchOrganisationOwner(params.orgId);
   const { members } = useFetchOrganisationOwnerManager(params.orgId);
 
   const user = useSelector((state: RootState) => state.user.user);

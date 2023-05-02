@@ -5,6 +5,7 @@ import {
   deleteOrganisationMember,
   deleteUserInvitation,
   fetchAllOrganisations,
+  fetchOrganisaionOwner,
   fetchOrganisationDetails,
   fetchOrganisationMembers,
   fetchUserOrganisations,
@@ -143,6 +144,14 @@ const useFetchUserWalletProjects = ({
   });
 };
 
+const useFetchOrganisationOwner = (organisationId: string | undefined) => {
+  return useQuery({
+    queryKey: ['organisation-owner', organisationId],
+    queryFn: () => fetchOrganisaionOwner(organisationId),
+    enabled: organisationId !== undefined,
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
@@ -156,4 +165,5 @@ export {
   useDeleteUserInvitation,
   useFetchUserProjects,
   useFetchUserWalletProjects,
+  useFetchOrganisationOwner,
 };
