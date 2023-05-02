@@ -10,7 +10,7 @@ import Step3 from '../Step3';
 import Step4 from '../Step4';
 import PromptFooter from '../PromptFooter';
 import SignUpOptions from '../SignUpOptions';
-import Step5 from '../Step5';
+
 import Step6 from '../Step6';
 import Step7 from '../Step7';
 

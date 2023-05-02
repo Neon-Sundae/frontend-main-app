@@ -33,7 +33,6 @@ const PromptFooter: FC<IPromptFooter> = ({ active }) => {
         className={styles['prompt-footer-container--back-button']}
         aria-label="back"
         onClick={handleBackFunc}
-        disabled
       >
         <i className={clsx('material-icons', styles['arrow_back-icon'])}>
           arrow_back

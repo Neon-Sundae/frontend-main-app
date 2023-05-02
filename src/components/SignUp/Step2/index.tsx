@@ -1,10 +1,11 @@
 import { TypeAnimation } from 'react-type-animation';
-import { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import styles from './index.module.scss';
 
 interface IStep2 {
@@ -34,6 +35,7 @@ const Step2: FC<IStep2> = ({
   active,
 }) => {
   const name = getSessionStorageItem('name');
+  const [showStepTwoOptions, setShowStepTwoOptions] = useState(false);
 
   useEffect(() => {
     setActive('');
@@ -43,7 +45,9 @@ const Step2: FC<IStep2> = ({
   return (
     <div className={styles['step-2-container']}>
       <div className={styles['chat-prompts-container--chat-message']}>
-        <div className={styles['user-image']} />
+        <div className={styles['user-image']}>
+          <NeonSundaeMainLogo width={70} height={85.75} />
+        </div>
         <div className={styles['user-choices']}>
           <TypeAnimation
             style={{
@@ -54,13 +58,13 @@ const Step2: FC<IStep2> = ({
               `Great ${name}! ✨ \n  What best describes the work that you do?`,
               500,
               () => {
-                setShowOptions(true);
+                setShowStepTwoOptions(true);
               },
             ]}
             cursor={false}
             speed={80}
           />
-          {showOptions && (
+          {showStepTwoOptions && (
             <>
               <span>
                 {choicesBuilder.map((choice, i) => (

@@ -7,6 +7,7 @@ import {
 } from 'utils/sessionStorageFunc';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import styles from './index.module.scss';
 
 interface IStep3 {
@@ -35,6 +36,7 @@ const Step3: FC<IStep3> = ({
 }) => {
   const onboardFlow = getSessionStorageItem('flow');
   const [activeButtons, setActiveButtons] = useState([]);
+  const [showStepThreeOptions, setShowStepThreeOptions] = useState(false);
   const step = useSelector((state: RootState) => state.user.step);
   const dispatch = useDispatch();
   const name = getSessionStorageItem('name');
@@ -59,7 +61,9 @@ const Step3: FC<IStep3> = ({
   return (
     <div className={styles['step3-container']}>
       <div className={styles['chat-prompts-container--chat-message']}>
-        <div className={styles['user-image']} />
+        <div className={styles['user-image']}>
+          <NeonSundaeMainLogo width={70} height={85.75} />
+        </div>
         <div className={styles['user-choices']}>
           <TypeAnimation
             style={{
@@ -69,14 +73,17 @@ const Step3: FC<IStep3> = ({
               `Awesome stuff ${name}, how are you planning to \n use Neon Sundae?`,
               500,
               () => {
-                setShowOptions(true);
+                setShowStepThreeOptions(true);
               },
             ]}
             cursor={false}
             speed={80}
           />
-          <p className={styles['user-choices--text']}>* Choose one or more</p>
-          {showOptions && (
+          {showStepThreeOptions && (
+            <p className={styles['user-choices--text']}>* Choose one or more</p>
+          )}
+
+          {showStepThreeOptions && (
             <>
               <span>
                 {choices.map((choice, i) => {

@@ -4,6 +4,7 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 
 import { useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -59,7 +60,9 @@ const Step7: FC<IStep4> = ({
   return (
     <div className={styles['step7-container']}>
       <div className={styles['chat-prompts-container--chat-message']}>
-        <div className={styles['user-image']} />
+        <div className={styles['user-image']}>
+          <NeonSundaeMainLogo width={70} height={85.75} />
+        </div>
         <div className={styles['user-choices']}>
           <TypeAnimation
             style={{
@@ -96,7 +99,7 @@ const Step7: FC<IStep4> = ({
                   }}
                 />
                 {Object.keys(errors).length > 0 && (
-                  <p>* Your email looks wrong!</p>
+                  <p>* Your email looks so wrong!</p>
                 )}
               </form>
             </span>

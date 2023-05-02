@@ -4,8 +4,8 @@
   color: #fff;
   border-radius: 23px;
   border: none;
-  width: 135px;
-  height: 119px;
+  width: 110px;
+  height: 110px;
   cursor: pointer;
   font-family: var(--font-family-roboto-flex);
   font-size: 15.48px;
@@ -32,7 +32,7 @@
   & > p {
     font-family: var(--font-family-roboto-flex);
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
   }
 }
@@ -42,6 +42,11 @@
 
 .IconButton-active {
   border: 0.7px solid #fff;
+}
+
+.IconButton:hover {
+  transition: transform 125ms;
+  transform: translateY(-4px);
 }
 
 .show-border {

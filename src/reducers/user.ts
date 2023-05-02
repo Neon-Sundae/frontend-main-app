@@ -7,10 +7,12 @@ import {
   UPDATE_USER_DISCORD,
   UPDATE_USER_EMAIL,
   SIGN_UP_STEP,
+  UPDATE_USER_ID,
 } from 'actions/user/types';
 
 interface State {
   user: Partial<IUser> | undefined;
+  userId: number | undefined;
   wallet_address: string;
   wallet_usdc_balance: number;
   discordId: string;
@@ -45,10 +47,15 @@ type Action =
   | {
       type: typeof SIGN_UP_STEP;
       step: number;
+    }
+  | {
+      type: typeof UPDATE_USER_ID;
+      userId: number;
     };
 
 const initialState: State = {
   user: undefined,
+  userId: undefined,
   wallet_address: '',
   wallet_usdc_balance: 0,
   discordId: '',
@@ -103,6 +110,11 @@ const user = (state = initialState, action: Action): State => {
       return {
         ...state,
         step: action.step,
+      };
+    case UPDATE_USER_ID:
+      return {
+        ...state,
+        userId: action.userId,
       };
     default:
       return { ...state };

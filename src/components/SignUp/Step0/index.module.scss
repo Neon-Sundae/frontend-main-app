@@ -64,16 +64,30 @@
       font-weight: 400;
       font-size: 22px;
 
+      animation: fadeIn 2s;
+
+      width: 207px;
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
       & > input {
+        display: inline;
         font-family: var(--font-family-roboto-regular);
         font-size: 22px;
         color: #fff;
         border: 0;
         outline: 0;
         background: transparent;
-        border-bottom: 1px solid #fff;
-        width: 140px;
-        margin: 0 5px;
+        border-bottom: 1px dashed #fff;
+        width: 125px;
+        margin-left: 10px;
+        animation: fadeIn 2s;
       }
 
       .error {
