@@ -1,5 +1,6 @@
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
+import getProfileProjects from 'utils/getProfileProjects';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import { normalizeAllOrganisations } from 'utils/normalizeAllOrganisations';
 
@@ -179,6 +180,23 @@ const deleteUserInvitation = async (memberId: string) => {
   await handleApiErrors(response);
 };
 
+const fetchUserProjects = async (userId: number | undefined) => {
+  const accessToken = getAccessToken();
+
+  const response = await fetch(
+    `${config.ApiBaseUrl}/organisation/user-projects/${userId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  const json = await handleApiErrors(response);
+  const normalizedProjectData = getProfileProjects(json);
+  return normalizedProjectData;
+};
+
 export {
   fetchAllOrganisations,
   fetchOrganisationDetails,
@@ -190,4 +208,5 @@ export {
   transferOwnershipInvitation,
   deleteOrganisationMember,
   deleteUserInvitation,
+  fetchUserProjects,
 };

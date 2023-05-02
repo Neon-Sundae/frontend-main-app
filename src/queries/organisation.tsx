@@ -8,6 +8,7 @@ import {
   fetchOrganisationDetails,
   fetchOrganisationMembers,
   fetchUserOrganisations,
+  fetchUserProjects,
   rejectOrganisationInvitation,
   transferOwnershipInvitation,
 } from 'api/organisation';
@@ -103,6 +104,14 @@ const useDeleteUserInvitation = (organisationId: string | undefined) => {
   });
 };
 
+const useFetchUserProjects = (userId: number | undefined) => {
+  return useQuery({
+    queryKey: ['user-projects', userId],
+    queryFn: () => fetchUserProjects(userId),
+    enabled: userId !== undefined,
+  });
+};
+
 export {
   useFetchAllOrganisations,
   useFetchOrganisationDetail,
@@ -114,4 +123,5 @@ export {
   useTransferOwnership,
   useDeleteOrganisationMember,
   useDeleteUserInvitation,
+  useFetchUserProjects,
 };
