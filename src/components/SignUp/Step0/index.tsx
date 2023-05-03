@@ -33,7 +33,12 @@ const Step0 = () => {
   return (
     <div className={styles['step0-container']}>
       <div className={styles['video-frame']}>
-        <video autoPlay loop className={styles['background-video-container']}>
+        <video
+          autoPlay
+          muted
+          loop
+          className={styles['background-video-container']}
+        >
           <source src={videoSrc} type="video/mp4" />
         </video>
       </div>
