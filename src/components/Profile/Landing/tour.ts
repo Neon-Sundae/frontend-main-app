@@ -36,7 +36,6 @@ const TourProfilePage = () => {
         text: '<span class="material-icons">close</span>',
         classes: 'information-button',
         action() {
-          removeItem('onboardStatus');
           tour.complete();
         },
       },
@@ -59,7 +58,6 @@ const TourProfilePage = () => {
       },
       {
         action() {
-          removeItem('onboardStatus');
           tour.complete();
         },
         text: 'Got it!',

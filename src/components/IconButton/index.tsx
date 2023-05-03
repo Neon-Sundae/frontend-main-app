@@ -43,8 +43,8 @@ IconButton.defaultProps = {
   style: undefined,
   active: false,
   showBorder: true,
-  text: '',
-  icon: <></>,
+  text: undefined,
+  icon: undefined,
 };
 
 export default IconButton;

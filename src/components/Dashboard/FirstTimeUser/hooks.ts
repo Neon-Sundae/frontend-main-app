@@ -12,6 +12,7 @@ import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 interface ICreateProfile {
   name: string;
   email: string;
+  work?: string;
 }
 
 const useCreateProfile = (

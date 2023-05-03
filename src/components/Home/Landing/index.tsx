@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import NavBar from 'components/NavBar';
 import { useQuery } from '@tanstack/react-query';
 import config from 'config';
@@ -6,6 +6,9 @@ import { getAccessToken } from 'utils/authFn';
 import BlurBlobs from 'components/BlurBlobs';
 import clsx from 'clsx';
 import Shepherd from 'shepherd.js';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
+import { getItem, removeItem, setItem } from 'utils/localStorageFn';
 import TourHomePage from './tour';
 import Tasks from '../Tasks';
 import Banner from '../Banner';
@@ -16,12 +19,25 @@ import MyProjects from '../MyProjects';
 import NewJobs from '../NewJobs';
 
 const Landing: FC = () => {
+  const auth = useSelector((state: RootState) => state.auth);
+
   const [checkOnboardStatus, setCheckOnboardStatus] = useState(
-    localStorage.getItem('onboardStatus')
+    getItem('onboardStatus')
   );
   const [showOnboardModal, setShowOnboardModal] = useState(false);
 
+  useEffect(() => {
+    console.log('auth.isFirstTimeUser', auth.isFirstTimeUser);
+    if (checkOnboardStatus === 'done') removeItem('onboardStatus');
+    if (auth.isFirstTimeUser) {
+      setItem('onboardStatus', 'started');
+      setCheckOnboardStatus('started');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkOnboardStatus]);
+
   const { tourStart } = TourHomePage();
+
   const { data } = useQuery(
     ['newTasks'],
     () =>
@@ -33,6 +49,7 @@ const Landing: FC = () => {
       refetchOnWindowFocus: false,
     }
   );
+
   if (checkOnboardStatus && checkOnboardStatus === 'started') {
     if (!Shepherd.activeTour?.isActive()) {
       setTimeout(() => {
@@ -40,13 +57,13 @@ const Landing: FC = () => {
       }, 1000);
     }
   }
+
   if (data) {
     return (
       <>
         <BlurBlobs />
         <div className={styles.background}>
           <NavBar />
-
           <Banner
             showOnboardModal={showOnboardModal}
             setShowOnboardModal={setShowOnboardModal}

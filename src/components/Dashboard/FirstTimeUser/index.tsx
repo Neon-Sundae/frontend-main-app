@@ -6,14 +6,15 @@ import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import { handleLocalStorage } from 'utils/localStorageFn';
-import { useAuth } from '@arcana/auth-react';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
-  const auth = useAuth();
   const [name, setName] = useState(getSessionStorageItem('name') ?? '');
-  const [email, setEmail] = useState(auth?.user?.email ?? '');
+  const [email, setEmail] = useState(
+    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
+  );
+
   const [error, setError] = useState({
     nameError: false,
     emailError: false,
@@ -25,7 +26,11 @@ const FirstTimeUser: FC = () => {
     e.preventDefault();
     handleLocalStorage('started');
     if (validateCreateProfile(name, email, setError)) {
-      createProfile.mutate({ name, email });
+      createProfile.mutate({
+        name,
+        email,
+        work: getSessionStorageItem('work'),
+      });
     }
   };
 
@@ -81,7 +86,7 @@ const FirstTimeUser: FC = () => {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                disabled={!!auth?.user?.email}
+                disabled={!!getSessionStorageItem('email')}
               />
             </label>
             {error.emailError && (
