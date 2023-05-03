@@ -148,8 +148,6 @@ const SignUpForm = () => {
     toast(t => <LoginButton setError={setError} />);
   }
 
-  console.log('apiStep', apiStep);
-
   return (
     <div className={styles['sign-up-form']}>
       <section className={styles['sign-up-form--option-select']}>

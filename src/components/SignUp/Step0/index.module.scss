@@ -8,6 +8,18 @@
   align-items: center;
   margin-top: 2%;
 
+  & > .video-frame {
+    border: none;
+    & > video {
+      border-radius: 18.5481px;
+      object-fit: cover;
+      width: 850px;
+      height: 480px;
+      top: 0;
+      left: 0;
+    }
+  }
+
   & > form {
     & > .submit-button {
       text-align: center;

@@ -26,12 +26,9 @@ import styles from './index.module.scss';
 
 interface IStep6 {
   setActive: Dispatch<SetStateAction<string>>;
-  setShowOptions: Dispatch<SetStateAction<boolean>>;
-  showOptions: boolean;
-  active: string;
 }
 
-const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
+const Step6: FC<IStep6> = ({ setActive }) => {
   const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
 
@@ -96,8 +93,6 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
   if (selectedOption?.label) {
     setSessionStorageItem('organisationVertical', selectedOption.label);
   }
-
-  console.log('step', step);
 
   return (
     <>
