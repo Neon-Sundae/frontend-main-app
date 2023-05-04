@@ -33,19 +33,14 @@ const Step0 = () => {
   return (
     <div className={styles['step0-container']}>
       <div className={styles['video-frame']}>
-        <video
-          autoPlay
-          muted
-          loop
-          className={styles['background-video-container']}
-        >
+        <video muted className={styles['background-video-container']} controls>
           <source src={videoSrc} type="video/mp4" />
         </video>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
-            Hey 👋
+            Hey
             {!showInput && (
               <TypeAnimation
                 style={{
@@ -54,11 +49,11 @@ const Step0 = () => {
                   width: '180px',
                 }}
                 sequence={[
-                  ' Priya',
+                  ' Priya 👋',
                   1000,
-                  ' Michelle',
+                  ' Michelle 👋',
                   1000,
-                  ' Natalia',
+                  ' Natalia 👋',
                   1000,
                   () => {
                     setShowInput(true); // Place optional callbacks anywhere in the array
