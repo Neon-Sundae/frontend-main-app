@@ -39,7 +39,7 @@ const Step0 = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
-            👋 Hey
+            Hey
             <input
               type="text"
               defaultValue={name}
@@ -48,10 +48,11 @@ const Step0 = () => {
               className={errors.name ? styles.error : ''}
               // eslint-disable-next-line jsx-a11y/no-autofocus
             />
-            !
+            &nbsp;! 👋
           </h2>
           {errors.name && <p>* Your name is required</p>}
         </div>
+        <h3>Welcome to Neon Sundae</h3>
         <input
           type="submit"
           value="Get Started&nbsp;&nbsp;🎉"
