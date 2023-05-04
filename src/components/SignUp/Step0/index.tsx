@@ -55,8 +55,10 @@ const Step0 = () => {
                   1000,
                   ' Natalia 👋',
                   1000,
+                  ' your name',
+                  1000,
                   () => {
-                    setShowInput(true); // Place optional callbacks anywhere in the array
+                    setShowInput(true);
                   },
                 ]}
                 cursor
@@ -67,9 +69,11 @@ const Step0 = () => {
               <input
                 type="text"
                 defaultValue={name}
-                placeholder="name "
+                placeholder="your name"
                 {...register('name', { required: true })}
                 className={errors.name ? styles.error : ''}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
               />
             )}
           </h2>
