@@ -78,8 +78,6 @@
 
       animation: fadeIn 2s;
 
-      width: 207px;
-
       @keyframes fadeIn {
         0% {
           opacity: 0;
@@ -89,17 +87,22 @@
         }
       }
       & > input {
-        display: inline;
+        display: inline-block;
+        width: 110px;
         font-family: var(--font-family-roboto-regular);
         font-size: 22px;
         color: #fff;
-        border: 0;
+        border: none;
+        border-bottom: 2px solid #fff;
+        border-bottom-style: dashed;
         outline: 0;
         background: transparent;
-        // border-bottom: 1px dashed #fff;
-        width: 125px;
         margin-left: 10px;
         animation: fadeIn 1s;
+      }
+
+      & > input:focus {
+        background: #a799ff;
       }
 
       .error {

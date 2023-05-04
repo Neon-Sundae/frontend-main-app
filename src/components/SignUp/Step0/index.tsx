@@ -8,7 +8,7 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
-import { TypeAnimation } from 'react-type-animation';
+
 import { useState } from 'react';
 import videoSrc from 'assets/videos/intro.mp4';
 import styles from './index.module.scss';
@@ -16,7 +16,6 @@ import styles from './index.module.scss';
 const Step0 = () => {
   const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
-  const [showInput, setShowInput] = useState(false);
 
   const dispatch = useDispatch();
   const {
@@ -40,42 +39,16 @@ const Step0 = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
-            Hey
-            {!showInput && (
-              <TypeAnimation
-                style={{
-                  display: 'inline',
-                  cursor: 'pointer',
-                  width: '180px',
-                }}
-                sequence={[
-                  ' Priya 👋',
-                  1000,
-                  ' Michelle 👋',
-                  1000,
-                  ' Natalia 👋',
-                  1000,
-                  ' your name',
-                  1000,
-                  () => {
-                    setShowInput(true);
-                  },
-                ]}
-                cursor
-                speed={80}
-              />
-            )}
-            {showInput && (
-              <input
-                type="text"
-                defaultValue={name}
-                placeholder="your name"
-                {...register('name', { required: true })}
-                className={errors.name ? styles.error : ''}
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
-              />
-            )}
+            👋 Hey
+            <input
+              type="text"
+              defaultValue={name}
+              placeholder="Your name"
+              {...register('name', { required: true })}
+              className={errors.name ? styles.error : ''}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+            />
+            !
           </h2>
           {errors.name && <p>* Your name is required</p>}
         </div>
@@ -83,7 +56,7 @@ const Step0 = () => {
           type="submit"
           value="Get Started&nbsp;&nbsp;🎉"
           className={styles['submit-button']}
-          disabled={!!errors.name || !showInput}
+          disabled={!!errors.name}
         />
       </form>
     </div>
