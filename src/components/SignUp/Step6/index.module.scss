@@ -106,6 +106,7 @@
                 color: #fff;
                 font-size: 16px;
                 font-weight: 200;
+                opacity: 0.5;
               }
 
               & > p {
@@ -217,7 +218,8 @@
 
     .input-field::placeholder {
       font-family: var(--font-family-roboto-flex);
-      font-weight: 300;
+      font-weight: 200;
+      opacity: 0.5;
       font-size: 16px;
       text-align: center;
       color: #ffffff;
