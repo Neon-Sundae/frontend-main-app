@@ -67,7 +67,7 @@ const Step0 = () => {
               <input
                 type="text"
                 defaultValue={name}
-                placeholder="Name "
+                placeholder="name "
                 {...register('name', { required: true })}
                 className={errors.name ? styles.error : ''}
               />
