@@ -13,8 +13,8 @@
     & > video {
       border-radius: 18.5481px;
       object-fit: cover;
-      width: 850px;
-      height: 480px;
+      width: 711.1px;
+      height: 400px;
       top: 0;
       left: 0;
     }
@@ -51,7 +51,7 @@
       font-weight: 400;
       font-size: 18px;
       color: #fff;
-      margin-top: 10px;
+      margin-top: 7px;
     }
 
     & > .submit-button:disabled {
@@ -59,7 +59,13 @@
       cursor: default;
     }
   }
-
+  h3 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 300;
+    font-size: 18px;
+  }
   & > form > div {
     min-height: 60px;
 
@@ -69,7 +75,9 @@
       font-family: var(--font-family-roboto-flex);
       font-weight: 300;
       font-size: 12px;
+      text-align: left;
     }
+
     & > h2 {
       margin-top: 40px;
       font-family: var(--font-family-roboto-regular);
@@ -77,8 +85,6 @@
       font-size: 22px;
 
       animation: fadeIn 2s;
-
-      width: 207px;
 
       @keyframes fadeIn {
         0% {
@@ -88,18 +94,24 @@
           opacity: 1;
         }
       }
+
       & > input {
-        display: inline;
+        display: inline-block;
+        width: 110px;
         font-family: var(--font-family-roboto-regular);
         font-size: 22px;
         color: #fff;
-        border: 0;
+        border: none;
+        border-bottom: 2px solid #fff;
+        border-bottom-style: dashed;
         outline: 0;
         background: transparent;
-        border-bottom: 1px dashed #fff;
-        width: 125px;
         margin-left: 10px;
-        animation: fadeIn 2s;
+        animation: fadeIn 1s;
+      }
+
+      & > input:focus {
+        background: #a799ff;
       }
 
       .error {
@@ -109,6 +121,7 @@
       & > input::placeholder {
         font-family: var(--font-family-roboto-flex);
         color: #fff;
+        font-weight: 200;
         opacity: 0.5;
       }
     }
