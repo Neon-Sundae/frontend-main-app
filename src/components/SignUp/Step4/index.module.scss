@@ -1,0 +1,125 @@
+.step4-container {
+  .chat-prompts-container {
+    &--chat-message {
+      width: 79%;
+      margin: auto;
+      display: flex;
+      margin-top: 100px;
+
+      & > .user-image {
+        background: #000;
+        border-radius: 50%;
+        width: 108px;
+        height: 108px;
+        margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      & > .user-choices {
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 18.5481px;
+        padding: 25px 50px;
+
+        width: 647px;
+
+        & > p {
+          font-family: var(--font-family-roboto-regular);
+          font-weight: 400;
+          font-size: 1.25rem;
+        }
+
+        p,
+        &--text {
+          font-family: var(--font-family-roboto-regular);
+          font-style: normal;
+          font-size: 16px;
+        }
+
+        & > span {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          width: 560px;
+          min-height: 83px;
+          font-family: var(--font-family-roboto-regular);
+          font-weight: 400;
+          font-size: 1.25rem;
+        }
+
+        & > .input-wrapper {
+          animation: messageShow;
+          animation-duration: 1s;
+
+          & > form {
+            & > input {
+              width: 400px;
+              text-align: center;
+              border-width: 1px;
+              color: #fff;
+              border-radius: 15px;
+              border: 0.7px solid #fff;
+              padding: 10px 15px;
+              height: 50px;
+              cursor: pointer;
+              font-family: var(--font-family-roboto-medium);
+              font-size: 16px;
+              font-weight: 400;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: linear-gradient(
+                126.59deg,
+                rgba(255, 198, 253, 0.133) 12.11%,
+                rgba(255, 255, 255, 0.07) 73.08%
+              );
+              box-shadow: 0px 4px 24px -1px rgb(0 0 0 / 20%);
+
+              backdrop-filter: blur(40px);
+            }
+            input:focus {
+              outline: none;
+            }
+
+            & > input::placeholder {
+              font-family: var(--font-family-roboto-flex);
+              color: #fff;
+              font-size: 16px;
+              font-weight: 200;
+              opacity: 0.5;
+            }
+
+            & > input::focus {
+              outline: none;
+            }
+
+            & > p {
+              font-family: var(--font-family-roboto-flex);
+
+              font-weight: 300;
+              font-size: 12px;
+
+              color: #ff8383;
+              margin-top: 10px;
+            }
+          }
+        }
+
+        @keyframes messageShow {
+          0% {
+            transform: translateY(32px);
+            opacity: 0;
+            visibility: hidden;
+          }
+
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}

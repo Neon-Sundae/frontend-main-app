@@ -36,7 +36,7 @@ const WorkHistory: FC = () => {
 
   return (
     <div className={styles['work-history-container']}>
-      {workplaces.map(d =>
+      {workplaces?.map(d =>
         isEditable ? (
           <WorkplaceCardEdit
             key={d.workplaceId}

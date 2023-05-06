@@ -1,0 +1,54 @@
+[
+  {
+    "label": "Marketing",
+    "value": "Marketing"
+  },
+  {
+    "label": "Agriculture",
+    "value": "Agriculture"
+  },
+  {
+    "label": "Computer and technology",
+    "value": "Computer and technology"
+  },
+  {
+    "label": "Education",
+    "value": "Education"
+  },
+  {
+    "label": "Energy",
+    "value": "Energy"
+  },
+  {
+    "label": "Energy",
+    "value": "Energy"
+  },
+  {
+    "label": "Entertainment",
+    "value": "Entertainment"
+  },
+  {
+    "label": "Fashion",
+    "value": "Fashion"
+  },
+  {
+    "label": "Finance and economic",
+    "value": "Finance and economic"
+  },
+  {
+    "label": "Food and beverage",
+    "value": "Food and beverage"
+  },
+  {
+    "label": "Health care",
+    "value": "Health care"
+  },
+  {
+    "label": "Transportation",
+    "value": "Transportation"
+  },
+  {
+    "label": "Other",
+    "value": "Other"
+  }
+]

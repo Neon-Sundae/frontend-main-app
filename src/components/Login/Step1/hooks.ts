@@ -9,7 +9,7 @@ import {
   signArcanaMessage,
 } from 'utils/ethereumFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
-import { setAccessToken } from 'utils/authFn';
+import { getAccessToken, setAccessToken } from 'utils/authFn';
 import { updateUser } from 'actions/user';
 import { RootState } from 'reducers';
 import {
@@ -23,6 +23,8 @@ import { useAuth } from '@arcana/auth-react';
 import { useNavigate } from 'react-router-dom';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import toast from 'react-hot-toast';
+import { useMutation } from '@tanstack/react-query';
+import { handleError } from 'utils/handleUnAuthorization';
 
 interface IGenerateNonce {
   setError: Dispatch<SetStateAction<string>>;
@@ -33,6 +35,7 @@ const useMetamaskLogin = (
 ) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const generateNonce = async ({ setError }: IGenerateNonce) => {
     const ac = new AbortController();
     const { signal } = ac;
@@ -98,7 +101,8 @@ const useMetamaskLogin = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -113,6 +117,51 @@ const useMetamaskLogin = (
   };
 
   return generateNonce;
+};
+
+interface IUserOnboardData {
+  data: any;
+}
+
+const useUserOnboardData = () => {
+  const accessToken = getAccessToken();
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const navigate = useNavigate();
+  const onboardDataSave = useMutation(
+    async (data: IUserOnboardData) => {
+      console.log('data', data);
+      const objectives = data.data[0].map(function (item: any) {
+        return item.choice;
+      });
+      const response = await fetch(
+        `${config.ApiBaseUrl}/user/signup-objective`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: user?.userId,
+            objectives,
+          }),
+        }
+      );
+      await handleApiErrors(response);
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: () => {
+        navigate('/dashboard');
+      },
+    }
+  );
+
+  return onboardDataSave;
 };
 
 const useMetamaskSignup = (
@@ -182,10 +231,12 @@ const useMetamaskSignup = (
           const json2: any = await handleApiErrors(response2);
 
           setAccessToken(json2.accessToken);
+
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -222,9 +273,7 @@ const useWalletConnectSignup = (
       const accounts = await web3Provider.listAccounts();
 
       const { chainId } = await web3Provider.getNetwork();
-      console.log(chainId);
       await walletConnectProvider.disconnect();
-      console.log(accounts);
 
       // TODO - Use testnet and mainnet chain ID check
       if (chainId !== 137) {
@@ -283,7 +332,8 @@ const useWalletConnectSignup = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -324,7 +374,6 @@ const useWalletConnectLogin = (
       const { chainId } = await web3Provider.getNetwork();
       console.log(chainId);
       await walletConnectProvider.disconnect();
-      console.log(accounts);
 
       // TODO - Use testnet and mainnet chain ID check
       if (chainId !== 137) {
@@ -383,7 +432,8 @@ const useWalletConnectLogin = (
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
           dispatch(updateCurrentStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (e: any) {
@@ -444,7 +494,6 @@ const useUnstoppableDomains = (
             }),
           }
         );
-        console.log('response.statusText', response.statusText);
         setError(response.statusText);
         const json: any = await handleApiErrors(response);
         dispatch(updateUser(json.user));
@@ -452,7 +501,7 @@ const useUnstoppableDomains = (
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
-        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('organisationName')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -494,7 +543,7 @@ const useUnstoppableDomains = (
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
         dispatch(updateCurrentStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
-        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+        if (!getSessionStorageItem('organisationName')) navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -583,7 +632,8 @@ const useArcanaWallet = () => {
 
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+          if (!getSessionStorageItem('organisationName'))
+            navigate('/dashboard');
         }
       }
     } catch (error) {
@@ -669,4 +719,5 @@ export {
   useUnstoppableDomains,
   useArcanaWallet,
   useWalletConnectSignup,
+  useUserOnboardData,
 };

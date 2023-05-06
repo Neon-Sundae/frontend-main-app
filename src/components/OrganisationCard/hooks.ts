@@ -9,7 +9,7 @@ const useFetchUserOrgs = () => {
   const { profileId } = useParams();
   const accessToken = getAccessToken();
 
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     ['userOrgs'],
     async ({ signal }) => {
       const response = await fetch(
@@ -36,7 +36,7 @@ const useFetchUserOrgs = () => {
       },
     }
   );
-  return { data };
+  return { data, refetch };
 };
 
 export default useFetchUserOrgs;

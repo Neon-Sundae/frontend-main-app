@@ -1,0 +1,105 @@
+.sign-up-options-container {
+  .chat-prompts-container {
+    &--chat-message {
+      width: 79%;
+      margin: auto;
+      display: flex;
+      margin-top: 100px;
+
+      & > .user-image {
+        background: #000;
+        border-radius: 50%;
+        width: 108px;
+        height: 108px;
+        margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      & > .user-choices {
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 18.5481px;
+        padding: 25px 50px;
+        width: 555px;
+        & > p {
+          font-family: var(--font-family-roboto-regular);
+          font-weight: 400;
+          font-size: 1.25rem;
+        }
+
+        & > span {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-evenly;
+          min-height: 70px;
+          font-family: var(--font-family-roboto-regular);
+          font-weight: 400;
+          font-size: 1.2rem;
+
+          & > .choice-option {
+            color: #fff;
+            width: 270px;
+            height: 74px;
+            background: linear-gradient(
+              58.93deg,
+              rgba(52, 52, 52, 0.8) 4.08%,
+              rgba(52, 52, 52, 0.408) 102.71%
+            );
+            border-radius: 24.4032px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: var(--font-family-inter-regular);
+            font-style: normal;
+            font-weight: 500;
+            font-size: 21.8212px;
+            will-change: transform;
+            transition: transform 450ms;
+            animation: messageShow;
+            animation-duration: 1s;
+            border: 1.64px solid;
+            margin-bottom: 15px;
+            border-image-source: linear-gradient(0deg, #ffffff, #ffffff),
+              linear-gradient(0deg, #606060, #606060);
+
+            @keyframes messageShow {
+              0% {
+                transform: translateY(32px);
+                opacity: 0;
+                visibility: hidden;
+              }
+
+              100% {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+              }
+            }
+          }
+
+          & > .choice-option:hover,
+          .active {
+            border: 0.94px solid #555555;
+            transition: transform 125ms;
+            transform: translateY(-4px);
+            background: linear-gradient(
+                94.63deg,
+                rgba(255, 255, 255, 0.16) 4.94%,
+                rgba(255, 255, 255, 0.04) 93.94%
+              ),
+              linear-gradient(
+                89.58deg,
+                #826af7 2.95%,
+                #db5dde 56.19%,
+                #e87aaf 103.17%
+              );
+            box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+          }
+        }
+      }
+    }
+  }
+}

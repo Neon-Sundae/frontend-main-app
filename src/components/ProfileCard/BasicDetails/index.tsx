@@ -16,6 +16,7 @@ import SocialShareModal from '../SocialShare';
 const BasicDetails: FC = () => {
   const { profileId } = useParams();
   const profile = useSelector((state: RootState) => state.profile.profile);
+
   const user = useSelector((state: RootState) => state.user.user);
   const [shareOpen, setShareOpen] = useState(false);
 

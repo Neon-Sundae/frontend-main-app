@@ -1,28 +1,4 @@
 .sign-up-container {
-  height: 100vh;
   display: flex;
-  z-index: 1;
-  position: relative;
-  &--content {
-    color: #fff;
-    width: 80%;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-    height: 750px;
-  }
-
-  &--logo {
-    width: 154px;
-    height: 102.34;
-  }
-
-  &--heading-text {
-    margin: 35px 5px;
-    font-family: var(--font-family-roboto-regular);
-    font-weight: 400;
-    font-size: 18px;
-  }
+  height: 100vh;
 }

@@ -1,0 +1,29 @@
+.background-gradient {
+  width: 100%;
+  height: 100%;
+  filter: blur(100px);
+  overflow: hidden;
+  position: fixed;
+
+  .window-blob-purple {
+    position: absolute;
+    width: 500px;
+    height: 300px;
+    border-radius: 75%;
+    background: #a799ff;
+    bottom: -10%;
+    right: 30%;
+    opacity: 0.5;
+  }
+
+  .window-blob-pink {
+    position: absolute;
+    width: 500px;
+    height: 300px;
+    background: #f799ff;
+    top: 50%;
+    right: 5%;
+    animation-delay: 1s;
+    opacity: 0.4;
+  }
+}
