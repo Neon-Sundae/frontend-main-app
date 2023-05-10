@@ -35,7 +35,7 @@ const Step2: FC = () => {
         </span>
       </div>
       <p className={styles['success-text']}>
-        Authentication is succesful, wait for a few seconds to automatically
+        Authentication is successful, wait for a few seconds to automatically
         open dashboard.
       </p>
     </>

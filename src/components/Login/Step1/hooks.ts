@@ -1,4 +1,4 @@
-import { updateCurrentStep, updateFirstTimeUser } from 'actions/auth';
+import { updateLoginStep, updateFirstTimeUser } from 'actions/auth';
 import config from 'config';
 import { Dispatch, SetStateAction } from 'react';
 import { providers } from 'ethers';
@@ -99,7 +99,7 @@ const useMetamaskLogin = (
 
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          dispatch(updateCurrentStep(2));
+          dispatch(updateLoginStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
           if (!getSessionStorageItem('organisationName'))
             navigate('/dashboard');
@@ -233,7 +233,7 @@ const useMetamaskSignup = (
           setAccessToken(json2.accessToken);
 
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          dispatch(updateCurrentStep(2));
+          dispatch(updateLoginStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
           if (!getSessionStorageItem('organisationName'))
             navigate('/dashboard');
@@ -330,7 +330,7 @@ const useWalletConnectSignup = (
           dispatch(updateUser(json2.user));
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          dispatch(updateCurrentStep(2));
+          dispatch(updateLoginStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
           if (!getSessionStorageItem('organisationName'))
             navigate('/dashboard');
@@ -430,7 +430,7 @@ const useWalletConnectLogin = (
           dispatch(updateUser(json2.user));
           setAccessToken(json2.accessToken);
           dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-          dispatch(updateCurrentStep(2));
+          dispatch(updateLoginStep(2));
           if (setNewUserId) setNewUserId(json.user.userId);
           if (!getSessionStorageItem('organisationName'))
             navigate('/dashboard');
@@ -499,7 +499,7 @@ const useUnstoppableDomains = (
         dispatch(updateUser(json.user));
         setAccessToken(json.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-        dispatch(updateCurrentStep(2));
+        dispatch(updateLoginStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
         if (!getSessionStorageItem('organisationName')) navigate('/dashboard');
       }
@@ -541,7 +541,7 @@ const useUnstoppableDomains = (
         dispatch(updateUser(json.user));
         setAccessToken(json.accessToken);
         dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-        dispatch(updateCurrentStep(2));
+        dispatch(updateLoginStep(2));
         if (setNewUserId) setNewUserId(json.user.userId);
         if (!getSessionStorageItem('organisationName')) navigate('/dashboard');
       }

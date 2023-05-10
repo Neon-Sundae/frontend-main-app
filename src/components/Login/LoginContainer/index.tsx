@@ -12,7 +12,8 @@ import styles from './index.module.scss';
 
 const LoginContainer: FC = () => {
   const navigate = useNavigate();
-  const currentStep = useSelector((state: RootState) => state.auth.currentStep);
+  const loginStep = useSelector((state: RootState) => state.auth.loginStep);
+
   useEffect(() => {
     const accessToken = getAccessToken();
 
@@ -23,7 +24,7 @@ const LoginContainer: FC = () => {
   }, []);
 
   const renderSteps = () => {
-    switch (currentStep) {
+    switch (loginStep) {
       case 1:
         return <Step1 />;
       case 2:

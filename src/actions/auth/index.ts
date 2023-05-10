@@ -1,12 +1,12 @@
 import {
-  UPDATE_CURRENT_STEP,
+  UPDATE_LOGIN_STEP,
   UPDATE_FIRST_TIME_USER,
   UPDATE_CURRENT_SIGN_UP_STEP,
 } from './types';
 
-export const updateCurrentStep = (currentStep: number) => ({
-  type: UPDATE_CURRENT_STEP,
-  currentStep,
+export const updateLoginStep = (loginStep: number) => ({
+  type: UPDATE_LOGIN_STEP,
+  loginStep,
 });
 
 export const updateFirstTimeUser = (isFirstTimeUser: boolean) => ({
