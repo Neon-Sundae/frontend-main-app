@@ -65,18 +65,16 @@ const Step2: FC<IStep2> = ({
             speed={80}
           />
           {showStepTwoOptions && (
-            <>
-              <span>
-                {choicesBuilder.map((choice, i) => (
-                  <ChoiceButton
-                    id={(i + 1).toString()}
-                    setActive={setActive}
-                    active={active}
-                    text={choice}
-                  />
-                ))}
-              </span>
-            </>
+            <span>
+              {choicesBuilder.map(choice => (
+                <ChoiceButton
+                  key={choice}
+                  setActive={setActive}
+                  active={active}
+                  text={choice}
+                />
+              ))}
+            </span>
           )}
         </div>
       </div>
@@ -85,25 +83,23 @@ const Step2: FC<IStep2> = ({
 };
 
 interface IChoiceButton {
-  id: string;
   setActive: Dispatch<SetStateAction<string>>;
   active: string;
   text: string;
 }
 
-const ChoiceButton: FC<IChoiceButton> = ({ id, setActive, active, text }) => {
-  const handleChoiceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const button = event.target as HTMLInputElement;
-    setSessionStorageItem('work', button.innerText);
-    setActive(button.id);
+const ChoiceButton: FC<IChoiceButton> = ({ setActive, active, text }) => {
+  const handleChoiceClick = () => {
+    setSessionStorageItem('work', text);
+    setActive(text);
   };
 
   return (
     <button
-      id={id}
+      id={text}
       className={clsx(
         styles['choice-option'],
-        active === id ? styles.active : undefined
+        active === text ? styles.active : undefined
       )}
       onClick={handleChoiceClick}
     >

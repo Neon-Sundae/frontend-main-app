@@ -1,16 +1,13 @@
 import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import DiscordIcon from 'assets/illustrations/icons/login/discord.png';
-import GoogleIcon from 'assets/illustrations/icons/login/google.png';
 import clsx from 'clsx';
-import { ProgressBar } from 'react-loader-spinner';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
 
 const ArcanaAuthLogin = () => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const auth = useAuth();
 
   const { provider } = useProvider();
@@ -35,11 +32,12 @@ const ArcanaAuthLogin = () => {
 
   const linkLogin = async (formData: any) => {
     const { email } = formData;
-    await auth.loginWithLink(email);
-  };
 
-  const socialLogin = async (option: string) => {
-    await auth.loginWithSocial(option);
+    trackAmplitudeEvent('onb_loginmethod_click', {
+      loginmethod: 'email',
+    });
+
+    await auth.loginWithLink(email);
   };
 
   return (

@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 import {
   useUnstoppableDomains,
@@ -25,6 +26,9 @@ const Step1: FC = () => {
   const walletConnectGenerateNonce = useWalletConnectLogin();
 
   const loginWithWalletConnect = async () => {
+    trackAmplitudeEvent('onb_loginmethod_click', {
+      loginmethod: 'walletconnect',
+    });
     walletConnectGenerateNonce({ setError });
   };
   const loginWithMetaMask = () => {
@@ -32,11 +36,17 @@ const Step1: FC = () => {
   };
   const handleMetamaskLogin = () => {
     if (typeof window.ethereum !== 'undefined') {
+      trackAmplitudeEvent('onb_loginmethod_click', {
+        loginmethod: 'metamask',
+      });
       loginWithMetaMask();
     }
   };
 
   const loginWithUd = () => {
+    trackAmplitudeEvent('onb_loginmethod_click', {
+      loginmethod: 'unstoppable-domains',
+    });
     unstoppableDomains.login(setError);
   };
 

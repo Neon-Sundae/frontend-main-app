@@ -89,6 +89,8 @@ const Step3: FC<IStep3> = ({
                 {choices.map((choice, i) => {
                   return (
                     <ChoiceButton
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={i}
                       id={(i + 1).toString()}
                       setActive={setActive}
                       active={

@@ -9,6 +9,7 @@ import {
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
 import videoSrc from 'assets/videos/intro.mp4';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 
 const Step0 = () => {
@@ -23,6 +24,8 @@ const Step0 = () => {
   } = useForm();
 
   const onSubmit = (data: any) => {
+    trackAmplitudeEvent('onb_firstname_enter');
+
     setSessionStorageItem('name', data.name);
     if (!errors.name) dispatch(setSignUpStep(step + 1));
   };

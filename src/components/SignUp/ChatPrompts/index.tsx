@@ -19,6 +19,99 @@ const ChatPrompts = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [active, setActive] = useState('');
 
+  const renderSteps = () => {
+    switch (step) {
+      case 0:
+        return <Step0 />;
+      case 1: {
+        return (
+          <>
+            <Step1
+              setShowOptions={setShowOptions}
+              setActive={setActive}
+              active={active}
+              showOptions={showOptions}
+            />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      }
+      case 2: {
+        return (
+          <>
+            <Step2
+              setShowOptions={setShowOptions}
+              setActive={setActive}
+              active={active}
+              showOptions={showOptions}
+            />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      }
+      case 3:
+        return (
+          <>
+            <Step3
+              setShowOptions={setShowOptions}
+              setActive={setActive}
+              active={active}
+              showOptions={showOptions}
+            />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      case 4: {
+        return (
+          <>
+            <Step4 setActive={setActive} />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      }
+      case 5:
+      case 13:
+        return <SignUpOptions />;
+      case 6: {
+        return (
+          <>
+            <Step3
+              setShowOptions={setShowOptions}
+              setActive={setActive}
+              active={active}
+              showOptions={showOptions}
+            />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      }
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+      case 11:
+        return (
+          <>
+            <Step6 setActive={setActive} />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      case 12:
+        return (
+          <>
+            <Step7
+              setShowOptions={setShowOptions}
+              setActive={setActive}
+              showOptions={showOptions}
+            />
+            <PromptFooter active={active === ''} />
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       className={clsx(
@@ -26,7 +119,8 @@ const ChatPrompts = () => {
         step === 0 && styles.auto
       )}
     >
-      {step === 0 && <Step0 />}
+      {renderSteps()}
+      {/* {step === 0 && <Step0 />}
       {step === 1 && (
         <>
           <Step1
@@ -97,7 +191,7 @@ const ChatPrompts = () => {
           />
           <PromptFooter active={active === ''} />
         </>
-      )}
+      )} */}
     </div>
   );
 };

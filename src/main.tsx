@@ -8,9 +8,12 @@ import 'styles/main.scss';
 import { ProvideAuth } from '@arcana/auth-react';
 import App from './App';
 import { provider } from './config';
+import { initAmplitude } from './config/amplitude';
 
 const store = createStore(reducer);
 const queryClient = new QueryClient();
+
+initAmplitude();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ProvideAuth provider={provider}>
