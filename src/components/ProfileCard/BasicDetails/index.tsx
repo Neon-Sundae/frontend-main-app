@@ -9,22 +9,28 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import { ReactComponent as ShareIcon } from 'assets/illustrations/icons/share.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import clickEventBeacon from 'utils/analyticsFns/clickEventBeacon';
+import { useFetchProfileDetailsWrapper } from 'queries/profile';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import styles from './index.module.scss';
 import useProfileManage from './hooks';
 import SocialShareModal from '../SocialShare';
 
 const BasicDetails: FC = () => {
-  const { profileId } = useParams();
-  const profile = useSelector((state: RootState) => state.profile.profile);
-
-  const user = useSelector((state: RootState) => state.user.user);
+  const params = useParams();
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsWrapper(params.profileId);
   const [shareOpen, setShareOpen] = useState(false);
 
+  // * This condition's working to differentiate between the logged in user and the profile user
+  const isLoggedInUser = userData?.user.userId === profileData?.userId;
+
   const showEditIcon = () => {
-    if (profileId && user) {
-      if (user.userId === parseInt(profileId, 10)) {
-        return <EditIconContainer id="edit-icon" />;
-      }
+    if (!isLoggedInUser) {
+      return null;
+    }
+
+    if (profileData?.profileId && userData) {
+      return <EditIconContainer id="edit-icon" />;
     }
 
     return null;
@@ -46,11 +52,18 @@ const BasicDetails: FC = () => {
         height={20}
       />
       {shareOpen ? <SocialShareModal handleClose={handleClose} /> : null}
-      <ProfileImage picture={profile?.picture} />
-      <NameDesignation title={profile?.title} user={profile?.user} />
+      <ProfileImage
+        picture={profileData?.picture}
+        username={profileData?.user?.name}
+      />
+      <NameDesignation title={profileData?.title} user={profileData?.user} />
       <ExperiencePoints />
-      <ProfileAddressChain setShare={val => setShareOpen(val)} />
-      <ProfileBio description={profile?.description} />
+      <ProfileAddressChain
+        setShare={val => setShareOpen(val)}
+        profileSmartContractId={profileData?.profileSmartContractId}
+        title={profileData?.title}
+      />
+      <ProfileBio description={profileData?.description} />
       {showEditIcon()}
     </>
   );
@@ -78,18 +91,17 @@ const EditIconContainer: FC<IEditContainer> = ({ id }) => {
 
 interface ProfileImageProps {
   picture?: string | null;
+  username: string | null | undefined;
 }
 
-const ProfileImage: FC<ProfileImageProps> = ({ picture }) => {
-  const profile = useSelector((state: RootState) => state.profile.profile);
+const ProfileImage: FC<ProfileImageProps> = ({ picture, username }) => {
   return (
     <div className={styles['profile-image']}>
       <div className={styles['image-wrapper']}>
         <img
           alt="user"
           src={
-            picture ||
-            getDefaultAvatarSrc(profile?.user?.name?.charAt(0).toUpperCase())
+            picture || getDefaultAvatarSrc(username?.charAt(0).toUpperCase())
           }
         />
       </div>
@@ -132,12 +144,16 @@ const ExperiencePoints = () => {
 };
 
 interface IProfileAddressChain {
+  profileSmartContractId: string | null | undefined;
+  title: string | null | undefined;
   setShare: Dispatch<SetStateAction<boolean>>;
-  // handleOpen: () => void;
 }
 
-const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
-  const profile = useSelector((state: RootState) => state.profile.profile);
+const ProfileAddressChain: FC<IProfileAddressChain> = ({
+  profileSmartContractId,
+  title,
+  setShare,
+}) => {
   const name = useSelector((state: RootState) => state.user.user?.name);
   const walletId = useSelector((state: RootState) => state.user.user?.walletId);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -150,7 +166,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
   const { createProfile, deploying } = useProfileManage();
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(profile?.profileSmartContractId ?? '');
+    navigator.clipboard.writeText(profileSmartContractId || '');
     toast.success('Copied!');
   };
 
@@ -160,7 +176,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
 
   const handleMintOnChain = () => {
     clickEventBeacon(walletId);
-    createProfile(name, profile?.title || 'Product Designer', walletId);
+    createProfile(name, title || 'Product Designer', walletId);
   };
 
   const renderByDeployingState = () => {
@@ -194,10 +210,10 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
             className={styles['profile-address-chain']}
             id="profile-address-chain"
           >
-            {profile?.profileSmartContractId ===
+            {profileSmartContractId ===
               '0x0000000000000000000000000000000000000000' ||
-            profile?.profileSmartContractId === null ||
-            profile?.profileSmartContractId === '' ? (
+            profileSmartContractId === null ||
+            profileSmartContractId === '' ? (
               <div
                 className={styles['address-container']}
                 id="profile-address-container"
@@ -214,11 +230,11 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
               <div className={styles['address-container']}>
                 <FoundersLabIcon width={28} height={28} />
                 <p className={styles['profile-address']}>
-                  {profile?.profileSmartContractId?.slice(0, 6)}...
-                  {profile?.profileSmartContractId?.slice(
+                  {profileSmartContractId?.slice(0, 6)}...
+                  {profileSmartContractId?.slice(
                     // eslint-disable-next-line no-unsafe-optional-chaining
-                    profile?.profileSmartContractId.length - 6,
-                    profile?.profileSmartContractId.length
+                    profileSmartContractId.length - 6,
+                    profileSmartContractId.length
                   )}
                 </p>
                 <i
@@ -237,41 +253,7 @@ const ProfileAddressChain: FC<IProfileAddressChain> = ({ setShare }) => {
 
   return (
     <div className={styles['profile-address-chain']} id="profile-address-chain">
-      {
-        renderByDeployingState()
-        /* {profile?.profileSmartContractId === 
-        '0x0000000000000000000000000000000000000000' ||
-      profile?.profileSmartContractId === null ||
-      profile?.profileSmartContractId === '' ? (
-        <div
-          className={styles['address-container']}
-          id="profile-address-container"
-          style={{ cursor: 'pointer' }}
-          onClick={() => createProfile(name, profile?.title, walletId)}
-        >
-          <span className="material-icons" style={{ color: '#FAA5B9' }}>
-            close
-          </span>
-          <p className={styles['profile-address']}>Mint on Chain</p>
-          <div />
-        </div>
-      ) : (
-        <div className={styles['address-container']}>
-          <FoundersLabIcon width={28} height={28} />
-          <p className={styles['profile-address']}>
-            {profile?.profileSmartContractId?.slice(0, 6)}...
-            {profile?.profileSmartContractId?.slice(
-              // eslint-disable-next-line no-unsafe-optional-chaining
-              profile?.profileSmartContractId.length - 6,
-              profile?.profileSmartContractId.length
-            )}
-          </p>
-          <i className="material-icons-200" onClick={handleCopyAddress}>
-            content_copy
-          </i>
-        </div>
-      )} */
-      }
+      {renderByDeployingState()}
       <p className={styles['sync-text']}>
         Sync On Chain <i className="material-icons-200">sync</i>
       </p>

@@ -10,7 +10,14 @@ import App from './App';
 import { provider } from './config';
 
 const store = createStore(reducer);
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ProvideAuth provider={provider}>
