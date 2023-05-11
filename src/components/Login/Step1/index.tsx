@@ -47,7 +47,7 @@ const Step1: FC = () => {
   };
 
   if (error === 'Not Found') {
-    toast.error('No account');
+    toast.error('No user, taking you to sign up...');
     setTimeout(() => {
       navigate('/sign_up');
     }, 2000);

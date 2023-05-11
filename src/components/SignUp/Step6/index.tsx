@@ -19,19 +19,16 @@ import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import Select, { Option } from 'components/Select';
 import options from 'assets/data/orgOptions.json';
-
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { SingleValue } from 'react-select';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 
 interface IStep6 {
   setActive: Dispatch<SetStateAction<string>>;
-  setShowOptions: Dispatch<SetStateAction<boolean>>;
-  showOptions: boolean;
-  active: string;
 }
 
-const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
+const Step6: FC<IStep6> = ({ setActive }) => {
   const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
 
@@ -39,9 +36,9 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
   const [localFile, setLocalFile] = useState<string | ArrayBuffer | null>(null);
 
   const [showSelectMenu, setShowSelectMenu] = useState(1);
+  const [showStepSixOptions, setShowStepSixOptions] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setActive('');
@@ -101,29 +98,30 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
     <>
       <div className={styles['step6-container']}>
         <div className={styles['chat-prompts-container--chat-message']}>
-          {step !== 11 && (
+          {step !== 11 && step < 9 && (
             <span>
-              <div className={styles['user-image']} />
+              <div className={styles['user-image']}>
+                <NeonSundaeMainLogo width={70} height={85.75} />
+              </div>
               <div className={styles['user-choices']}>
                 <TypeAnimation
                   style={{
                     whiteSpace: 'pre-line',
                     display: 'block',
-                    marginBottom: '25px',
                   }}
                   defaultValue={orgName}
                   sequence={[
                     'Let’s build your organisation’s workflow 🚀 \n Give your organisation a name',
                     500,
                     () => {
-                      setShowOptions(true);
+                      setShowStepSixOptions(true);
                       setActive('');
                     },
                   ]}
                   cursor={false}
                   speed={80}
                 />
-                {showOptions && (
+                {showStepSixOptions && (
                   <span className={styles['input-wrapper']}>
                     <form
                       onSubmit={e => {
@@ -132,7 +130,7 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                     >
                       <input
                         type="text"
-                        placeholder="Type here your organisation name"
+                        placeholder="Your organisation name here"
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         {...register('name', {
                           required: true,
@@ -153,7 +151,7 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
             </span>
           )}
 
-          {(step === 8 || step === 9 || step === 10) && (
+          {step === 8 && (
             <div className={styles['reply-prompt']}>
               <TypeAnimation
                 defaultValue={orgName}
@@ -178,7 +176,9 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
 
           {(step === 9 || step === 10) && (
             <span>
-              <div className={styles['user-image']} />
+              <div className={styles['user-image']}>
+                <NeonSundaeMainLogo width={70} height={85.75} />
+              </div>
               <div className={styles['chat-message']}>
                 <TypeAnimation
                   defaultValue={orgName}
@@ -192,7 +192,6 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                     500,
                     () => {
                       setShowSelectMenu(2);
-                      divRef.current?.scrollIntoView({ behavior: 'smooth' });
                     },
                   ]}
                   cursor={false}
@@ -212,7 +211,7 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                     name="Location"
                     borderRadius={10}
                     height={50}
-                    width="330px"
+                    width="400px"
                     isMulti={false}
                   />
                 )}
@@ -229,7 +228,7 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                   500,
                   () => {
                     setTimeout(() => {
-                      setShowSelectMenu(3);
+                      setShowSelectMenu(2);
                     }, 1000);
                   },
                 ]}
@@ -242,13 +241,14 @@ const Step6: FC<IStep6> = ({ setActive, setShowOptions, showOptions }) => {
                 width="100px"
                 height="100px"
               />
-              <div ref={divRef} id="here" />
             </div>
           )}
 
           {step === 11 && (
             <span>
-              <div className={styles['user-image']} />
+              <div className={styles['user-image']}>
+                <NeonSundaeMainLogo width={70} height={85.75} />
+              </div>
               <div className={styles['chat-message']}>
                 <TypeAnimation
                   defaultValue={orgName}

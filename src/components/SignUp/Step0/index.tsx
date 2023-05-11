@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
@@ -7,6 +8,7 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
+import videoSrc from 'assets/videos/intro.mp4';
 import styles from './index.module.scss';
 
 const Step0 = () => {
@@ -27,30 +29,37 @@ const Step0 = () => {
 
   return (
     <div className={styles['step0-container']}>
-      <iframe
-        title="video"
-        width="1072"
-        height="571"
-        src="https://www.loom.com/embed/eb1b9c6f21444b64940a632e2935007d"
-      />
+      <div className={styles['video-frame']}>
+        <video
+          className={styles['background-video-container']}
+          controls
+          muted
+          autoPlay
+          poster="/src/assets/images/poster/intro-video.png"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
-            Hey,
+            Hey
             <input
               type="text"
               defaultValue={name}
-              placeholder="name"
+              placeholder="Your name"
               {...register('name', { required: true })}
               className={errors.name ? styles.error : ''}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
             />
-            👋🏼
+            &nbsp;! 👋
           </h2>
           {errors.name && <p>* Your name is required</p>}
         </div>
+        <h3>Welcome to Neon Sundae</h3>
         <input
           type="submit"
-          value="Get Started 🎉"
+          value="Get Started&nbsp;&nbsp;🎉"
           className={styles['submit-button']}
           disabled={!!errors.name}
         />

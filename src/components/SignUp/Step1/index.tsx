@@ -1,11 +1,12 @@
 import { TypeAnimation } from 'react-type-animation';
 import clsx from 'clsx';
 import { ReactComponent as TeamIcon } from 'assets/illustrations/icons/team.svg';
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
+import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import styles from './index.module.scss';
 
 interface IStep1 {
@@ -26,12 +27,15 @@ const Step1: FC<IStep1> = ({
     setSessionStorageItem('flow', button.id === '1' ? 'builder' : 'founder');
     setActive(button.id);
   };
+  const [showStepOneOptions, setShowStepOneOptions] = useState(false);
 
   const name = getSessionStorageItem('name');
 
   return (
     <div className={styles['chat-prompts-container--chat-message']}>
-      <div className={styles['user-image']} />
+      <div className={styles['user-image']}>
+        <NeonSundaeMainLogo width={70} height={85.75} />
+      </div>
       <div className={styles['user-choices']}>
         <TypeAnimation
           style={{
@@ -42,13 +46,13 @@ const Step1: FC<IStep1> = ({
             `Hey ${name}, welcome to the Neonverse! ✨ \n We’re excited to get you started, how you are planning to use Neon Sundae?`,
             500,
             () => {
-              setShowOptions(true);
+              setShowStepOneOptions(true);
             },
           ]}
           cursor={false}
-          speed={99}
+          speed={80}
         />
-        {showOptions && (
+        {showStepOneOptions && (
           <span>
             <button
               id="1"
@@ -58,7 +62,8 @@ const Step1: FC<IStep1> = ({
               )}
               onClick={handleChoiceClick}
             >
-              ‍‍‍👨‍💻 <hr /> For Personal Use
+              <h2>‍‍‍👨‍💻</h2>
+              <hr /> For Personal Use
             </button>
             <button
               id="2"
@@ -68,7 +73,7 @@ const Step1: FC<IStep1> = ({
               )}
               onClick={handleChoiceClick}
             >
-              <TeamIcon height={50} width={50} />
+              <h2>👯</h2>
               <hr />
               For My Team
             </button>

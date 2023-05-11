@@ -1,10 +1,9 @@
 .step4-container {
   .chat-prompts-container {
     &--chat-message {
-      width: 82%;
+      width: 79%;
       margin: auto;
       display: flex;
-      height: 77vh;
       margin-top: 100px;
 
       & > .user-image {
@@ -13,19 +12,22 @@
         width: 108px;
         height: 108px;
         margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       & > .user-choices {
         background: rgba(0, 0, 0, 0.25);
         border-radius: 18.5481px;
         padding: 25px 50px;
-        height: 280px;
+
         width: 647px;
 
         & > p {
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
         }
 
         p,
@@ -33,7 +35,6 @@
           font-family: var(--font-family-roboto-regular);
           font-style: normal;
           font-size: 16px;
-          margin-bottom: 20px;
         }
 
         & > span {
@@ -41,18 +42,15 @@
           flex-wrap: wrap;
           justify-content: space-between;
           width: 560px;
-          min-height: 110px;
+          min-height: 83px;
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
         }
 
         & > .input-wrapper {
           animation: messageShow;
           animation-duration: 1s;
-          padding: 0 20px;
-          display: flex;
-          justify-content: center;
 
           & > form {
             & > input {
@@ -66,9 +64,8 @@
               height: 50px;
               cursor: pointer;
               font-family: var(--font-family-roboto-medium);
-              font-size: 20px;
-              font-weight: 500;
-              line-height: 23px;
+              font-size: 16px;
+              font-weight: 400;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -81,13 +78,20 @@
 
               backdrop-filter: blur(40px);
             }
+            input:focus {
+              outline: none;
+            }
 
             & > input::placeholder {
               font-family: var(--font-family-roboto-flex);
               color: #fff;
-              font-size: 18.7042px;
-
+              font-size: 16px;
               font-weight: 200;
+              opacity: 0.5;
+            }
+
+            & > input::focus {
+              outline: none;
             }
 
             & > p {

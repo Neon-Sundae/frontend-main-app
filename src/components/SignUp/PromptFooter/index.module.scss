@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 88.6px;
+  height: 120px;
   border-top: 1px solid #484848;
 
   &--back-button {
@@ -15,8 +15,8 @@
     );
     box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
     border-radius: 22px;
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
     margin-left: 10%;
     border: 1px solid #e49df4;
     will-change: transform;
@@ -28,7 +28,7 @@
     cursor: pointer;
     font-family: var(--font-family-roboto-regular);
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     background: linear-gradient(
         94.63deg,
         rgba(255, 255, 255, 0.16) 4.94%,

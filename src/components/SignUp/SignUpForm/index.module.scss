@@ -3,6 +3,7 @@
   text-align: center;
   animation: messageShow;
   animation-duration: 1s;
+  height: 325px;
 
   @keyframes messageShow {
     0% {
@@ -22,8 +23,8 @@
     margin: auto;
     & > p {
       font-family: var(--font-family-roboto-regular);
-      font-size: 15.8027px;
-      margin-top: 20px;
+      font-size: 14px;
+      margin-top: 50px;
       margin-bottom: 20px;
     }
     & > p:first-child {
@@ -32,6 +33,7 @@
 
     & > .buttons-container {
       display: flex;
+      justify-content: space-evenly;
     }
 
     & > button {
@@ -71,14 +73,14 @@
     button:nth-child(3) {
       position: absolute;
       top: 7px;
-      right: 15px;
+      right: 7px;
       color: #fff;
       background: none;
       border: 1px solid #e49df4;
       cursor: pointer;
       font-family: var(--font-family-roboto-regular);
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       background: linear-gradient(
           94.63deg,
           rgba(255, 255, 255, 0.16) 4.94%,
@@ -100,7 +102,7 @@
       color: #fff;
       border-radius: 15px;
       border: 0.7px solid #fff;
-      width: 440px;
+      width: 482px;
       height: 62px;
       cursor: pointer;
       font-family: var(--font-family-roboto-regular);
@@ -118,6 +120,21 @@
     input::placeholder {
       text-align: center;
       color: #fff;
+      opacity: 0.5;
+    }
+    input:focus {
+      outline: none;
+    }
+    .sign-up-form-email-error {
+      font-family: var(--font-family-roboto-flex);
+
+      font-weight: 300;
+      font-size: 12px;
+
+      color: #ff8383;
+      position: absolute;
+      left: 25px;
+      top: 70px;
     }
   }
 }

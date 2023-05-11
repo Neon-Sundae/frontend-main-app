@@ -1,8 +1,8 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NavBar from 'components/NavBar';
 import ProfileCard from 'components/ProfileCard';
-import { getItem, removeItem } from 'utils/localStorageFn';
+import { getItem, setItem } from 'utils/localStorageFn';
 import BlurBlobs from 'components/BlurBlobs';
 import { useFetchProfileDetails } from 'queries/profile';
 import TourProfilePage from './tour';
@@ -13,26 +13,28 @@ import ProfileContent from '../ProfileContent';
 const Landing: FC = () => {
   const params = useParams();
   const { tourStep, tourStart } = TourProfilePage();
-  const onboardStatus = getItem('onboardStatus');
+  const [onboardStatus, setOnboardStatus] = useState(getItem('onboardStatus'));
 
-  const { data, isLoading } = useFetchProfileDetails({
+  const { data } = useFetchProfileDetails({
     profileId: params.profileId,
   });
 
+  window.addEventListener('storage', () => {
+    setOnboardStatus(localStorage.getItem('onboardStatus'));
+  });
+
   useEffect(() => {
-    if (!isLoading) {
-      if (onboardStatus === 'started') {
-        setTimeout(() => {
-          tourStart();
-        }, 1000);
-      }
-      if (onboardStatus === 'partial') {
-        tourStep('step3');
-        removeItem('onboardStatus');
-      }
+    if (onboardStatus === 'started') {
+      setTimeout(() => {
+        tourStart();
+        setItem('onboardStatus', 'done');
+      }, 1000);
+    }
+    if (onboardStatus === 'partial') {
+      tourStep('step3');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onboardStatus, isLoading]);
+  }, [onboardStatus]);
 
   if (data) {
     return (

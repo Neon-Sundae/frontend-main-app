@@ -15,7 +15,8 @@ const PromptFooter: FC<IPromptFooter> = ({ active }) => {
   const dispatch = useDispatch();
 
   const handleBackFunc = () => {
-    dispatch(setSignUpStep(step - 1));
+    if (step === 0 || step === 6) dispatch(setSignUpStep(1));
+    else dispatch(setSignUpStep(step - 1));
   };
 
   const handleContinueFunc = () => {
@@ -33,7 +34,6 @@ const PromptFooter: FC<IPromptFooter> = ({ active }) => {
         className={styles['prompt-footer-container--back-button']}
         aria-label="back"
         onClick={handleBackFunc}
-        disabled
       >
         <i className={clsx('material-icons', styles['arrow_back-icon'])}>
           arrow_back

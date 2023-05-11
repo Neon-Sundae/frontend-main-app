@@ -8,6 +8,18 @@
   align-items: center;
   margin-top: 2%;
 
+  & > .video-frame {
+    border: none;
+    & > video {
+      border-radius: 18.5481px;
+      object-fit: cover;
+      width: 711.1px;
+      height: 400px;
+      top: 0;
+      left: 0;
+    }
+  }
+
   & > form {
     & > .submit-button {
       text-align: center;
@@ -39,7 +51,7 @@
       font-weight: 400;
       font-size: 18px;
       color: #fff;
-      margin-top: 10px;
+      margin-top: 7px;
     }
 
     & > .submit-button:disabled {
@@ -47,7 +59,13 @@
       cursor: default;
     }
   }
-
+  h3 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 300;
+    font-size: 18px;
+  }
   & > form > div {
     min-height: 60px;
 
@@ -57,23 +75,43 @@
       font-family: var(--font-family-roboto-flex);
       font-weight: 300;
       font-size: 12px;
+      text-align: left;
     }
+
     & > h2 {
       margin-top: 40px;
       font-family: var(--font-family-roboto-regular);
       font-weight: 400;
       font-size: 22px;
 
+      animation: fadeIn 2s;
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
       & > input {
+        display: inline-block;
+        width: 110px;
         font-family: var(--font-family-roboto-regular);
         font-size: 22px;
         color: #fff;
-        border: 0;
+        border: none;
+        border-bottom: 2px solid #fff;
+        border-bottom-style: dashed;
         outline: 0;
         background: transparent;
-        border-bottom: 1px solid #fff;
-        width: 140px;
-        margin: 0 5px;
+        margin-left: 10px;
+        animation: fadeIn 1s;
+      }
+
+      & > input:focus {
+        background: #a799ff;
       }
 
       .error {
@@ -83,6 +121,7 @@
       & > input::placeholder {
         font-family: var(--font-family-roboto-flex);
         color: #fff;
+        font-weight: 200;
         opacity: 0.5;
       }
     }

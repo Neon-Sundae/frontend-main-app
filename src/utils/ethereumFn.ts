@@ -50,7 +50,7 @@ export const signMessage = async (
 export const signArcanaMessage = async (
   provider: EthereumProvider,
   message: string,
-  walletAddress: string
+  walletAddress: string | undefined
 ) => {
   try {
     if (provider) {

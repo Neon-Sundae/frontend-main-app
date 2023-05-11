@@ -1,11 +1,9 @@
 .sign-up-options-container {
   .chat-prompts-container {
     &--chat-message {
-      width: 82%;
+      width: 79%;
       margin: auto;
       display: flex;
-
-      height: 77vh;
       margin-top: 100px;
 
       & > .user-image {
@@ -14,30 +12,30 @@
         width: 108px;
         height: 108px;
         margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       & > .user-choices {
         background: rgba(0, 0, 0, 0.25);
         border-radius: 18.5481px;
         padding: 25px 50px;
-        height: 500px;
-        width: 560px;
-
+        width: 555px;
         & > p {
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
         }
 
         & > span {
           display: flex;
           flex-wrap: wrap;
-          justify-content: space-between;
-          width: 560px;
-          min-height: 108px;
+          justify-content: space-evenly;
+          min-height: 70px;
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.2rem;
 
           & > .choice-option {
             color: #fff;

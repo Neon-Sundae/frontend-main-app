@@ -1,10 +1,9 @@
 .step3-container {
   .chat-prompts-container {
     &--chat-message {
-      width: 82%;
+      width: 79%;
       margin: auto;
       display: flex;
-      height: 77vh;
       margin-top: 100px;
 
       & > .user-image {
@@ -13,26 +12,37 @@
         width: 108px;
         height: 108px;
         margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       & > .user-choices {
         background: rgba(0, 0, 0, 0.25);
         border-radius: 18.5481px;
         padding: 25px 50px;
-        height: 620px;
-        width: 647px;
 
         & > p {
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
+          animation: fadeIn 2s;
+
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
         }
 
         p,
         &--text {
           font-family: var(--font-family-roboto-regular);
           font-style: normal;
-          font-size: 16px;
+          font-size: 14px;
           margin-bottom: 10px;
           animation: messageShow;
           animation-duration: 1s;
@@ -43,10 +53,10 @@
           flex-wrap: wrap;
           justify-content: space-between;
           width: 560px;
-          min-height: 90px;
+          min-height: 70px;
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
-          font-size: 24.0034px;
+          font-size: 1.25rem;
 
           & > .choice-option {
             color: #fff;
@@ -66,7 +76,7 @@
             font-family: var(--font-family-inter-regular);
             font-style: normal;
             font-weight: 500;
-            font-size: 20px;
+            font-size: 16px;
             will-change: transform;
             transition: transform 450ms;
             animation: messageShow;
@@ -89,6 +99,11 @@
                 visibility: visible;
               }
             }
+          }
+
+          .choice-option:nth-child(7),
+          .choice-option:nth-child(8) {
+            margin-bottom: 0;
           }
 
           & > .active {
