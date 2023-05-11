@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
 import Card from 'components/Card';
 import useBuilderTaskApply from 'hooks/useBuilderTaskApply';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import { ReactComponent as BrandImage } from 'assets/illustrations/task/task-dummy-1.svg';
 import { ReactComponent as USDCIcon } from 'assets/illustrations/icons/usdc.svg';
 import styles from './index.module.scss';
@@ -13,18 +13,21 @@ const TaskCard = (props: any) => {
   const { width, height, data, location } = props;
 
   const navigate = useNavigate();
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
 
   const builderTaskApply = useBuilderTaskApply();
 
   const applyToTask = () => {
-    if (profile && profile.profileSmartContractId) {
+    if (profileData && profileData.profileSmartContractId) {
       builderTaskApply.mutate({
         taskId: data.taskId,
       });
     } else {
       toast.error('Please mint your profile');
-      navigate(`/profile/${profile?.profileId}`);
+      navigate(`/profile/${profileData?.profileId}`);
     }
   };
 

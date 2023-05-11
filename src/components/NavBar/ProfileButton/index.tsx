@@ -1,81 +1,45 @@
-import { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
-import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import config from 'config';
-import { getAccessToken } from 'utils/authFn';
-import { useQuery } from '@tanstack/react-query';
-import { fillProfileData } from 'actions/profile';
-import { normalizeSkills } from 'utils/normalizeSkills';
-import { fillProfileSkillsData } from 'actions/skills';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import styles from './index.module.scss';
 import DisconnectModal from './DisconnectModal';
 
 const ProfileButton: FC = () => {
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
 
-  const { profileId } = useParams();
-
-  const { user } = useSelector((state: RootState) => state.user);
-
-  const currentUserProfilePicture = useSelector(
-    (state: RootState) => state.profile.currentUserProfilePicture
-  );
-
-  const { data, refetch } = useQuery(
-    ['user-profile-data', profileId],
-    () =>
-      fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      enabled: false,
-      refetchOnMount: false,
-    }
-  );
-
-  useEffect(() => {
-    if (profileId) refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileId]);
-
-  useEffect(() => {
-    if (data) {
-      dispatch(fillProfileData(data));
-      const skillsData = normalizeSkills(data?.profileSkills);
-      dispatch(fillProfileSkillsData(skillsData));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
 
   const pictureFunc = () => {
     return (
-      currentUserProfilePicture ||
-      getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
+      profileData?.picture ||
+      getDefaultAvatarSrc(userData?.user?.name?.charAt(0).toUpperCase())
     );
   };
 
   const handleNavigation = () => {
-    dispatch(fillProfileData(data));
-    const skillsData = normalizeSkills(data?.profileSkills);
-    dispatch(fillProfileSkillsData(skillsData));
-
-    navigate(`/profile/${user?.userId}`);
+    navigate(`/profile/${userData?.user?.userId}`);
+    // * To reload the page because with SPA navigation, the data was not refreshing
+    // navigate(0);
   };
 
   const getFormattedWalletId = () => {
-    if (user?.walletId) {
-      return `${user.walletId.slice(0, 6)}...${user.walletId.slice(
+    if (userData?.user?.walletId) {
+      return `${userData?.user.walletId.slice(
+        0,
+        6
+      )}...${userData?.user.walletId.slice(
         // eslint-disable-next-line no-unsafe-optional-chaining
-        user.walletId.length - 6,
-        user.walletId.length
+        userData?.user.walletId.length - 6,
+        userData?.user.walletId.length
       )}`;
     }
 
@@ -83,10 +47,13 @@ const ProfileButton: FC = () => {
   };
 
   const getFormattedDomainName = () => {
-    if (user?.domain) {
-      return `${user.domain.slice(0, 6)}...${user.domain.slice(
-        user.domain.length - 6,
-        user.domain.length
+    if (userData?.user?.domain) {
+      return `${userData.user.domain.slice(
+        0,
+        6
+      )}...${userData.user.domain.slice(
+        userData.user.domain.length - 6,
+        userData?.user.domain.length
       )}`;
     }
     return '';
@@ -118,12 +85,18 @@ const ProfileButton: FC = () => {
         title="Wallet Information"
         onClick={handleOpen}
       >
-        <p className={styles['navbar-username']}>{user?.name}</p>
+        <p className={styles['navbar-username']}>{userData?.user?.name}</p>
         <span
           className={styles['navbar-wallet-address']}
-          title={user?.domain ? user.domain : user?.walletId}
+          title={
+            userData?.user?.domain
+              ? userData?.user.domain
+              : userData?.user?.walletId
+          }
         >
-          {user?.domain ? getFormattedDomainName() : getFormattedWalletId()}
+          {userData?.user?.domain
+            ? getFormattedDomainName()
+            : getFormattedWalletId()}
         </span>
         <div className={clsx(styles['text--secondary'], styles['text--align'])}>
           <span>Connected Wallet</span>

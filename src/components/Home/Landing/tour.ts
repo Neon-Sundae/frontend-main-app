@@ -1,14 +1,18 @@
 import Shepherd from 'shepherd.js';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 
 const TourHomePage = () => {
   const navigate = useNavigate();
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user.userId,
+  });
+
   const handleStepOne = () => {
     tour.cancel();
-    navigate(`/profile/${profile?.profileId}`);
+    navigate(`/profile/${profileData?.profileId}`);
   };
 
   const tour = new Shepherd.Tour({
@@ -52,6 +56,7 @@ const TourHomePage = () => {
   const tourStart = () => {
     return tour.start();
   };
+
   return { tourStart };
 };
 

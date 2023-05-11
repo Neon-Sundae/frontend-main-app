@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RootPage from 'containers/root';
 import PrivateRoute from 'components/PrivateRoute';
 import useSetAppMetadata from 'hooks/useSetAppMetadata';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { useProfile } from 'components/Profile/Landing/hooks';
 import ErrorPage from 'containers/error';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 
 const Login = lazy(() => import('containers/login'));
 const SignUp = lazy(() => import('containers/signUp'));
@@ -30,20 +30,23 @@ const App = () => {
 
   const { fetchOnChainProfileData } = useProfile();
 
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
 
   useEffect(() => {
-    if (profile) {
+    if (profileData) {
       if (
-        profile.profileSmartContractId &&
-        profile.profileSmartContractId !==
+        profileData.profileSmartContractId &&
+        profileData.profileSmartContractId !==
           '0x0000000000000000000000000000000000000000'
       ) {
-        fetchOnChainProfileData(profile.profileSmartContractId);
+        fetchOnChainProfileData(profileData.profileSmartContractId);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile]);
+  }, [profileData]);
 
   return (
     <Router>

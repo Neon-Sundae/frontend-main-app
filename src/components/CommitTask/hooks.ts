@@ -6,6 +6,8 @@ import { useUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import getFndrBalance from 'utils/contractFns/getFndrBalance';
 import commitToTaskOnChain from 'utils/contractFns/commitToTaskOnChain';
 import { useAuth } from '@arcana/auth-react';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 
 const useCommitToTask = () => {
   const auth = useAuth();
@@ -19,7 +21,11 @@ const useCommitToTask = () => {
   const { selectedTask, projectTaskAddress } = useSelector(
     (state: RootState) => state.flProject
   );
-  const profile = useSelector((state: RootState) => state.profile.profile);
+
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
 
   const commitToTask = async (taskId: number, amount: number) => {
     try {
@@ -32,8 +38,8 @@ const useCommitToTask = () => {
         taskId,
         setHash,
         setPending,
-        profile,
         auth,
+        profileSmartContractId: profileData?.profileSmartContractId,
       });
     } catch (err) {
       console.log(err);

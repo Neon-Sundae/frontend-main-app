@@ -31,6 +31,8 @@ export interface IProfileEducation {
   university: string;
   startDate: string;
   endDate: string;
+  createdAt: string;
+  updatedAt: string;
   profileId: number;
 }
 
@@ -50,8 +52,6 @@ export interface IProfileSkills {
 }
 
 export interface IProfileApiResponse extends IProfile {
-  certifications: IProfileCertifications[];
-  education: IProfileEducation[];
   workplaces: IProfileWorkplace[];
   profileSkills: IProfileSkills[];
 }

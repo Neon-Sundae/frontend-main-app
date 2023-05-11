@@ -24,10 +24,11 @@ import { getAccessToken } from 'utils/authFn';
 import _ from 'lodash';
 import getRandomString from 'utils/getRandomString';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import isOwner from 'utils/accessFns/isOwner';
 import { useAuth } from '@arcana/auth-react';
+import { useFetchUserDetailsByWallet } from 'queries/user';
 import styles from './index.module.scss';
 import CreatePrjModalWithData from '../../StartPrjModal/CreatePrjModalWithData';
 
@@ -44,18 +45,19 @@ const Header: FC<IHeaderProps> = props => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { create: projectUuid } = useParams();
-  const user = useSelector((state: RootState) => state.user.user);
+  const { data: userData } = useFetchUserDetailsByWallet();
   const { selectedProjectAddress } = useSelector(
     (state: RootState) => state.flProject
   );
   const toggle = useSelector((state: RootState) => state.app.toggle);
-  const profile = useSelector((state: RootState) => state.profile.profile);
 
   const [showProjectFormModalWithData, setShowProjectFormModalWithData] =
     useState(false);
   const [currentProjectTasks, setCurrentProjectTasks] = useState<any[]>([]);
 
-  const { members } = useFetchOrganisationOwnerManager(props.organisationId);
+  const { data: members } = useFetchOrganisationOwnerManager(
+    props.organisationId
+  );
 
   const { data } = useQuery(
     ['userTasksData'],
@@ -94,7 +96,7 @@ const Header: FC<IHeaderProps> = props => {
   const handlePublishProject = async () => {
     try {
       const profileAddress = await getProfileContractAddress(
-        user?.walletId,
+        userData?.user?.walletId,
         auth
       );
 
@@ -106,8 +108,7 @@ const Header: FC<IHeaderProps> = props => {
         props.setOpen(true);
       } else {
         toast.error('Please mint your profile on chain');
-        // TODO - Move to profile page
-        navigate(`/profile/${profile?.profileId}`);
+        navigate(`/profile/${userData?.profileId}`);
       }
     } catch (err) {
       console.log(err);
@@ -163,7 +164,7 @@ const Header: FC<IHeaderProps> = props => {
               )}
             </div>
           </span>
-          {isOwner(user, members) && selectedProjectAddress === '' ? (
+          {isOwner(userData?.user, members) && selectedProjectAddress === '' ? (
             <button
               onClick={handlePublishProject}
               className={styles.transparentBtn}
@@ -172,7 +173,7 @@ const Header: FC<IHeaderProps> = props => {
             </button>
           ) : (
             <div>
-              {isOwner(user, members) ? (
+              {isOwner(userData?.user, members) ? (
                 <button
                   onClick={handleToggle}
                   className={styles.transparentBtn}
@@ -202,7 +203,7 @@ const Header: FC<IHeaderProps> = props => {
               />
             )}
           </span>
-          {isOrganisationMember(user, members) && (
+          {isOrganisationMember(userData?.user, members) && (
             <button
               onClick={handleEditButtonClick}
               className={styles['edit-project-btn']}

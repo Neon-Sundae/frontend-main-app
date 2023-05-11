@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import Modal from 'components/Modal';
 import _ from 'lodash';
 import { useFetchProjects } from 'components/Project/Landing/hooks';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import { useFetchTaskData } from './hooks';
 import TaskDetail from './TaskDetail';
@@ -58,7 +58,7 @@ const AcceptTask: FC<IAcceptTask> = ({
   const { selectedTask } = useSelector((state: RootState) => state.flProject);
 
   const { projectData = {} } = useFetchProjects(create);
-  const { members } = useFetchOrganisationOwnerManager(
+  const { data: members } = useFetchOrganisationOwnerManager(
     projectData.organisationId
   );
 

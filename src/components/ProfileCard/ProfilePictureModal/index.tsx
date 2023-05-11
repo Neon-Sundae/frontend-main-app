@@ -25,12 +25,15 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
   const [stepTwo, setStepTwo] = useState(false);
   const [nfts, setNfts] = useState<any>({});
   const [agree, setAgree] = useState(false);
+
   setPicture(picture);
+
   const truncatedWalletId = `${walletId?.substring(
     0,
     5
   )}...${walletId?.substring(walletId.length - 5, walletId.length)}`;
   const { isLoading, refetch } = fetchNFTs(walletId, agree);
+
   const getNfts = () => {
     if (Object.keys(nfts).length === 0) {
       setAgree(true);
@@ -39,16 +42,24 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
       });
     }
   };
+
   const funcMoveOn = (e: any) => {
     e.preventDefault();
     setStepOne(true);
     getNfts();
   };
+
+  const handleClose = () => {
+    setProfilePictureModal(false);
+    handleLocalStorage('partial'); // related to onboarding tutorial
+  };
+
   if (stepOne) {
     setTimeout(() => {
       setStepOne(false);
       setStepTwo(true);
     }, 1000);
+
     return (
       <StepOne
         setProfilePictureModal={setProfilePictureModal}
@@ -56,6 +67,7 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
       />
     );
   }
+
   if (stepTwo) {
     return (
       <StepTwo
@@ -68,12 +80,9 @@ const ProfilePictureModal: FC<IProfilePictureModal> = ({
       />
     );
   }
-  const handleClose = () => {
-    setProfilePictureModal(false);
-    handleLocalStorage('partial');
-  };
+
   return (
-    <Modal onClose={() => handleClose()} width="550.24px" height="600px">
+    <Modal onClose={handleClose} width="550.24px" height="600px">
       <div className={styles.wrapper}>
         <img src={PromptImage} alt="Profile" className={styles.promptImg} />
         <div className={styles.promptText}>
