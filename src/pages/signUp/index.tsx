@@ -1,3 +1,12 @@
 import SignUpContainer from 'components/SignUp';
+import { ArcanaAuthLayout } from 'containers/ArcanaAuthLayout';
 
-export default SignUpContainer;
+const SignUpPage = () => {
+  return (
+    <ArcanaAuthLayout>
+      <SignUpContainer />
+    </ArcanaAuthLayout>
+  );
+};
+
+export default SignUpPage;
