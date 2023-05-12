@@ -11,7 +11,7 @@ import videoSrc from 'assets/videos/intro.mp4';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
-const Step0 = () => {
+const Welcome = () => {
   const name = getSessionStorageItem('name');
 
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const Step0 = () => {
   };
 
   return (
-    <div className={styles['step0-container']}>
+    <div className={styles['welcome-container']}>
       <div className={styles['video-frame']}>
         <video
           className={styles['background-video-container']}
@@ -67,4 +67,4 @@ const Step0 = () => {
   );
 };
 
-export default Step0;
+export default Welcome;

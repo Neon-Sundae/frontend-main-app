@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
-import Step0 from '../Step0';
+import Welcome from '../Welcome';
 import Step1 from '../Step1';
 import Step2 from '../Step2';
 import Step3 from '../Step3';
@@ -27,7 +27,7 @@ const ChatPrompts = () => {
         step === SignupSteps.Welcome && styles.auto
       )}
     >
-      {step === SignupSteps.Welcome && <Step0 />}
+      {step === SignupSteps.Welcome && <Welcome />}
       {step === SignupSteps.UserType && (
         <>
           <Step1
