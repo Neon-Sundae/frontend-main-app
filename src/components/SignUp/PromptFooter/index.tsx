@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { setSignUpStep } from 'actions/user';
+import { updateSignUpStep } from 'actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { FC } from 'react';
@@ -11,21 +11,21 @@ interface IPromptFooter {
 }
 
 const PromptFooter: FC<IPromptFooter> = ({ active }) => {
-  const step = useSelector((state: RootState) => state.user.step);
+  const step = useSelector((state: RootState) => state.auth.step);
   const dispatch = useDispatch();
 
   const handleBackFunc = () => {
-    if (step === 0 || step === 6) dispatch(setSignUpStep(1));
-    else dispatch(setSignUpStep(step - 1));
+    if (step === 0 || step === 6) dispatch(updateSignUpStep(1));
+    else dispatch(updateSignUpStep(step - 1));
   };
 
   const handleContinueFunc = () => {
     const isFlow = getSessionStorageItem('flow');
     if (isFlow === 'founder') {
-      if (step < 6) dispatch(setSignUpStep(6));
-      if (step >= 6) dispatch(setSignUpStep(step + 1));
+      if (step < 6) dispatch(updateSignUpStep(6));
+      if (step >= 6) dispatch(updateSignUpStep(step + 1));
     }
-    if (isFlow === 'builder') dispatch(setSignUpStep(step + 1));
+    if (isFlow === 'builder') dispatch(updateSignUpStep(step + 1));
   };
 
   return (

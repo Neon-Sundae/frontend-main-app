@@ -22,6 +22,7 @@ import options from 'assets/data/orgOptions.json';
 import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { SingleValue } from 'react-select';
 import clsx from 'clsx';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
 interface IStep6 {
@@ -29,7 +30,7 @@ interface IStep6 {
 }
 
 const Step6: FC<IStep6> = ({ setActive }) => {
-  const step = useSelector((state: RootState) => state.user.step);
+  const step = useSelector((state: RootState) => state.auth.step);
   const name = getSessionStorageItem('name');
 
   const [file, setFile] = useState<File | undefined>();
@@ -98,7 +99,7 @@ const Step6: FC<IStep6> = ({ setActive }) => {
     <>
       <div className={styles['step6-container']}>
         <div className={styles['chat-prompts-container--chat-message']}>
-          {step !== 11 && step < 9 && (
+          {step === SignupSteps.OrganisationName && (
             <span>
               <div className={styles['user-image']}>
                 <NeonSundaeMainLogo width={70} height={85.75} />
@@ -151,7 +152,7 @@ const Step6: FC<IStep6> = ({ setActive }) => {
             </span>
           )}
 
-          {step === 8 && (
+          {step === SignupSteps.OrganisationNameReply && (
             <div className={styles['reply-prompt']}>
               <TypeAnimation
                 defaultValue={orgName}
@@ -174,7 +175,7 @@ const Step6: FC<IStep6> = ({ setActive }) => {
             </div>
           )}
 
-          {(step === 9 || step === 10) && (
+          {step === SignupSteps.OrganisationIndustry && (
             <span>
               <div className={styles['user-image']}>
                 <NeonSundaeMainLogo width={70} height={85.75} />
@@ -219,7 +220,7 @@ const Step6: FC<IStep6> = ({ setActive }) => {
             </span>
           )}
 
-          {step === 10 && (
+          {step === SignupSteps.OrganisationIndustryReply && (
             <div className={styles['reply-prompt']}>
               <TypeAnimation
                 defaultValue={orgName}
@@ -244,7 +245,7 @@ const Step6: FC<IStep6> = ({ setActive }) => {
             </div>
           )}
 
-          {step === 11 && (
+          {step === SignupSteps.OrganisationLogo && (
             <span>
               <div className={styles['user-image']}>
                 <NeonSundaeMainLogo width={70} height={85.75} />

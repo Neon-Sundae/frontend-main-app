@@ -60,7 +60,7 @@ const ArcanaAuthLogin = () => {
       <span className={styles[`arcana-auth--footer`]}>
         <p>
           Don&apos;t have an account? &nbsp;
-          <button onClick={() => navigate('/sign_up')}>Sign Up</button>
+          <button onClick={() => navigate('/signup')}>Sign Up</button>
         </p>
       </span>
     </div>

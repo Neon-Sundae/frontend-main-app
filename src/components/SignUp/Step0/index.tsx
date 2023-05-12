@@ -1,18 +1,17 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'reducers';
-import { setSignUpStep } from 'actions/user';
+import { useDispatch } from 'react-redux';
+import { updateSignUpStep } from 'actions/auth';
 import { useForm } from 'react-hook-form';
 import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
 import videoSrc from 'assets/videos/intro.mp4';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
 const Step0 = () => {
-  const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
 
   const dispatch = useDispatch();
@@ -24,7 +23,7 @@ const Step0 = () => {
 
   const onSubmit = (data: any) => {
     setSessionStorageItem('name', data.name);
-    if (!errors.name) dispatch(setSignUpStep(step + 1));
+    if (!errors.name) dispatch(updateSignUpStep(SignupSteps.UserType));
   };
 
   return (
@@ -61,7 +60,7 @@ const Step0 = () => {
           type="submit"
           value="Get Started&nbsp;&nbsp;🎉"
           className={styles['submit-button']}
-          disabled={!!errors.name}
+          disabled={Object.keys(errors).length > 0}
         />
       </form>
     </div>

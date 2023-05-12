@@ -37,7 +37,7 @@ const Step3: FC<IStep3> = ({
   const onboardFlow = getSessionStorageItem('flow');
   const [activeButtons, setActiveButtons] = useState([]);
   const [showStepThreeOptions, setShowStepThreeOptions] = useState(false);
-  const step = useSelector((state: RootState) => state.user.step);
+  const step = useSelector((state: RootState) => state.auth.step);
   const dispatch = useDispatch();
   const name = getSessionStorageItem('name');
 

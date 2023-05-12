@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 import Step0 from '../Step0';
 import Step1 from '../Step1';
@@ -15,7 +16,7 @@ import Step6 from '../Step6';
 import Step7 from '../Step7';
 
 const ChatPrompts = () => {
-  const step = useSelector((state: RootState) => state.user.step);
+  const step = useSelector((state: RootState) => state.auth.step);
   const [showOptions, setShowOptions] = useState(false);
   const [active, setActive] = useState('');
 
@@ -23,11 +24,11 @@ const ChatPrompts = () => {
     <div
       className={clsx(
         styles['chat-prompts-container'],
-        step === 0 && styles.auto
+        step === SignupSteps.Welcome && styles.auto
       )}
     >
-      {step === 0 && <Step0 />}
-      {step === 1 && (
+      {step === SignupSteps.Welcome && <Step0 />}
+      {step === SignupSteps.UserType && (
         <>
           <Step1
             setShowOptions={setShowOptions}
@@ -38,7 +39,7 @@ const ChatPrompts = () => {
           <PromptFooter active={active === ''} />
         </>
       )}
-      {step === 2 && (
+      {step === SignupSteps.WorkType && (
         <>
           <Step2
             setShowOptions={setShowOptions}
@@ -49,7 +50,7 @@ const ChatPrompts = () => {
           <PromptFooter active={active === ''} />
         </>
       )}
-      {step === 3 && (
+      {step === SignupSteps.Objective && (
         <>
           <Step3
             setShowOptions={setShowOptions}
@@ -60,13 +61,13 @@ const ChatPrompts = () => {
           <PromptFooter active={active === ''} />
         </>
       )}
-      {step === 4 && (
+      {step === SignupSteps.Email && (
         <>
           <Step4 setActive={setActive} />
           <PromptFooter active={active === ''} />
         </>
       )}
-      {(step === 5 || step === 13) && <SignUpOptions />}
+      {step === SignupSteps.SignupOptions && <SignUpOptions />}
       {step === 6 && (
         <>
           <Step3
@@ -78,17 +79,13 @@ const ChatPrompts = () => {
           <PromptFooter active={active === ''} />
         </>
       )}
-      {(step === 7 ||
-        step === 8 ||
-        step === 9 ||
-        step === 10 ||
-        step === 11) && (
+      {step === SignupSteps.OrganisationOnboard && (
         <>
           <Step6 setActive={setActive} />
           <PromptFooter active={active === ''} />
         </>
       )}
-      {step === 12 && (
+      {/* {step === 12 && (
         <>
           <Step7
             setShowOptions={setShowOptions}
@@ -97,7 +94,7 @@ const ChatPrompts = () => {
           />
           <PromptFooter active={active === ''} />
         </>
-      )}
+      )} */}
     </div>
   );
 };

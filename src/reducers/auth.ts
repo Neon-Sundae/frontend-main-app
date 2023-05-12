@@ -3,7 +3,9 @@ import {
   UPDATE_FIRST_TIME_USER,
   UPDATE_CURRENT_SIGN_UP_STEP,
   UPDATE_ARCANA_AUTH_ADDRESS,
+  UPDATE_SIGNUP_STEP,
 } from 'actions/auth/types';
+import { SignupSteps } from 'interfaces/auth';
 
 interface State {
   loginStep: number;
@@ -12,6 +14,7 @@ interface State {
   arcanaAuth: {
     address: string | undefined;
   };
+  step: SignupSteps;
 }
 
 type Action =
@@ -30,6 +33,10 @@ type Action =
   | {
       type: typeof UPDATE_ARCANA_AUTH_ADDRESS;
       address: string;
+    }
+  | {
+      type: typeof UPDATE_SIGNUP_STEP;
+      step: SignupSteps;
     };
 
 const initialState: State = {
@@ -39,6 +46,7 @@ const initialState: State = {
   arcanaAuth: {
     address: undefined,
   },
+  step: SignupSteps.Welcome,
 };
 
 const auth = (state = initialState, action: Action): State => {
@@ -64,6 +72,11 @@ const auth = (state = initialState, action: Action): State => {
         arcanaAuth: {
           address: action.address,
         },
+      };
+    case UPDATE_SIGNUP_STEP:
+      return {
+        ...state,
+        step: action.step,
       };
     default:
       return { ...state };

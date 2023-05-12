@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { FC } from 'react';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 import WorkIcon from './Icons/WorkIcon';
 import CategoryIcon from './Icons/CategoryIcon';
@@ -9,33 +10,26 @@ import TeamIcon from './Icons/TeamIcon';
 import WalletIcon from './Icons/WalletIcon';
 
 const StepProgressBar = () => {
-  const step = useSelector((state: RootState) => state.user.step);
+  const step = useSelector((state: RootState) => state.auth.step);
 
   const fillCalc = () => {
     switch (step) {
-      case 1:
+      case SignupSteps.UserType:
         return 25;
-      case 2:
+      case SignupSteps.WorkType:
         return 50;
-      case 3:
-      case 4:
-      case 7:
-      case 8:
-      case 9:
-      case 10:
-      case 11:
-      case 12:
+      case SignupSteps.Objective:
         return 75;
-      case 5:
+      case SignupSteps.Email:
         return 100;
-      case 13:
+      case SignupSteps.SignupOptions:
         return 100;
       default:
         return null;
     }
   };
 
-  if (step === 0) return null;
+  if (step === SignupSteps.Welcome) return null;
 
   return (
     <div className={styles['step-progress-bar-container']}>
@@ -55,42 +49,29 @@ const StepProgressBar = () => {
 
       <div className={styles['step-progress-bar-container--step-icons']}>
         <span className={styles['step-icons-message-container']}>
-          <WorkIcon active={step === 1} />
-          {step === 1 && <StepMessage message="Let's  Go! 🚀" />}
+          <WorkIcon active={step === SignupSteps.UserType} />
+          {step === SignupSteps.UserType && (
+            <StepMessage message="Let's  Go! 🚀" />
+          )}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <CategoryIcon active={step === 2 || step === 6} />
-          {(step === 2 || step === 6) && (
+          <CategoryIcon active={step === SignupSteps.WorkType} />
+          {step === SignupSteps.WorkType && (
             <StepMessage message="You're amazing 👍" />
           )}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <TeamIcon
-            active={
-              step === 3 ||
-              step === 4 ||
-              step === 7 ||
-              step === 8 ||
-              step === 10 ||
-              step === 11 ||
-              step === 12
-            }
-          />
-          {(step === 3 ||
-            step === 4 ||
-            step === 7 ||
-            step === 8 ||
-            step === 9 ||
-            step === 10 ||
-            step === 11 ||
-            step === 12) && <StepMessage message="Making Work Fun 🍦" />}
+          <TeamIcon active={step === SignupSteps.Objective} />
+          {step === SignupSteps.Objective && (
+            <StepMessage message="Making Work Fun 🍦" />
+          )}
         </span>
 
         <span className={styles['step-icons-message-container']}>
-          <WalletIcon active={step === 5 || step === 13} />
-          {(step === 5 || step === 13) && (
+          <WalletIcon active={step === SignupSteps.SignupOptions} />
+          {step === SignupSteps.SignupOptions && (
             <StepMessage message="Into The Neonverse 🔥" />
           )}
         </span>
