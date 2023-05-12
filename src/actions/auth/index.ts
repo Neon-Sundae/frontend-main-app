@@ -5,6 +5,7 @@ import {
   UPDATE_CURRENT_SIGN_UP_STEP,
   UPDATE_ARCANA_AUTH_ADDRESS,
   UPDATE_SIGNUP_STEP,
+  UPDATE_ONBOARDING_DATA,
 } from './types';
 
 export const updateLoginStep = (loginStep: number) => ({
@@ -30,4 +31,11 @@ export const updateArcanaAuthAddress = (address: string) => ({
 export const updateSignUpStep = (step: SignupSteps) => ({
   type: UPDATE_SIGNUP_STEP,
   step,
+});
+
+export const updateOnboardingData = (data: {
+  [key: string]: string | number;
+}) => ({
+  type: UPDATE_ONBOARDING_DATA,
+  data,
 });

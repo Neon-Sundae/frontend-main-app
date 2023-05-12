@@ -4,6 +4,7 @@ import {
   UPDATE_CURRENT_SIGN_UP_STEP,
   UPDATE_ARCANA_AUTH_ADDRESS,
   UPDATE_SIGNUP_STEP,
+  UPDATE_ONBOARDING_DATA,
 } from 'actions/auth/types';
 import { SignupSteps } from 'interfaces/auth';
 
@@ -15,6 +16,9 @@ interface State {
     address: string | undefined;
   };
   step: SignupSteps;
+  onboardingData: {
+    name: string;
+  };
 }
 
 type Action =
@@ -37,6 +41,12 @@ type Action =
   | {
       type: typeof UPDATE_SIGNUP_STEP;
       step: SignupSteps;
+    }
+  | {
+      type: typeof UPDATE_ONBOARDING_DATA;
+      data: {
+        [key: string]: string | number;
+      };
     };
 
 const initialState: State = {
@@ -47,6 +57,9 @@ const initialState: State = {
     address: undefined,
   },
   step: SignupSteps.Welcome,
+  onboardingData: {
+    name: '',
+  },
 };
 
 const auth = (state = initialState, action: Action): State => {
@@ -77,6 +90,14 @@ const auth = (state = initialState, action: Action): State => {
       return {
         ...state,
         step: action.step,
+      };
+    case UPDATE_ONBOARDING_DATA:
+      return {
+        ...state,
+        onboardingData: {
+          ...state.onboardingData,
+          ...action.data,
+        },
       };
     default:
       return { ...state };
