@@ -1,4 +1,3 @@
-import { AuthProvider, CHAIN } from '@arcana/auth';
 import {
   localContracts,
   devContracts,
@@ -69,15 +68,5 @@ const configs: Environment = {
 
 const environment = import.meta.env.VITE_APPLICATION_ENV;
 const config = configs[environment];
-export const provider = new AuthProvider(
-  `${import.meta.env.VITE_ARCANA_AUTH_CLIENT_KEY}`,
-  {
-    chainConfig: {
-      chainId: config.chainId as CHAIN,
-      rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
-    },
-    alwaysVisible: true,
-  }
-);
 
 export default config;
