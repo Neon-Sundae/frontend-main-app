@@ -1,37 +1,37 @@
-import { useAuth, useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import { useEffect } from 'react';
-import { useArcanaWallet } from '../Step1/hooks';
 import styles from './index.module.scss';
+import { useArcanaLogin } from '../Step1/hooks';
+
+interface IEmailFormData {
+  email: string;
+}
 
 const ArcanaAuthLogin = () => {
-  const auth = useAuth();
-
-  const { provider } = useProvider();
-  const { loginSuccess } = useArcanaWallet();
   const navigate = useNavigate();
-
+  const { arcanaEmailLoginInit, arcanaLogin } = useArcanaLogin();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<IEmailFormData>();
+  const arcanaAuth = useSelector((state: RootState) => state.auth.arcanaAuth);
 
   useEffect(() => {
-    const triggerLoginSuccess = async () => {
-      await loginSuccess(auth.user?.address, provider);
-    };
-    if (auth.user) {
-      triggerLoginSuccess();
-    }
+    (async () => {
+      if (arcanaAuth.address) {
+        await arcanaLogin(arcanaAuth.address);
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, [arcanaAuth.address]);
 
-  const linkLogin = async (formData: any) => {
-    const { email } = formData;
-    await auth.loginWithLink(email);
+  const linkLogin = async (data: IEmailFormData) => {
+    await arcanaEmailLoginInit(data.email);
   };
 
   return (

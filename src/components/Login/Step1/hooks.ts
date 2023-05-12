@@ -1,6 +1,10 @@
-import { updateLoginStep, updateFirstTimeUser } from 'actions/auth';
+import {
+  updateLoginStep,
+  updateFirstTimeUser,
+  updateArcanaAuthAddress,
+} from 'actions/auth';
 import config from 'config';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { providers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,7 +23,7 @@ import {
 } from 'utils/web3EventFn';
 import UAuth from '@uauth/js';
 import { EthereumProvider } from '@arcana/auth';
-import { useAuth } from '@arcana/auth-react';
+import { useAuth, useProvider } from '@arcana/auth-react';
 import { useNavigate } from 'react-router-dom';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import toast from 'react-hot-toast';
@@ -563,16 +567,14 @@ const useUnstoppableDomains = (
 
 const useArcanaWallet = () => {
   const auth = useAuth();
+  const { provider } = useProvider();
   const navigate = useNavigate();
 
   const ac = new AbortController();
   const { signal } = ac;
   const dispatch = useDispatch();
 
-  const signup = async (
-    walletId: string | undefined,
-    provider: EthereumProvider
-  ) => {
+  const signup = async (walletId: string | undefined) => {
     try {
       if (walletId) {
         const payload = {
@@ -641,75 +643,93 @@ const useArcanaWallet = () => {
     }
   };
 
-  const loginSuccess = async (
-    walletId: string | undefined,
-    provider: EthereumProvider
-  ) => {
+  return { signup };
+};
+
+const useArcanaLogin = () => {
+  const auth = useAuth();
+  const { provider } = useProvider();
+  const navigate = useNavigate();
+
+  const ac = new AbortController();
+  const { signal } = ac;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const isLoggedIn = await auth.isLoggedIn;
+
+      if (isLoggedIn && auth.user?.address) {
+        dispatch(updateArcanaAuthAddress(auth.user.address));
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
+  const arcanaEmailLoginInit = async (email: string) => {
+    await auth.loginWithLink(email);
+  };
+
+  const arcanaLogin = async (walletId: string) => {
     try {
-      if (walletId) {
-        const payload = {
+      const payload = {
+        walletId,
+      };
+      const response = await fetch(
+        `${config.ApiBaseUrl}/auth/login/generate-nonce/arcana`,
+        {
+          signal,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      const json = await handleApiErrors(response);
+      dispatch(updateUser(json.user));
+
+      const signature = await signArcanaMessage(
+        provider,
+        json.message,
+        walletId
+      );
+
+      if (signature) {
+        const payload2 = {
+          message: json.message,
           walletId,
+          isFirstTimeUser: json.isFirstTimeUser,
+          signature,
         };
 
-        const response = await fetch(
-          `${config.ApiBaseUrl}/auth/login/generate-nonce/arcana`,
+        const response2 = await fetch(
+          `${config.ApiBaseUrl}/auth/verify-signature`,
           {
             signal,
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify(payload2),
           }
         );
-        if (response.status === 404) {
-          toast.error("User doesn't exist!", { id: 'error' });
-          setTimeout(() => {
-            navigate('/sign_up');
-            auth.logout();
-          }, 3000);
-        }
-        const json: any = await handleApiErrors(response);
 
-        dispatch(updateUser(json.user));
-
-        const signature = await signArcanaMessage(
-          provider,
-          json.message,
-          walletId
-        );
-
-        if (signature) {
-          const payload2 = {
-            message: json.message,
-            walletId,
-            isFirstTimeUser: json.isFirstTimeUser,
-            signature,
-          };
-
-          const response2 = await fetch(
-            `${config.ApiBaseUrl}/auth/verify-signature`,
-            {
-              signal,
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(payload2),
-            }
-          );
-
-          const json2: any = await handleApiErrors(response2);
-          navigate('/dashboard');
-          setAccessToken(json2.accessToken);
-          dispatch(updateFirstTimeUser(json.isFirstTimeUser));
-        }
+        const json2: any = await handleApiErrors(response2);
+        navigate('/dashboard');
+        setAccessToken(json2.accessToken);
+        dispatch(updateFirstTimeUser(json.isFirstTimeUser));
       }
-    } catch (error: any) {
-      // if (error?.message === 'Not Found') navigate('/sign-up');
+    } catch (e) {
+      // TODO - Can be done in a better way
+      toast.error("User doesn't exist!");
+      setTimeout(async () => {
+        await auth.logout();
+      }, 3000);
     }
   };
-  return { loginSuccess, signup };
+
+  return { arcanaEmailLoginInit, arcanaLogin };
 };
 
 export {
@@ -720,4 +740,5 @@ export {
   useArcanaWallet,
   useWalletConnectSignup,
   useUserOnboardData,
+  useArcanaLogin,
 };

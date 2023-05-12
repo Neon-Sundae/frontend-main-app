@@ -1,16 +1,23 @@
 import { FC, ReactNode } from 'react';
-import { Auth, useAuth } from '@arcana/auth-react';
 
 interface IArcanaAuthLayout {
   children: ReactNode;
 }
 
 const ArcanaAuthLayout: FC<IArcanaAuthLayout> = ({ children }) => {
-  const auth = useAuth();
+  // const auth = useAuth();
+  // console.log('render auth layout');
+  // const onLogin = () => {
+  //   console.log('first login');
+  //   console.log(auth);
+  // };
+
   return (
     <>
       {children}
-      {auth.isLoggedIn && <Auth externalWallet theme="dark" />}
+      {/* {auth.isLoggedIn && ( */}
+      {/* <Auth externalWallet={false} theme="dark" /> */}
+      {/* )} */}
     </>
   );
 };
