@@ -18,6 +18,7 @@ interface State {
   step: SignupSteps;
   onboardingData: {
     name: string;
+    userType: string;
   };
 }
 
@@ -59,6 +60,7 @@ const initialState: State = {
   step: SignupSteps.Welcome,
   onboardingData: {
     name: '',
+    userType: '',
   },
 };
 

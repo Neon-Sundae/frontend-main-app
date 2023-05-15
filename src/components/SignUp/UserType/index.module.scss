@@ -27,7 +27,7 @@
         font-size: 1.25rem;
       }
 
-      & > span {
+      & span {
         display: flex;
         justify-content: space-between;
         width: 520px;
@@ -37,7 +37,7 @@
         font-weight: 400;
         font-size: 1.25rem;
 
-        & > .choice-option {
+        & .choice-option {
           color: #fff;
           width: 234px;
           height: 203px;
@@ -78,9 +78,13 @@
               visibility: visible;
             }
           }
+
+          & > input {
+            display: none;
+          }
         }
 
-        & > .active {
+        & .active {
           transition: transform 125ms;
           transform: translateY(-4px);
           border: 0.94px solid #555555;

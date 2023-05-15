@@ -1,31 +1,25 @@
 import clsx from 'clsx';
 import { updateSignUpStep } from 'actions/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useDispatch } from 'react-redux';
 import { FC } from 'react';
-import { getSessionStorageItem } from 'utils/sessionStorageFunc';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
 interface IPromptFooter {
-  active: boolean;
+  prev: SignupSteps;
+  next: SignupSteps;
+  isDisabled: boolean;
 }
 
-const PromptFooter: FC<IPromptFooter> = ({ active }) => {
-  const step = useSelector((state: RootState) => state.auth.step);
+const PromptFooter: FC<IPromptFooter> = ({ prev, next, isDisabled }) => {
   const dispatch = useDispatch();
 
   const handleBackFunc = () => {
-    if (step === 0 || step === 6) dispatch(updateSignUpStep(1));
-    else dispatch(updateSignUpStep(step - 1));
+    dispatch(updateSignUpStep(prev));
   };
 
   const handleContinueFunc = () => {
-    const isFlow = getSessionStorageItem('flow');
-    if (isFlow === 'founder') {
-      if (step < 6) dispatch(updateSignUpStep(6));
-      if (step >= 6) dispatch(updateSignUpStep(step + 1));
-    }
-    if (isFlow === 'builder') dispatch(updateSignUpStep(step + 1));
+    dispatch(updateSignUpStep(next));
   };
 
   return (
@@ -40,10 +34,12 @@ const PromptFooter: FC<IPromptFooter> = ({ active }) => {
         </i>
       </button>
       <button
+        type="submit"
+        form="hook-form"
         className={styles['prompt-footer-container--continue-button']}
         aria-label="continue"
         onClick={handleContinueFunc}
-        disabled={active}
+        disabled={isDisabled}
       >
         Continue
       </button>

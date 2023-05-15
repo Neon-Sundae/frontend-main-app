@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 import Welcome from '../Welcome';
-import Step1 from '../Step1';
+import UserType from '../UserType';
 import Step2 from '../Step2';
 import Step3 from '../Step3';
 import Step4 from '../Step4';
@@ -29,15 +29,7 @@ const ChatPrompts = () => {
     >
       {step === SignupSteps.Welcome && <Welcome />}
       {step === SignupSteps.UserType && (
-        <>
-          <Step1
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
+        <UserType setActive={setActive} active={active} />
       )}
       {step === SignupSteps.WorkType && (
         <>
@@ -47,7 +39,7 @@ const ChatPrompts = () => {
             active={active}
             showOptions={showOptions}
           />
-          <PromptFooter active={active === ''} />
+          {/* <PromptFooter active={active === ''} /> */}
         </>
       )}
       {step === SignupSteps.Objective && (
@@ -58,13 +50,13 @@ const ChatPrompts = () => {
             active={active}
             showOptions={showOptions}
           />
-          <PromptFooter active={active === ''} />
+          {/* <PromptFooter active={active === ''} /> */}
         </>
       )}
       {step === SignupSteps.Email && (
         <>
           <Step4 setActive={setActive} />
-          <PromptFooter active={active === ''} />
+          {/* <PromptFooter active={active === ''} /> */}
         </>
       )}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
@@ -76,13 +68,13 @@ const ChatPrompts = () => {
             active={active}
             showOptions={showOptions}
           />
-          <PromptFooter active={active === ''} />
+          {/* <PromptFooter active={active === ''} /> */}
         </>
       )}
       {step === SignupSteps.OrganisationOnboard && (
         <>
           <Step6 setActive={setActive} />
-          <PromptFooter active={active === ''} />
+          {/* <PromptFooter active={active === ''} /> */}
         </>
       )}
       {/* {step === 12 && (
