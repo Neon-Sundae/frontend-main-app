@@ -1,12 +1,4 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import {
   getSessionStorageItem,
@@ -25,11 +17,7 @@ import clsx from 'clsx';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
-interface IStep6 {
-  setActive: Dispatch<SetStateAction<string>>;
-}
-
-const Step6: FC<IStep6> = ({ setActive }) => {
+const Step6: FC = () => {
   const step = useSelector((state: RootState) => state.auth.step);
   const name = getSessionStorageItem('name');
 
@@ -40,11 +28,6 @@ const Step6: FC<IStep6> = ({ setActive }) => {
   const [showStepSixOptions, setShowStepSixOptions] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setActive('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     setSessionStorageItem('file', localFile);
@@ -64,14 +47,9 @@ const Step6: FC<IStep6> = ({ setActive }) => {
     name: 'name',
   });
 
-  if (Object.keys(errors).length > 0) {
-    setActive('');
-  }
-
   if (Object.keys(errors).length === 0) {
     setSessionStorageItem('organisationName', orgName);
     setSessionStorageItem('organisationDescription', organisationDescription);
-    setActive('1');
   }
 
   const handleClick = (e: any) => {
@@ -116,7 +94,6 @@ const Step6: FC<IStep6> = ({ setActive }) => {
                     500,
                     () => {
                       setShowStepSixOptions(true);
-                      setActive('');
                     },
                   ]}
                   cursor={false}

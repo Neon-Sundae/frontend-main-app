@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -17,7 +16,6 @@ import Step7 from '../Step7';
 
 const ChatPrompts = () => {
   const step = useSelector((state: RootState) => state.auth.step);
-  const [active, setActive] = useState('');
 
   return (
     <div
@@ -30,20 +28,10 @@ const ChatPrompts = () => {
       {step === SignupSteps.UserType && <UserType />}
       {step === SignupSteps.WorkType && <WorkType />}
       {step === SignupSteps.Objective && <Objective />}
-      {step === SignupSteps.Email && (
-        <>
-          <Step4 setActive={setActive} />
-          {/* <PromptFooter active={active === ''} /> */}
-        </>
-      )}
+      {step === SignupSteps.Email && <Step4 />}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
       {step === 6 && <Objective />}
-      {step === SignupSteps.OrganisationOnboard && (
-        <>
-          <Step6 setActive={setActive} />
-          {/* <PromptFooter active={active === ''} /> */}
-        </>
-      )}
+      {step === SignupSteps.OrganisationOnboard && <Step6 />}
       {/* {step === 12 && (
         <>
           <Step7
