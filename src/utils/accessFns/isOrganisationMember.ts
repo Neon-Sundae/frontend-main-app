@@ -3,14 +3,11 @@ import { IUser } from 'interfaces/user';
 
 const isOrganisationMember = (
   loggedInUser: Partial<IUser> | undefined,
-  members: IMemberData,
-  preview?: boolean
+  members: IMemberData | undefined
 ) => {
-  const isMember = members.all.find(
-    (x: IMember) => x.user.userId === loggedInUser?.userId
+  const isMember = members?.all.find(
+    x => x.user.userId === loggedInUser?.userId
   );
-
-  if (preview) return false;
 
   return isMember !== undefined;
 };

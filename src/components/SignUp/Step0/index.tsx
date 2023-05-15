@@ -8,8 +8,6 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
-
-import { useState } from 'react';
 import videoSrc from 'assets/videos/intro.mp4';
 import styles from './index.module.scss';
 
@@ -32,7 +30,13 @@ const Step0 = () => {
   return (
     <div className={styles['step0-container']}>
       <div className={styles['video-frame']}>
-        <video muted className={styles['background-video-container']} controls>
+        <video
+          className={styles['background-video-container']}
+          controls
+          muted
+          autoPlay
+          poster="/src/assets/images/poster/intro-video.png"
+        >
           <source src={videoSrc} type="video/mp4" />
         </video>
       </div>

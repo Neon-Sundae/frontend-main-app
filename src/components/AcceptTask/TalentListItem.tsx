@@ -34,8 +34,10 @@ const TalentListItem: FC<ITalentListItem> = ({
     saveRejectedBuilder(data, taskId);
   };
 
-  const handleNavigation = () => navigate(`/profile/${data.profileId}`);
-
+  const handleNavigation = () => {
+    navigate(`/profile/${data.profileId}`);
+    // navigate(0);
+  };
   return (
     <div
       className={styles['talent-list-item-container']}

@@ -1,22 +1,34 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
-import { RootState } from 'reducers';
 import Education from 'components/Education';
 import Tasks from 'components/Tasks';
 import WorkHistory from 'components/WorkHistory';
 import OrganisationTab from 'components/OrganisationTab';
 import ProjectsTab from 'components/ProjectsTab';
 import useIsOrganisationMember from 'hooks/useIsOrganisationMember';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsWrapper } from 'queries/profile';
 import styles from './index.module.scss';
 
 const ProfileTabs: FC = () => {
+  const params = useParams();
   const [activeState, setActiveState] = useState('workHistory');
-  const user = useSelector((state: RootState) => state.user.user);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsWrapper(params.profileId);
 
-  const { isOrganisationMember } = useIsOrganisationMember(user?.userId);
+  const { isOrganisationMember } = useIsOrganisationMember(
+    userData?.user?.userId
+  );
+
+  // * This condition's working to differentiate between the logged in user and the profile user
+  const isLoggedInUser = userData?.user.userId === profileData?.userId;
+
+  useEffect(() => {
+    setActiveState('workHistory');
+  }, [params.profileId]);
 
   const renderTabs = () => {
     switch (activeState) {
@@ -46,7 +58,7 @@ const ProfileTabs: FC = () => {
   return (
     <>
       <div className={styles['profile-tab-header']}>
-        {isOrganisationMember && (
+        {isOrganisationMember && isLoggedInUser && (
           <h3
             className={clsx(
               styles['profile-tab-title'],
@@ -58,7 +70,7 @@ const ProfileTabs: FC = () => {
             My Organisations
           </h3>
         )}
-        {isOrganisationMember && (
+        {isOrganisationMember && isLoggedInUser && (
           <h3
             className={clsx(
               styles['profile-tab-title'],

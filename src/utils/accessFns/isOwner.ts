@@ -3,10 +3,10 @@ import { IUser } from 'interfaces/user';
 
 const isOwner = (
   loggedInUser: Partial<IUser> | undefined,
-  members: IMemberData
+  members: IMemberData | undefined
 ) => {
-  if (members.owner.length === 0) return false;
-  return loggedInUser?.userId === members.owner[0].user.userId;
+  if (members?.owner.length === 0) return false;
+  return loggedInUser?.userId === members?.owner[0].user.userId;
 };
 
 export default isOwner;

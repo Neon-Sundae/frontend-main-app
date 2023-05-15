@@ -2,11 +2,15 @@ import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchUserProjects } from 'queries/organisation';
 import styles from './index.module.scss';
-import useFetchUserProjects from './hooks';
 
 const ProjectsCard = () => {
-  const { flProjects, isLoading } = useFetchUserProjects();
+  const userData = useFetchUserDetailsWrapper();
+  const { data: userProjects, isLoading } = useFetchUserProjects(
+    userData?.user.userId
+  );
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -15,7 +19,7 @@ const ProjectsCard = () => {
 
   return (
     <div className={styles['profile-project-container']}>
-      {flProjects?.map((project: any) => {
+      {userProjects?.map((project: any) => {
         return (
           <div
             onClick={() => {
@@ -65,7 +69,7 @@ const ProjectsCard = () => {
           </div>
         );
       })}
-      {flProjects.length === 0 && <p>No Projects</p>}
+      {userProjects?.length === 0 && <p>No Projects</p>}
     </div>
   );
 };

@@ -1,66 +1,61 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { ReactComponent as FoundersLabIcon } from 'assets/illustrations/icons/founderslab.svg';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'reducers';
 import toast from 'react-hot-toast';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
-import config from 'config';
-import { getAccessToken } from 'utils/authFn';
-import { useMutation } from '@tanstack/react-query';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
+import { useParams } from 'react-router-dom';
+import {
+  useFetchProfileDetailsWrapper,
+  useUpdateProfileDetails,
+} from 'queries/profile';
+import { useFetchUserDetailsWrapper, useUpdateUserDetails } from 'queries/user';
+import { editProfile } from 'actions/profile';
 import styles from './index.module.scss';
-import { useUpdateProfileDetails } from './hooks';
 import ProfilePictureModal from '../ProfilePictureModal';
 
 const BasicDetailsEdit: FC = () => {
-  const { profile, xp } = useSelector((state: RootState) => state.profile);
+  const params = useParams();
+  const dispatch = useDispatch();
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsWrapper(params.profileId);
+  const updateProfileDetails = useUpdateProfileDetails({
+    profileId: params.profileId,
+  });
+  const updateUserDetails = useUpdateUserDetails({
+    userId: userData?.user?.userId,
+  });
 
-  const profileId = profile?.profileId ? profile.profileId : 0;
-  const user = useSelector((state: RootState) => state.user.user);
-  const [name, setName] = useState(
-    profile?.user?.name ? profile?.user.name : ''
-  );
-  const [title, setTitle] = useState(profile?.title ?? 'Product Designer');
+  const { xp } = useSelector((state: RootState) => state.profile);
+
+  const [name, setName] = useState(profileData?.user?.name || '');
+  const [title, setTitle] = useState(profileData?.title || 'Product Designer');
   const [bio, setBio] = useState(
-    profile?.description ??
+    profileData?.description ||
       `Lorem imsum text is here imsum text is here imsum text is here imsum
   text is here imsum text is here imsum text is here imsum text is here
   imsum.`
   );
-  const [picture, setPicture] = useState<any>(profile?.picture ?? null);
-  const updateProfileDetails = useUpdateProfileDetails();
-  const { mutate: updateProfilePicture } = useMutation(
-    async () => {
-      return fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ picture }),
-      });
-    },
-    {
-      onSuccess: (res: any) => {
-        console.log('success', res);
-      },
-      onError: (err: any) => {
-        console.log('err', err);
-      },
-    }
-  );
+  const [picture, setPicture] = useState<any>(profileData?.picture || null);
 
-  const handleSave = () => {
-    updateProfileDetails({
-      userId: user?.userId,
-      profileId: profile?.profileId,
-      name,
-      title,
-      description: bio,
-      picture,
+  const handleSave = async () => {
+    const promise1 = updateProfileDetails.mutateAsync({
+      payload: {
+        title,
+        description: bio,
+        picture,
+      },
     });
-    updateProfilePicture();
+    const promise2 = updateUserDetails.mutateAsync({
+      payload: {
+        name,
+      },
+    });
+
+    await Promise.allSettled([promise1, promise2]);
+    dispatch(editProfile(false));
   };
 
   return (
@@ -75,10 +70,7 @@ const BasicDetailsEdit: FC = () => {
       <div id="user-profile-mint">
         <ExperiencePoints xp={xp} />
         <ProfileAddressChain
-          name={name}
-          profileSmartContractId={profile?.profileSmartContractId}
-          walletId={user?.walletId}
-          title={title}
+          profileSmartContractId={profileData?.profileSmartContractId}
         />
       </div>
       <ProfileBio bio={bio || 'Add your bio'} setBio={setBio} />
@@ -190,16 +182,10 @@ const ExperiencePoints: FC<IExperiencePoints> = ({ xp }) => {
 
 interface IProfileAddressChain {
   profileSmartContractId: string | null | undefined;
-  name: string;
-  walletId: string | undefined;
-  title: string;
 }
 
 const ProfileAddressChain: FC<IProfileAddressChain> = ({
   profileSmartContractId,
-  name,
-  walletId,
-  title,
 }) => {
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(profileSmartContractId ?? '');

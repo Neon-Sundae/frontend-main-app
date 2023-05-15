@@ -2,15 +2,19 @@ import { useQuery } from '@tanstack/react-query';
 import Card from 'components/Card';
 import config from 'config';
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import ProjectCard from '../ProjectCard';
 import styles from './index.module.scss';
 
 const MyProjects = () => {
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
+
   const { data } = useQuery(
     ['myFlProjects'],
     () =>
@@ -25,7 +29,7 @@ const MyProjects = () => {
 
   const getFilteredProfileTasksData = () => {
     return _.filter(data, {
-      profileTask: [{ Profile: { profileId: profile?.profileId } }],
+      profileTask: [{ Profile: { profileId: profileData?.profileId } }],
     });
   };
 
@@ -38,6 +42,7 @@ const MyProjects = () => {
       ])
     ).values(),
   ];
+
   return (
     <>
       <h2>Projects I have applied to</h2>

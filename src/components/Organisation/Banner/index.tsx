@@ -17,19 +17,23 @@ import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg'
 import Background from 'assets/illustrations/profile/pp-bg.png';
 import { Toaster } from 'react-hot-toast';
 import StartPrjModal from 'components/StartPrjModal';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import {
+  useFetchOrganisationOwnerManager,
+  useUpdateOrganisationDetails,
+} from 'queries/organisation';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import styles from './index.module.scss';
 import OrganisationSocialModal from './OrganisationSocialModal';
-import { useUpdateOrganisation, useUpdateOrganisationImage } from './hooks';
 
 interface IBanner {
   organisation: IOrganisation;
 }
 
 const Banner: FC<IBanner> = ({ organisation }) => {
-  const { orgId } = useParams();
+  const params = useParams();
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefCover = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -45,9 +49,9 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const [orgCoverFileData, setCoverLogoFileData] = useState<File | null>(null);
   const [showPrjModal, setShowPrjModal] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
-  const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
 
-  const { members } = useFetchOrganisationOwnerManager(orgId);
+  const updateOrganisationDetails = useUpdateOrganisationDetails(params.orgId);
+  const { data: members } = useFetchOrganisationOwnerManager(params.orgId);
 
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
   const payload = {
@@ -86,7 +90,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   };
 
   const handleDebounceFn = (nameTemp: string, value: string) => {
-    updateOrganisation.mutate({
+    updateOrganisationDetails.mutate({
       ...payload,
       [nameTemp]: value,
     });
@@ -191,7 +195,7 @@ const Banner: FC<IBanner> = ({ organisation }) => {
           ) : (
             <h2 className={styles['organisation-name']}>{organisation.name}</h2>
           )}
-          {isOrganisationMember(user, members, publicView) ? (
+          {isOrganisationMember(user, members) ? (
             isEditable ? (
               <button
                 className={styles.btn}

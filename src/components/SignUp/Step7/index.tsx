@@ -27,7 +27,7 @@ const Step7: FC<IStep4> = ({ setActive, setShowOptions, showOptions }) => {
     register,
     control,
     formState: { errors },
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: 'onBlur' });
 
   const email = useWatch({
     control,
@@ -83,7 +83,7 @@ const Step7: FC<IStep4> = ({ setActive, setShowOptions, showOptions }) => {
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...register('email', {
                     required: true,
-                    pattern: regexEmail,
+                    validate: value => regexEmail.test(value),
                   })}
                   style={{
                     border:

@@ -9,7 +9,7 @@ import convertHtmlToReact from '@hedgedoc/html-to-react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { useNavigate } from 'react-router-dom';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import styles from './index.module.scss';
 import EditJobEntry from '../EditJobEntry';
@@ -62,7 +62,7 @@ const JobView: FC<IJobView> = ({
 
   const user = useSelector((state: RootState) => state.user.user);
 
-  const { members } = useFetchOrganisationOwnerManager(orgId);
+  const { data: members } = useFetchOrganisationOwnerManager(orgId);
 
   const isOrganisationMemberLocal = () => isOrganisationMember(user, members);
 

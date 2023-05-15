@@ -9,30 +9,32 @@ import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete.
 import months from 'utils/getMonthsArray';
 import numberRange from 'utils/numberRange';
 import CreatableSelect from 'react-select/creatable';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import filterOrganisationData from 'utils/filterOrganisationData';
 import { IOrganisationSelectData } from 'interfaces/organisation';
-import creatableReactSelectStyles from './createSelectStyles';
+import { useFetchAllOrganisations } from 'queries/organisation';
 import {
-  useAddProfileWorkplace,
+  useCreateProfileWorkplace,
+  useFetchProfileWorkplace,
   useRemoveProfileWorkplace,
   useUpdateProfileWorkplace,
-  useFetchAllOrganisations,
-} from './hooks';
+} from 'queries/profile';
+import creatableReactSelectStyles from './createSelectStyles';
 import styles from './index.module.scss';
 
 const WorkHistory: FC = () => {
-  const data = useFetchAllOrganisations();
-
-  const workplaces = useSelector(
-    (state: RootState) => state.profile.workplaces
-  );
+  const params = useParams();
+  const { data: allOrgs } = useFetchAllOrganisations();
+  const { data: workplaces } = useFetchProfileWorkplace({
+    profileId: params.profileId,
+  });
+  const addProfileWorkplace = useCreateProfileWorkplace({
+    profileId: params.profileId,
+  });
 
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
-
-  const addProfileWorkplace = useAddProfileWorkplace();
 
   return (
     <div className={styles['work-history-container']}>
@@ -46,7 +48,8 @@ const WorkHistory: FC = () => {
             description={d.description}
             startDate={d.startDate}
             endDate={d.endDate}
-            allOrganisationData={data}
+            allOrganisationData={allOrgs}
+            profileId={params.profileId}
           />
         ) : (
           <WorkplaceCard
@@ -57,12 +60,15 @@ const WorkHistory: FC = () => {
             description={d.description}
             startDate={d.startDate}
             endDate={d.endDate}
-            isOrganisation={filterOrganisationData(d.name, data)}
+            isOrganisation={filterOrganisationData(d.name, allOrgs)}
           />
         )
       )}
       {isEditable ? (
-        <div className={styles['add-more-btn']} onClick={addProfileWorkplace}>
+        <div
+          className={styles['add-more-btn']}
+          onClick={() => addProfileWorkplace.mutate()}
+        >
           <p>Add more</p>
           <i className="material-icons">add</i>
         </div>
@@ -119,7 +125,8 @@ interface IWorkplaceEdit {
   description: string;
   startDate: string;
   endDate: string;
-  allOrganisationData: IOrganisationSelectData[];
+  allOrganisationData: IOrganisationSelectData[] | undefined;
+  profileId: string | undefined;
 }
 
 type SelectOptionType = { label: string; value: string };
@@ -132,6 +139,7 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
   startDate,
   endDate,
   allOrganisationData,
+  profileId,
 }) => {
   const now = new Date();
   const [roleLocal, setRoleLocal] = useState(role);
@@ -149,8 +157,14 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
     endDate: endDateLocal,
   };
 
-  const removeProfileWorkplace = useRemoveProfileWorkplace();
-  const updateProfileWorkplace = useUpdateProfileWorkplace();
+  const removeProfileWorkplace = useRemoveProfileWorkplace({
+    profileId,
+    workplaceId,
+  });
+  const updateProfileWorkplace = useUpdateProfileWorkplace({
+    profileId,
+    workplaceId,
+  });
 
   const [selectedOptions, setSelectedOptions] = useState<SelectOptionType>({
     label: nameValue,
@@ -158,9 +172,8 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
   });
 
   const handleDebounceFn = (keyName: string, value: string) => {
-    updateProfileWorkplace({
-      workplaceId,
-      keyName,
+    updateProfileWorkplace.mutate({
+      name: keyName,
       value,
     });
   };
@@ -221,7 +234,7 @@ const WorkplaceCardEdit: FC<IWorkplaceEdit> = ({
     debounceFn(name, tempDate);
   };
 
-  const handleDelete = () => removeProfileWorkplace(workplaceId);
+  const handleDelete = () => removeProfileWorkplace.mutate();
 
   const getStartMonthDefault = (value: number) =>
     value === new Date(startDateLocal).getMonth() + 1;
