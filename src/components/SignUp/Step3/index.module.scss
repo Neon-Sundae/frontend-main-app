@@ -1,4 +1,8 @@
 .step3-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
   .chat-prompts-container {
     &--chat-message {
       width: 79%;
@@ -22,10 +26,11 @@
         border-radius: 18.5481px;
         padding: 25px 50px;
 
+        font-family: var(--font-family-roboto-regular);
+        font-weight: 400;
+        font-size: 1.25rem;
+
         & > p {
-          font-family: var(--font-family-roboto-regular);
-          font-weight: 400;
-          font-size: 1.25rem;
           animation: fadeIn 2s;
 
           @keyframes fadeIn {
@@ -38,17 +43,13 @@
           }
         }
 
-        p,
         &--text {
-          font-family: var(--font-family-roboto-regular);
-          font-style: normal;
-          font-size: 14px;
           margin-bottom: 10px;
           animation: messageShow;
           animation-duration: 1s;
         }
 
-        & > span {
+        & > form {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
@@ -57,6 +58,7 @@
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
           font-size: 1.25rem;
+          margin-top: 20px;
 
           & > .choice-option {
             color: #fff;
@@ -83,6 +85,7 @@
             animation-duration: 1s;
             border: 1.64px solid;
             margin-bottom: 15px;
+            text-align: center;
             border-image-source: linear-gradient(0deg, #ffffff, #ffffff),
               linear-gradient(0deg, #606060, #606060);
 
@@ -98,6 +101,10 @@
                 opacity: 1;
                 visibility: visible;
               }
+            }
+
+            & > input {
+              display: none;
             }
           }
 

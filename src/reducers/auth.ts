@@ -19,6 +19,7 @@ interface State {
   onboardingData: {
     name: string;
     userType: string;
+    objective: string[];
   };
 }
 
@@ -61,6 +62,7 @@ const initialState: State = {
   onboardingData: {
     name: '',
     userType: '',
+    objective: [],
   },
 };
 

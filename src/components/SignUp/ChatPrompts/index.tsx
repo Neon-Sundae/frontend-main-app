@@ -30,14 +30,7 @@ const ChatPrompts = () => {
       {step === SignupSteps.Welcome && <Welcome />}
       {step === SignupSteps.UserType && <UserType />}
       {step === SignupSteps.WorkType && <WorkType />}
-      {step === SignupSteps.Objective && (
-        <Step3
-          setShowOptions={setShowOptions}
-          setActive={setActive}
-          active={active}
-          showOptions={showOptions}
-        />
-      )}
+      {step === SignupSteps.Objective && <Step3 />}
       {step === SignupSteps.Email && (
         <>
           <Step4 setActive={setActive} />
@@ -45,17 +38,7 @@ const ChatPrompts = () => {
         </>
       )}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
-      {step === 6 && (
-        <>
-          <Step3
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          {/* <PromptFooter active={active === ''} /> */}
-        </>
-      )}
+      {step === 6 && <Step3 />}
       {step === SignupSteps.OrganisationOnboard && (
         <>
           <Step6 setActive={setActive} />

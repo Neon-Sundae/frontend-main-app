@@ -1,21 +1,14 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import clsx from 'clsx';
-import {
-  getSessionStorageItem,
-  setSessionStorageItem,
-} from 'utils/sessionStorageFunc';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
+import { UseFormRegister, useForm } from 'react-hook-form';
+import { RootState } from 'reducers';
+import { SignupSteps } from 'interfaces/auth';
+import { updateOnboardingData } from 'actions/auth';
 import styles from './index.module.scss';
-
-interface IStep3 {
-  setActive: Dispatch<SetStateAction<string>>;
-  setShowOptions: Dispatch<SetStateAction<boolean>>;
-  showOptions: boolean;
-  active: string;
-}
+import PromptFooter from '../PromptFooter';
 
 const choices = [
   'Collaboratively build projects with community',
@@ -28,35 +21,23 @@ const choices = [
   'Others',
 ];
 
-const Step3: FC<IStep3> = ({
-  setActive,
-  setShowOptions,
-  showOptions,
-  active,
-}) => {
-  const onboardFlow = getSessionStorageItem('flow');
-  const [activeButtons, setActiveButtons] = useState([]);
-  const [showStepThreeOptions, setShowStepThreeOptions] = useState(false);
-  const step = useSelector((state: RootState) => state.auth.step);
+interface IObjectiveForm {
+  objective: string[];
+}
+
+const Objective: FC = () => {
   const dispatch = useDispatch();
-  const name = getSessionStorageItem('name');
+  const [showOptions, setShowOptions] = useState(false);
+  const { register, handleSubmit, watch } = useForm<IObjectiveForm>();
+  const onboardingData = useSelector(
+    (state: RootState) => state.auth.onboardingData
+  );
 
-  useEffect(() => {
-    setActive('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const formValues = watch();
 
-  if (onboardFlow === 'founder') {
-    // dispatch(setSignUpStep(step + 1));
-  }
-
-  const checkActive = (id: string) => {
-    return activeButtons.filter(
-      (button: { id: string; choice: string }) => button.id === id
-    );
+  const onSubmit = (data: IObjectiveForm) => {
+    dispatch(updateOnboardingData({ objective: data.objective }));
   };
-
-  if (activeButtons.length === 0) setActive('');
 
   return (
     <div className={styles['step3-container']}>
@@ -70,94 +51,72 @@ const Step3: FC<IStep3> = ({
               display: 'block',
             }}
             sequence={[
-              `Awesome stuff ${name}, how are you planning to \n use Neon Sundae?`,
+              `Awesome stuff ${onboardingData.name}, how are you planning to \n use Neon Sundae?`,
               500,
               () => {
-                setShowStepThreeOptions(true);
+                setShowOptions(true);
               },
             ]}
             cursor={false}
             speed={80}
           />
-          {showStepThreeOptions && (
-            <p className={styles['user-choices--text']}>* Choose one or more</p>
-          )}
 
-          {showStepThreeOptions && (
+          {showOptions && (
             <>
-              <span>
-                {choices.map((choice, i) => {
+              <p className={styles['user-choices--text']}>
+                * Choose one or more
+              </p>
+              <form id="hook-form" onSubmit={handleSubmit(onSubmit)}>
+                {choices.map(choice => {
                   return (
                     <ChoiceButton
-                      id={(i + 1).toString()}
-                      setActive={setActive}
-                      active={
-                        checkActive((i + 1).toString()).length
-                          ? (i + 1).toString()
-                          : ''
-                      }
+                      key={choice}
+                      objective={formValues.objective}
                       text={choice}
-                      activeButtons={activeButtons}
-                      setActiveButtons={setActiveButtons}
+                      register={register}
                     />
                   );
                 })}
-              </span>
+              </form>
             </>
           )}
         </div>
       </div>
+      <PromptFooter
+        prev={SignupSteps.WorkType}
+        next={SignupSteps.Email}
+        isDisabled={!formValues.objective}
+      />
     </div>
   );
 };
 
 interface IChoiceButton {
-  id: string;
-  setActive: Dispatch<SetStateAction<string>>;
-  active: string;
   text: string;
-  activeButtons: any[];
-  setActiveButtons: any;
+  objective: string[] | null;
+  register: UseFormRegister<IObjectiveForm>;
 }
 
-const ChoiceButton: FC<IChoiceButton> = ({
-  id,
-  setActive,
-  active,
-  text,
-  activeButtons,
-  setActiveButtons,
-}) => {
-  const handleChoiceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const button = event.target as HTMLInputElement;
-    const prevAddedButton = activeButtons.filter(
-      (prevButton: { id: string; choice: string }) =>
-        prevButton.id === button.id
-    );
-    if (prevAddedButton.length) {
-      const index = activeButtons.indexOf(prevAddedButton[0]);
-      activeButtons.splice(index, 1);
-      setActiveButtons(activeButtons);
-    } else {
-      activeButtons.push({ id: button.id, choice: button.innerText });
-    }
-    setActiveButtons(activeButtons);
-    setActive(button.id);
-    setSessionStorageItem('choices', JSON.stringify(activeButtons));
+const ChoiceButton: FC<IChoiceButton> = ({ text, objective, register }) => {
+  const isActive = () => {
+    if (!objective) return false;
+    return objective.includes(text);
   };
 
   return (
-    <button
-      id={id}
-      className={clsx(
-        styles['choice-option'],
-        active === id ? styles.active : undefined
-      )}
-      onClick={handleChoiceClick}
+    <label
+      htmlFor={text}
+      className={clsx(styles['choice-option'], isActive() && styles.active)}
     >
       {text}
-    </button>
+      <input
+        id={text}
+        type="checkbox"
+        {...register('objective')}
+        value={text}
+      />
+    </label>
   );
 };
 
-export default Step3;
+export default Objective;
