@@ -20,6 +20,7 @@ interface State {
     name: string;
     userType: string;
     objective: string[];
+    email: string;
   };
 }
 
@@ -63,6 +64,7 @@ const initialState: State = {
     name: '',
     userType: '',
     objective: [],
+    email: '',
   },
 };
 

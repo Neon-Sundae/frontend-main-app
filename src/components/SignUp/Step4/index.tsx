@@ -1,51 +1,33 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
-import {
-  getSessionStorageItem,
-  setSessionStorageItem,
-} from 'utils/sessionStorageFunc';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { updateOnboardingData } from 'actions/auth';
 import regexEmail from 'utils/regex/email';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
+import PromptFooter from '../PromptFooter';
 
-interface IStep4 {
-  setActive: Dispatch<SetStateAction<string>>;
+interface IEmailTypeForm {
+  email: string;
 }
 
-const Step4: FC<IStep4> = ({ setActive }) => {
-  const [emailFromSessionStorage] = useState(
-    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
-  );
-  const [showStepFourOptions, setShowStepFourOptions] = useState(false);
-  useEffect(() => {
-    setActive(emailFromSessionStorage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+const Step4: FC = () => {
+  const dispatch = useDispatch();
+  const [showOptions, setShowOptions] = useState(false);
   const {
     register,
-    control,
+    handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm({ mode: 'onBlur' });
+  } = useForm<IEmailTypeForm>();
 
-  const email = useWatch({
-    control,
-    name: 'email',
-  });
+  const formValues = watch();
 
-  if (Object.keys(errors).length > 0) {
-    setActive('');
-  }
-
-  if (Object.keys(errors).length === 0) {
-    setSessionStorageItem('email', email);
-    setActive('1');
-  }
-
-  if (!email) {
-    setActive('');
-  }
+  const onSubmit = (data: IEmailTypeForm) => {
+    dispatch(updateOnboardingData({ email: data.email }));
+  };
 
   return (
     <div className={styles['step4-container']}>
@@ -60,42 +42,40 @@ const Step4: FC<IStep4> = ({ setActive }) => {
               display: 'block',
               marginBottom: '25px',
             }}
-            defaultValue={email}
             sequence={[
               'Your workspace is almost ready 🚀 \n Drop your email below to keep up to date with all \n your projects, tasks and community',
               500,
               () => {
-                setShowStepFourOptions(true);
+                setShowOptions(true);
               },
             ]}
             cursor={false}
             speed={80}
           />
-          {showStepFourOptions && (
-            <span className={styles['input-wrapper']}>
-              <form autoComplete="off">
-                <input
-                  type="text"
-                  placeholder="email address here"
-                  defaultValue={emailFromSessionStorage}
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...register('email', {
-                    required: true,
-                    validate: value => regexEmail.test(value),
-                  })}
-                  style={{
-                    border:
-                      Object.keys(errors).length && '0.56px solid #FF8383',
-                  }}
-                />
-                {Object.keys(errors).length > 0 && (
-                  <p>* Your email looks so wrong!</p>
-                )}
-              </form>
-            </span>
+          {showOptions && (
+            <form id="hook-form" onSubmit={handleSubmit(onSubmit)}>
+              <input
+                type="text"
+                placeholder="email address here"
+                {...register('email', {
+                  required: true,
+                })}
+                style={{
+                  border: Object.keys(errors).length && '0.56px solid #FF8383',
+                }}
+              />
+              {Object.keys(errors).length > 0 && (
+                <p>* Your email looks so wrong!</p>
+              )}
+            </form>
           )}
         </div>
       </div>
+      <PromptFooter
+        prev={SignupSteps.Objective}
+        next={SignupSteps.SignupOptions}
+        isDisabled={!regexEmail.test(formValues.email)}
+      />
     </div>
   );
 };
