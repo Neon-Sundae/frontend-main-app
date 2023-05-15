@@ -20,7 +20,7 @@ const EmailForm: FC = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm<IEmailTypeForm>();
 
   const formValues = watch();
@@ -75,6 +75,7 @@ const EmailForm: FC = () => {
         prev={SignupSteps.Objective}
         next={SignupSteps.SignupOptions}
         isDisabled={!regexEmail.test(formValues.email)}
+        isSubmitted={isSubmitted}
       />
     </div>
   );

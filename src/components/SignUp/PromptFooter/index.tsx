@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { updateSignUpStep } from 'actions/auth';
 import { useDispatch } from 'react-redux';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
@@ -9,18 +9,25 @@ interface IPromptFooter {
   prev: SignupSteps;
   next: SignupSteps;
   isDisabled: boolean;
+  isSubmitted: boolean;
 }
 
-const PromptFooter: FC<IPromptFooter> = ({ prev, next, isDisabled }) => {
+const PromptFooter: FC<IPromptFooter> = ({
+  prev,
+  next,
+  isDisabled,
+  isSubmitted,
+}) => {
   const dispatch = useDispatch();
 
   const handleBackFunc = () => {
     dispatch(updateSignUpStep(prev));
   };
 
-  const handleContinueFunc = () => {
-    dispatch(updateSignUpStep(next));
-  };
+  useEffect(() => {
+    if (isSubmitted) dispatch(updateSignUpStep(next));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitted]);
 
   return (
     <div className={styles['prompt-footer-container']}>
@@ -33,16 +40,13 @@ const PromptFooter: FC<IPromptFooter> = ({ prev, next, isDisabled }) => {
           arrow_back
         </i>
       </button>
-      <button
+      <input
         type="submit"
         form="hook-form"
         className={styles['prompt-footer-container--continue-button']}
-        aria-label="continue"
-        onClick={handleContinueFunc}
+        value="Continue"
         disabled={isDisabled}
-      >
-        Continue
-      </button>
+      />
     </div>
   );
 };

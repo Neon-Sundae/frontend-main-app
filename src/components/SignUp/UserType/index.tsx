@@ -17,7 +17,12 @@ interface IUserTypeForm {
 const UserType: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
-  const { register, handleSubmit, watch } = useForm<IUserTypeForm>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitted },
+  } = useForm<IUserTypeForm>();
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
@@ -89,6 +94,7 @@ const UserType: FC = () => {
       <PromptFooter
         prev={SignupSteps.Welcome}
         next={SignupSteps.WorkType}
+        isSubmitted={isSubmitted}
         isDisabled={!formValues.userType}
       />
     </>

@@ -28,7 +28,12 @@ interface IObjectiveForm {
 const Objective: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
-  const { register, handleSubmit, watch } = useForm<IObjectiveForm>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitted },
+  } = useForm<IObjectiveForm>();
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
@@ -86,6 +91,7 @@ const Objective: FC = () => {
         prev={SignupSteps.WorkType}
         next={SignupSteps.Email}
         isDisabled={!formValues.objective}
+        isSubmitted={isSubmitted}
       />
     </div>
   );

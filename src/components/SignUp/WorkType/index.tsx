@@ -30,7 +30,12 @@ interface IWorkTypeForm {
 const WorkType: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
-  const { register, handleSubmit, watch } = useForm<IWorkTypeForm>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitted },
+  } = useForm<IWorkTypeForm>();
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
@@ -81,6 +86,7 @@ const WorkType: FC = () => {
         prev={SignupSteps.UserType}
         next={SignupSteps.Objective}
         isDisabled={!formValues.workType}
+        isSubmitted={isSubmitted}
       />
     </div>
   );
