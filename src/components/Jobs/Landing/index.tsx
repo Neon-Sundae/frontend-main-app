@@ -86,7 +86,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
               </div>
             )}
 
-            {data.map((d: any) => {
+            {data?.map((d: any) => {
               return (
                 <JobCards
                   title={d.title}
@@ -103,7 +103,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
                 />
               );
             })}
-            {data.length === 0 && <p>You may want to add some job(s).</p>}
+            {data?.length === 0 && <p>You may want to add some job(s).</p>}
           </div>
           <div className={styles['jobs-card-details-wrap']}>
             {showCreate && !showView && (
@@ -117,7 +117,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
             )}
             {!showCreate &&
               showView &&
-              data.map((d: any) => {
+              data?.map((d: any) => {
                 return (
                   <JobView
                     title={d.title}

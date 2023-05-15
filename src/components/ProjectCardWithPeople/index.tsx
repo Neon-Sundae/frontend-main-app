@@ -51,12 +51,12 @@ interface IProjectPeople {
 const ProjectPeople: FC<IProjectPeople> = ({ projectPeople }) => {
   return (
     <div className={styles[`project-people-avatars`]}>
-      {projectPeople.map(
+      {projectPeople?.map(
         (projectPerson: { profileId: number; picture: string | undefined }) => (
           <img src={projectPerson.picture ?? 'null'} alt="" />
         )
       )}
-      {projectPeople.length >= 3 && <p> +{projectPeople.length - 2}</p>}
+      {projectPeople?.length >= 3 && <p> +{projectPeople.length - 2}</p>}
     </div>
   );
 };

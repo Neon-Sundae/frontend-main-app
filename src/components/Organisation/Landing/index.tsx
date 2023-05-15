@@ -40,7 +40,6 @@ const Landing: FC = () => {
   const { data: members } = useFetchOrganisationOwnerManager(params.orgId);
 
   const user = useSelector((state: RootState) => state.user.user);
-  const publicView = useSelector((state: RootState) => state.org.publicView);
 
   useEffect(() => {
     if (!searchParams.get('show')) {
@@ -63,6 +62,13 @@ const Landing: FC = () => {
     setTabSelected('home');
   };
 
+  console.log('user', user);
+  console.log('members', members);
+  console.log(
+    'isOrganisationMember(user, members)',
+    isOrganisationMember(user, members)
+  );
+
   const tabSelector = () => {
     switch (tabSelected) {
       case 'home':
@@ -70,12 +76,7 @@ const Landing: FC = () => {
           <>
             <Banner organisation={organisationDetail} />
             <BasicDetails organisation={organisationDetail} owner={owner} />
-            <div className={styles['organisation-project-jobs-wrap']}>
-              <OrganisationProjects organisation={organisationDetail} />
-              <OrganisationJobs
-                organisationId={organisationDetail.organisationId}
-              />
-            </div>
+            <div className={styles['organisation-project-jobs-wrap']}> </div>
           </>
         );
       case 'projects':

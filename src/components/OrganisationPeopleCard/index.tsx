@@ -34,8 +34,8 @@ const OrganisationPeopleCardContainer: FC<IOrganisationPeopleCardContainer> = ({
         <span>
           <img
             src={
-              user.profile.picture ||
-              getDefaultAvatarSrc(user.name?.charAt(0).toUpperCase())
+              user?.profile?.picture ||
+              getDefaultAvatarSrc(user?.name?.charAt(0).toUpperCase())
             }
             alt=""
             width="54.07px"
@@ -47,15 +47,15 @@ const OrganisationPeopleCardContainer: FC<IOrganisationPeopleCardContainer> = ({
         </span>
 
         <h3 className={styles['organisation-people-card-container--user-name']}>
-          {user.name}
+          {user?.name}
         </h3>
         <p className={styles['organisation-people-card-container--title']}>
-          {user.profile.title}
+          {user?.profile?.title}
         </p>
         <p
           className={styles['organisation-people-card-container--description']}
         >
-          {user.profile.description}
+          {user?.profile?.description}
         </p>
       </div>
     </>
