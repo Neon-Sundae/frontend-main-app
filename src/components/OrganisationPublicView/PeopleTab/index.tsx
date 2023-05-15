@@ -4,7 +4,7 @@ import { FC } from 'react';
 import styles from './index.module.scss';
 
 interface IPeopleTab {
-  members: IMemberData;
+  members: IMemberData | undefined;
 }
 
 const PeopleTab: FC<IPeopleTab> = ({ members }) => {

@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
 interface IOrganisationPeopleCard {
-  members: IMemberData;
+  members: IMemberData | undefined;
 }
 
 const OrganisationPeopleCard: FC<IOrganisationPeopleCard> = ({ members }) => (
   <>
-    {members.all.map((member: IMember) => (
+    {members?.all.map((member: IMember) => (
       <OrganisationPeopleCardContainer member={member} />
     ))}
   </>

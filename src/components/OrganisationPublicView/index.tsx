@@ -4,7 +4,7 @@ import { IOrganisation } from 'interfaces/organisation';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import { useFetchOrganisationOwnerManager } from 'queries/organisation';
 import styles from './index.module.scss';
 import HorizontalTabs from './HorizontalTabs';
 import OverviewTab from './OverviewTab';
@@ -20,7 +20,7 @@ const OrganisationPublicView: FC<IOrganisationPublicView> = ({
   organisation,
 }) => {
   const org = useSelector((state: RootState) => state.org);
-  const { members } = useFetchOrganisationOwnerManager(
+  const { data: members } = useFetchOrganisationOwnerManager(
     organisation.organisationId.toString()
   );
   const {
