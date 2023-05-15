@@ -28,20 +28,8 @@ const ChatPrompts = () => {
       )}
     >
       {step === SignupSteps.Welcome && <Welcome />}
-      {step === SignupSteps.UserType && (
-        <UserType setActive={setActive} active={active} />
-      )}
-      {step === SignupSteps.WorkType && (
-        <>
-          <Step2
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          {/* <PromptFooter active={active === ''} /> */}
-        </>
-      )}
+      {step === SignupSteps.UserType && <UserType />}
+      {step === SignupSteps.WorkType && <Step2 />}
       {step === SignupSteps.Objective && (
         <>
           <Step3

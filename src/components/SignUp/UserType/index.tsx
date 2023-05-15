@@ -1,6 +1,6 @@
 import { TypeAnimation } from 'react-type-animation';
 import clsx from 'clsx';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,16 +10,11 @@ import { updateOnboardingData } from 'actions/auth';
 import PromptFooter from '../PromptFooter';
 import styles from './index.module.scss';
 
-interface IUserType {
-  setActive: Dispatch<SetStateAction<string>>;
-  active: string;
-}
-
 interface IUserTypeForm {
   userType: string;
 }
 
-const UserType: FC<IUserType> = () => {
+const UserType: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
   const { register, handleSubmit, watch } = useForm<IUserTypeForm>();
