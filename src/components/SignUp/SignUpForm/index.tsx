@@ -2,6 +2,8 @@ import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metam
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 
 import { useAuth } from '@arcana/auth-react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -21,17 +23,23 @@ import useArcanaOnboardUser from './hooks/useArcanaOnboardUser';
 import useUdOnboardUser from './hooks/useUdOnboardUser';
 import useWalletConnectOnboardUser from './hooks/useWalletConnectOnboardUser';
 
+interface IEmailTypeForm {
+  email: string;
+}
+
 const SignUpForm = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
-  const [emailFromSessionStorage, setEmail] = useState(
-    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
-  );
   const [disableButton, setDisableButton] = useState(false);
   const [apiStep, setApiStep] = useState(0);
   const [error, setError] = useState('');
-  const [active, setActive] = useState('');
+  const onboardingData = useSelector(
+    (state: RootState) => state.auth.onboardingData
+  );
+  const { register, handleSubmit, watch } = useForm<IEmailTypeForm>();
 
-  const auth = useAuth();
+  const formValues = watch();
+
   const userData = useFetchUserDetailsWrapper();
   const createOrganisation = useCreateOrganisation(setDisableButton);
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
@@ -40,17 +48,6 @@ const SignUpForm = () => {
   const createArcanaUser = useArcanaOnboardUser(setApiStep);
   const createUdUser = useUdOnboardUser(setApiStep);
   const createWdUser = useWalletConnectOnboardUser();
-
-  const {
-    register,
-    control,
-    formState: { errors },
-  } = useForm({ mode: 'onChange' });
-
-  const email = useWatch({
-    control,
-    name: 'email',
-  });
 
   useEffect(() => {
     if (apiStep === 2) updateUserProfile();
@@ -152,9 +149,15 @@ const SignUpForm = () => {
     });
   };
 
+  const onSubmit = async (data: IEmailTypeForm) => {
+    await linkSignUp(data.email);
+  };
+
   if (error === 'Bad Request' || error === 'User Already Exist!') {
-    toast(t => <LoginButton setError={setError} />);
+    toast(() => <LoginButton setError={setError} />);
   }
+
+  console.log(onboardingData);
 
   return (
     <div className={styles['sign-up-form']}>
@@ -166,53 +169,37 @@ const SignUpForm = () => {
             handleClick={handleMetamaskSignup}
             icon={<MetamaskIcon width={26.98} height={24.32} />}
             text="&nbsp; Metamask"
-            active={active === 'metamask'}
           />
           <IconButton
             handleClick={signupWithWalletConnect}
             icon={<WalletConnectIcon width={26.98} height={24.32} />}
             text="&nbsp; Wallet Connect"
-            active={active === 'walletConnect'}
           />
           <IconButton
             handleClick={signUpWithUD}
             icon={<UDIcon width={26.98} height={24.32} />}
             text="Unstoppable Domains"
-            active={active === 'udLogin'}
           />
         </div>
 
         <p>Or create a wallet with your email and sign up</p>
         <form
-          className={styles['sign-up-form']}
-          onSubmit={e => e.preventDefault()}
+          className={styles['sign-up-form-form']}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <button aria-label="Use">Use</button>
+          <span>Use</span>
           <input
             className={styles['sign-up-form-email']}
-            defaultValue={emailFromSessionStorage}
+            defaultValue={onboardingData.email}
             type="email"
-            required
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('email', { required: true, pattern: regexEmail })}
-            style={{
-              border: Object.keys(errors).length && '0.56px solid #FF8383',
-            }}
+            {...register('email', { required: true })}
           />
-          <button
+          <input
             type="submit"
-            disabled={disableButton}
-            onClick={() => {
-              linkSignUp(email ?? emailFromSessionStorage);
-            }}
-          >
-            Get link
-          </button>
-          {Object.keys(errors).length > 0 && (
-            <p className={styles['sign-up-form-email-error']}>
-              * Your email looks so wrong!
-            </p>
-          )}
+            value="Get link"
+            className={styles['sign-up-form-submit']}
+            disabled={!regexEmail.test(formValues.email)}
+          />
         </form>
       </section>
     </div>

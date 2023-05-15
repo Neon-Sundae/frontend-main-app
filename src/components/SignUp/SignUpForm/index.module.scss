@@ -41,41 +41,32 @@
     }
   }
 
-  .sign-up-form {
+  .sign-up-form-form {
     display: flex;
-    justify-content: center;
-    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    border: 0.7px solid #fff;
+    border-radius: 22.3665px;
+    background: linear-gradient(
+      58.93deg,
+      rgba(52, 52, 52, 0.8) 0.74%,
+      rgba(52, 52, 52, 0.408) 99.38%
+    );
+    backdrop-filter: blur(40px);
+    height: 62px;
+    width: 100%;
+    padding-right: 10px;
+    padding-left: 25px;
 
-    button:nth-child(1) {
+    & > span {
       font-family: var(--font-family-roboto-flex);
-
       font-weight: 500;
       font-size: 16px;
-
-      text-align: center;
-      padding: 0 10px;
-      position: absolute;
-      top: 5px;
-      left: 20px;
       color: #fff;
-      background: linear-gradient(
-        58.93deg,
-        rgba(52, 52, 52, 0.8) 0.74%,
-        rgba(52, 52, 52, 0.408) 99.38%
-      );
-      border-radius: 22.3665px;
-      height: 50px;
-      width: 50px;
       z-index: 1;
-      border: none;
     }
 
-    button:nth-child(3) {
-      position: absolute;
-      top: 7px;
-      right: 7px;
-      color: #fff;
-      background: none;
+    & > .sign-up-form-submit {
       border: 1px solid #e49df4;
       cursor: pointer;
       font-family: var(--font-family-roboto-regular);
@@ -98,43 +89,24 @@
       height: 49.15px;
     }
 
-    input {
+    .sign-up-form-email {
       color: #fff;
       border-radius: 15px;
-      border: 0.7px solid #fff;
-      width: 482px;
-      height: 62px;
-      cursor: pointer;
+      border: none;
       font-family: var(--font-family-roboto-regular);
       font-size: 16px;
       font-weight: 300;
-      padding: 0 100px 0 80px;
-      background: linear-gradient(
-        58.93deg,
-        rgba(52, 52, 52, 0.8) 0.74%,
-        rgba(52, 52, 52, 0.408) 99.38%
-      );
-      border-radius: 22.3665px;
-      backdrop-filter: blur(40px);
-    }
-    input::placeholder {
-      text-align: center;
-      color: #fff;
-      opacity: 0.5;
-    }
-    input:focus {
-      outline: none;
-    }
-    .sign-up-form-email-error {
-      font-family: var(--font-family-roboto-flex);
+      background: inherit;
 
-      font-weight: 300;
-      font-size: 12px;
+      &::placeholder {
+        text-align: center;
+        color: #fff;
+        opacity: 0.5;
+      }
 
-      color: #ff8383;
-      position: absolute;
-      left: 25px;
-      top: 70px;
+      &:focus {
+        outline: none;
+      }
     }
   }
 }
