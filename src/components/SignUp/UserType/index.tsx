@@ -57,38 +57,36 @@ const UserType: FC<IUserType> = () => {
           />
           {showOptions && (
             <form id="hook-form" onSubmit={handleSubmit(onSubmit)}>
-              <span>
-                <label
-                  htmlFor="individual"
-                  className={clsx(
-                    styles['choice-option'],
-                    formValues.userType === 'For Personal Use' && styles.active
-                  )}
-                >
-                  👨‍💻 For Personal Use
-                  <input
-                    id="individual"
-                    type="radio"
-                    {...register('userType')}
-                    value="For Personal Use"
-                  />
-                </label>
-                <label
-                  htmlFor="team"
-                  className={clsx(
-                    styles['choice-option'],
-                    formValues.userType === 'For My Team' && styles.active
-                  )}
-                >
-                  👯 For My Team
-                  <input
-                    id="team"
-                    type="radio"
-                    {...register('userType')}
-                    value="For My Team"
-                  />
-                </label>
-              </span>
+              <label
+                htmlFor="individual"
+                className={clsx(
+                  styles['choice-option'],
+                  formValues.userType === 'For Personal Use' && styles.active
+                )}
+              >
+                👨‍💻 For Personal Use
+                <input
+                  id="individual"
+                  type="radio"
+                  {...register('userType')}
+                  value="For Personal Use"
+                />
+              </label>
+              <label
+                htmlFor="team"
+                className={clsx(
+                  styles['choice-option'],
+                  formValues.userType === 'For My Team' && styles.active
+                )}
+              >
+                👯 For My Team
+                <input
+                  id="team"
+                  type="radio"
+                  {...register('userType')}
+                  value="For My Team"
+                />
+              </label>
             </form>
           )}
         </div>
