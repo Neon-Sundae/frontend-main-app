@@ -10,7 +10,9 @@ interface IProjectsTab {
 const ProjectsTab: FC<IProjectsTab> = ({ flProjects }) => {
   return (
     <div className={styles['projects-tab']}>
-      <ProjectCardWithPeople flProjects={flProjects} />
+      {flProjects.map((flProject: OrganisationProjects) => (
+        <ProjectCardWithPeople flProject={flProject} />
+      ))}
     </div>
   );
 };

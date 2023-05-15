@@ -31,7 +31,6 @@ const CustomButtonModal: FC<ICustomButtonModal> = ({
 
   const onSubmit = (data: any) => {
     const { label, link } = data;
-    console.log({ customButtonLabel: label, customButtonLink: link });
     updateCustomButton.mutate({
       customButtonLabel: label,
       customButtonLink: link,

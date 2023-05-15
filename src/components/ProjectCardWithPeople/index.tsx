@@ -7,41 +7,39 @@ import getRandomString from 'utils/getRandomString';
 import styles from './index.module.scss';
 
 interface IProjectCardWithPeople {
-  flProjects: OrganisationProjects[];
+  flProject: OrganisationProjects;
 }
 
-const ProjectCardWithPeople: FC<IProjectCardWithPeople> = ({ flProjects }) => {
+const ProjectCardWithPeople: FC<IProjectCardWithPeople> = ({ flProject }) => {
   const navigate = useNavigate();
 
   return (
     <div className={styles[`project-card-with-people`]}>
-      {flProjects.map((flProject: OrganisationProjects) => (
-        <div
-          className={styles[`project-card-with-people--card`]}
-          onClick={() => navigate(`/project/${flProject.flProject_uuid}`)}
-          key={getRandomString(5)}
-        >
-          <BrandImage
-            width={54.07}
-            height={56.42}
-            style={{
-              borderRadius: '50%',
-            }}
-          />
-          <h3>{flProject.flProjectName}</h3>
-          <p>{flProject.flProjectDescription}</p>
-          <ProjectPeople projectPeople={flProject.projectPeople} />
-          <span>
-            <p>
-              {flProject.taskCount}
-              &nbsp;{flProject.taskCount <= 1 ? 'task' : 'tasks'}
-            </p>
-            <i className={clsx('material-icons', styles['arrow-right-alt'])}>
-              arrow_right_alt
-            </i>
-          </span>
-        </div>
-      ))}
+      <div
+        className={styles[`project-card-with-people--card`]}
+        onClick={() => navigate(`/project/${flProject.flProject_uuid}`)}
+        key={getRandomString(5)}
+      >
+        <BrandImage
+          width={54.07}
+          height={56.42}
+          style={{
+            borderRadius: '50%',
+          }}
+        />
+        <h3>{flProject.flProjectName}</h3>
+        <p>{flProject.flProjectDescription}</p>
+        <ProjectPeople projectPeople={flProject.projectPeople} />
+        <span>
+          <p>
+            {flProject.taskCount}
+            &nbsp;{flProject.taskCount <= 1 ? 'task' : 'tasks'}
+          </p>
+          <i className={clsx('material-icons', styles['arrow-right-alt'])}>
+            arrow_right_alt
+          </i>
+        </span>
+      </div>
     </div>
   );
 };

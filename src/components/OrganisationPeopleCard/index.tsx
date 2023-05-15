@@ -1,8 +1,8 @@
 import { IMember, IMemberData, IOwnerData } from 'interfaces/organisation';
 import { FC } from 'react';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
-import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
+import styles from './index.module.scss';
 
 interface IOrganisationPeopleCard {
   members: IMemberData;
@@ -23,18 +23,19 @@ interface IOrganisationPeopleCardContainer {
 const OrganisationPeopleCardContainer: FC<IOrganisationPeopleCardContainer> = ({
   member,
 }) => {
+  const { user } = member;
   const navigate = useNavigate();
   return (
     <>
       <div
         className={styles['organisation-people-card-container']}
-        onClick={() => navigate(`/profile/${member.user.profile.profileId}`)}
+        onClick={() => navigate(`/profile/${user.profile.profileId}`)}
       >
         <span>
           <img
             src={
-              member.user.profile.picture ||
-              getDefaultAvatarSrc(member.user.name?.charAt(0).toUpperCase())
+              user.profile.picture ||
+              getDefaultAvatarSrc(user.name?.charAt(0).toUpperCase())
             }
             alt=""
             width="54.07px"
@@ -46,15 +47,15 @@ const OrganisationPeopleCardContainer: FC<IOrganisationPeopleCardContainer> = ({
         </span>
 
         <h3 className={styles['organisation-people-card-container--user-name']}>
-          {member.user.name}
+          {user.name}
         </h3>
         <p className={styles['organisation-people-card-container--title']}>
-          {member.user.profile.title}
+          {user.profile.title}
         </p>
         <p
           className={styles['organisation-people-card-container--description']}
         >
-          {member.user.profile.description}
+          {user.profile.description}
         </p>
       </div>
     </>

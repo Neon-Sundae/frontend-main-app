@@ -1,8 +1,5 @@
 import NavBar from 'components/NavBar';
 import { useParams } from 'react-router-dom';
-import config from 'config';
-import { useQuery } from '@tanstack/react-query';
-import { getAccessToken } from 'utils/authFn';
 import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
@@ -10,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import useFetchAllOrgJobs from 'hooks/useFetchAllOrgJobs';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
@@ -33,22 +31,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   const { organisation, isLoading } = useFetchOrganisation(orgId);
   const { members } = useFetchOrganisationOwnerManager(orgId);
 
-  const {
-    data,
-    refetch,
-    isFetching,
-    isLoading: loading,
-  } = useQuery(
-    ['orgJobs'],
-    () =>
-      fetch(`${config.ApiBaseUrl}/job/organisation/${orgId}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { data, refetch } = useFetchAllOrgJobs(Number(orgId));
 
   const { name: orgName, profileImage, OrganisationUser } = organisation;
 
@@ -68,8 +51,6 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   };
 
   if (isLoading) return null;
-  if (isFetching) return null;
-  if (loading) return null;
 
   return (
     <>

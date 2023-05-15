@@ -16,7 +16,7 @@ const useUpdateOrgCustomButton = (
   const queryClient = useQueryClient();
   const accessToken = getAccessToken();
 
-  const updateOrgSocials = useMutation(
+  const updateOrgCustomButton = useMutation(
     (payload: IUpdateOrgCustomButton) =>
       fetch(`${config.ApiBaseUrl}/organisation/${organisationId}`, {
         method: 'PATCH',
@@ -38,7 +38,7 @@ const useUpdateOrgCustomButton = (
     }
   );
 
-  return updateOrgSocials;
+  return updateOrgCustomButton;
 };
 
 export default useUpdateOrgCustomButton;

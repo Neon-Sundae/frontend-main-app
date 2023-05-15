@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 const JobsTab = () => {
   const { orgId } = useParams();
   const navigate = useNavigate();
-  const { data, isLoading } = useFetchAllOrgJobs(orgId as unknown as number);
+  const { data, isLoading } = useFetchAllOrgJobs(Number(orgId));
 
   return (
     <div className={styles['jobs-tab']}>

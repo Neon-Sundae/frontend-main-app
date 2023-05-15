@@ -59,7 +59,6 @@ export interface IOwnerData {
 }
 
 export interface IMember {
-  userId: number;
   role: string;
   user: {
     name: string;
