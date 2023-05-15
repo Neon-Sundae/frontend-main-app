@@ -13,7 +13,7 @@ interface IEmailTypeForm {
   email: string;
 }
 
-const Step4: FC = () => {
+const EmailForm: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
   const {
@@ -80,4 +80,4 @@ const Step4: FC = () => {
   );
 };
 
-export default Step4;
+export default EmailForm;

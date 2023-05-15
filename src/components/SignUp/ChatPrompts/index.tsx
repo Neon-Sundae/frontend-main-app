@@ -7,7 +7,7 @@ import Welcome from '../Welcome';
 import UserType from '../UserType';
 import WorkType from '../WorkType';
 import Objective from '../Objective';
-import Step4 from '../Step4';
+import EmailForm from '../EmailForm';
 import PromptFooter from '../PromptFooter';
 import SignUpOptions from '../SignUpOptions';
 
@@ -28,7 +28,7 @@ const ChatPrompts = () => {
       {step === SignupSteps.UserType && <UserType />}
       {step === SignupSteps.WorkType && <WorkType />}
       {step === SignupSteps.Objective && <Objective />}
-      {step === SignupSteps.Email && <Step4 />}
+      {step === SignupSteps.Email && <EmailForm />}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
       {step === 6 && <Objective />}
       {step === SignupSteps.OrganisationOnboard && <Step6 />}
