@@ -6,7 +6,7 @@ import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 import Welcome from '../Welcome';
 import UserType from '../UserType';
-import Step2 from '../Step2';
+import WorkType from '../WorkType';
 import Step3 from '../Step3';
 import Step4 from '../Step4';
 import PromptFooter from '../PromptFooter';
@@ -29,17 +29,14 @@ const ChatPrompts = () => {
     >
       {step === SignupSteps.Welcome && <Welcome />}
       {step === SignupSteps.UserType && <UserType />}
-      {step === SignupSteps.WorkType && <Step2 />}
+      {step === SignupSteps.WorkType && <WorkType />}
       {step === SignupSteps.Objective && (
-        <>
-          <Step3
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          {/* <PromptFooter active={active === ''} /> */}
-        </>
+        <Step3
+          setShowOptions={setShowOptions}
+          setActive={setActive}
+          active={active}
+          showOptions={showOptions}
+        />
       )}
       {step === SignupSteps.Email && (
         <>

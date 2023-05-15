@@ -1,4 +1,8 @@
 .step-2-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
   .chat-prompts-container {
     &--chat-message {
       width: 79%;
@@ -23,13 +27,11 @@
         border-radius: 18.5481px;
         padding: 25px 50px;
 
-        & > p {
-          font-family: var(--font-family-roboto-regular);
-          font-weight: 400;
-          font-size: 1.25rem;
-        }
+        font-family: var(--font-family-roboto-regular);
+        font-weight: 400;
+        font-size: 1.25rem;
 
-        & > span {
+        & > form {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
@@ -38,6 +40,7 @@
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
           font-size: 1.25rem;
+          margin-top: 20px;
 
           & > .choice-option {
             color: #fff;
@@ -79,6 +82,10 @@
                 opacity: 1;
                 visibility: visible;
               }
+            }
+
+            & > input {
+              display: none;
             }
           }
 
