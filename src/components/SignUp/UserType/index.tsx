@@ -61,7 +61,7 @@ const UserType: FC = () => {
                 htmlFor="individual"
                 className={clsx(
                   styles['choice-option'],
-                  formValues.userType === 'For Personal Use' && styles.active
+                  formValues.userType === 'Individual' && styles.active
                 )}
               >
                 👨‍💻 For Personal Use
@@ -69,14 +69,14 @@ const UserType: FC = () => {
                   id="individual"
                   type="radio"
                   {...register('userType')}
-                  value="For Personal Use"
+                  value="Individual"
                 />
               </label>
               <label
                 htmlFor="team"
                 className={clsx(
                   styles['choice-option'],
-                  formValues.userType === 'For My Team' && styles.active
+                  formValues.userType === 'Team' && styles.active
                 )}
               >
                 👯 For My Team
@@ -84,7 +84,7 @@ const UserType: FC = () => {
                   id="team"
                   type="radio"
                   {...register('userType')}
-                  value="For My Team"
+                  value="Team"
                 />
               </label>
             </form>
