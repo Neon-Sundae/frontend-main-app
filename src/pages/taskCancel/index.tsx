@@ -1,13 +1,8 @@
 import TaskCancelContainer from 'components/TaskCancelContainer';
-import { ArcanaAuthLayout } from 'containers/ArcanaAuthLayout';
 import { FC } from 'react';
 
 const TaskCancel: FC = () => {
-  return (
-    <ArcanaAuthLayout>
-      <TaskCancelContainer />
-    </ArcanaAuthLayout>
-  );
+  return <TaskCancelContainer />;
 };
 
 export default TaskCancel;
