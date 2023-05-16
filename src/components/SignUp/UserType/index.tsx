@@ -6,7 +6,7 @@ import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { SignupSteps } from 'interfaces/auth';
-import { updateOnboardingData } from 'actions/auth';
+import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import PromptFooter from '../PromptFooter';
 import styles from './index.module.scss';
 
@@ -17,12 +17,7 @@ interface IUserTypeForm {
 const UserType: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isSubmitted },
-  } = useForm<IUserTypeForm>();
+  const { register, handleSubmit, watch } = useForm<IUserTypeForm>();
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
@@ -31,6 +26,11 @@ const UserType: FC = () => {
 
   const onSubmit = (data: IUserTypeForm) => {
     dispatch(updateOnboardingData({ userType: data.userType }));
+    dispatch(updateSignUpStep(SignupSteps.WorkType));
+  };
+
+  const back = () => {
+    dispatch(updateSignUpStep(SignupSteps.Welcome));
   };
 
   return (
@@ -91,12 +91,7 @@ const UserType: FC = () => {
           )}
         </div>
       </div>
-      <PromptFooter
-        prev={SignupSteps.Welcome}
-        next={SignupSteps.WorkType}
-        isSubmitted={isSubmitted}
-        isDisabled={!formValues.userType}
-      />
+      <PromptFooter prev={back} isDisabled={!formValues.userType} />
     </>
   );
 };

@@ -5,7 +5,7 @@ import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { UseFormRegister, useForm } from 'react-hook-form';
-import { updateOnboardingData } from 'actions/auth';
+import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 import PromptFooter from '../PromptFooter';
@@ -30,12 +30,7 @@ interface IWorkTypeForm {
 const WorkType: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isSubmitted },
-  } = useForm<IWorkTypeForm>();
+  const { register, handleSubmit, watch } = useForm<IWorkTypeForm>();
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
@@ -44,6 +39,11 @@ const WorkType: FC = () => {
 
   const onSubmit = (data: IWorkTypeForm) => {
     dispatch(updateOnboardingData({ workType: data.workType }));
+    dispatch(updateSignUpStep(SignupSteps.Objective));
+  };
+
+  const back = () => {
+    dispatch(updateSignUpStep(SignupSteps.UserType));
   };
 
   return (
@@ -82,12 +82,7 @@ const WorkType: FC = () => {
           )}
         </div>
       </div>
-      <PromptFooter
-        prev={SignupSteps.UserType}
-        next={SignupSteps.Objective}
-        isDisabled={!formValues.workType}
-        isSubmitted={isSubmitted}
-      />
+      <PromptFooter prev={back} isDisabled={!formValues.workType} />
     </div>
   );
 };

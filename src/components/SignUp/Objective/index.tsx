@@ -6,7 +6,7 @@ import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons
 import { UseFormRegister, useForm } from 'react-hook-form';
 import { RootState } from 'reducers';
 import { SignupSteps } from 'interfaces/auth';
-import { updateOnboardingData } from 'actions/auth';
+import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import styles from './index.module.scss';
 import PromptFooter from '../PromptFooter';
 
@@ -28,12 +28,7 @@ interface IObjectiveForm {
 const Objective: FC = () => {
   const dispatch = useDispatch();
   const [showOptions, setShowOptions] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isSubmitted },
-  } = useForm<IObjectiveForm>();
+  const { register, handleSubmit, watch } = useForm<IObjectiveForm>();
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
@@ -42,6 +37,11 @@ const Objective: FC = () => {
 
   const onSubmit = (data: IObjectiveForm) => {
     dispatch(updateOnboardingData({ objective: data.objective }));
+    dispatch(updateSignUpStep(SignupSteps.Email));
+  };
+
+  const back = () => {
+    dispatch(updateSignUpStep(SignupSteps.WorkType));
   };
 
   return (
@@ -87,12 +87,7 @@ const Objective: FC = () => {
           )}
         </div>
       </div>
-      <PromptFooter
-        prev={SignupSteps.WorkType}
-        next={SignupSteps.Email}
-        isDisabled={!formValues.objective}
-        isSubmitted={isSubmitted}
-      />
+      <PromptFooter prev={back} isDisabled={!formValues.objective} />
     </div>
   );
 };

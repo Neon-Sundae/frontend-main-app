@@ -3,7 +3,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { useDispatch } from 'react-redux';
 import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { useForm } from 'react-hook-form';
-import { updateOnboardingData } from 'actions/auth';
+import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import regexEmail from 'utils/regex/email';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
@@ -20,13 +20,18 @@ const EmailForm: FC = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitted },
+    formState: { errors },
   } = useForm<IEmailTypeForm>();
 
   const formValues = watch();
 
   const onSubmit = (data: IEmailTypeForm) => {
     dispatch(updateOnboardingData({ email: data.email }));
+    dispatch(updateSignUpStep(SignupSteps.SignupOptions));
+  };
+
+  const back = () => {
+    dispatch(updateSignUpStep(SignupSteps.Objective));
   };
 
   return (
@@ -72,10 +77,8 @@ const EmailForm: FC = () => {
         </div>
       </div>
       <PromptFooter
-        prev={SignupSteps.Objective}
-        next={SignupSteps.SignupOptions}
+        prev={back}
         isDisabled={!regexEmail.test(formValues.email)}
-        isSubmitted={isSubmitted}
       />
     </div>
   );

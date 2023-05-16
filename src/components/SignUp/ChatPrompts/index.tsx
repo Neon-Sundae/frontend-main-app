@@ -30,7 +30,6 @@ const ChatPrompts = () => {
       {step === SignupSteps.Objective && <Objective />}
       {step === SignupSteps.Email && <EmailForm />}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
-      {step === 6 && <Objective />}
       {step === SignupSteps.OrganisationOnboard && <Step6 />}
       {/* {step === 12 && (
         <>
