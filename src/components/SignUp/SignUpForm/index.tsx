@@ -2,23 +2,29 @@ import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metam
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 
 import { useAuth } from '@arcana/auth-react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import convertBase64ToFile from 'utils/base64ToFile';
-
+import { signMessage } from 'utils/ethereumFn';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useCreateOrganisation } from 'queries/organisation';
 import { useFetchUserDetailsWrapper } from 'queries/user';
-import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import regexEmail from 'utils/regex/email';
+import {
+  useMetamaskGenerateNonce,
+  useSaveUserOnboardData,
+  useVerifySignature,
+} from 'queries/auth';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
+import { getMetamaskAccountData } from 'api/auth';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
-import useMetamaskOnboardUser from './hooks/useMetamaskOnboardUser';
+// import useMetamaskOnboardUser from './hooks/useMetamaskOnboardUser';
 import useArcanaOnboardUser from './hooks/useArcanaOnboardUser';
 import useUdOnboardUser from './hooks/useUdOnboardUser';
 import useWalletConnectOnboardUser from './hooks/useWalletConnectOnboardUser';
@@ -30,7 +36,7 @@ interface IEmailTypeForm {
 const SignUpForm = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-  const [disableButton, setDisableButton] = useState(false);
+  const dispatch = useDispatch();
   const [apiStep, setApiStep] = useState(0);
   const [error, setError] = useState('');
   const onboardingData = useSelector(
@@ -41,39 +47,69 @@ const SignUpForm = () => {
   const formValues = watch();
 
   const userData = useFetchUserDetailsWrapper();
-  const createOrganisation = useCreateOrganisation(setDisableButton);
+  const createOrganisation = useCreateOrganisation();
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
-  const { createUser, updateProfile, saveUserOnboardData } =
-    useMetamaskOnboardUser(setApiStep);
+  // const { createUser, updateProfile, saveUserOnboardData } =
+  //   useMetamaskOnboardUser(setApiStep);
   const createArcanaUser = useArcanaOnboardUser(setApiStep);
   const createUdUser = useUdOnboardUser(setApiStep);
   const createWdUser = useWalletConnectOnboardUser();
 
-  useEffect(() => {
-    if (apiStep === 2) updateUserProfile();
-    if (apiStep === 3) {
-      saveUserOnboardDataFunc();
-      if (!getSessionStorageItem('organisationName')) {
+  const metamaskGenerateNonce = useMetamaskGenerateNonce();
+  const verifySignature = useVerifySignature();
+  const saveUserOnboardData = useSaveUserOnboardData();
+
+  // useEffect(() => {
+  //   if (apiStep === 2) updateUserProfile();
+  //   if (apiStep === 3) {
+  //     saveUserOnboardDataFunc();
+  //     if (!getSessionStorageItem('organisationName')) {
+  //       navigate('/dashboard');
+  //     } else {
+  //       saveOrgData();
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [apiStep]);
+
+  // useEffect(() => {
+  //   if (auth.user) createArcanaUser.mutate();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [auth]);
+
+  const handleMetamaskSignup = async () => {
+    try {
+      if (typeof window.ethereum !== 'undefined') {
+        const { walletId, provider } = await getMetamaskAccountData();
+        if (!walletId) {
+          throw new Error('Please connect your wallet');
+        }
+
+        const data = await metamaskGenerateNonce.mutateAsync(walletId);
+
+        const signature = await signMessage(provider, data.message);
+        if (!signature) {
+          throw new Error('Please sign the message');
+        }
+
+        await verifySignature.mutateAsync({
+          isFirstTimeUser: data.isFirstTimeUser,
+          signature,
+          walletId,
+          message: data.message,
+        });
+
+        await saveUserOnboardData.mutateAsync({
+          objectives: onboardingData.objective,
+          workType: onboardingData.workType,
+          name: onboardingData.name,
+          email: onboardingData.email,
+        });
+
         navigate('/dashboard');
-      } else {
-        saveOrgData();
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiStep]);
-
-  useEffect(() => {
-    if (auth.user) createArcanaUser.mutate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
-
-  const loginWithMetaMask = () => {
-    createUser.mutate();
-  };
-
-  const handleMetamaskSignup = () => {
-    if (typeof window.ethereum !== 'undefined') {
-      loginWithMetaMask();
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
@@ -89,65 +125,65 @@ const SignUpForm = () => {
     await auth.loginWithLink(userEmail);
   };
 
-  const saveOrgData = async () => {
-    const organisationName = getSessionStorageItem('organisationName');
-    const organisationDescription = getSessionStorageItem(
-      'organisationDescription'
-    );
+  // const saveOrgData = async () => {
+  //   const organisationName = getSessionStorageItem('organisationName');
+  //   const organisationDescription = getSessionStorageItem(
+  //     'organisationDescription'
+  //   );
 
-    if (organisationName && organisationDescription) {
-      const localFile = getSessionStorageItem('file');
-      const convertedFile = await convertBase64ToFile(localFile);
-      if (!disableButton && userData?.user.userId) {
-        const createOrgData = await createOrganisation.mutateAsync({
-          name: organisationName,
-          description: organisationDescription,
-          userId: userData.user.userId.toString(),
-          industry: getSessionStorageItem('choices'),
-        });
+  //   if (organisationName && organisationDescription) {
+  //     const localFile = getSessionStorageItem('file');
+  //     const convertedFile = await convertBase64ToFile(localFile);
+  //     // if (!disableButton && userData?.user.userId) {
+  //     const createOrgData = await createOrganisation.mutateAsync({
+  //       name: organisationName,
+  //       description: organisationDescription,
+  //       userId: userData.user.userId.toString(),
+  //       industry: getSessionStorageItem('choices'),
+  //     });
 
-        if (convertedFile) {
-          await updateOrganisationImageHandler(
-            convertedFile,
-            'profileImage',
-            'profile',
-            createOrgData.organisationId
-          );
-        }
+  //     if (convertedFile) {
+  //       await updateOrganisationImageHandler(
+  //         convertedFile,
+  //         'profileImage',
+  //         'profile',
+  //         createOrgData.organisationId
+  //       );
+  //     }
 
-        navigate(`/organisation/${createOrgData.organisationId}`);
-      }
-    }
-  };
+  //     navigate(`/organisation/${createOrgData.organisationId}`);
+  //     // }
+  //   }
+  // };
 
-  const saveUserOnboardDataFunc = () => {
-    const data: any[] = [];
-    const choices = getSessionStorageItem('choices');
-    const flow = getSessionStorageItem('flow');
-    const work = getSessionStorageItem('work');
+  // const saveUserOnboardDataFunc = () => {
+  //   const data: any[] = [];
+  //   const choices = getSessionStorageItem('choices');
+  //   const flow = getSessionStorageItem('flow');
+  //   const work = getSessionStorageItem('work');
 
-    data.push(JSON.parse(choices), flow, work, {
-      userId: userData?.user.userId,
-    });
+  //   data.push(JSON.parse(choices), flow, work, {
+  //     userId: userData?.user.userId,
+  //   });
 
-    saveUserOnboardData.mutate(data);
-  };
+  //   saveUserOnboardData.mutate(data);
+  // };
 
-  const updateUserProfile = () => {
-    console.log('inside updateUserProfile');
-    updateProfile.mutate({
-      userId: userData?.user.userId,
-      name:
-        getSessionStorageItem('name') ??
-        getSessionStorageItem('organisationName'),
-      email:
-        getSessionStorageItem('email') ??
-        getSessionStorageItem('organisationEmail'),
-      work:
-        getSessionStorageItem('work') ??
-        getSessionStorageItem('organisationVertical'),
-    });
-  };
+  // const updateUserProfile = () => {
+  //   console.log('inside updateUserProfile');
+  //   updateProfile.mutate({
+  //     userId: userData?.user.userId,
+  //     name:
+  //       getSessionStorageItem('name') ??
+  //       getSessionStorageItem('organisationName'),
+  //     email:
+  //       getSessionStorageItem('email') ??
+  //       getSessionStorageItem('organisationEmail'),
+  //     work:
+  //       getSessionStorageItem('work') ??
+  //       getSessionStorageItem('organisationVertical'),
+  //   });
+  // };
 
   const onSubmit = async (data: IEmailTypeForm) => {
     await linkSignUp(data.email);

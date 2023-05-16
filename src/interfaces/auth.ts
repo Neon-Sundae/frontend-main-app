@@ -18,3 +18,17 @@ export enum SignupSteps {
   'OrganisationIndustryReply',
   'OrganisationLogo',
 }
+
+export interface IVerifySignature {
+  message: string;
+  walletId: string;
+  isFirstTimeUser: boolean;
+  signature: string | null;
+}
+
+export interface IUseSaveUserOnboardData {
+  objectives: string[];
+  workType: string;
+  name: string;
+  email: string;
+}
