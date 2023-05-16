@@ -11,7 +11,7 @@ import EmailForm from '../EmailForm';
 import PromptFooter from '../PromptFooter';
 import SignUpOptions from '../SignUpOptions';
 
-import Step6 from '../Step6';
+import OrganisationOnboard from '../OrganisationOnboard';
 import Step7 from '../Step7';
 
 const ChatPrompts = () => {
@@ -30,7 +30,7 @@ const ChatPrompts = () => {
       {step === SignupSteps.Objective && <Objective />}
       {step === SignupSteps.Email && <EmailForm />}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
-      {step === SignupSteps.OrganisationOnboard && <Step6 />}
+      {step === SignupSteps.OrganisationOnboard && <OrganisationOnboard />}
       {/* {step === 12 && (
         <>
           <Step7
