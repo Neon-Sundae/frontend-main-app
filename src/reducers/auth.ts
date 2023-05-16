@@ -22,6 +22,10 @@ interface State {
     objective: string[];
     email: string;
     workType: string;
+    orgName: string;
+    orgDescription: string;
+    industry: string;
+    orgLogo: File | undefined;
   };
 }
 
@@ -67,6 +71,10 @@ const initialState: State = {
     objective: [],
     email: '',
     workType: '',
+    orgName: '',
+    orgDescription: '',
+    industry: '',
+    orgLogo: undefined,
   },
 };
 

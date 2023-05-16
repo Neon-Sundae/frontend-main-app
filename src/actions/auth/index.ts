@@ -34,7 +34,7 @@ export const updateSignUpStep = (step: SignupSteps) => ({
 });
 
 export const updateOnboardingData = (data: {
-  [key: string]: string | number | string[];
+  [key: string]: string | number | string[] | File | undefined;
 }) => ({
   type: UPDATE_ONBOARDING_DATA,
   data,

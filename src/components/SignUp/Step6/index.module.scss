@@ -12,11 +12,12 @@
       width: 79%;
       margin: auto;
       display: flex;
-      height: 77vh;
+      height: 73vh;
       margin-top: 100px;
       flex-direction: column;
-
       padding-right: 10px;
+      overflow-y: scroll;
+
       & > span {
         display: flex;
         & > .user-image {

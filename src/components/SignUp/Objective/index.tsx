@@ -37,7 +37,11 @@ const Objective: FC = () => {
 
   const onSubmit = (data: IObjectiveForm) => {
     dispatch(updateOnboardingData({ objective: data.objective }));
-    dispatch(updateSignUpStep(SignupSteps.Email));
+    if (onboardingData.userType === 'Team') {
+      dispatch(updateSignUpStep(SignupSteps.OrganisationOnboard));
+    } else {
+      dispatch(updateSignUpStep(SignupSteps.Email));
+    }
   };
 
   const back = () => {

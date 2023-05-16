@@ -1,11 +1,6 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, useRef, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
-import {
-  getSessionStorageItem,
-  setSessionStorageItem,
-} from 'utils/sessionStorageFunc';
-
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
@@ -14,43 +9,65 @@ import options from 'assets/data/orgOptions.json';
 import { ReactComponent as NeonSundaeMainLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { SingleValue } from 'react-select';
 import clsx from 'clsx';
-import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
+import { useDispatch } from 'react-redux';
+import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
+import PromptFooter from '../PromptFooter';
+import { SignupSteps } from 'interfaces/auth';
+
+enum OrgSteps {
+  'OrganisationName',
+  'OrganisationNameReply',
+  'OrganisationIndustry',
+  'OrganisationIndustryReply',
+  'OrganisationLogo',
+}
+
+interface IOrganisationNameForm {
+  orgName: string;
+}
+
+interface IOrganisationDescriptionForm {
+  orgDescription: string;
+}
 
 const Step6: FC = () => {
-  const step = useSelector((state: RootState) => state.auth.step);
-  const name = getSessionStorageItem('name');
-
-  const [file, setFile] = useState<File | undefined>();
-  const [localFile, setLocalFile] = useState<string | ArrayBuffer | null>(null);
-
-  const [showSelectMenu, setShowSelectMenu] = useState(1);
-  const [showStepSixOptions, setShowStepSixOptions] = useState(false);
+  const dispatch = useDispatch();
+  const [file, setFile] = useState<File>();
+  const [orgSteps, setOrgSteps] = useState<OrgSteps[]>([
+    OrgSteps.OrganisationName,
+  ]);
+  const [currentStep, setCurrentStep] = useState<OrgSteps>(
+    OrgSteps.OrganisationName
+  );
+  const [showSelectMenu, setShowSelectMenu] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setSessionStorageItem('file', localFile);
-  }, [localFile]);
+  const onboardingData = useSelector(
+    (state: RootState) => state.auth.onboardingData
+  );
 
-  const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>();
-  const [organisationDescription, setOrganisationDescription] = useState('');
-
+  const { register, handleSubmit, watch } = useForm<IOrganisationNameForm>();
   const {
-    register,
-    control,
-    formState: { errors },
-  } = useForm({ mode: 'onChange' });
+    register: register2,
+    handleSubmit: handleSubmit2,
+    watch: watch2,
+  } = useForm<IOrganisationDescriptionForm>();
 
-  const orgName = useWatch({
-    control,
-    name: 'name',
-  });
+  const orgNameFormValues = watch();
+  const orgDescriptionFormValues = watch2();
 
-  if (Object.keys(errors).length === 0) {
-    setSessionStorageItem('organisationName', orgName);
-    setSessionStorageItem('organisationDescription', organisationDescription);
-  }
+  const isDisabledCheck = () => {
+    if (currentStep === OrgSteps.OrganisationName) {
+      return orgNameFormValues.orgName === '';
+    } else if (currentStep === OrgSteps.OrganisationLogo) {
+      return orgDescriptionFormValues.orgDescription === '';
+    }
+    return false;
+  };
 
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -60,24 +77,66 @@ const Step6: FC = () => {
   const handleOrgLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files) setFile(files[0]);
-    const reader = new FileReader();
-    reader.onloadend = function () {
-      setLocalFile(reader.result);
-    };
-    if (files) {
-      reader.readAsDataURL(files[0]);
+  };
+
+  const back = () => {
+    if (currentStep === OrgSteps.OrganisationName) {
+      dispatch(updateSignUpStep(SignupSteps.WorkType));
+    } else if (currentStep === OrgSteps.OrganisationIndustry) {
+      handleBackOrgStep([OrgSteps.OrganisationName], OrgSteps.OrganisationName);
+    } else if (currentStep === OrgSteps.OrganisationLogo) {
+      handleBackOrgStep(
+        [
+          OrgSteps.OrganisationName,
+          OrgSteps.OrganisationNameReply,
+          OrgSteps.OrganisationIndustry,
+        ],
+        OrgSteps.OrganisationIndustry
+      );
     }
   };
 
-  if (selectedOption?.label) {
-    setSessionStorageItem('organisationVertical', selectedOption.label);
-  }
+  const handleOrgStep = (step: OrgSteps) => {
+    setOrgSteps([...orgSteps, step]);
+    setCurrentStep(step);
+  };
+
+  const handleBackOrgStep = (
+    newSteps: OrgSteps[],
+    newCurrentStep: OrgSteps
+  ) => {
+    setOrgSteps(newSteps);
+    setCurrentStep(newCurrentStep);
+    if (newCurrentStep === OrgSteps.OrganisationIndustry)
+      setShowSelectMenu(true);
+  };
+
+  const onSubmit = (data: IOrganisationNameForm) => {
+    dispatch(updateOnboardingData({ orgName: data.orgName }));
+    handleOrgStep(OrgSteps.OrganisationNameReply);
+  };
+
+  const onIndustrySelect = (newVal: any) => {
+    setSelectedOption(newVal);
+    dispatch(updateOnboardingData({ industry: newVal.value }));
+    handleOrgStep(OrgSteps.OrganisationIndustryReply);
+  };
+
+  const onSubmit2 = (data: IOrganisationDescriptionForm) => {
+    dispatch(
+      updateOnboardingData({
+        orgDescription: data.orgDescription,
+        orgLogo: file,
+      })
+    );
+    dispatch(updateSignUpStep(SignupSteps.Email));
+  };
 
   return (
     <>
       <div className={styles['step6-container']}>
         <div className={styles['chat-prompts-container--chat-message']}>
-          {step === SignupSteps.OrganisationName && (
+          {orgSteps.includes(OrgSteps.OrganisationName) && (
             <span>
               <div className={styles['user-image']}>
                 <NeonSundaeMainLogo width={70} height={85.75} />
@@ -88,63 +147,54 @@ const Step6: FC = () => {
                     whiteSpace: 'pre-line',
                     display: 'block',
                   }}
-                  defaultValue={orgName}
                   sequence={[
-                    'Let’s build your organisation’s workflow 🚀 \n Give your organisation a name',
+                    "Let's build your organisation's workflow 🚀 \n Give your organisation a name",
                     500,
                     () => {
-                      setShowStepSixOptions(true);
+                      setShowOptions(true);
                     },
                   ]}
                   cursor={false}
                   speed={80}
                 />
-                {showStepSixOptions && (
-                  <span className={styles['input-wrapper']}>
-                    <form
-                      onSubmit={e => {
-                        e.preventDefault();
-                      }}
-                    >
-                      <input
-                        type="text"
-                        placeholder="Your organisation name here"
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...register('name', {
-                          required: true,
-                        })}
-                        style={{
-                          border:
-                            Object.keys(errors).length &&
-                            '0.56px solid #FF8383',
-                        }}
-                      />
-                      {Object.keys(errors).length > 0 && (
-                        <p>* Name is required</p>
-                      )}
-                    </form>
-                  </span>
+                {showOptions && (
+                  <form
+                    id={
+                      currentStep === OrgSteps.OrganisationName
+                        ? 'hook-form'
+                        : ''
+                    }
+                    onSubmit={handleSubmit(onSubmit)}
+                    className={styles['input-wrapper']}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Your organisation name here"
+                      {...register('orgName', {
+                        required: true,
+                      })}
+                    />
+                  </form>
                 )}
               </div>
             </span>
           )}
 
-          {step === SignupSteps.OrganisationNameReply && (
+          {orgSteps.includes(OrgSteps.OrganisationNameReply) && (
             <div className={styles['reply-prompt']}>
               <TypeAnimation
-                defaultValue={orgName}
                 sequence={[
-                  `${orgName}`,
+                  orgNameFormValues.orgName,
                   1000,
-                  () => {
-                    // dispatch(setSignUpStep(step + 1));
-                  },
+                  () => handleOrgStep(OrgSteps.OrganisationIndustry),
                 ]}
                 cursor={false}
                 speed={80}
               />
               <img
-                src={getDefaultAvatarSrc(name?.charAt(0).toUpperCase())}
+                src={getDefaultAvatarSrc(
+                  onboardingData.name.charAt(0).toUpperCase()
+                )}
                 alt=""
                 width="100px"
                 height="100px"
@@ -152,14 +202,14 @@ const Step6: FC = () => {
             </div>
           )}
 
-          {step === SignupSteps.OrganisationIndustry && (
+          {orgSteps.includes(OrgSteps.OrganisationIndustry) && (
             <span>
               <div className={styles['user-image']}>
                 <NeonSundaeMainLogo width={70} height={85.75} />
               </div>
               <div className={styles['chat-message']}>
                 <TypeAnimation
-                  defaultValue={orgName}
+                  defaultValue={orgNameFormValues.orgName}
                   style={{
                     whiteSpace: 'pre-line',
                     display: 'block',
@@ -168,14 +218,12 @@ const Step6: FC = () => {
                   sequence={[
                     `Which industry vertical does your \n organisation fall under?`,
                     500,
-                    () => {
-                      setShowSelectMenu(2);
-                    },
+                    () => setShowSelectMenu(true),
                   ]}
                   cursor={false}
                   speed={80}
                 />
-                {showSelectMenu === 2 && (
+                {showSelectMenu && (
                   <Select
                     options={options}
                     placeholder="Choose your organisation industry"
@@ -185,8 +233,8 @@ const Step6: FC = () => {
                         label: 'Select Option',
                       }
                     }
-                    onSelectChange={newVal => setSelectedOption(newVal)}
-                    name="Location"
+                    onSelectChange={onIndustrySelect}
+                    name="Industry"
                     borderRadius={10}
                     height={50}
                     width="400px"
@@ -197,24 +245,24 @@ const Step6: FC = () => {
             </span>
           )}
 
-          {step === SignupSteps.OrganisationIndustryReply && (
+          {orgSteps.includes(OrgSteps.OrganisationIndustryReply) && (
             <div className={styles['reply-prompt']}>
               <TypeAnimation
-                defaultValue={orgName}
                 sequence={[
-                  `${selectedOption?.label ?? ''}`,
+                  `${selectedOption?.value ?? ''}`,
                   500,
                   () => {
-                    setTimeout(() => {
-                      setShowSelectMenu(2);
-                    }, 1000);
+                    setShowSelectMenu(false);
+                    handleOrgStep(OrgSteps.OrganisationLogo);
                   },
                 ]}
                 cursor={false}
                 speed={50}
               />
               <img
-                src={getDefaultAvatarSrc(name?.charAt(0).toUpperCase())}
+                src={getDefaultAvatarSrc(
+                  onboardingData.name.charAt(0).toUpperCase()
+                )}
                 alt=""
                 width="100px"
                 height="100px"
@@ -222,14 +270,13 @@ const Step6: FC = () => {
             </div>
           )}
 
-          {step === SignupSteps.OrganisationLogo && (
+          {orgSteps.includes(OrgSteps.OrganisationLogo) && (
             <span>
               <div className={styles['user-image']}>
                 <NeonSundaeMainLogo width={70} height={85.75} />
               </div>
               <div className={styles['chat-message']}>
                 <TypeAnimation
-                  defaultValue={orgName}
                   style={{
                     whiteSpace: 'pre-line',
                     display: 'block',
@@ -250,27 +297,19 @@ const Step6: FC = () => {
                   onChange={handleOrgLogoChange}
                 />
                 <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                  }}
+                  id={
+                    currentStep === OrgSteps.OrganisationLogo ? 'hook-form' : ''
+                  }
+                  onSubmit={handleSubmit2(onSubmit2)}
                 >
                   <input
                     className={styles['input-field']}
                     type="text"
                     placeholder="Type here your organisation description"
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...register('description', {
+                    {...register2('orgDescription', {
                       required: true,
                     })}
-                    onChange={e => setOrganisationDescription(e.target.value)}
-                    style={{
-                      border:
-                        Object.keys(errors).length && '0.56px solid #FF8383',
-                    }}
                   />
-                  {Object.keys(errors).length > 0 && (
-                    <p>* Description is required</p>
-                  )}
                 </form>
 
                 <button
@@ -288,6 +327,7 @@ const Step6: FC = () => {
             </span>
           )}
         </div>
+        <PromptFooter prev={back} isDisabled={isDisabledCheck()} />
       </div>
     </>
   );
