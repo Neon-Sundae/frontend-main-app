@@ -8,11 +8,8 @@ import UserType from '../UserType';
 import WorkType from '../WorkType';
 import Objective from '../Objective';
 import EmailForm from '../EmailForm';
-import PromptFooter from '../PromptFooter';
 import SignUpOptions from '../SignUpOptions';
-
 import OrganisationOnboard from '../OrganisationOnboard';
-import Step7 from '../Step7';
 
 const ChatPrompts = () => {
   const step = useSelector((state: RootState) => state.auth.step);
@@ -31,16 +28,6 @@ const ChatPrompts = () => {
       {step === SignupSteps.Email && <EmailForm />}
       {step === SignupSteps.SignupOptions && <SignUpOptions />}
       {step === SignupSteps.OrganisationOnboard && <OrganisationOnboard />}
-      {/* {step === 12 && (
-        <>
-          <Step7
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
-      )} */}
     </div>
   );
 };
