@@ -27,7 +27,6 @@ export interface IVerifySignature {
 }
 
 export interface IUseSaveUserOnboardData {
-  objectives: string[];
   workType: string;
   name: string;
   email: string;

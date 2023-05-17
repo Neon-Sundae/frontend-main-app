@@ -2,198 +2,214 @@ import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metam
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-
-import { useAuth } from '@arcana/auth-react';
+import { providers } from 'ethers';
+import { useProvider } from '@arcana/auth-react';
 import { useForm } from 'react-hook-form';
-import { getSessionStorageItem } from 'utils/sessionStorageFunc';
-import convertBase64ToFile from 'utils/base64ToFile';
-import { signMessage } from 'utils/ethereumFn';
+import { detectMetamask, requestEthereumAccounts } from 'utils/web3EventFn';
+import { signArcanaMessage, signMessage } from 'utils/ethereumFn';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useCreateOrganisation } from 'queries/organisation';
-import { useFetchUserDetailsWrapper } from 'queries/user';
 import regexEmail from 'utils/regex/email';
 import {
+  useArcanaGenerateNonce,
   useMetamaskGenerateNonce,
+  useSaveOrganisationSignupObjectives,
   useSaveUserOnboardData,
+  useSaveUserSignupObjectives,
   useVerifySignature,
+  useVerifyUdSignature,
 } from 'queries/auth';
 import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import { getMetamaskAccountData } from 'api/auth';
+import { useArcanaSignup } from 'hooks/auth';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
-// import useMetamaskOnboardUser from './hooks/useMetamaskOnboardUser';
-import useArcanaOnboardUser from './hooks/useArcanaOnboardUser';
-import useUdOnboardUser from './hooks/useUdOnboardUser';
-import useWalletConnectOnboardUser from './hooks/useWalletConnectOnboardUser';
 
 interface IEmailTypeForm {
   email: string;
 }
 
 const SignUpForm = () => {
-  const auth = useAuth();
+  const { provider } = useProvider();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [apiStep, setApiStep] = useState(0);
   const [error, setError] = useState('');
   const onboardingData = useSelector(
     (state: RootState) => state.auth.onboardingData
   );
+  const walletConnectProvider = useSelector(
+    (state: RootState) => state.app.walletConnectProvider
+  );
+  const arcanaAuth = useSelector((state: RootState) => state.auth.arcanaAuth);
   const { register, handleSubmit, watch } = useForm<IEmailTypeForm>();
 
   const formValues = watch();
 
-  const userData = useFetchUserDetailsWrapper();
   const createOrganisation = useCreateOrganisation();
   const updateOrganisationImageHandler = useUpdateOrganisationImage();
-  // const { createUser, updateProfile, saveUserOnboardData } =
-  //   useMetamaskOnboardUser(setApiStep);
-  const createArcanaUser = useArcanaOnboardUser(setApiStep);
-  const createUdUser = useUdOnboardUser(setApiStep);
-  const createWdUser = useWalletConnectOnboardUser();
 
   const metamaskGenerateNonce = useMetamaskGenerateNonce();
   const verifySignature = useVerifySignature();
   const saveUserOnboardData = useSaveUserOnboardData();
+  const saveUserSignupObjectives = useSaveUserSignupObjectives();
+  const saveOrganisationSignupObjectives =
+    useSaveOrganisationSignupObjectives();
+  const verifyUdSignature = useVerifyUdSignature();
+  const { arcanaEmailSignupInit } = useArcanaSignup();
+  const arcanaGenereateNonce = useArcanaGenerateNonce();
 
-  // useEffect(() => {
-  //   if (apiStep === 2) updateUserProfile();
-  //   if (apiStep === 3) {
-  //     saveUserOnboardDataFunc();
-  //     if (!getSessionStorageItem('organisationName')) {
-  //       navigate('/dashboard');
-  //     } else {
-  //       saveOrgData();
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [apiStep]);
-
-  // useEffect(() => {
-  //   if (auth.user) createArcanaUser.mutate();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [auth]);
+  useEffect(() => {
+    (async () => {
+      if (arcanaAuth.address) {
+        const data = await arcanaGenereateNonce.mutateAsync(arcanaAuth.address);
+        const signature = await signArcanaMessage(
+          provider,
+          data.message,
+          arcanaAuth.address
+        );
+        await verifyAndSaveData(data, signature, arcanaAuth.address);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arcanaAuth.address]);
 
   const handleMetamaskSignup = async () => {
     try {
       if (typeof window.ethereum !== 'undefined') {
-        const { walletId, provider } = await getMetamaskAccountData();
+        const { walletId, provider: ethereumProvider } =
+          await getMetamaskAccountData();
         if (!walletId) {
           throw new Error('Please connect your wallet');
         }
 
         const data = await metamaskGenerateNonce.mutateAsync(walletId);
 
-        const signature = await signMessage(provider, data.message);
+        const signature = await signMessage(ethereumProvider, data.message);
         if (!signature) {
           throw new Error('Please sign the message');
         }
 
-        await verifySignature.mutateAsync({
-          isFirstTimeUser: data.isFirstTimeUser,
-          signature,
-          walletId,
-          message: data.message,
-        });
-
-        await saveUserOnboardData.mutateAsync({
-          objectives: onboardingData.objective,
-          workType: onboardingData.workType,
-          name: onboardingData.name,
-          email: onboardingData.email,
-        });
-
-        navigate('/dashboard');
+        await verifyAndSaveData(data, signature, walletId);
       }
     } catch (err: any) {
       toast.error(err.message);
     }
   };
 
-  const signupWithWalletConnect = async () => {
-    createWdUser(setApiStep);
+  const handleWalletConnectSignup = async () => {
+    try {
+      await walletConnectProvider.enable();
+      const web3Provider = new providers.Web3Provider(walletConnectProvider);
+
+      const accounts = await web3Provider.listAccounts();
+
+      const { chainId } = await web3Provider.getNetwork();
+      await walletConnectProvider.disconnect();
+
+      // TODO - Use testnet and mainnet chain ID check
+      if (chainId !== 137) {
+        throw new Error('Please change the network to Polygon');
+      }
+
+      if (!accounts.length) {
+        throw new Error('Please connect your wallet');
+      }
+
+      const data = await metamaskGenerateNonce.mutateAsync(accounts[0]);
+
+      const signature = await signMessage(walletConnectProvider, data.message);
+      if (!signature) {
+        throw new Error('Please sign the message');
+      }
+
+      await verifyAndSaveData(data, signature, accounts[0]);
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
-  const signUpWithUD = () => {
-    createUdUser.mutate();
+  const handleUdSignup = async () => {
+    try {
+      const ethereumProvider = detectMetamask();
+      const data = await verifyUdSignature.mutateAsync();
+      const account = await requestEthereumAccounts(ethereumProvider);
+      await verifyAndSaveData(data, null, account, true);
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
-  const linkSignUp = async (userEmail: string) => {
-    await auth.loginWithLink(userEmail);
+  const verifyAndSaveData = async (
+    data: any,
+    signature: string | null,
+    walletId: any,
+    isUdSignup = false
+  ) => {
+    try {
+      const {
+        email,
+        industry,
+        name,
+        objective,
+        orgDescription,
+        orgLogo,
+        orgName,
+        userType,
+        workType,
+      } = onboardingData;
+
+      if (!isUdSignup) {
+        await verifySignature.mutateAsync({
+          isFirstTimeUser: data.isFirstTimeUser,
+          signature,
+          walletId,
+          message: data.message,
+        });
+      }
+
+      await saveUserOnboardData.mutateAsync({
+        workType,
+        name,
+        email,
+      });
+
+      if (userType === 'Team') {
+        const createOrgData = await createOrganisation.mutateAsync({
+          description: orgDescription,
+          industry,
+          name: orgName,
+          userId: data.user.userId.toString(),
+        });
+
+        if (orgLogo) {
+          await updateOrganisationImageHandler(
+            orgLogo,
+            'profileImage',
+            'profile',
+            createOrgData.organisationId
+          );
+        }
+
+        await saveOrganisationSignupObjectives.mutateAsync(objective);
+      } else {
+        await saveUserSignupObjectives.mutateAsync(objective);
+      }
+
+      navigate('/dashboard');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
-
-  // const saveOrgData = async () => {
-  //   const organisationName = getSessionStorageItem('organisationName');
-  //   const organisationDescription = getSessionStorageItem(
-  //     'organisationDescription'
-  //   );
-
-  //   if (organisationName && organisationDescription) {
-  //     const localFile = getSessionStorageItem('file');
-  //     const convertedFile = await convertBase64ToFile(localFile);
-  //     // if (!disableButton && userData?.user.userId) {
-  //     const createOrgData = await createOrganisation.mutateAsync({
-  //       name: organisationName,
-  //       description: organisationDescription,
-  //       userId: userData.user.userId.toString(),
-  //       industry: getSessionStorageItem('choices'),
-  //     });
-
-  //     if (convertedFile) {
-  //       await updateOrganisationImageHandler(
-  //         convertedFile,
-  //         'profileImage',
-  //         'profile',
-  //         createOrgData.organisationId
-  //       );
-  //     }
-
-  //     navigate(`/organisation/${createOrgData.organisationId}`);
-  //     // }
-  //   }
-  // };
-
-  // const saveUserOnboardDataFunc = () => {
-  //   const data: any[] = [];
-  //   const choices = getSessionStorageItem('choices');
-  //   const flow = getSessionStorageItem('flow');
-  //   const work = getSessionStorageItem('work');
-
-  //   data.push(JSON.parse(choices), flow, work, {
-  //     userId: userData?.user.userId,
-  //   });
-
-  //   saveUserOnboardData.mutate(data);
-  // };
-
-  // const updateUserProfile = () => {
-  //   console.log('inside updateUserProfile');
-  //   updateProfile.mutate({
-  //     userId: userData?.user.userId,
-  //     name:
-  //       getSessionStorageItem('name') ??
-  //       getSessionStorageItem('organisationName'),
-  //     email:
-  //       getSessionStorageItem('email') ??
-  //       getSessionStorageItem('organisationEmail'),
-  //     work:
-  //       getSessionStorageItem('work') ??
-  //       getSessionStorageItem('organisationVertical'),
-  //   });
-  // };
 
   const onSubmit = async (data: IEmailTypeForm) => {
-    await linkSignUp(data.email);
+    await arcanaEmailSignupInit(data.email);
   };
 
   if (error === 'Bad Request' || error === 'User Already Exist!') {
     toast(() => <LoginButton setError={setError} />);
   }
-
-  console.log(onboardingData);
 
   return (
     <div className={styles['sign-up-form']}>
@@ -207,12 +223,12 @@ const SignUpForm = () => {
             text="&nbsp; Metamask"
           />
           <IconButton
-            handleClick={signupWithWalletConnect}
+            handleClick={handleWalletConnectSignup}
             icon={<WalletConnectIcon width={26.98} height={24.32} />}
             text="&nbsp; Wallet Connect"
           />
           <IconButton
-            handleClick={signUpWithUD}
+            handleClick={handleUdSignup}
             icon={<UDIcon width={26.98} height={24.32} />}
             text="Unstoppable Domains"
           />
@@ -234,7 +250,9 @@ const SignUpForm = () => {
             type="submit"
             value="Get link"
             className={styles['sign-up-form-submit']}
-            disabled={!regexEmail.test(formValues.email)}
+            disabled={
+              !regexEmail.test(formValues.email || onboardingData.email)
+            }
           />
         </form>
       </section>

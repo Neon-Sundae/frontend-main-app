@@ -11,12 +11,12 @@ interface IUpdateOrganisationImageUrl {
 }
 
 const updateOrganisationImageUrl = async (
-  accessToken: any,
   queryClient: QueryClient,
   organisationId: number,
   payload: IUpdateOrganisationImageUrl
 ) => {
   try {
+    const accessToken = getAccessToken();
     const response = await fetch(
       `${config.ApiBaseUrl}/organisation/${organisationId}`,
       {
@@ -37,7 +37,6 @@ const updateOrganisationImageUrl = async (
 
 const useUpdateOrganisationImage = () => {
   const queryClient = useQueryClient();
-  const accessToken = getAccessToken();
 
   const updateOrganisationImageHandler = async (
     image: File | null,
@@ -61,7 +60,6 @@ const useUpdateOrganisationImage = () => {
           };
 
           await updateOrganisationImageUrl(
-            accessToken,
             queryClient,
             organisationId,
             imagePayload

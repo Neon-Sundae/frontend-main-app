@@ -53,7 +53,7 @@ export const signArcanaMessage = async (
 ) => {
   try {
     if (provider) {
-      const signature = await provider.request({
+      const signature: any = await provider.request({
         method: 'personal_sign',
         params: [
           ethers.utils.hexlify(ethers.utils.toUtf8Bytes(message)),
