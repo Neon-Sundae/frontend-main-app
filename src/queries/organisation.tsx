@@ -196,13 +196,13 @@ const useFetchOrganisationOwnerManager = (
 };
 
 const useCreateOrganisation = (
-  setDisableButton: Dispatch<SetStateAction<boolean>>
+  setDisableButton?: Dispatch<SetStateAction<boolean>>
 ) => {
   return useMutation({
     mutationFn: (payload: ICreateOrganisationPayload) =>
       createOrganisation(payload),
     onError: () => {
-      setDisableButton(false);
+      if (setDisableButton) setDisableButton(false);
     },
   });
 };

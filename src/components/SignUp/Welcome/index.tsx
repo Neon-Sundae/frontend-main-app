@@ -1,34 +1,34 @@
-/* eslint-disable jsx-a11y/media-has-caption */
-/* eslint-disable react/jsx-props-no-spreading */
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { setSignUpStep } from 'actions/user';
+import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import { useForm } from 'react-hook-form';
-import {
-  getSessionStorageItem,
-  setSessionStorageItem,
-} from 'utils/sessionStorageFunc';
 import videoSrc from 'assets/videos/intro.mp4';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
-const Step0 = () => {
-  const step = useSelector((state: RootState) => state.user.step);
-  const name = getSessionStorageItem('name');
+interface IWelcomeForm {
+  name: string;
+}
 
+const Welcome = () => {
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<IWelcomeForm>();
 
-  const onSubmit = (data: any) => {
-    setSessionStorageItem('name', data.name);
-    if (!errors.name) dispatch(setSignUpStep(step + 1));
+  const onboardingData = useSelector(
+    (state: RootState) => state.auth.onboardingData
+  );
+
+  const onSubmit = (data: IWelcomeForm) => {
+    dispatch(updateOnboardingData({ name: data.name }));
+    dispatch(updateSignUpStep(SignupSteps.UserType));
   };
 
   return (
-    <div className={styles['step0-container']}>
+    <div className={styles['welcome-container']}>
       <div className={styles['video-frame']}>
         <video
           className={styles['background-video-container']}
@@ -46,11 +46,10 @@ const Step0 = () => {
             Hey
             <input
               type="text"
-              defaultValue={name}
+              defaultValue={onboardingData.name}
               placeholder="Your name"
               {...register('name', { required: true })}
               className={errors.name ? styles.error : ''}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
             />
             &nbsp;! 👋
           </h2>
@@ -61,11 +60,11 @@ const Step0 = () => {
           type="submit"
           value="Get Started&nbsp;&nbsp;🎉"
           className={styles['submit-button']}
-          disabled={!!errors.name}
+          disabled={Object.keys(errors).length > 0}
         />
       </form>
     </div>
   );
 };
 
-export default Step0;
+export default Welcome;

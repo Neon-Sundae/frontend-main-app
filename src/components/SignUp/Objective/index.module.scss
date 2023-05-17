@@ -1,10 +1,13 @@
-.step-2-container {
+.step3-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
   .chat-prompts-container {
     &--chat-message {
       width: 79%;
       margin: auto;
       display: flex;
-
       margin-top: 100px;
 
       & > .user-image {
@@ -14,8 +17,8 @@
         height: 108px;
         margin-right: 25px;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
       }
 
       & > .user-choices {
@@ -23,26 +26,44 @@
         border-radius: 18.5481px;
         padding: 25px 50px;
 
+        font-family: var(--font-family-roboto-regular);
+        font-weight: 400;
+        font-size: 1.25rem;
+
         & > p {
-          font-family: var(--font-family-roboto-regular);
-          font-weight: 400;
-          font-size: 1.25rem;
+          animation: fadeIn 2s;
+
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
         }
 
-        & > span {
+        &--text {
+          margin-bottom: 10px;
+          animation: messageShow;
+          animation-duration: 1s;
+        }
+
+        & > form {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
           width: 560px;
-          min-height: 85px;
+          min-height: 70px;
           font-family: var(--font-family-roboto-regular);
           font-weight: 400;
           font-size: 1.25rem;
+          margin-top: 20px;
 
           & > .choice-option {
             color: #fff;
-            width: 270px;
-            height: 74px;
+            width: 260.78px;
+            height: 100.27px;
             background: linear-gradient(
               58.93deg,
               rgba(52, 52, 52, 0.8) 4.08%,
@@ -64,6 +85,7 @@
             animation-duration: 1s;
             border: 1.64px solid;
             margin-bottom: 15px;
+            text-align: center;
             border-image-source: linear-gradient(0deg, #ffffff, #ffffff),
               linear-gradient(0deg, #606060, #606060);
 
@@ -80,6 +102,15 @@
                 visibility: visible;
               }
             }
+
+            & > input {
+              display: none;
+            }
+          }
+
+          .choice-option:nth-child(7),
+          .choice-option:nth-child(8) {
+            margin-bottom: 0;
           }
 
           & > .active {
@@ -99,6 +130,7 @@
               );
             box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
           }
+
           & > .choice-option:hover {
             transition: transform 125ms;
             transform: translateY(-4px);

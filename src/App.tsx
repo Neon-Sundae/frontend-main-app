@@ -1,27 +1,27 @@
 import Loading from 'components/Loading';
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RootPage from 'containers/root';
+import RootPage from 'pages/root';
 import PrivateRoute from 'components/PrivateRoute';
 import useSetAppMetadata from 'hooks/useSetAppMetadata';
 import { useProfile } from 'components/Profile/Landing/hooks';
-import ErrorPage from 'containers/error';
+import ErrorPage from 'pages/error';
 import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import { useFetchUserDetailsWrapper } from 'queries/user';
 
-const Login = lazy(() => import('containers/login'));
-const SignUp = lazy(() => import('containers/signUp'));
-const Dashboard = lazy(() => import('containers/dashboard'));
-const Profile = lazy(() => import('containers/profile'));
-const Organisation = lazy(() => import('containers/organisation'));
-const Project = lazy(() => import('containers/project'));
-const Tasks = lazy(() => import('containers/tasks'));
-const Logout = lazy(() => import('containers/logout'));
-const TaskCancel = lazy(() => import('containers/taskCancel'));
-const Jobs = lazy(() => import('containers/jobs'));
-const AllJobsContainer = lazy(() => import('containers/allJobs'));
+const Login = lazy(() => import('pages/login'));
+const SignUp = lazy(() => import('pages/signUp'));
+const Dashboard = lazy(() => import('pages/dashboard'));
+const Profile = lazy(() => import('pages/profile'));
+const Organisation = lazy(() => import('pages/organisation'));
+const Project = lazy(() => import('pages/project'));
+const Tasks = lazy(() => import('pages/tasks'));
+const Logout = lazy(() => import('pages/logout'));
+const TaskCancel = lazy(() => import('pages/taskCancel'));
+const Jobs = lazy(() => import('pages/jobs'));
+const AllJobsContainer = lazy(() => import('pages/allJobs'));
 const MemberInvitation = lazy(
-  () => import('containers/organisation/MemberInvitation')
+  () => import('pages/organisation/MemberInvitation')
 );
 
 const App = () => {
@@ -54,7 +54,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<RootPage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/sign_up" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route
             path="/dashboard"
             element={

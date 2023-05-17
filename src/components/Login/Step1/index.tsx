@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import IconButton from 'components/IconButton';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
@@ -11,28 +11,23 @@ import {
   useWalletConnectLogin,
   useMetamaskLogin,
 } from './hooks';
-import LoginModal from '../LoginModal';
 import ArcanaAuthLogin from '../ArcanaAuthLogin';
 
 const Step1: FC = () => {
   const navigate = useNavigate();
   const generateNonce = useMetamaskLogin();
-
-  const [error, setError] = useState('');
-
-  const [showModal, setShowModal] = useState(false);
   const unstoppableDomains = useUnstoppableDomains();
   const walletConnectGenerateNonce = useWalletConnectLogin();
+
+  const [error, setError] = useState('');
 
   const loginWithWalletConnect = async () => {
     walletConnectGenerateNonce({ setError });
   };
+
   const loginWithMetaMask = () => {
-    generateNonce({ setError });
-  };
-  const handleMetamaskLogin = () => {
     if (typeof window.ethereum !== 'undefined') {
-      loginWithMetaMask();
+      generateNonce({ setError });
     }
   };
 
@@ -59,7 +54,7 @@ const Step1: FC = () => {
       <p className={styles.subtitle}>Choose Wallet to Login</p>
       <div className={styles['button-container']}>
         <IconButton
-          handleClick={handleMetamaskLogin}
+          handleClick={loginWithMetaMask}
           icon={<MetamaskIcon width={26.98} height={24.32} />}
           style={style}
         />
@@ -74,11 +69,7 @@ const Step1: FC = () => {
           style={style}
         />
       </div>
-
       <ArcanaAuthLogin />
-      {showModal && (
-        <LoginModal showModal={showModal} setShowModal={setShowModal} />
-      )}
     </>
   );
 };

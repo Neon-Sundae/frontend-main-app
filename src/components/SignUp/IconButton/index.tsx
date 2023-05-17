@@ -8,7 +8,6 @@ interface IconButtonFC {
   handleClick: () => void;
   // option prop
   style?: any;
-  active?: boolean;
   showBorder?: boolean;
 }
 
@@ -17,17 +16,12 @@ const IconButton: FC<IconButtonFC> = ({
   text,
   handleClick,
   style,
-  active,
   showBorder,
 }) => {
   return (
     <button
       type="button"
-      className={clsx(
-        styles.IconButton,
-        active && styles['IconButton-active'],
-        showBorder && styles[`show-border`]
-      )}
+      className={clsx(styles.IconButton, showBorder && styles[`show-border`])}
       onClick={handleClick}
       // add font from step 1 here
       style={style}
@@ -42,7 +36,6 @@ const IconButton: FC<IconButtonFC> = ({
 // default prop for font
 IconButton.defaultProps = {
   style: undefined,
-  active: false,
   showBorder: true,
   text: '',
   icon: <></>,

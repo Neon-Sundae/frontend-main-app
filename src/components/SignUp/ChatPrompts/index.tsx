@@ -1,103 +1,33 @@
-import { useState } from 'react';
 import { RootState } from 'reducers';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
+import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
-import Step0 from '../Step0';
-import Step1 from '../Step1';
-import Step2 from '../Step2';
-import Step3 from '../Step3';
-import Step4 from '../Step4';
-import PromptFooter from '../PromptFooter';
+import Welcome from '../Welcome';
+import UserType from '../UserType';
+import WorkType from '../WorkType';
+import Objective from '../Objective';
+import EmailForm from '../EmailForm';
 import SignUpOptions from '../SignUpOptions';
-
-import Step6 from '../Step6';
-import Step7 from '../Step7';
+import OrganisationOnboard from '../OrganisationOnboard';
 
 const ChatPrompts = () => {
-  const step = useSelector((state: RootState) => state.user.step);
-  const [showOptions, setShowOptions] = useState(false);
-  const [active, setActive] = useState('');
+  const step = useSelector((state: RootState) => state.auth.step);
 
   return (
     <div
       className={clsx(
         styles['chat-prompts-container'],
-        step === 0 && styles.auto
+        step === SignupSteps.Welcome && styles.auto
       )}
     >
-      {step === 0 && <Step0 />}
-      {step === 1 && (
-        <>
-          <Step1
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
-      {step === 2 && (
-        <>
-          <Step2
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
-      {step === 3 && (
-        <>
-          <Step3
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
-      {step === 4 && (
-        <>
-          <Step4 setActive={setActive} />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
-      {(step === 5 || step === 13) && <SignUpOptions />}
-      {step === 6 && (
-        <>
-          <Step3
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            active={active}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
-      {(step === 7 ||
-        step === 8 ||
-        step === 9 ||
-        step === 10 ||
-        step === 11) && (
-        <>
-          <Step6 setActive={setActive} />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
-      {step === 12 && (
-        <>
-          <Step7
-            setShowOptions={setShowOptions}
-            setActive={setActive}
-            showOptions={showOptions}
-          />
-          <PromptFooter active={active === ''} />
-        </>
-      )}
+      {step === SignupSteps.Welcome && <Welcome />}
+      {step === SignupSteps.UserType && <UserType />}
+      {step === SignupSteps.WorkType && <WorkType />}
+      {step === SignupSteps.Objective && <Objective />}
+      {step === SignupSteps.Email && <EmailForm />}
+      {step === SignupSteps.SignupOptions && <SignUpOptions />}
+      {step === SignupSteps.OrganisationOnboard && <OrganisationOnboard />}
     </div>
   );
 };

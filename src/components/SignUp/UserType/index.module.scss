@@ -21,23 +21,18 @@
       border-radius: 18.5481px;
       padding: 25px 50px;
 
-      & > p {
-        font-family: var(--font-family-roboto-regular);
-        font-weight: 400;
-        font-size: 1.25rem;
-      }
+      font-family: var(--font-family-roboto-regular);
+      font-weight: 400;
+      font-size: 1.25rem;
 
-      & > span {
+      & > form {
         display: flex;
         justify-content: space-between;
         width: 520px;
         min-height: 108px;
+        margin-top: 20px;
 
-        font-family: var(--font-family-roboto-regular);
-        font-weight: 400;
-        font-size: 1.25rem;
-
-        & > .choice-option {
+        & .choice-option {
           color: #fff;
           width: 234px;
           height: 203px;
@@ -78,9 +73,13 @@
               visibility: visible;
             }
           }
+
+          & > input {
+            display: none;
+          }
         }
 
-        & > .active {
+        & .active {
           transition: transform 125ms;
           transform: translateY(-4px);
           border: 0.94px solid #555555;
