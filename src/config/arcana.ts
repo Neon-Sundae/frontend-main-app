@@ -6,8 +6,8 @@ export const arcanaProvider = new AuthProvider(
   {
     chainConfig: {
       chainId: config.chainId as CHAIN,
-      rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
+      rpcUrl: config.rpcURL,
     },
-    network: 'dev',
+    network: import.meta.env.VITE_ARCANA_NETWORK,
   }
 );
