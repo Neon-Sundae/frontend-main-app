@@ -10,8 +10,5 @@ export const trackAmplitudeEvent = (
   eventName: string,
   eventProperties?: any
 ) => {
-  console.log(eventName);
-  console.log(eventProperties);
-  const a = amplitude.track(eventName, eventProperties);
-  console.log(a);
+  amplitude.track(eventName, eventProperties);
 };

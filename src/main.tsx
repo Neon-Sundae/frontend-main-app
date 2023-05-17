@@ -20,7 +20,9 @@ const queryClient = new QueryClient({
   },
 });
 
-initAmplitude();
+if (import.meta.env.VITE_APPLICATION_ENV === 'prod') {
+  initAmplitude();
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ProvideAuth provider={arcanaProvider}>

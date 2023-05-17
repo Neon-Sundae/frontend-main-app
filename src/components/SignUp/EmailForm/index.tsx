@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import regexEmail from 'utils/regex/email';
 import { SignupSteps } from 'interfaces/auth';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 import PromptFooter from '../PromptFooter';
 
@@ -26,6 +27,7 @@ const EmailForm: FC = () => {
   const formValues = watch();
 
   const onSubmit = (data: IEmailTypeForm) => {
+    trackAmplitudeEvent('onb_email_enter');
     dispatch(updateOnboardingData({ email: data.email }));
     dispatch(updateSignUpStep(SignupSteps.SignupOptions));
   };

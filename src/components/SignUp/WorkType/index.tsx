@@ -7,6 +7,7 @@ import { RootState } from 'reducers';
 import { UseFormRegister, useForm } from 'react-hook-form';
 import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import { SignupSteps } from 'interfaces/auth';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 import PromptFooter from '../PromptFooter';
 
@@ -38,6 +39,9 @@ const WorkType: FC = () => {
   const formValues = watch();
 
   const onSubmit = (data: IWorkTypeForm) => {
+    trackAmplitudeEvent('onb_userwork_click', {
+      worktype: data.workType,
+    });
     dispatch(updateOnboardingData({ workType: data.workType }));
     dispatch(updateSignUpStep(SignupSteps.Objective));
   };
