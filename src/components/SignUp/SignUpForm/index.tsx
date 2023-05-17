@@ -3,18 +3,16 @@ import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import { FC, useEffect, useState } from 'react';
 
-import { useAuth, useProvider } from '@arcana/auth-react';
+import { useAuth } from '@arcana/auth-react';
 import { useForm, useWatch } from 'react-hook-form';
 import { getSessionStorageItem } from 'utils/sessionStorageFunc';
-
 import convertBase64ToFile from 'utils/base64ToFile';
 
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
-import useCreateOrganisation from 'components/StartOrgModal/hook';
+import { useCreateOrganisation } from 'queries/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import regexEmail from 'utils/regex/email';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
@@ -25,21 +23,34 @@ import useWalletConnectOnboardUser from './hooks/useWalletConnectOnboardUser';
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user.user);
   const [emailFromSessionStorage, setEmail] = useState(
     getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
   );
-
   const [disableButton, setDisableButton] = useState(false);
-  const provider = useProvider();
-  const createOrganisation = useCreateOrganisation(setDisableButton);
   const [apiStep, setApiStep] = useState(0);
+  const [error, setError] = useState('');
+  const [active, setActive] = useState('');
+
   const auth = useAuth();
+  const userData = useFetchUserDetailsWrapper();
+  const createOrganisation = useCreateOrganisation(setDisableButton);
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
   const { createUser, updateProfile, saveUserOnboardData } =
     useMetamaskOnboardUser(setApiStep);
   const createArcanaUser = useArcanaOnboardUser(setApiStep);
   const createUdUser = useUdOnboardUser(setApiStep);
   const createWdUser = useWalletConnectOnboardUser();
+
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useForm({ mode: 'onChange' });
+
+  const email = useWatch({
+    control,
+    name: 'email',
+  });
 
   useEffect(() => {
     if (apiStep === 2) updateUserProfile();
@@ -58,22 +69,6 @@ const SignUpForm = () => {
     if (auth.user) createArcanaUser.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
-
-  const [error, setError] = useState('');
-  const [active, setActive] = useState('');
-
-  // const generateNonce = useMetamaskSignup(setNewUserId);
-
-  const {
-    register,
-    control,
-    formState: { errors },
-  } = useForm({ mode: 'onChange' });
-
-  const email = useWatch({
-    control,
-    name: 'email',
-  });
 
   const loginWithMetaMask = () => {
     createUser.mutate();
@@ -106,14 +101,25 @@ const SignUpForm = () => {
     if (organisationName && organisationDescription) {
       const localFile = getSessionStorageItem('file');
       const convertedFile = await convertBase64ToFile(localFile);
-      if (user?.userId)
-        await createOrganisation({
+      if (!disableButton && userData?.user.userId) {
+        const createOrgData = await createOrganisation.mutateAsync({
           name: organisationName,
           description: organisationDescription,
-          userId: user.userId.toString(),
-          image: convertedFile || undefined,
+          userId: userData.user.userId.toString(),
           industry: getSessionStorageItem('choices'),
         });
+
+        if (convertedFile) {
+          await updateOrganisationImageHandler(
+            convertedFile,
+            'profileImage',
+            'profile',
+            createOrgData.organisationId
+          );
+        }
+
+        navigate(`/organisation/${createOrgData.organisationId}`);
+      }
     }
   };
 
@@ -123,7 +129,9 @@ const SignUpForm = () => {
     const flow = getSessionStorageItem('flow');
     const work = getSessionStorageItem('work');
 
-    data.push(JSON.parse(choices), flow, work, { userId: user?.userId });
+    data.push(JSON.parse(choices), flow, work, {
+      userId: userData?.user.userId,
+    });
 
     saveUserOnboardData.mutate(data);
   };
@@ -131,7 +139,7 @@ const SignUpForm = () => {
   const updateUserProfile = () => {
     console.log('inside updateUserProfile');
     updateProfile.mutate({
-      userId: user?.userId,
+      userId: userData?.user.userId,
       name:
         getSessionStorageItem('name') ??
         getSessionStorageItem('organisationName'),

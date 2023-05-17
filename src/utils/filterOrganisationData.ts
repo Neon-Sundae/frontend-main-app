@@ -2,11 +2,14 @@ import { IOrganisationSelectData } from 'interfaces/organisation';
 
 const filterOrganisationData = (
   name: string,
-  data: IOrganisationSelectData[]
-): IOrganisationSelectData[] =>
-  data &&
-  data.filter(function (organisation: { label: string }) {
-    return organisation.label === name;
-  });
+  data: IOrganisationSelectData[] | undefined
+): IOrganisationSelectData[] => {
+  if (data) {
+    return data.filter(
+      (organisation: { label: string }) => organisation.label === name
+    );
+  }
+  return [];
+};
 
 export default filterOrganisationData;

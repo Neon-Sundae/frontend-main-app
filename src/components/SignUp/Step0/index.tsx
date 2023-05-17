@@ -8,15 +8,12 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from 'utils/sessionStorageFunc';
-import { TypeAnimation } from 'react-type-animation';
-import { useState } from 'react';
 import videoSrc from 'assets/videos/intro.mp4';
 import styles from './index.module.scss';
 
 const Step0 = () => {
   const step = useSelector((state: RootState) => state.user.step);
   const name = getSessionStorageItem('name');
-  const [showInput, setShowInput] = useState(false);
 
   const dispatch = useDispatch();
   const {
@@ -33,53 +30,38 @@ const Step0 = () => {
   return (
     <div className={styles['step0-container']}>
       <div className={styles['video-frame']}>
-        <video autoPlay loop className={styles['background-video-container']}>
+        <video
+          className={styles['background-video-container']}
+          controls
+          muted
+          autoPlay
+          poster="/src/assets/images/poster/intro-video.png"
+        >
           <source src={videoSrc} type="video/mp4" />
         </video>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>
-            Hey 👋
-            {!showInput && (
-              <TypeAnimation
-                style={{
-                  display: 'inline',
-                  cursor: 'pointer',
-                  width: '180px',
-                }}
-                sequence={[
-                  ' Priya',
-                  1000,
-                  ' Michelle',
-                  1000,
-                  ' Natalia',
-                  1000,
-                  () => {
-                    setShowInput(true); // Place optional callbacks anywhere in the array
-                  },
-                ]}
-                cursor
-                speed={80}
-              />
-            )}
-            {showInput && (
-              <input
-                type="text"
-                defaultValue={name}
-                placeholder="Name "
-                {...register('name', { required: true })}
-                className={errors.name ? styles.error : ''}
-              />
-            )}
+            Hey
+            <input
+              type="text"
+              defaultValue={name}
+              placeholder="Your name"
+              {...register('name', { required: true })}
+              className={errors.name ? styles.error : ''}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+            />
+            &nbsp;! 👋
           </h2>
           {errors.name && <p>* Your name is required</p>}
         </div>
+        <h3>Welcome to Neon Sundae</h3>
         <input
           type="submit"
           value="Get Started&nbsp;&nbsp;🎉"
           className={styles['submit-button']}
-          disabled={!!errors.name || !showInput}
+          disabled={!!errors.name}
         />
       </form>
     </div>
