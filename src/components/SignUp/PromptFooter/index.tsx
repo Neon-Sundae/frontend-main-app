@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import clsx from 'clsx';
 import { FC } from 'react';
 import styles from './index.module.scss';
