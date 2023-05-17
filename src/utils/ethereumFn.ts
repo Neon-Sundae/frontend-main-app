@@ -1,5 +1,4 @@
 import { EthereumProvider } from '@arcana/auth';
-import { useProvider } from '@arcana/auth-react';
 import { ethers } from 'ethers';
 
 export const handleAddPolygonChain = async (provider: EthereumProvider) => {
@@ -54,14 +53,13 @@ export const signArcanaMessage = async (
 ) => {
   try {
     if (provider) {
-      const signature = await provider.request({
+      const signature: any = await provider.request({
         method: 'personal_sign',
         params: [
           ethers.utils.hexlify(ethers.utils.toUtf8Bytes(message)),
           walletAddress,
         ],
       });
-
       return signature;
     }
   } catch (err) {

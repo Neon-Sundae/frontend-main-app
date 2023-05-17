@@ -17,11 +17,12 @@
     "style-lint": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
-    "@arcana/auth": "^1.0.2",
+    "@amplitude/analytics-browser": "^1.10.3",
+    "@arcana/auth": "^1.0.3",
     "@arcana/auth-react": "^0.0.3",
     "@hedgedoc/html-to-react": "^1.4.5",
     "@metamask/detect-provider": "^1.2.0",
-    "@tanstack/react-query": "4.16.1",
+    "@tanstack/react-query": "4.26.1",
     "@types/styled-components": "^5.1.25",
     "@uauth/js": "^2.4.0",
     "@walletconnect/web3-provider": "^1.7.8",

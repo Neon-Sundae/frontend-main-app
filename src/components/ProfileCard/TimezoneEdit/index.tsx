@@ -1,13 +1,14 @@
 import { FC, useState } from 'react';
 import { ReactComponent as LocationIcon } from 'assets/illustrations/profile/location.svg';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useParams } from 'react-router-dom';
+import { useFetchProfileDetailsWrapper } from 'queries/profile';
 import styles from './index.module.scss';
 import TimezoneModal from './TimezoneModal';
 
 const TimezoneEdit: FC = () => {
+  const params = useParams();
+  const profileData = useFetchProfileDetailsWrapper(params.profileId);
   const [open, setOpen] = useState(false);
-  const profile = useSelector((state: RootState) => state.profile.profile);
 
   const handleOpenModal = () => setOpen(true);
 
@@ -15,7 +16,7 @@ const TimezoneEdit: FC = () => {
     <>
       <div className={styles['timezone-container']} onClick={handleOpenModal}>
         <LocationIcon width={14} height={19.7} />
-        <span>{profile?.timezone ?? 'Singapore GMT+8'}</span>
+        <span>{profileData?.timezone ?? 'Singapore GMT+8'}</span>
       </div>
       {open && <TimezoneModal setOpen={setOpen} />}
     </>

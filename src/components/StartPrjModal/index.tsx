@@ -4,12 +4,9 @@ import { ReactComponent as Add } from 'assets/illustrations/icons/add.svg';
 import BaseModal from 'components/Home/BaseModal';
 import StartOrgModal from 'components/StartOrgModal';
 import toast, { Toaster } from 'react-hot-toast';
-import { useQuery } from '@tanstack/react-query';
 import getRandomString from 'utils/getRandomString';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
-import config from 'config';
-import { getAccessToken } from 'utils/authFn';
+import { useFetchUserOrganisations } from 'queries/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import styles from './index.module.scss';
 import CreateUsingProjectTemplate from './CreateUsingProjectTemplate';
 
@@ -18,26 +15,16 @@ interface IStartPrjProps {
 }
 
 const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
-  const userId = useSelector((state: RootState) => state.user.user?.userId);
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
   const [selected, setSelected] = useState<any>(0);
-  const { isLoading, error, data, isFetching, refetch } = useQuery(
-    ['userOrgs'],
-    () =>
-      fetch(`${config.ApiBaseUrl}/organisation/user/${userId}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
+
+  const userData = useFetchUserDetailsWrapper();
+  const { data: userOrganisations, isLoading } = useFetchUserOrganisations(
+    userData?.user.userId
   );
 
-  if (isFetching) return null;
   if (isLoading) return null;
-  if (error) return null;
 
   const handleOrgModalShow = () => {
     setShowOrgModal(true);
@@ -68,7 +55,7 @@ const StartPrjModal: FC<IStartPrjProps> = ({ onClose }) => {
               To Start a Project you need to choose an organisation
             </p>
             <section className={styles['org-list']}>
-              {data?.map((org: any) => {
+              {userOrganisations?.map((org: any) => {
                 return (
                   <Organisation
                     key={getRandomString(5)}

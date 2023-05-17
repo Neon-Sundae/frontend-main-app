@@ -18,25 +18,25 @@ const ProfileCardContainer: FC<IProfileCardContainer> = ({ children }) => {
   const isEditable = useSelector(
     (state: RootState) => state.profile.isEditable
   );
-  const { profileId } = useParams();
+  // const { profileId } = useParams();
 
-  const { data, refetch } = useQuery(
-    ['user-profile-data', profileId],
-    () =>
-      fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      enabled: false,
-      refetchOnMount: false,
-    }
-  );
+  // const { data, refetch } = useQuery(
+  //   ['user-profile-data', profileId],
+  //   () =>
+  //     fetch(`${config.ApiBaseUrl}/profile/${profileId}`, {
+  //       method: 'GET',
+  //       headers: { Authorization: `Bearer ${getAccessToken()}` },
+  //     }).then(response => response.json()),
+  //   {
+  //     enabled: false,
+  //     refetchOnMount: false,
+  //   }
+  // );
 
-  useEffect(() => {
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <div

@@ -4,9 +4,7 @@ import {
   UPDATE_USER_NAME,
   GET_WALLET_ADDRESS,
   GET_WALLET_USDC_BALANCE,
-  UPDATE_USER_DISCORD,
   UPDATE_USER_EMAIL,
-  SIGN_UP_STEP,
   UPDATE_USER_ID,
 } from 'actions/user/types';
 
@@ -15,8 +13,6 @@ interface State {
   userId: number | undefined;
   wallet_address: string;
   wallet_usdc_balance: number;
-  discordId: string;
-  step: number;
 }
 
 type Action =
@@ -37,16 +33,8 @@ type Action =
       payload: string;
     }
   | {
-      type: typeof UPDATE_USER_DISCORD;
-      discordId: string;
-    }
-  | {
       type: typeof UPDATE_USER_EMAIL;
       email: string;
-    }
-  | {
-      type: typeof SIGN_UP_STEP;
-      step: number;
     }
   | {
       type: typeof UPDATE_USER_ID;
@@ -58,8 +46,6 @@ const initialState: State = {
   userId: undefined,
   wallet_address: '',
   wallet_usdc_balance: 0,
-  discordId: '',
-  step: 0,
 };
 
 const user = (state = initialState, action: Action): State => {
@@ -87,14 +73,6 @@ const user = (state = initialState, action: Action): State => {
         ...state,
         wallet_usdc_balance: Number(action.payload),
       };
-    case UPDATE_USER_DISCORD:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          discordId: action.discordId,
-        },
-      };
     case UPDATE_USER_EMAIL:
       if (state.user) {
         return {
@@ -106,11 +84,6 @@ const user = (state = initialState, action: Action): State => {
         };
       }
       return { ...state };
-    case SIGN_UP_STEP:
-      return {
-        ...state,
-        step: action.step,
-      };
     case UPDATE_USER_ID:
       return {
         ...state,

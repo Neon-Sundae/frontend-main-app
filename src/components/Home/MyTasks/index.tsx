@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import config from 'config';
 import { getAccessToken } from 'utils/authFn';
 import getRandomString from 'utils/getRandomString';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import _ from 'lodash';
 import MyTasksCard from '../MyTasksCard';
 import styles from './index.module.scss';
@@ -12,7 +12,11 @@ import DashboardTabs from '../DashboardTabs';
 import MyTaskDetailModal from '../TaskDetailModal';
 
 const MyTasks: FC = () => {
-  const profile = useSelector((state: RootState) => state.profile.profile);
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
+
   const [selectedTab, setSelectedTab] = useState('all');
   const [selectedTaskId, setSelectedTaskId] = useState(0);
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
@@ -36,7 +40,7 @@ const MyTasks: FC = () => {
 
   const getAllProfileTasks = () => {
     return _.filter(data, {
-      profileTask: [{ Profile: { profileId: profile?.profileId } }],
+      profileTask: [{ Profile: { profileId: profileData?.profileId } }],
     });
   };
 
@@ -48,7 +52,7 @@ const MyTasks: FC = () => {
           status: selectedTab,
           profileTask: [
             {
-              Profile: { profileId: profile?.profileId },
+              Profile: { profileId: profileData?.profileId },
             },
           ],
         });
@@ -58,7 +62,7 @@ const MyTasks: FC = () => {
           status: selectedTab,
           profileTask: [
             {
-              Profile: { profileId: profile?.profileId },
+              Profile: { profileId: profileData?.profileId },
             },
           ],
         });
@@ -68,7 +72,7 @@ const MyTasks: FC = () => {
           status: selectedTab,
           profileTask: [
             {
-              Profile: { profileId: profile?.profileId },
+              Profile: { profileId: profileData?.profileId },
             },
           ],
         });
@@ -77,7 +81,7 @@ const MyTasks: FC = () => {
         profileTask: [
           {
             applicationStatus: selectedTab,
-            Profile: { profileId: profile?.profileId },
+            Profile: { profileId: profileData?.profileId },
           },
         ],
       });
@@ -85,6 +89,7 @@ const MyTasks: FC = () => {
     setFilteredData(getFilteredProfileTasks);
     return getFilteredProfileTasks;
   };
+
   if (openTaskDetail) {
     return (
       <MyTaskDetailModal
@@ -95,6 +100,7 @@ const MyTasks: FC = () => {
       />
     );
   }
+
   return (
     <div className={styles['my-tasks-container']}>
       <h3>My Ongoing Tasks</h3>

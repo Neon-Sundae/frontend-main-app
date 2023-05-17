@@ -7,19 +7,21 @@ import {
   SetStateAction,
   useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import Modal from 'components/Modal';
 import { ReactComponent as DeleteIcon } from 'assets/illustrations/icons/delete-2.svg';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import {
-  useAddManager,
+  useAddOrganisationMember,
   useDeleteOrganisationMember,
   useDeleteUserInvitation,
   useFetchOrganisationMembers,
   useTransferOwnership,
-} from './hooks';
+} from 'queries/organisation';
 import styles from './index.module.scss';
 
 const OrganisationTeam: FC = () => {
+  const params = useParams();
   const [showAddManagerModal, setShowAddManagerModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
@@ -28,29 +30,23 @@ const OrganisationTeam: FC = () => {
   const [deleteEmail, setDeleteEmail] = useState('');
   const [memberId, setMemberId] = useState('');
 
-  const { data, isLoading } = useFetchOrganisationMembers();
-  const { addManagerInvitation } = useAddManager({
-    modalStatus: setShowAddManagerModal,
-  });
-  const { transferOwnershipInvitation } = useTransferOwnership({
-    modalStatus: setShowTransferModal,
-  });
-  const { deleteOrganisationMember } = useDeleteOrganisationMember({
-    modalStatus: setShowDeleteUserModal,
-  });
-  const { deleteUserInvitation } = useDeleteUserInvitation({
-    modalStatus: setShowDeleteInvitationModal,
-  });
+  const { data, isLoading } = useFetchOrganisationMembers(params.orgId);
+  const addOrganisationMember = useAddOrganisationMember(params.orgId);
+  const transferOwnershipInvitation = useTransferOwnership(params.orgId);
+  const deleteOrganisationMember = useDeleteOrganisationMember(params.orgId);
+  const deleteUserInvitation = useDeleteUserInvitation(params.orgId);
 
   const openAddManagerModal = () => setShowAddManagerModal(true);
   const openTransferModal = () => setShowTransferModal(true);
 
-  const handleTransferOwnership = (email: string) => {
-    transferOwnershipInvitation.mutate(email);
+  const handleTransferOwnership = async (email: string) => {
+    await transferOwnershipInvitation.mutateAsync(email);
+    setShowTransferModal(false);
   };
 
-  const handleAddManager = (email: string) => {
-    addManagerInvitation.mutate(email);
+  const handleAddManager = async (email: string) => {
+    await addOrganisationMember.mutateAsync(email);
+    setShowAddManagerModal(false);
   };
 
   const handleDelete =
@@ -65,12 +61,14 @@ const OrganisationTeam: FC = () => {
       }
     };
 
-  const handleDeleteUser = () => {
-    deleteOrganisationMember.mutate(memberId);
+  const handleDeleteUser = async () => {
+    await deleteOrganisationMember.mutateAsync(memberId);
+    setShowDeleteUserModal(false);
   };
 
-  const handleDeleteInvitation = () => {
-    deleteUserInvitation.mutate(memberId);
+  const handleDeleteInvitation = async () => {
+    await deleteUserInvitation.mutateAsync(memberId);
+    setShowDeleteInvitationModal(false);
   };
 
   if (isLoading) {

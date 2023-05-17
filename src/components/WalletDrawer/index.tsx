@@ -8,19 +8,19 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import QRCode from 'react-qr-code';
+import { useAuth } from '@arcana/auth-react';
 import toast from 'react-hot-toast';
 import { gsap, Elastic } from 'gsap';
-import { RootState } from 'reducers';
 import bg from 'assets/illustrations/home/wallet-bg.svg';
 import withdrawProjectBalance from 'utils/contractFns/withdrawProjectBalance';
 import { ReactComponent as USDCVariant1Icon } from 'assets/illustrations/icons/usdc-variant-1.svg';
 import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
 import depositProjectFunds from 'utils/contractFns/depositProjectFunds';
 import withdrawProfileBalance from 'utils/contractFns/withdrawProfileBalance';
-import { useAuth } from '@arcana/auth-react';
-import useFetchWalletProjects from './hooks';
+import { useFetchUserWalletProjects } from 'queries/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import styles from './index.module.scss';
 import { getContractAvailableBalance } from './_utils';
 import InteractionDiv from './interaction';
@@ -32,8 +32,15 @@ interface IWalletDrawer {
 
 const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
   const auth = useAuth();
-  const { user } = useSelector((state: RootState) => state.user);
-  const { flProjects } = useFetchWalletProjects({ open });
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user.userId,
+  });
+  const { data: flProjects } = useFetchUserWalletProjects({
+    userId: userData?.user.userId,
+    open,
+    profileSmartContractId: profileData?.profileSmartContractId,
+  });
 
   const [selectedContract, setSelectedContract] = useState<any>(null);
   const [projectBalance, setProjectBalance] = useState(0);
@@ -66,7 +73,6 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
   const getFormattedWalletId = (contractId: string) => {
     if (contractId) {
       return `${contractId?.slice(0, 6)}...${contractId?.slice(
-        // eslint-disable-next-line no-unsafe-optional-chaining
         contractId.length - 6,
         contractId.length
       )}`;
@@ -114,7 +120,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
             getFormattedWalletId={getFormattedWalletId}
             handleCopyAddress={handleCopyAddress}
             selectedContract={selectedContract}
-            userAddress={user?.walletId}
+            userAddress={userData?.user.walletId}
             projectBalance={projectBalance}
           />
         );
@@ -124,7 +130,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
             <DepositStep2
               isWithdraw
               isProfile={selectedContract.type === 'profile_contract'}
-              userAddress={user?.walletId}
+              userAddress={userData?.user.walletId}
               selectedContract={selectedContract}
               projectBalance={projectBalance}
               setDepositWithdrawState={setDepositWithdrawState}
@@ -198,7 +204,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
             )}
             <i className="material-icons">expand_more</i>
           </div>
-          {flProjects.length > 0 ? (
+          {flProjects ? (
             flProjects.map(flProject => (
               <span key={flProject.id} onClick={() => selectProject(flProject)}>
                 {flProject.name}

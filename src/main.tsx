@@ -6,14 +6,26 @@ import { HelmetProvider } from 'react-helmet-async';
 import reducer from 'reducers';
 import 'styles/main.scss';
 import { ProvideAuth } from '@arcana/auth-react';
+import { arcanaProvider } from 'config/arcana';
+import { initAmplitude } from './config/amplitude';
 import App from './App';
-import { provider } from './config';
 
 const store = createStore(reducer);
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+if (import.meta.env.VITE_APPLICATION_ENV === 'prod') {
+  initAmplitude();
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ProvideAuth provider={provider}>
+  <ProvideAuth provider={arcanaProvider}>
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <Provider store={store}>
