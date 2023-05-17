@@ -15,13 +15,13 @@ const StepProgressBar = () => {
   const fillCalc = () => {
     switch (step) {
       case SignupSteps.UserType:
-        return 25;
       case SignupSteps.WorkType:
-        return 50;
+        return 25;
       case SignupSteps.Objective:
-        return 75;
+      case SignupSteps.OrganisationOnboard:
+        return 50;
       case SignupSteps.Email:
-        return 100;
+        return 75;
       case SignupSteps.SignupOptions:
         return 100;
       default:
