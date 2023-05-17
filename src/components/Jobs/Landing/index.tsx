@@ -1,5 +1,4 @@
 import NavBar from 'components/NavBar';
-import bg from 'assets/illustrations/gradients/bg.png';
 import { useParams } from 'react-router-dom';
 import config from 'config';
 import { useQuery } from '@tanstack/react-query';
@@ -10,11 +9,13 @@ import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
-import useFetchOrganisationOwnerManager from 'hooks/useFetchOrganisationOwnerManager';
+import {
+  useFetchOrganisationDetail,
+  useFetchOrganisationOwnerManager,
+} from 'queries/organisation';
 import styles from './index.module.scss';
 import JobCards from '../JobCards';
 import JobDetails from '../JobDetails';
-import { useFetchOrganisation } from '../../Organisation/Landing/hooks';
 import JobView from '../JobView';
 
 interface JobsLandingProps {
@@ -22,7 +23,7 @@ interface JobsLandingProps {
 }
 
 const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
-  const { orgId } = useParams();
+  const params = useParams();
 
   const [selectedJobUuid, setSelectedJobUuid] = useState('');
   const [JobApplicantsData, setJobApplicantsData] = useState([]);
@@ -31,8 +32,10 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
 
   const user = useSelector((state: RootState) => state.user.user);
 
-  const { organisation, isLoading } = useFetchOrganisation(orgId);
-  const { members } = useFetchOrganisationOwnerManager(orgId);
+  const { data: organisationDetail, isLoading } = useFetchOrganisationDetail(
+    params.orgId
+  );
+  const { data: members } = useFetchOrganisationOwnerManager(params.orgId);
 
   const {
     data,
@@ -42,7 +45,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   } = useQuery(
     ['orgJobs'],
     () =>
-      fetch(`${config.ApiBaseUrl}/job/organisation/${orgId}`, {
+      fetch(`${config.ApiBaseUrl}/job/organisation/${params.orgId}`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       }).then(response => response.json()),
@@ -51,7 +54,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
     }
   );
 
-  const { name: orgName, profileImage, OrganisationUser } = organisation;
+  const { name: orgName, profileImage } = organisationDetail;
 
   useEffect(() => {
     setShowView(true);
@@ -149,7 +152,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
                   setShowView={setShowView}
                   selectedJobUuid={selectedJobUuid}
                   jobStatus={d.status}
-                  orgId={orgId}
+                  orgId={params.orgId}
                   setSelectedJobUuid={setSelectedJobUuid}
                   JobApplicantsData={JobApplicantsData}
                 />

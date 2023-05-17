@@ -5,7 +5,8 @@ import styles from './index.module.scss';
 import SignUpForm from '../SignUpForm';
 
 const SignUpOptions: FC = () => {
-  const [showSignUpOptions, setShowSignUpOptions] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+
   return (
     <div className={styles['sign-up-options-container']}>
       <div className={styles['chat-prompts-container--chat-message']}>
@@ -18,19 +19,13 @@ const SignUpOptions: FC = () => {
               'Beep boop... we are logging you into the Neonverse...',
               500,
               () => {
-                setShowSignUpOptions(true);
+                setShowOptions(true);
               },
             ]}
             cursor={false}
             speed={80}
           />
-          {showSignUpOptions && (
-            <>
-              <span>
-                <SignUpForm />
-              </span>
-            </>
-          )}
+          {showOptions && <SignUpForm />}
         </div>
       </div>
     </div>

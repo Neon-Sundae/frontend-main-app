@@ -2,150 +2,213 @@ import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metam
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { ReactComponent as UDIcon } from 'assets/illustrations/icons/ud-logo-icon.svg';
 import { FC, useEffect, useState } from 'react';
-
-import { useAuth, useProvider } from '@arcana/auth-react';
-import { useForm, useWatch } from 'react-hook-form';
-import { getSessionStorageItem } from 'utils/sessionStorageFunc';
-
-import convertBase64ToFile from 'utils/base64ToFile';
-
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import useCreateOrganisation from 'components/StartOrgModal/hook';
+import { providers } from 'ethers';
+import { useProvider } from '@arcana/auth-react';
+import { useForm } from 'react-hook-form';
+import { detectMetamask, requestEthereumAccounts } from 'utils/web3EventFn';
+import { signArcanaMessage, signMessage } from 'utils/ethereumFn';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useCreateOrganisation } from 'queries/organisation';
 import regexEmail from 'utils/regex/email';
+import {
+  useArcanaGenerateNonce,
+  useMetamaskGenerateNonce,
+  useSaveOrganisationSignupObjectives,
+  useSaveUserOnboardData,
+  useSaveUserSignupObjectives,
+  useVerifySignature,
+  useVerifyUdSignature,
+} from 'queries/auth';
+import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
+import { getMetamaskAccountData } from 'api/auth';
+import { useArcanaSignup } from 'hooks/auth';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
-import useMetamaskOnboardUser from './hooks/useMetamaskOnboardUser';
-import useArcanaOnboardUser from './hooks/useArcanaOnboardUser';
-import useUdOnboardUser from './hooks/useUdOnboardUser';
-import useWalletConnectOnboardUser from './hooks/useWalletConnectOnboardUser';
+
+interface IEmailTypeForm {
+  email: string;
+}
 
 const SignUpForm = () => {
+  const { provider } = useProvider();
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user.user);
-  const [emailFromSessionStorage, setEmail] = useState(
-    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
-  );
-
-  const [disableButton, setDisableButton] = useState(false);
-  const provider = useProvider();
-  const createOrganisation = useCreateOrganisation(setDisableButton);
-  const [apiStep, setApiStep] = useState(0);
-  const auth = useAuth();
-  const { createUser, updateProfile, saveUserOnboardData } =
-    useMetamaskOnboardUser(setApiStep);
-  const createArcanaUser = useArcanaOnboardUser(setApiStep);
-  const createUdUser = useUdOnboardUser(setApiStep);
-  const createWdUser = useWalletConnectOnboardUser();
-
-  useEffect(() => {
-    if (apiStep === 2) updateUserProfile();
-    if (apiStep === 3) {
-      saveUserOnboardDataFunc();
-      if (!getSessionStorageItem('organisationName')) {
-        navigate('/dashboard');
-      } else {
-        saveOrgData();
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiStep]);
-
-  useEffect(() => {
-    if (auth.user) createArcanaUser.mutate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
-
   const [error, setError] = useState('');
-  const [active, setActive] = useState('');
+  const onboardingData = useSelector(
+    (state: RootState) => state.auth.onboardingData
+  );
+  const walletConnectProvider = useSelector(
+    (state: RootState) => state.app.walletConnectProvider
+  );
+  const arcanaAuth = useSelector((state: RootState) => state.auth.arcanaAuth);
+  const { register, handleSubmit, watch } = useForm<IEmailTypeForm>();
 
-  // const generateNonce = useMetamaskSignup(setNewUserId);
+  const formValues = watch();
 
-  const {
-    register,
-    control,
-    formState: { errors },
-  } = useForm({ mode: 'onChange' });
+  const createOrganisation = useCreateOrganisation();
+  const updateOrganisationImageHandler = useUpdateOrganisationImage();
 
-  const email = useWatch({
-    control,
-    name: 'email',
-  });
+  const metamaskGenerateNonce = useMetamaskGenerateNonce();
+  const verifySignature = useVerifySignature();
+  const saveUserOnboardData = useSaveUserOnboardData();
+  const saveUserSignupObjectives = useSaveUserSignupObjectives();
+  const saveOrganisationSignupObjectives =
+    useSaveOrganisationSignupObjectives();
+  const verifyUdSignature = useVerifyUdSignature();
+  const { arcanaEmailSignupInit } = useArcanaSignup();
+  const arcanaGenereateNonce = useArcanaGenerateNonce();
 
-  const loginWithMetaMask = () => {
-    createUser.mutate();
-  };
+  useEffect(() => {
+    (async () => {
+      if (arcanaAuth.address) {
+        const data = await arcanaGenereateNonce.mutateAsync(arcanaAuth.address);
+        const signature = await signArcanaMessage(
+          provider,
+          data.message,
+          arcanaAuth.address
+        );
+        await verifyAndSaveData(data, signature, arcanaAuth.address);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arcanaAuth.address]);
 
-  const handleMetamaskSignup = () => {
-    if (typeof window.ethereum !== 'undefined') {
-      loginWithMetaMask();
+  const handleMetamaskSignup = async () => {
+    try {
+      if (typeof window.ethereum !== 'undefined') {
+        const { walletId, provider: ethereumProvider } =
+          await getMetamaskAccountData();
+        if (!walletId) {
+          throw new Error('Please connect your wallet');
+        }
+
+        const data = await metamaskGenerateNonce.mutateAsync(walletId);
+
+        const signature = await signMessage(ethereumProvider, data.message);
+        if (!signature) {
+          throw new Error('Please sign the message');
+        }
+
+        await verifyAndSaveData(data, signature, walletId);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
-  const signupWithWalletConnect = async () => {
-    createWdUser(setApiStep);
+  const handleWalletConnectSignup = async () => {
+    try {
+      await walletConnectProvider.enable();
+      const web3Provider = new providers.Web3Provider(walletConnectProvider);
+
+      const accounts = await web3Provider.listAccounts();
+
+      const { chainId } = await web3Provider.getNetwork();
+      await walletConnectProvider.disconnect();
+
+      // TODO - Use testnet and mainnet chain ID check
+      if (chainId !== 137) {
+        throw new Error('Please change the network to Polygon');
+      }
+
+      if (!accounts.length) {
+        throw new Error('Please connect your wallet');
+      }
+
+      const data = await metamaskGenerateNonce.mutateAsync(accounts[0]);
+
+      const signature = await signMessage(walletConnectProvider, data.message);
+      if (!signature) {
+        throw new Error('Please sign the message');
+      }
+
+      await verifyAndSaveData(data, signature, accounts[0]);
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
-  const signUpWithUD = () => {
-    createUdUser.mutate();
+  const handleUdSignup = async () => {
+    try {
+      const ethereumProvider = detectMetamask();
+      const data = await verifyUdSignature.mutateAsync();
+      const account = await requestEthereumAccounts(ethereumProvider);
+      await verifyAndSaveData(data, null, account, true);
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
-  const linkSignUp = async (userEmail: string) => {
-    await auth.loginWithLink(userEmail);
-  };
+  const verifyAndSaveData = async (
+    data: any,
+    signature: string | null,
+    walletId: any,
+    isUdSignup = false
+  ) => {
+    try {
+      const {
+        email,
+        industry,
+        name,
+        objective,
+        orgDescription,
+        orgLogo,
+        orgName,
+        userType,
+        workType,
+      } = onboardingData;
 
-  const saveOrgData = async () => {
-    const organisationName = getSessionStorageItem('organisationName');
-    const organisationDescription = getSessionStorageItem(
-      'organisationDescription'
-    );
-
-    if (organisationName && organisationDescription) {
-      const localFile = getSessionStorageItem('file');
-      const convertedFile = await convertBase64ToFile(localFile);
-      if (user?.userId)
-        await createOrganisation({
-          name: organisationName,
-          description: organisationDescription,
-          userId: user.userId.toString(),
-          image: convertedFile || undefined,
-          industry: getSessionStorageItem('choices'),
+      if (!isUdSignup) {
+        await verifySignature.mutateAsync({
+          isFirstTimeUser: data.isFirstTimeUser,
+          signature,
+          walletId,
+          message: data.message,
         });
+      }
+
+      await saveUserOnboardData.mutateAsync({
+        workType,
+        name,
+        email,
+      });
+
+      if (userType === 'Team') {
+        const createOrgData = await createOrganisation.mutateAsync({
+          description: orgDescription,
+          industry,
+          name: orgName,
+          userId: data.user.userId.toString(),
+        });
+
+        if (orgLogo) {
+          await updateOrganisationImageHandler(
+            orgLogo,
+            'profileImage',
+            'profile',
+            createOrgData.organisationId
+          );
+        }
+
+        await saveOrganisationSignupObjectives.mutateAsync(objective);
+      } else {
+        await saveUserSignupObjectives.mutateAsync(objective);
+      }
+
+      navigate('/dashboard');
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
-  const saveUserOnboardDataFunc = () => {
-    const data: any[] = [];
-    const choices = getSessionStorageItem('choices');
-    const flow = getSessionStorageItem('flow');
-    const work = getSessionStorageItem('work');
-
-    data.push(JSON.parse(choices), flow, work, { userId: user?.userId });
-
-    saveUserOnboardData.mutate(data);
-  };
-
-  const updateUserProfile = () => {
-    console.log('inside updateUserProfile');
-    updateProfile.mutate({
-      userId: user?.userId,
-      name:
-        getSessionStorageItem('name') ??
-        getSessionStorageItem('organisationName'),
-      email:
-        getSessionStorageItem('email') ??
-        getSessionStorageItem('organisationEmail'),
-      work:
-        getSessionStorageItem('work') ??
-        getSessionStorageItem('organisationVertical'),
-    });
+  const onSubmit = async (data: IEmailTypeForm) => {
+    await arcanaEmailSignupInit(data.email);
   };
 
   if (error === 'Bad Request' || error === 'User Already Exist!') {
-    toast(t => <LoginButton setError={setError} />);
+    toast(() => <LoginButton setError={setError} />);
   }
 
   return (
@@ -158,53 +221,39 @@ const SignUpForm = () => {
             handleClick={handleMetamaskSignup}
             icon={<MetamaskIcon width={26.98} height={24.32} />}
             text="&nbsp; Metamask"
-            active={active === 'metamask'}
           />
           <IconButton
-            handleClick={signupWithWalletConnect}
+            handleClick={handleWalletConnectSignup}
             icon={<WalletConnectIcon width={26.98} height={24.32} />}
             text="&nbsp; Wallet Connect"
-            active={active === 'walletConnect'}
           />
           <IconButton
-            handleClick={signUpWithUD}
+            handleClick={handleUdSignup}
             icon={<UDIcon width={26.98} height={24.32} />}
             text="Unstoppable Domains"
-            active={active === 'udLogin'}
           />
         </div>
 
         <p>Or create a wallet with your email and sign up</p>
         <form
-          className={styles['sign-up-form']}
-          onSubmit={e => e.preventDefault()}
+          className={styles['sign-up-form-form']}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <button aria-label="Use">Use</button>
+          <span>Use</span>
           <input
             className={styles['sign-up-form-email']}
-            defaultValue={emailFromSessionStorage}
+            defaultValue={onboardingData.email}
             type="email"
-            required
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('email', { required: true, pattern: regexEmail })}
-            style={{
-              border: Object.keys(errors).length && '0.56px solid #FF8383',
-            }}
+            {...register('email', { required: true })}
           />
-          <button
+          <input
             type="submit"
-            disabled={disableButton}
-            onClick={() => {
-              linkSignUp(email ?? emailFromSessionStorage);
-            }}
-          >
-            Get link
-          </button>
-          {Object.keys(errors).length > 0 && (
-            <p className={styles['sign-up-form-email-error']}>
-              * Your email looks so wrong!
-            </p>
-          )}
+            value="Get link"
+            className={styles['sign-up-form-submit']}
+            disabled={
+              !regexEmail.test(formValues.email || onboardingData.email)
+            }
+          />
         </form>
       </section>
     </div>

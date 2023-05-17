@@ -3,9 +3,9 @@ import { IUser } from 'interfaces/user';
 
 const isOrganisationMember = (
   loggedInUser: Partial<IUser> | undefined,
-  members: IMemberData
+  members: IMemberData | undefined
 ) => {
-  const isMember = members.all.find(x => x.userId === loggedInUser?.userId);
+  const isMember = members?.all.find(x => x.userId === loggedInUser?.userId);
 
   return isMember !== undefined;
 };

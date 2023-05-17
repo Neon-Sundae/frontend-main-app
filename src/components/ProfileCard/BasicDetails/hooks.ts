@@ -1,17 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import createProfileContract from 'utils/contractFns/createProfileContract';
 import config from 'config';
 import { GET_PROFILE_CONTRACT_ADDRESS } from 'actions/profile/types';
-import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
 import { handleApiErrors } from 'utils/handleApiErrors';
 import toast from 'react-hot-toast';
-import { updateProfileContractAddressAction } from 'actions/profile';
 import getProfileContractAddress from 'utils/contractFns/getProfileContractAddress';
 import errorEventBeacon from 'utils/analyticsFns/errorEventBeacon';
-import { MetamaskError } from 'utils/error/MetamaskError';
 import { useAuth, useProvider } from '@arcana/auth-react';
+import { useUpdateProfileDetails } from 'queries/profile';
+import { useFetchUserDetailsByWallet } from 'queries/user';
 
 const useProfileManage = () => {
   const auth = useAuth();
@@ -20,7 +19,10 @@ const useProfileManage = () => {
 
   const dispatch = useDispatch();
   const [deploying, setDeploying] = useState('mint');
-  const user = useSelector((state: RootState) => state.user.user);
+  const { data: userData } = useFetchUserDetailsByWallet();
+  const updateProfileDetails = useUpdateProfileDetails({
+    profileId: userData?.profileId.toString(),
+  });
 
   const accessToken = getAccessToken();
 
@@ -36,7 +38,11 @@ const useProfileManage = () => {
         isContractDeployed !== '0x0000000000000000000000000000000000000000' &&
         isContractDeployed !== 'Failed'
       ) {
-        await saveProfileContractAddress(isContractDeployed);
+        await updateProfileDetails.mutateAsync({
+          payload: {
+            profileSmartContractId: isContractDeployed,
+          },
+        });
         return;
       }
 
@@ -49,11 +55,8 @@ const useProfileManage = () => {
         address,
         name,
         title,
-        deploying,
         setDeploying,
-        user,
-        arcanaProvider,
-        auth
+        arcanaProvider
       );
 
       if (isContractDeployed !== 'Failed') {
@@ -65,26 +68,7 @@ const useProfileManage = () => {
       }
       setDeploying('minted');
     } catch (err: any) {
-      setDeploying('mint');
-      errorEventBeacon(user?.walletId, err.message);
-      console.log(err);
-
-      if (err instanceof MetamaskError) {
-        if (err.code === 'ACTION_REJECTED') {
-          toast.error('Denied the transaction');
-        } else if (
-          err.data?.message.includes('gas required exceeds allowance')
-        ) {
-          toast.error('You need MATIC to mint your profile');
-        } else {
-          toast.error('Failed to mint');
-        }
-
-        // throw new Error('Failed to mint');
-      } else {
-        toast.error(err.message);
-        // throw new Error('Failed to mint');
-      }
+      errorEventBeacon(userData?.user?.walletId, err.message);
     }
   };
 
@@ -97,7 +81,7 @@ const useProfileManage = () => {
         profileSmartContractId: address,
       };
       const response = await fetch(
-        `${config.ApiBaseUrl}/profile/${user?.userId}`,
+        `${config.ApiBaseUrl}/profile/${userData?.user?.userId}`,
         {
           signal,
           method: 'PATCH',
@@ -109,7 +93,6 @@ const useProfileManage = () => {
         }
       );
       await handleApiErrors(response);
-      dispatch(updateProfileContractAddressAction(address));
     } catch (err) {
       console.log(err);
     }
