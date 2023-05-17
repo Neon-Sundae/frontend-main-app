@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { SignupSteps } from 'interfaces/auth';
 import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import PromptFooter from '../PromptFooter';
 import styles from './index.module.scss';
 
@@ -25,6 +26,9 @@ const UserType: FC = () => {
   const formValues = watch();
 
   const onSubmit = (data: IUserTypeForm) => {
+    trackAmplitudeEvent('onb_usagepref_click', {
+      usagepreference: data.userType,
+    });
     dispatch(updateOnboardingData({ userType: data.userType }));
     dispatch(updateSignUpStep(SignupSteps.WorkType));
   };

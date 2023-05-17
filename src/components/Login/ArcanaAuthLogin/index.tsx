@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { useEffect } from 'react';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 import { useArcanaLogin } from '../Step1/hooks';
 
@@ -31,6 +32,9 @@ const ArcanaAuthLogin = () => {
   }, [arcanaAuth.address]);
 
   const linkLogin = async (data: IEmailFormData) => {
+    trackAmplitudeEvent('onb_loginmethod_click', {
+      loginmethod: 'email',
+    });
     await arcanaEmailLoginInit(data.email);
   };
 

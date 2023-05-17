@@ -5,6 +5,7 @@ import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metam
 import { ReactComponent as WalletConnectIcon } from 'assets/illustrations/icons/walletconnect.svg';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 import {
   useUnstoppableDomains,
@@ -22,16 +23,25 @@ const Step1: FC = () => {
   const [error, setError] = useState('');
 
   const loginWithWalletConnect = async () => {
+    trackAmplitudeEvent('onb_loginmethod_click', {
+      loginmethod: 'walletconnect',
+    });
     walletConnectGenerateNonce({ setError });
   };
 
   const loginWithMetaMask = () => {
     if (typeof window.ethereum !== 'undefined') {
+      trackAmplitudeEvent('onb_loginmethod_click', {
+        loginmethod: 'metamask',
+      });
       generateNonce({ setError });
     }
   };
 
   const loginWithUd = () => {
+    trackAmplitudeEvent('onb_loginmethod_click', {
+      loginmethod: 'unstoppable-domains',
+    });
     unstoppableDomains.login(setError);
   };
 

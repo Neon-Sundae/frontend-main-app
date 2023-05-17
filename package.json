@@ -17,6 +17,7 @@
     "style-lint": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^1.10.3",
     "@arcana/auth": "^1.0.3",
     "@arcana/auth-react": "^0.0.3",
     "@hedgedoc/html-to-react": "^1.4.5",

@@ -17,18 +17,26 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["*.svg", "*.ttf", "*.png", "*.json", "*.scss", "*.d.ts", "*.mp4"],
+  "ignorePatterns": [
+    "*.svg",
+    "*.ttf",
+    "*.png",
+    "*.json",
+    "*.scss",
+    "*.d.ts",
+    "*.mp4"
+  ],
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off",
     "func-names": "off",
     "import/no-unresolved": 0,
-    "react/jsx-filename-extension": [1, {
-      "extensions": [
-        ".ts",
-        ".tsx"
-      ]
-    }],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".ts", ".tsx"]
+      }
+    ],
     "prettier/prettier": [
       "error",
       {
@@ -40,8 +48,23 @@
       }
     ],
     "no-use-before-define": ["error", { "variables": false }],
-    "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
-    "import/extensions": ["error", "never", {"svg": "always", "png": "always", "css": "always", "mp4": "always", "scss": "always", "js": "always", "json": "always"}],
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      { "variables": false }
+    ],
+    "import/extensions": [
+      "error",
+      "never",
+      {
+        "svg": "always",
+        "png": "always",
+        "css": "always",
+        "mp4": "always",
+        "scss": "always",
+        "js": "always",
+        "json": "always"
+      }
+    ],
     "react/prop-types": 0,
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],

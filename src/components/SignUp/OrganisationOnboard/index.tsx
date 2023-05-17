@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import PromptFooter from '../PromptFooter';
 import { SignupSteps } from 'interfaces/auth';
+import { trackAmplitudeEvent } from 'config/amplitude';
 
 enum OrgSteps {
   'OrganisationName',
@@ -112,17 +113,23 @@ const Step6: FC = () => {
   };
 
   const onSubmit = (data: IOrganisationNameForm) => {
+    trackAmplitudeEvent('onb_orgname_enter');
     dispatch(updateOnboardingData({ orgName: data.orgName }));
     handleOrgStep(OrgSteps.OrganisationNameReply);
   };
 
   const onIndustrySelect = (newVal: any) => {
     setSelectedOption(newVal);
+    trackAmplitudeEvent('onb_orgindustry_enter', {
+      industry: newVal.value,
+    });
     dispatch(updateOnboardingData({ industry: newVal.value }));
     handleOrgStep(OrgSteps.OrganisationIndustryReply);
   };
 
   const onSubmit2 = (data: IOrganisationDescriptionForm) => {
+    if (file) trackAmplitudeEvent('onb_orglogo_submit');
+    trackAmplitudeEvent('onb_orgdesc_enter');
     dispatch(
       updateOnboardingData({
         orgDescription: data.orgDescription,
@@ -133,203 +140,196 @@ const Step6: FC = () => {
   };
 
   return (
-    <>
-      <div className={styles['step6-container']}>
-        <div className={styles['chat-prompts-container--chat-message']}>
-          {orgSteps.includes(OrgSteps.OrganisationName) && (
-            <span>
-              <div className={styles['user-image']}>
-                <NeonSundaeMainLogo width={70} height={85.75} />
-              </div>
-              <div className={styles['user-choices']}>
-                <TypeAnimation
-                  style={{
-                    whiteSpace: 'pre-line',
-                    display: 'block',
-                  }}
-                  sequence={[
-                    "Let's build your organisation's workflow 🚀 \n Give your organisation a name",
-                    500,
-                    () => {
-                      setShowOptions(true);
-                    },
-                  ]}
-                  cursor={false}
-                  speed={80}
-                />
-                {showOptions && (
-                  <form
-                    id={
-                      currentStep === OrgSteps.OrganisationName
-                        ? 'hook-form'
-                        : ''
-                    }
-                    onSubmit={handleSubmit(onSubmit)}
-                    className={styles['input-wrapper']}
-                  >
-                    <input
-                      type="text"
-                      placeholder="Your organisation name here"
-                      {...register('orgName', {
-                        required: true,
-                      })}
-                    />
-                  </form>
-                )}
-              </div>
-            </span>
-          )}
-
-          {orgSteps.includes(OrgSteps.OrganisationNameReply) && (
-            <div className={styles['reply-prompt']}>
+    <div className={styles['step6-container']}>
+      <div className={styles['chat-prompts-container--chat-message']}>
+        {orgSteps.includes(OrgSteps.OrganisationName) && (
+          <span>
+            <div className={styles['user-image']}>
+              <NeonSundaeMainLogo width={70} height={85.75} />
+            </div>
+            <div className={styles['user-choices']}>
               <TypeAnimation
+                style={{
+                  whiteSpace: 'pre-line',
+                  display: 'block',
+                }}
                 sequence={[
-                  orgNameFormValues.orgName,
-                  1000,
-                  () => handleOrgStep(OrgSteps.OrganisationIndustry),
+                  "Let's build your organisation's workflow 🚀 \n Give your organisation a name",
+                  500,
+                  () => {
+                    setShowOptions(true);
+                  },
                 ]}
                 cursor={false}
                 speed={80}
               />
-              <img
-                src={getDefaultAvatarSrc(
-                  onboardingData.name.charAt(0).toUpperCase()
-                )}
-                alt=""
-                width="100px"
-                height="100px"
-              />
-            </div>
-          )}
-
-          {orgSteps.includes(OrgSteps.OrganisationIndustry) && (
-            <span>
-              <div className={styles['user-image']}>
-                <NeonSundaeMainLogo width={70} height={85.75} />
-              </div>
-              <div className={styles['chat-message']}>
-                <TypeAnimation
-                  defaultValue={orgNameFormValues.orgName}
-                  style={{
-                    whiteSpace: 'pre-line',
-                    display: 'block',
-                    marginBottom: '25px',
-                  }}
-                  sequence={[
-                    `Which industry vertical does your \n organisation fall under?`,
-                    500,
-                    () => setShowSelectMenu(true),
-                  ]}
-                  cursor={false}
-                  speed={80}
-                />
-                {showSelectMenu && (
-                  <Select
-                    options={options}
-                    placeholder="Choose your organisation industry"
-                    value={
-                      selectedOption || {
-                        value: 'Select Option',
-                        label: 'Select Option',
-                      }
-                    }
-                    onSelectChange={onIndustrySelect}
-                    name="Industry"
-                    borderRadius={10}
-                    height={50}
-                    width="400px"
-                    isMulti={false}
-                  />
-                )}
-              </div>
-            </span>
-          )}
-
-          {orgSteps.includes(OrgSteps.OrganisationIndustryReply) && (
-            <div className={styles['reply-prompt']}>
-              <TypeAnimation
-                sequence={[
-                  `${selectedOption?.value ?? ''}`,
-                  500,
-                  () => {
-                    setShowSelectMenu(false);
-                    handleOrgStep(OrgSteps.OrganisationLogo);
-                  },
-                ]}
-                cursor={false}
-                speed={50}
-              />
-              <img
-                src={getDefaultAvatarSrc(
-                  onboardingData.name.charAt(0).toUpperCase()
-                )}
-                alt=""
-                width="100px"
-                height="100px"
-              />
-            </div>
-          )}
-
-          {orgSteps.includes(OrgSteps.OrganisationLogo) && (
-            <span>
-              <div className={styles['user-image']}>
-                <NeonSundaeMainLogo width={70} height={85.75} />
-              </div>
-              <div className={styles['chat-message']}>
-                <TypeAnimation
-                  style={{
-                    whiteSpace: 'pre-line',
-                    display: 'block',
-                    marginBottom: '25px',
-                  }}
-                  sequence={[
-                    `Tell us more about what your oragnisation does`,
-                    500,
-                  ]}
-                  cursor={false}
-                  speed={80}
-                />
-                <input
-                  type="file"
-                  ref={inputRef}
-                  accept="image/png, image/jpeg"
-                  className={styles['input-field-hidden']}
-                  onChange={handleOrgLogoChange}
-                />
+              {showOptions && (
                 <form
                   id={
-                    currentStep === OrgSteps.OrganisationLogo ? 'hook-form' : ''
+                    currentStep === OrgSteps.OrganisationName ? 'hook-form' : ''
                   }
-                  onSubmit={handleSubmit2(onSubmit2)}
+                  onSubmit={handleSubmit(onSubmit)}
+                  className={styles['input-wrapper']}
                 >
                   <input
-                    className={styles['input-field']}
                     type="text"
-                    placeholder="Type here your organisation description"
-                    {...register2('orgDescription', {
+                    placeholder="Your organisation name here"
+                    {...register('orgName', {
                       required: true,
                     })}
                   />
                 </form>
+              )}
+            </div>
+          </span>
+        )}
 
-                <button
-                  className={styles['upload-button']}
-                  onClick={handleClick}
-                >
-                  <i className={clsx('material-icons', styles['upload-icon'])}>
-                    upload
-                  </i>
-                  Add Logo
-                </button>
+        {orgSteps.includes(OrgSteps.OrganisationNameReply) && (
+          <div className={styles['reply-prompt']}>
+            <TypeAnimation
+              sequence={[
+                orgNameFormValues.orgName,
+                1000,
+                () => handleOrgStep(OrgSteps.OrganisationIndustry),
+              ]}
+              cursor={false}
+              speed={80}
+            />
+            <img
+              src={getDefaultAvatarSrc(
+                onboardingData.name.charAt(0).toUpperCase()
+              )}
+              alt=""
+              width="100px"
+              height="100px"
+            />
+          </div>
+        )}
 
-                {file && <img src={URL.createObjectURL(file)} alt="" />}
-              </div>
-            </span>
-          )}
-        </div>
-        <PromptFooter prev={back} isDisabled={isDisabledCheck()} />
+        {orgSteps.includes(OrgSteps.OrganisationIndustry) && (
+          <span>
+            <div className={styles['user-image']}>
+              <NeonSundaeMainLogo width={70} height={85.75} />
+            </div>
+            <div className={styles['chat-message']}>
+              <TypeAnimation
+                defaultValue={orgNameFormValues.orgName}
+                style={{
+                  whiteSpace: 'pre-line',
+                  display: 'block',
+                  marginBottom: '25px',
+                }}
+                sequence={[
+                  `Which industry vertical does your \n organisation fall under?`,
+                  500,
+                  () => setShowSelectMenu(true),
+                ]}
+                cursor={false}
+                speed={80}
+              />
+              {showSelectMenu && (
+                <Select
+                  options={options}
+                  placeholder="Choose your organisation industry"
+                  value={
+                    selectedOption || {
+                      value: 'Select Option',
+                      label: 'Select Option',
+                    }
+                  }
+                  onSelectChange={onIndustrySelect}
+                  name="Industry"
+                  borderRadius={10}
+                  height={50}
+                  width="400px"
+                  isMulti={false}
+                />
+              )}
+            </div>
+          </span>
+        )}
+
+        {orgSteps.includes(OrgSteps.OrganisationIndustryReply) && (
+          <div className={styles['reply-prompt']}>
+            <TypeAnimation
+              sequence={[
+                `${selectedOption?.value ?? ''}`,
+                500,
+                () => {
+                  setShowSelectMenu(false);
+                  handleOrgStep(OrgSteps.OrganisationLogo);
+                },
+              ]}
+              cursor={false}
+              speed={50}
+            />
+            <img
+              src={getDefaultAvatarSrc(
+                onboardingData.name.charAt(0).toUpperCase()
+              )}
+              alt=""
+              width="100px"
+              height="100px"
+            />
+          </div>
+        )}
+
+        {orgSteps.includes(OrgSteps.OrganisationLogo) && (
+          <span>
+            <div className={styles['user-image']}>
+              <NeonSundaeMainLogo width={70} height={85.75} />
+            </div>
+            <div className={styles['chat-message']}>
+              <TypeAnimation
+                style={{
+                  whiteSpace: 'pre-line',
+                  display: 'block',
+                  marginBottom: '25px',
+                }}
+                sequence={[
+                  `Tell us more about what your oragnisation does`,
+                  500,
+                ]}
+                cursor={false}
+                speed={80}
+              />
+              <input
+                type="file"
+                ref={inputRef}
+                accept="image/png, image/jpeg"
+                className={styles['input-field-hidden']}
+                onChange={handleOrgLogoChange}
+              />
+              <form
+                id={
+                  currentStep === OrgSteps.OrganisationLogo ? 'hook-form' : ''
+                }
+                onSubmit={handleSubmit2(onSubmit2)}
+              >
+                <input
+                  className={styles['input-field']}
+                  type="text"
+                  placeholder="Type here your organisation description"
+                  {...register2('orgDescription', {
+                    required: true,
+                  })}
+                />
+              </form>
+
+              <button className={styles['upload-button']} onClick={handleClick}>
+                <i className={clsx('material-icons', styles['upload-icon'])}>
+                  upload
+                </i>
+                Add Logo
+              </button>
+
+              {file && <img src={URL.createObjectURL(file)} alt="" />}
+            </div>
+          </span>
+        )}
       </div>
-    </>
+      <PromptFooter prev={back} isDisabled={isDisabledCheck()} />
+    </div>
   );
 };
 

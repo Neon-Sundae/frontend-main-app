@@ -7,6 +7,7 @@ import { UseFormRegister, useForm } from 'react-hook-form';
 import { RootState } from 'reducers';
 import { SignupSteps } from 'interfaces/auth';
 import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import styles from './index.module.scss';
 import PromptFooter from '../PromptFooter';
 
@@ -36,6 +37,7 @@ const Objective: FC = () => {
   const formValues = watch();
 
   const onSubmit = (data: IObjectiveForm) => {
+    trackAmplitudeEvent('onb_userchoices_click');
     dispatch(updateOnboardingData({ objective: data.objective }));
     if (onboardingData.userType === 'Team') {
       dispatch(updateSignUpStep(SignupSteps.OrganisationOnboard));

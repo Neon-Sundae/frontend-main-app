@@ -25,6 +25,7 @@ import {
 import { useUpdateOrganisationImage } from 'hooks/useUpdateOrganisationImage';
 import { getMetamaskAccountData } from 'api/auth';
 import { useArcanaSignup } from 'hooks/auth';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import IconButton from '../IconButton';
 import styles from './index.module.scss';
 
@@ -193,8 +194,10 @@ const SignUpForm = () => {
         }
 
         await saveOrganisationSignupObjectives.mutateAsync(objective);
+        trackAmplitudeEvent('onb_org_suc');
       } else {
         await saveUserSignupObjectives.mutateAsync(objective);
+        trackAmplitudeEvent('onb_individual_suc');
       }
 
       navigate('/dashboard');

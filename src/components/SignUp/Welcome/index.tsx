@@ -3,6 +3,7 @@ import { RootState } from 'reducers';
 import { updateOnboardingData, updateSignUpStep } from 'actions/auth';
 import { useForm } from 'react-hook-form';
 import videoSrc from 'assets/videos/intro.mp4';
+import { trackAmplitudeEvent } from 'config/amplitude';
 import { SignupSteps } from 'interfaces/auth';
 import styles from './index.module.scss';
 
@@ -23,6 +24,7 @@ const Welcome = () => {
   );
 
   const onSubmit = (data: IWelcomeForm) => {
+    trackAmplitudeEvent('onb_firstname_enter');
     dispatch(updateOnboardingData({ name: data.name }));
     dispatch(updateSignUpStep(SignupSteps.UserType));
   };
