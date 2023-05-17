@@ -46,7 +46,7 @@ const UserType: FC = () => {
               display: 'block',
             }}
             sequence={[
-              `Hey ${onboardingData.name}, welcome to the Neonverse! ✨ \n We're excited to get you started, how you are planning to use Neon Sundae?`,
+              `Hey ${onboardingData.name}, welcome to the Neonverse! ✨ \n We're excited to get you started, how are you planning \n to use Neon Sundae?`,
               500,
               () => {
                 setShowOptions(true);
