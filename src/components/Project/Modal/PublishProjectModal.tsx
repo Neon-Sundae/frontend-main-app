@@ -61,7 +61,7 @@ const PublishProjectModal: FC<IPublishProject> = ({
           <GoLiveState
             budget={budget}
             projectId={projectId}
-            publishProject={publishProject}
+            publishProject={() => publishProject(projectId)}
             usdcBalance={usdcBalance}
           />
         );

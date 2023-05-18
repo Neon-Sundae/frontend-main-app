@@ -4,15 +4,15 @@ import {
   UPDATE_USER_NAME,
   GET_WALLET_ADDRESS,
   GET_WALLET_USDC_BALANCE,
-  UPDATE_USER_DISCORD,
   UPDATE_USER_EMAIL,
+  UPDATE_USER_ID,
 } from 'actions/user/types';
 
 interface State {
   user: Partial<IUser> | undefined;
+  userId: number | undefined;
   wallet_address: string;
   wallet_usdc_balance: number;
-  discordId: string;
 }
 
 type Action =
@@ -33,19 +33,19 @@ type Action =
       payload: string;
     }
   | {
-      type: typeof UPDATE_USER_DISCORD;
-      discordId: string;
-    }
-  | {
       type: typeof UPDATE_USER_EMAIL;
       email: string;
+    }
+  | {
+      type: typeof UPDATE_USER_ID;
+      userId: number;
     };
 
 const initialState: State = {
   user: undefined,
+  userId: undefined,
   wallet_address: '',
   wallet_usdc_balance: 0,
-  discordId: '',
 };
 
 const user = (state = initialState, action: Action): State => {
@@ -73,14 +73,6 @@ const user = (state = initialState, action: Action): State => {
         ...state,
         wallet_usdc_balance: Number(action.payload),
       };
-    case UPDATE_USER_DISCORD:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          discordId: action.discordId,
-        },
-      };
     case UPDATE_USER_EMAIL:
       if (state.user) {
         return {
@@ -92,6 +84,11 @@ const user = (state = initialState, action: Action): State => {
         };
       }
       return { ...state };
+    case UPDATE_USER_ID:
+      return {
+        ...state,
+        userId: action.userId,
+      };
     default:
       return { ...state };
   }

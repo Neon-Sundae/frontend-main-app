@@ -1,5 +1,4 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
 import TaskAbi from 'contracts/abi/Task.sol/Task.json';
 import FNDRAbi from 'contracts/abi/FNDR.sol/FNDR.json';
 import { Dispatch, SetStateAction } from 'react';
@@ -7,8 +6,9 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { IUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import config from 'config';
 import toast from 'react-hot-toast';
-import { IProfile } from 'interfaces/profile';
 import estimateGasPrice from 'utils/estimateGasFees';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 interface ICommitToTaskOnChain {
   walletId: string | undefined;
@@ -19,7 +19,8 @@ interface ICommitToTaskOnChain {
   taskId: number;
   setHash: Dispatch<SetStateAction<string>>;
   setPending: Dispatch<SetStateAction<string>>;
-  profile: IProfile | null;
+  auth: AuthContextType;
+  profileSmartContractId: string | null | undefined;
 }
 
 const commitToTaskOnChain = async ({
@@ -31,13 +32,15 @@ const commitToTaskOnChain = async ({
   taskId,
   setHash,
   setPending,
-  profile,
+  auth,
+  profileSmartContractId,
 }: ICommitToTaskOnChain) => {
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
+
   try {
-    if (!walletId && !profile?.profileSmartContractId)
+    if (!walletId && !profileSmartContractId)
       throw new Error('Unable to commit the task');
 
-    const web3 = getWeb3Instance();
     const gasPrice = await estimateGasPrice(web3);
 
     const payload = {
@@ -49,7 +52,7 @@ const commitToTaskOnChain = async ({
       taskId,
       setHash,
       setPending,
-      profileId: profile?.profileSmartContractId,
+      profileId: profileSmartContractId,
     };
 
     console.log(payload);
@@ -84,7 +87,7 @@ const commitToTaskOnChain = async ({
             .commitToTask(
               taskId,
               Number(amount * 10 ** 4).toFixed(0),
-              profile?.profileSmartContractId
+              profileSmartContractId
             )
             .send({ from: walletId })
             .on('transactionHash', (hash: any) => {

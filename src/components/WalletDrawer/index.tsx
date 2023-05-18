@@ -8,19 +8,19 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import QRCode from 'react-qr-code';
+import { useAuth } from '@arcana/auth-react';
 import toast from 'react-hot-toast';
 import { gsap, Elastic } from 'gsap';
-import { RootState } from 'reducers';
 import bg from 'assets/illustrations/home/wallet-bg.svg';
 import withdrawProjectBalance from 'utils/contractFns/withdrawProjectBalance';
-import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
 import { ReactComponent as USDCVariant1Icon } from 'assets/illustrations/icons/usdc-variant-1.svg';
 import getUsdcBalance from 'utils/contractFns/getUsdcBalance';
 import depositProjectFunds from 'utils/contractFns/depositProjectFunds';
 import withdrawProfileBalance from 'utils/contractFns/withdrawProfileBalance';
-import useFetchWalletProjects from './hooks';
+import { useFetchUserWalletProjects } from 'queries/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 import styles from './index.module.scss';
 import { getContractAvailableBalance } from './_utils';
 import InteractionDiv from './interaction';
@@ -31,8 +31,16 @@ interface IWalletDrawer {
 }
 
 const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
-  const { user } = useSelector((state: RootState) => state.user);
-  const { flProjects } = useFetchWalletProjects({ open });
+  const auth = useAuth();
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user.userId,
+  });
+  const { data: flProjects } = useFetchUserWalletProjects({
+    userId: userData?.user.userId,
+    open,
+    profileSmartContractId: profileData?.profileSmartContractId,
+  });
 
   const [selectedContract, setSelectedContract] = useState<any>(null);
   const [projectBalance, setProjectBalance] = useState(0);
@@ -43,10 +51,10 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
 
   useEffect(() => {
     (async () => {
-      const balance = await getContractAvailableBalance(selectedContract);
+      const balance = await getContractAvailableBalance(selectedContract, auth);
       setProjectBalance(balance);
     })();
-  }, [selectedContract]);
+  }, [selectedContract, auth]);
 
   useEffect(() => {
     setDepositWithdrawState(null);
@@ -65,7 +73,6 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
   const getFormattedWalletId = (contractId: string) => {
     if (contractId) {
       return `${contractId?.slice(0, 6)}...${contractId?.slice(
-        // eslint-disable-next-line no-unsafe-optional-chaining
         contractId.length - 6,
         contractId.length
       )}`;
@@ -113,7 +120,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
             getFormattedWalletId={getFormattedWalletId}
             handleCopyAddress={handleCopyAddress}
             selectedContract={selectedContract}
-            userAddress={user?.walletId}
+            userAddress={userData?.user.walletId}
             projectBalance={projectBalance}
           />
         );
@@ -123,7 +130,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
             <DepositStep2
               isWithdraw
               isProfile={selectedContract.type === 'profile_contract'}
-              userAddress={user?.walletId}
+              userAddress={userData?.user.walletId}
               selectedContract={selectedContract}
               projectBalance={projectBalance}
               setDepositWithdrawState={setDepositWithdrawState}
@@ -197,7 +204,7 @@ const WalletDrawer: FC<IWalletDrawer> = ({ open, setOpen }) => {
             )}
             <i className="material-icons">expand_more</i>
           </div>
-          {flProjects.length > 0 ? (
+          {flProjects ? (
             flProjects.map(flProject => (
               <span key={flProject.id} onClick={() => selectProject(flProject)}>
                 {flProject.name}
@@ -330,7 +337,7 @@ const DepositStep1: FC<IDepositStep1> = ({
             className={styles['use-metamask-btn']}
             onClick={() => setCurrentState(2)}
           >
-            <MetamaskIcon width={24} height={21.6} /> Metamask
+            Connected Wallet
           </button>
         </div>
       ) : (
@@ -361,6 +368,7 @@ const DepositStep2: FC<IDepositStep2> = ({
   isProfile,
   setDepositWithdrawState,
 }) => {
+  const auth = useAuth();
   const CIRCLE_WIDTH = 14;
   const SWITCH_WIDTH = 40;
   const [amount, setAmount] = useState('0');
@@ -395,11 +403,11 @@ const DepositStep2: FC<IDepositStep2> = ({
   useEffect(() => {
     (async () => {
       if (userAddress && !isWithdraw) {
-        const balance = await getUsdcBalance(userAddress);
+        const balance = await getUsdcBalance(userAddress, auth);
         setWalletBalance(balance);
       }
     })();
-  }, [userAddress, isWithdraw]);
+  }, [userAddress, isWithdraw, auth]);
 
   useEffect(() => {
     if (switchState === 'on') {
@@ -422,7 +430,8 @@ const DepositStep2: FC<IDepositStep2> = ({
         Number(amount),
         selectedContract.smartContractId,
         userAddress,
-        setDeploying
+        setDeploying,
+        auth
       );
     } else if (selectedContract && userAddress && !isWithdraw && !isProfile) {
       setDeploying('start');
@@ -430,7 +439,8 @@ const DepositStep2: FC<IDepositStep2> = ({
         Number(amount),
         selectedContract.smartContractId,
         userAddress,
-        setDeploying
+        setDeploying,
+        auth
       );
     } else if (selectedContract && userAddress && isWithdraw && !isProfile) {
       setDeploying('start');
@@ -438,7 +448,8 @@ const DepositStep2: FC<IDepositStep2> = ({
         Number(amount),
         selectedContract.smartContractId,
         userAddress,
-        setDeploying
+        setDeploying,
+        auth
       );
     }
   };

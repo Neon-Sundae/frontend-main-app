@@ -4,13 +4,17 @@ import { validateCreateProfile } from 'validations/auth';
 import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import { Background } from 'components/Login';
 import BaseBlob from 'components/BaseBlob';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 import { handleLocalStorage } from 'utils/localStorageFn';
 import styles from './index.module.scss';
 import useCreateProfile from './hooks';
 
 const FirstTimeUser: FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState(getSessionStorageItem('name') ?? '');
+  const [email, setEmail] = useState(
+    getSessionStorageItem('email') ?? getSessionStorageItem('organisationEmail')
+  );
+
   const [error, setError] = useState({
     nameError: false,
     emailError: false,
@@ -22,7 +26,11 @@ const FirstTimeUser: FC = () => {
     e.preventDefault();
     handleLocalStorage('started');
     if (validateCreateProfile(name, email, setError)) {
-      createProfile({ name, email });
+      createProfile.mutate({
+        name,
+        email,
+        work: getSessionStorageItem('work'),
+      });
     }
   };
 
@@ -64,6 +72,7 @@ const FirstTimeUser: FC = () => {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                disabled={!!getSessionStorageItem('name')}
               />
             </label>
             {error.nameError && (
@@ -77,6 +86,7 @@ const FirstTimeUser: FC = () => {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                disabled={!!getSessionStorageItem('email')}
               />
             </label>
             {error.emailError && (

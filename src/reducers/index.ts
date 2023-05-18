@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import authReducer from './auth';
 import userReducer from './user';
 import appReducer from './app';
-import skillsReducer from './skills';
 import profileReducer from './profile';
 import orgReducer from './organisation';
 import flProjectReducer from './flProject';
@@ -11,7 +10,6 @@ const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   app: appReducer,
-  skills: skillsReducer,
   profile: profileReducer,
   org: orgReducer,
   flProject: flProjectReducer,

@@ -1,537 +1,425 @@
-import { FC, useEffect, useState } from 'react';
-import { RootState } from 'reducers';
-import { useSelector } from 'react-redux';
+/* eslint-disable react/jsx-props-no-spreading */
+import { FC, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import Modal from 'components/Modal';
-import Select from 'react-select';
+import {
+  useForm,
+  SubmitHandler,
+  useFieldArray,
+  Control,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormGetValues,
+  FieldErrors,
+} from 'react-hook-form';
+import Select, { MultiValue } from 'react-select';
+import { Option } from 'components/Select';
 import timezoneData from 'assets/data/timezones.json';
-import getRandomString from 'utils/getRandomString';
-import toast, { Toaster } from 'react-hot-toast';
-import { useMutation } from '@tanstack/react-query';
-import config from 'config';
-import { useNavigate } from 'react-router-dom';
-import { getAccessToken } from 'utils/authFn';
+import clsx from 'clsx';
 import { customStyles } from './selectStyles';
 import styles from './index.module.scss';
+import useCreateProject from './hooks';
 
 interface ICreatePrjProps {
-  onNext: () => void;
   onClose: () => void;
   orgId: number;
 }
 
-const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, onNext, orgId }) => {
-  const navigate = useNavigate();
+interface Inputs {
+  name: string;
+  budget: number;
+  description: string;
+  timeOfCompletion: string;
+  flResources: { title: string }[];
+  flProjectCategory: { categoryName: string; percentageAllocation: number }[];
+}
 
-  const profile = useSelector((state: RootState) => state.profile.profile);
+interface OptionType {
+  value: string;
+  label: string;
+}
 
-  const temp: any = [];
-  useEffect(() => {
-    if (!temp.length) {
-      timezoneData.forEach(element => {
-        temp.push({ value: element.value, label: element.text });
-      });
-      setOptions(temp);
-    }
-  }, []);
-
-  const [formData, setFormData] = useState<any>({
-    name: '',
-    description: '',
-    timeOfCompletion: '',
-    budget: '',
-    preferredTimeZones: [],
-    organisationId: '',
-    flResources: [],
-    flProjectCategory: [{ categoryName: '', percentageAllocation: '' }],
-  });
-  const [error, setError] = useState<any>({
-    message: '',
-  });
-  const [options, setOptions] = useState<any>(null);
-  const [selectedOptions, setSelectedOptions] = useState<any>(null);
-  const [addMoreResources, setAddMoreResources] = useState<any>({ counter: 0 });
-  const [addMoreCategories, setAddMoreCategories] = useState<any>({
-    counter: 0,
-  });
-  const [submit, setSubmit] = useState<boolean>(false);
-
-  const { isLoading, mutate: createProject } = useMutation(
-    async () => {
-      return fetch(`${config.ApiBaseUrl}/fl-project`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-    },
-    {
-      onSuccess: async res => {
-        const body = await res.json();
-        navigate(`/project/${body.flProjectId_uuid}`);
-      },
-      onError: err => {
-        console.log('err', err);
-        setFormData({});
-      },
-    }
-  );
-
-  useEffect(() => {
-    setFormData((prevState: any) => {
-      const selectedOptionsLabel = selectedOptions?.map((option: any) => {
-        return option.label;
-      });
-      if (selectedOptionsLabel?.length === 1)
-        prevState.preferredTimeZones = selectedOptionsLabel[0];
-      prevState.preferredTimeZones = selectedOptionsLabel?.join(', ');
-      return {
-        ...prevState,
-      };
-    });
-  }, [selectedOptions]);
-
-  useEffect(() => {
-    if (submit) {
-      createProject();
-    }
-    if (!formData.organisationId) {
-      setFormData((prevState: any) => {
-        prevState.organisationId = orgId;
-        return {
-          ...prevState,
-        };
-      });
-    }
-    if (formData.name === '' || formData.description === '') {
-      setError((prevState: any) => ({
-        ...prevState,
-        message: 'Please add project name and description',
-      }));
-    } else if (formData.timeOfCompletion === '') {
-      setError((prevState: any) => ({
-        ...prevState,
-        message: 'Please add a due date',
-      }));
-    } else if (formData.preferredTimeZones === '') {
-      setError((prevState: any) => ({
-        ...prevState,
-        message: 'Please add a timezone',
-      }));
-    } else if (formData.flResources.length === 0) {
-      setError((prevState: any) => ({
-        ...prevState,
-        message: 'Please add atleast one resource',
-      }));
-    } else if (
-      formData.flProjectCategory[0].categoryName === '' ||
-      formData.flProjectCategory[0].percentageAllocation === ''
-    ) {
-      setError((prevState: any) => ({
-        ...prevState,
-        message: 'Please add atleast one category and percentageAllocation',
-      }));
-    } else if (
-      formData?.flResources.length !== 0 ||
-      formData.flProjectCategory.length !== 0
-    ) {
-      setError((prevState: any) => ({
-        ...prevState,
-        message: '',
-      }));
-    } else {
-      // do nothing
-    }
-  }, [formData, submit]);
-
-  const handleAddResource = () =>
-    setAddMoreResources((prevState: any) => ({
-      counter: prevState.counter + 1,
-    }));
-
-  const handleResourceChange = (e: any) => {
-    e.preventDefault();
-    setFormData((prevState: any) => {
-      const target = e.target as HTMLInputElement;
-      if (target.value === '') {
-        prevState.flResources = [];
-        return {
-          ...prevState,
-        };
-      }
-      if (target.value !== '')
-        prevState.flResources.indexOf(target.value) === -1
-          ? prevState.flResources.push(target.value)
-          : setError((prevState: any) => ({
-              ...prevState,
-              message: 'Duplicate resources not allowed',
-            }));
-      return {
-        ...prevState,
-      };
-    });
-  };
-
-  const handleRemoveResource = (uId: string) => {
-    const input = document
-      .getElementById(`${uId}`)
-      ?.querySelector('input')?.value;
-    // @ts-ignore: Object is possibly 'null'.
-    document.getElementById(`${uId}`).remove();
-    setFormData((prevState: any) => {
-      prevState.flResources.splice(prevState.flResources.indexOf(input), 1);
-      return {
-        ...prevState,
-      };
-    });
-  };
-
-  const handleAddCategory = () =>
-    setAddMoreCategories((prevState: any) => ({
-      counter: prevState.counter + 1,
-    }));
-
-  const handleRemoveCategory = (uId: string) => {
-    const input = document
-      .getElementById(`resource-category-${uId}`)
-      ?.querySelector('input')?.value;
-    // @ts-ignore: Object is possibly 'null'.
-    document.getElementById(`resource-category-${uId}`).remove();
-    setFormData((prevState: any) => {
-      const index = prevState.flProjectCategory.findIndex(
-        (x: any) => x.categoryName === input
-      );
-      if (index > -1) prevState.flProjectCategory.splice(index, 1);
-      return {
-        ...prevState,
-      };
-    });
-  };
-
-  const handleAddProject = (e: any) => {
-    if (profile && profile.profileSmartContractId) {
-      if (error.message !== '') toast.error(error.message);
-      if (error.message === '') {
-      }
-      const temp: any = [];
-      setFormData((prevState: any) => {
-        prevState.flResources?.map((resource: any) => {
-          // find resource in temp array and if its not there add it
-          if (temp.indexOf({ title: resource }) === -1) {
-            temp.push({ title: resource });
-          }
-        });
-        prevState.flResources = temp;
-        const isoDate = new Date(prevState.timeOfCompletion);
-        prevState.timeOfCompletion = isoDate.toISOString();
-        return {
-          ...prevState,
-        };
-      });
-      setSubmit(true);
-    } else {
-      toast.error('Please mint your profile');
-      navigate(`/profile/${profile?.profileId}`);
-    }
-  };
+const CreatePrjModal: FC<ICreatePrjProps> = ({ onClose, orgId }) => {
   return (
-    <>
+    <div className={styles['project-create-container']}>
       <Toaster />
       <Modal
         onClose={() => onClose()}
         width="700px"
-        maxHeight="85vh"
+        maxHeight="90vh"
         overflowY="auto"
         title="Start a Project"
       >
-        <div className={styles.container}>
-          <form>
-            <div className={styles.row}>
-              <div>
-                <p className={styles.fieldNames}>Name</p>
-                <input
-                  className={styles.input}
-                  type="text"
-                  id="name"
-                  placeholder="Project Name"
-                  style={{ width: '100%' }}
-                  onChange={e =>
-                    setFormData({
-                      ...formData,
-                      name: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div>
-                <p className={styles.fieldNames}>Budget</p>
-                <div className={styles.budget}>
-                  <input
-                    className={styles.input}
-                    type="number"
-                    id="budget"
-                    placeholder="Project Budget"
-                    style={{
-                      width: '100%',
-                      borderRadius: '5.6491px 0px 0px 5.6491px',
-                    }}
-                    onChange={e =>
-                      setFormData({
-                        ...formData,
-                        budget: Number(e.target.value),
-                      })
-                    }
-                  />
-                  <div className={styles.currency}>USDC</div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div style={{ width: '100%' }}>
-                <p className={styles.fieldNames}>Description</p>
-                <textarea
-                  id="description"
-                  placeholder="Description"
-                  className={styles.input}
-                  style={{ width: '100%', height: '100px' }}
-                  onChange={e =>
-                    setFormData({
-                      ...formData,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div>
-                <p className={styles.fieldNames}>Project est. End Date</p>
-                <input
-                  className={styles.input}
-                  type="date"
-                  id="dueDate"
-                  placeholder="Project Due Date"
-                  onChange={e =>
-                    setFormData({
-                      ...formData,
-                      timeOfCompletion: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div>
-                <p className={styles.fieldNames}>Preferred Timezones</p>
-                <Select
-                  options={options}
-                  styles={customStyles}
-                  isMulti
-                  onChange={options => setSelectedOptions(options)}
-                />
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div style={{ width: '100%' }}>
-                <p className={styles.fieldNames}>Talents Needed</p>
-                <input
-                  type="text"
-                  id="resource-name"
-                  placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
-                  className={styles.input}
-                  style={{ width: '100%' }}
-                  onBlur={e => {
-                    handleResourceChange(e);
-                  }}
-                />
-                {Array.from(Array(addMoreResources.counter))?.map(
-                  (c, index) => {
-                    const uId = getRandomString(5);
-                    return (
-                      <div id={`${uId}`} key={index}>
-                        <div className={styles.addHeight} />
-                        <input
-                          type="text"
-                          placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
-                          style={{ width: '100%' }}
-                          className={styles.input}
-                          onBlur={e => {
-                            handleResourceChange(e);
-                          }}
-                        />
-                        <span
-                          id={`resource-cancel-${index}`}
-                          className={styles.inputIcon}
-                          onClick={() => {
-                            handleRemoveResource(uId);
-                          }}
-                        >
-                          <div
-                            style={{
-                              color: 'transparent',
-                              textShadow: '0 0 0 white',
-                              position: 'absolute',
-                              right: '-40px',
-                            }}
-                          >
-                            ❌
-                          </div>
-                        </span>
-                      </div>
-                    );
-                  }
-                )}
-                {formData?.flResources?.map((element: any, index: any) => {
-                  <h5 key={index}>{element}</h5>;
-                })}
-                <div>
-                  <p className={styles.pointer} onClick={handleAddResource}>
-                    Add more resources <span>+</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.row} style={{ marginBottom: '5px' }}>
-              <div>
-                <p className={styles.fieldNames}>Categories</p>
-                <input
-                  type="text"
-                  id="category"
-                  placeholder="Category name (“Website Design”)"
-                  className={styles.input}
-                  onChange={e =>
-                    setFormData((prevState: any) => {
-                      prevState.flProjectCategory[0].categoryName =
-                        e.target.value;
-                      return {
-                        ...prevState,
-                      };
-                    })
-                  }
-                />
-              </div>
-              <div>
-                <p className={styles.fieldNames}>Percentage of Budget</p>
-                <div className={styles.budget}>
-                  <input
-                    type="number"
-                    id="percentageAllocation"
-                    className={styles.input}
-                    placeholder="% of budget for this category"
-                    style={{
-                      width: '100%',
-                      borderRadius: '5.6491px 0px 0px 5.6491px',
-                    }}
-                    onChange={e =>
-                      setFormData((prevState: any) => {
-                        prevState.flProjectCategory[0].percentageAllocation =
-                          parseFloat(e.target.value);
-                        return {
-                          ...prevState,
-                        };
-                      })
-                    }
-                  />
-                  <div className={styles.currency}>%</div>
-                </div>
-              </div>
-            </div>
-            {Array.from(Array(addMoreCategories.counter))?.map((c, index) => {
-              const uId: string = getRandomString(5);
-              return (
-                <div
-                  key={index}
-                  id={`resource-category-${uId}`}
-                  className={styles.row}
-                  style={{ marginBottom: '5px' }}
-                >
-                  <input
-                    type="text"
-                    id="name"
-                    placeholder="Category name (“Website Design”)"
-                    className={styles.input}
-                    onBlur={e =>
-                      setFormData((prevState: any) => {
-                        prevState.flProjectCategory.push({
-                          categoryName: e.target.value,
-                        });
-                        return {
-                          ...prevState,
-                        };
-                      })
-                    }
-                  />
-                  <span style={{ position: 'relative' }}>
-                    <div className={styles.budget}>
-                      <input
-                        type="text"
-                        id="percentageAllocation"
-                        className={styles.input}
-                        placeholder="% of budget for this category"
-                        style={{
-                          width: '100%',
-                          borderRadius: '5.6491px 0px 0px 5.6491px',
-                        }}
-                        onBlur={e =>
-                          setFormData((prevState: any) => {
-                            prevState.flProjectCategory[
-                              prevState.flProjectCategory.length - 1
-                            ].percentageAllocation = parseFloat(e.target.value);
-                            return {
-                              ...prevState,
-                            };
-                          })
-                        }
-                      />
-                      <div className={styles.currency}>%</div>
-                    </div>
-                    <span
-                      id={`resource-cancel-${uId}`}
-                      className={styles.inputIcon}
-                      onClick={() => {
-                        handleRemoveCategory(uId);
-                      }}
-                    >
-                      <div
-                        style={{
-                          marginLeft: '5px',
-                          color: 'transparent',
-                          textShadow: '0 0 0 white',
-                          position: 'absolute',
-                          right: '-40px',
-                        }}
-                      >
-                        ❌
-                      </div>
-                    </span>
-                  </span>
-                </div>
-              );
-            })}
-            <p className={styles.pointer} onClick={handleAddCategory}>
-              Add more Categories <span>+</span>
-            </p>
-            <footer
-              style={{ textAlign: 'center' }}
-              onClick={e => e.preventDefault()}
-            >
-              <button
-                className={styles.saveBtn}
-                onClick={e => {
-                  if (error.message.length) {
-                    toast.error('Check for invalid or missing values!');
-                  } else {
-                    handleAddProject(e);
-                  }
-                }}
-              >
-                SAVE
-              </button>
-              &nbsp; &nbsp;
-            </footer>
-          </form>
-        </div>
+        <FormComponent options={timezoneData} orgId={orgId} />
       </Modal>
-    </>
+    </div>
+  );
+};
+
+const defaultValues = {
+  flResources: [{ title: '' }],
+  flProjectCategory: [{ categoryName: '', percentageAllocation: 0 }],
+};
+
+interface FormComponentProps {
+  options: OptionType[];
+  orgId: number;
+}
+
+const FormComponent: FC<FormComponentProps> = ({ options, orgId }) => {
+  const createProject = useCreateProject();
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: 'onBlur',
+    defaultValues,
+  });
+
+  const [selectedOptions, setSelectedOptions] = useState<MultiValue<Option>>(
+    []
+  );
+  const [selectError, setSelectError] = useState(false);
+
+  const selectedOptionsLabel = selectedOptions?.map((option: any) => {
+    return option.label;
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = data => {
+    setSelectError(selectedOptions.length === 0);
+    Object.assign(data, {
+      organisationId: orgId,
+      preferredTimeZones: selectedOptionsLabel?.join(', '),
+      timeOfCompletion: new Date(data.timeOfCompletion).toISOString(),
+    });
+
+    createProject.mutate(data);
+  };
+
+  const handleSelectOptionsChange = (newValue: MultiValue<Option>): void => {
+    setSelectError(newValue?.length === 0);
+    setSelectedOptions(newValue);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={styles['project-create-container--form']}
+    >
+      <>
+        <div className={styles['project-create-container--row']}>
+          <label htmlFor="name" className={styles.label}>
+            Name
+            <input
+              placeholder="Project Name"
+              {...register('name', { required: true })}
+              className={clsx(
+                styles['project-create-container--input'],
+                styles['name-field'],
+                errors.name && styles.error
+              )}
+            />
+            {errors.name && (
+              <p className={styles['project-create-container--error-message']}>
+                *Project Name is required
+              </p>
+            )}
+          </label>
+
+          <label htmlFor="budget" className={styles.label}>
+            Budget
+            <span className={styles['budget-currency-container']}>
+              <input
+                type="number"
+                placeholder="Project Budget"
+                {...register('budget', {
+                  setValueAs: (v: string) => parseInt(v, 10),
+                  required: true,
+                })}
+                className={clsx(
+                  styles['project-create-container--input'],
+                  styles['budget-field'],
+                  errors.budget && styles.error
+                )}
+              />
+              <div
+                className={clsx(
+                  styles['budget-currency'],
+                  errors.budget && styles.error
+                )}
+              >
+                <p>USDC</p>
+              </div>
+            </span>
+            {errors.budget && (
+              <p className={styles['project-create-container--error-message']}>
+                *Project Budget is required
+              </p>
+            )}
+          </label>
+        </div>
+
+        <div className={styles['project-create-container--row-second']}>
+          <label htmlFor="description">
+            Description
+            <textarea
+              placeholder="Project Description"
+              {...register('description', { required: true })}
+              className={clsx(
+                styles['project-create-container--input'],
+                errors.budget && styles.error
+              )}
+            />
+            {errors.description && (
+              <p className={styles['project-create-container--error-message']}>
+                *Project Description is required
+              </p>
+            )}
+          </label>
+        </div>
+
+        <div className={styles['project-create-container--row']}>
+          <label htmlFor="timeOfCompletion">
+            Project est. End Date
+            <input
+              {...register('timeOfCompletion', { required: true })}
+              type="date"
+              className={clsx(
+                styles['project-create-container--input'],
+                errors.timeOfCompletion && styles.error
+              )}
+            />
+            {errors.timeOfCompletion && (
+              <p className={styles['project-create-container--error-message']}>
+                *Date is required
+              </p>
+            )}
+          </label>
+
+          <div className={styles['project-create-container--timezones']}>
+            <h3 className={styles['project-create-container--label']}>
+              Preferred Timezones
+            </h3>
+            <Select
+              options={options}
+              styles={customStyles}
+              isMulti
+              onChange={newValue => handleSelectOptionsChange(newValue)}
+              className={styles[selectError ? 'select-error' : '']}
+            />
+            {selectError && (
+              <p className={styles['project-create-container--error-message']}>
+                *One timezone is required
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className={styles['project-create-container--label']}>
+          <TalentsRequiredField
+            {...{
+              control,
+              register,
+              defaultValues,
+              getValues,
+              setValue,
+              errors,
+            }}
+          />
+        </div>
+
+        <div className={styles['project-create-container--label']}>
+          <CategoriesRequiredField
+            {...{
+              control,
+              register,
+              defaultValues,
+              getValues,
+              setValue,
+              errors,
+            }}
+          />
+        </div>
+
+        <div className={styles['submit-button-wrapper']}>
+          <input
+            type="submit"
+            id="submit"
+            value="SAVE"
+            className={styles['submit-button']}
+          />
+        </div>
+      </>
+    </form>
+  );
+};
+
+interface MultipleInputFieldsProps {
+  control: Control<Inputs, any>;
+  register: UseFormRegister<Inputs>;
+  setValue: UseFormSetValue<Inputs>;
+  getValues: UseFormGetValues<Inputs>;
+  errors: FieldErrors<Inputs>;
+}
+
+const TalentsRequiredField: FC<MultipleInputFieldsProps> = ({
+  control,
+  register,
+  errors,
+}) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'flResources',
+  });
+
+  return (
+    <div className={styles['project-create-container--talents']}>
+      <h3>Talents Needed</h3>
+      <ul>
+        {fields.map((item, index) => {
+          return (
+            <>
+              <li
+                key={item.id}
+                className={styles['project-create-container--list']}
+              >
+                <input
+                  {...register(`flResources.${index}.title`, {
+                    required: true,
+                  })}
+                  className={clsx(
+                    styles['project-create-container--input'],
+                    styles['talents-input'],
+                    errors.flResources && styles.error
+                  )}
+                  placeholder="Talent needed for Projects ( e.g.  “JavaScript Developer”, “UI/UX Designer”)"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className={styles['delete-button']}
+                >
+                  <i className={clsx('material-icons', styles['delete-icon'])}>
+                    delete
+                  </i>
+                </button>
+              </li>
+              <div className={styles['empty-space']} />
+            </>
+          );
+        })}
+      </ul>
+      {errors.flResources && (
+        <p className={styles['project-create-container--error-message']}>
+          *Ensure there are no empty fields
+        </p>
+      )}
+      <section>
+        <button
+          type="button"
+          onClick={() => {
+            append({ title: '' });
+          }}
+          className={styles['add-more-button']}
+        >
+          Add more Resources +
+        </button>
+      </section>
+    </div>
+  );
+};
+
+const CategoriesRequiredField: FC<MultipleInputFieldsProps> = ({
+  control,
+  register,
+  errors,
+}) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'flProjectCategory',
+  });
+
+  return (
+    <div className={styles['project-create-container--categories']}>
+      <h3>Categories</h3>
+      <ul>
+        {fields.map((item, index) => {
+          return (
+            <>
+              <li
+                key={item.id}
+                className={styles['project-create-container--list']}
+              >
+                <input
+                  {...register(`flProjectCategory.${index}.categoryName`, {
+                    required: true,
+                  })}
+                  className={clsx(
+                    styles['project-create-container--input'],
+                    styles['category-field'],
+                    errors.flProjectCategory && styles.error
+                  )}
+                  placeholder="Category name (“Website Design”)"
+                />
+
+                <input
+                  {...register(
+                    `flProjectCategory.${index}.percentageAllocation`,
+                    {
+                      required: true,
+                      setValueAs: (v: string) => parseInt(v, 10),
+                    }
+                  )}
+                  type="number"
+                  className={clsx(
+                    styles['project-create-container--input'],
+                    styles['category-allocate-input'],
+                    errors.flProjectCategory && styles.error
+                  )}
+                  placeholder="% of budget for this category"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className={styles['delete-button']}
+                >
+                  <i className={clsx('material-icons', styles['delete-icon'])}>
+                    delete
+                  </i>
+                </button>
+              </li>
+              <div className={styles['empty-space']} />
+            </>
+          );
+        })}
+      </ul>
+      {errors.flProjectCategory && (
+        <p className={styles['project-create-container--error-message']}>
+          *Empty fields are not allowed
+        </p>
+      )}
+      <section>
+        <button
+          type="button"
+          onClick={() => {
+            append({
+              categoryName: '',
+              percentageAllocation: 0,
+            });
+          }}
+          className={styles['add-more-button']}
+        >
+          Add more Categories +
+        </button>
+      </section>
+    </div>
   );
 };
 

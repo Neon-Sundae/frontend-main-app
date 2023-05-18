@@ -4,6 +4,7 @@ import StartOrgModal from 'components/StartOrgModal';
 import StartPrjModal from 'components/StartPrjModal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+
 import styles from './index.module.scss';
 import OnboardModal from '../OnboardModal';
 

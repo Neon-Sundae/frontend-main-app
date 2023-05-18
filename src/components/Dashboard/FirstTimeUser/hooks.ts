@@ -1,58 +1,53 @@
+import { useMutation } from '@tanstack/react-query';
 import { updateFirstTimeUser } from 'actions/auth';
 import { updateUser } from 'actions/user';
 import config from 'config';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { getAccessToken } from 'utils/authFn';
-import { handleApiErrors } from 'utils/handleApiErrors';
-import { handleUnAuthorization } from 'utils/handleUnAuthorization';
+import { handleError } from 'utils/handleUnAuthorization';
+import { getSessionStorageItem } from 'utils/sessionStorageFunc';
 
 interface ICreateProfile {
   name: string;
   email: string;
+  work?: string;
 }
 
-const useCreateProfile = () => {
+const useCreateProfile = (
+  setNewUserId?: React.Dispatch<React.SetStateAction<number>>
+) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
 
-  const createProfile = ({ name, email }: ICreateProfile) => {
-    const accessToken = getAccessToken();
-
-    if (accessToken) {
-      const ac = new AbortController();
-      const { signal } = ac;
-
-      (async () => {
-        try {
-          const payload = {
-            name,
-            email,
-          };
-
-          const response = await fetch(
-            `${config.ApiBaseUrl}/user/first-time/${user?.userId}`,
-            {
-              signal,
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${accessToken}`,
-              },
-              body: JSON.stringify(payload),
-            }
-          );
-
-          const json: any = await handleApiErrors(response);
-          dispatch(updateUser(json));
-          dispatch(updateFirstTimeUser(false));
-        } catch (err) {
-          console.log(err);
-          handleUnAuthorization(err);
-        }
-      })();
+  const createProfile = useMutation(
+    (payload: ICreateProfile) => {
+      const accessToken = getAccessToken();
+      return fetch(`${config.ApiBaseUrl}/user/first-time/${user?.userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
+    },
+    {
+      retry: 1,
+      onError: (error: any) => {
+        handleError({ error });
+      },
+      onSuccess: async res => {
+        const body = await res.json();
+        if (setNewUserId) setNewUserId(body.userId);
+        dispatch(updateUser(body));
+        dispatch(updateFirstTimeUser(false));
+        if (!getSessionStorageItem('orgData')) navigate('/dashboard');
+      },
     }
-  };
+  );
 
   return createProfile;
 };

@@ -2,22 +2,27 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import Modal from 'components/Modal';
 import GradientBtn from 'components/GradientBtn';
 import timezoneData from 'assets/data/timezones.json';
+import { useUpdateProfileDetails } from 'queries/profile';
+import { useParams } from 'react-router-dom';
 import styles from './index.module.scss';
-import useUpdateProfileTimezone from './hooks';
 
 interface IProfileSkills {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const TimezoneModal: FC<IProfileSkills> = ({ setOpen }) => {
-  const updateProfileTimezone = useUpdateProfileTimezone();
+  const params = useParams();
+  const updateProfileDetails = useUpdateProfileDetails({
+    profileId: params.profileId,
+  });
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSelect = (timezone: string) => {
-    updateProfileTimezone({ timezone, setOpen });
+  const handleSelect = async (timezone: string) => {
+    await updateProfileDetails.mutateAsync({ payload: { timezone } });
+    handleClose();
   };
 
   return (
@@ -26,8 +31,8 @@ const TimezoneModal: FC<IProfileSkills> = ({ setOpen }) => {
       <div className={styles['timezone-data-container']}>
         {timezoneData.map(t => (
           <TimezoneRow
-            key={`${t.value}-${t.abbr}`}
-            value={t.text}
+            key={`${t.value}-${t.value}`}
+            value={t.label}
             handleSelect={handleSelect}
           />
         ))}

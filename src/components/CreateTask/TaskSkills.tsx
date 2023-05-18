@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { ActionMeta, MultiValue, SingleValue } from 'react-select';
+import { Dispatch, FC, SetStateAction } from 'react';
+import { ActionMeta, SingleValue } from 'react-select';
 import Select, { Option } from 'components/Select';
-import { useFetchAppSkills } from 'components/ProfileCard/ProfileSkillsEdit/hooks';
+import { useFetchAppSkills } from 'queries/skills';
 import styles from './index.module.scss';
 
 interface ITaskSkills {
@@ -26,7 +26,7 @@ const TaskSkills: FC<ITaskSkills> = ({
   showModal,
   isMulti,
 }) => {
-  const { appSkills } = useFetchAppSkills();
+  const { data: appSkills } = useFetchAppSkills();
   const handleSelectChange = (
     newValue: SingleValue<Option>,
     action: ActionMeta<Option>
@@ -43,12 +43,12 @@ const TaskSkills: FC<ITaskSkills> = ({
     const newSkills = taskSkills.filter(x => x.value !== skillsId);
     setTaskSkills(newSkills);
   };
-  console.log(showModal);
+
   return (
     <div className={styles['task-skills-container']}>
       <h4 className={styles['difficulty-price-label']}>Skills Needed</h4>
       <Select
-        options={appSkills ?? []}
+        options={appSkills || []}
         placeholder="Select Skills"
         value={selectedSkill}
         name="ProfileSkills"

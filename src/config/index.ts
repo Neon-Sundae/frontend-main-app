@@ -10,6 +10,7 @@ interface Configuration {
   AppDomain: string;
   chainId: string;
   explorerURL: string;
+  rpcURL: string;
   profileImplementationAddress: string;
   profileFactoryAddress: string;
   projectImplementationAddress: string;
@@ -41,6 +42,7 @@ const configs: Environment = {
     AppDomain: 'http://localhost:3000',
     chainId: '0x13881',
     explorerURL: 'https://mumbai.polygonscan.com',
+    rpcURL: 'https://rpc-mumbai.maticvigil.com',
     ...localContracts,
   },
   dev: {
@@ -48,6 +50,7 @@ const configs: Environment = {
     AppDomain: 'https://develop.founderslab.xyz',
     chainId: '0x13881',
     explorerURL: 'https://mumbai.polygonscan.com',
+    rpcURL: 'https://rpc-mumbai.maticvigil.com',
     ...devContracts,
   },
   stage: {
@@ -55,6 +58,7 @@ const configs: Environment = {
     AppDomain: 'https://testnet.founderslab.xyz',
     chainId: '0x13881',
     explorerURL: 'https://mumbai.polygonscan.com',
+    rpcURL: 'https://rpc-mumbai.maticvigil.com',
     ...testnetContracts,
   },
   prod: {
@@ -62,6 +66,7 @@ const configs: Environment = {
     AppDomain: 'https://app.neonsundae.xyz',
     chainId: '0x89',
     explorerURL: 'https://polygonscan.com',
+    rpcURL: 'https://polygon-mainnet.infura.io',
     ...mainnetContracts,
   },
 };

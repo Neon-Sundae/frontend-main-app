@@ -5,8 +5,12 @@ import { RootState } from 'reducers';
 import { useUpdateTaskStatus } from 'components/TaskManagement/hooks';
 import getFndrBalance from 'utils/contractFns/getFndrBalance';
 import commitToTaskOnChain from 'utils/contractFns/commitToTaskOnChain';
+import { useAuth } from '@arcana/auth-react';
+import { useFetchUserDetailsWrapper } from 'queries/user';
+import { useFetchProfileDetailsByUserWrapper } from 'queries/profile';
 
 const useCommitToTask = () => {
+  const auth = useAuth();
   const updateTask = useUpdateTaskStatus();
 
   const [pending, setPending] = useState('initial');
@@ -17,7 +21,11 @@ const useCommitToTask = () => {
   const { selectedTask, projectTaskAddress } = useSelector(
     (state: RootState) => state.flProject
   );
-  const profile = useSelector((state: RootState) => state.profile.profile);
+
+  const userData = useFetchUserDetailsWrapper();
+  const profileData = useFetchProfileDetailsByUserWrapper({
+    userId: userData?.user?.userId,
+  });
 
   const commitToTask = async (taskId: number, amount: number) => {
     try {
@@ -30,7 +38,8 @@ const useCommitToTask = () => {
         taskId,
         setHash,
         setPending,
-        profile,
+        auth,
+        profileSmartContractId: profileData?.profileSmartContractId,
       });
     } catch (err) {
       console.log(err);
@@ -42,7 +51,7 @@ const useCommitToTask = () => {
   const getFNDRBalance = async () => {
     try {
       if (walletId) {
-        const balance = await getFndrBalance(walletId);
+        const balance = await getFndrBalance(walletId, auth);
         setFNDRBalance(Number(Number(balance).toFixed(4)));
       }
     } catch (err) {

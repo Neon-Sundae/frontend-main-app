@@ -1,17 +1,18 @@
 import { FC, useEffect } from 'react';
 import { ReactComponent as MetamaskIcon } from 'assets/illustrations/icons/metamask.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import styles from './index.module.scss';
 
 const Step2: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/dashboard');
+      navigate(location?.state?.from?.pathname ?? '/dashboard');
     }, 3 * 1000);
 
     return () => {
@@ -34,7 +35,7 @@ const Step2: FC = () => {
         </span>
       </div>
       <p className={styles['success-text']}>
-        Authentication is succesful, wait for a few seconds to automatically
+        Authentication is successful, wait for a few seconds to automatically
         open dashboard.
       </p>
     </>

@@ -1,14 +1,16 @@
 import { AbiItem } from 'web3-utils';
-import { getWeb3Instance } from 'utils/web3EventFn';
 import ProjectFactoryAbi from 'contracts/abi/ProjectFactory.sol/ProjectFactory.json';
 import config from 'config';
+import { AuthContextType } from '@arcana/auth-react/types/typings';
+import arcanaWeb3InstanceFunc from 'utils/arcanaWeb3Instance';
 
 const getFounderFromProject = async (
-  projectAddress: string
+  projectAddress: string,
+  auth: AuthContextType
 ): Promise<string> => {
-  try {
-    const web3 = getWeb3Instance();
+  const web3: any = await arcanaWeb3InstanceFunc(auth);
 
+  try {
     const ProjectFactory = new web3.eth.Contract(
       ProjectFactoryAbi.abi as AbiItem[],
       config.projectFactoryAddress

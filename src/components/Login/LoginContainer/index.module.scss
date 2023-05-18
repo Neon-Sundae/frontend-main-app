@@ -1,17 +1,14 @@
 .LoginContainer {
   display: flex;
   justify-content: center;
-  @media (max-width: 1920px)  {
+  @media (max-width: 1920px) {
     margin-top: 25vh;
-    
   }
-  @media (max-width: 1680px)  {
+  @media (max-width: 1680px) {
     margin-top: 25vh;
-    
   }
-  @media (max-width: 1440px)  {
+  @media (max-width: 1440px) {
     margin-top: 20vh;
-        
   }
   @media (max-width: 1024px) {
     margin-top: 18vh;
@@ -23,7 +20,7 @@
   flex-direction: column;
   align-items: center;
   width: 412px;
-  height: 486px;
+  height: 480px;
   background-color: #292932;
   border-radius: 30px;
   padding: 20px 0;

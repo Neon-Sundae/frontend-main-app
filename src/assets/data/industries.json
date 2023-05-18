@@ -1,0 +1,42 @@
+[
+  {
+    "label": "Web3",
+    "value": "Web3"
+  },
+  {
+    "label": "Software Development",
+    "value": "Software Development"
+  },
+  {
+    "label": "Artificial intelligence",
+    "value": "Artificial intelligence"
+  },
+  {
+    "label": "Cloud computing",
+    "value": "Cloud computing"
+  },
+  {
+    "label": "E-commerce",
+    "value": "E-commerce"
+  },
+  {
+    "label": "Cybersecurity",
+    "value": "Cybersecurity"
+  },
+  {
+    "label": "Virtual and augmented reality",
+    "value": "Virtual and augmented reality"
+  },
+  {
+    "label": "Social media",
+    "value": "Social media"
+  },
+  {
+    "label": "Mobile technology",
+    "value": "Mobile technology"
+  },
+  {
+    "label": "Internet of Things (IoT)",
+    "value": "Internet of Things (IoT)"
+  }
+]

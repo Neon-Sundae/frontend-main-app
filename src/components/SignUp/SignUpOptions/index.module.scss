@@ -1,0 +1,32 @@
+.sign-up-options-container {
+  .chat-prompts-container {
+    &--chat-message {
+      width: 79%;
+      margin: auto;
+      display: flex;
+      margin-top: 100px;
+
+      & > .user-image {
+        background: #000;
+        border-radius: 50%;
+        width: 108px;
+        height: 108px;
+        margin-right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      & > .user-choices {
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 18.5481px;
+        padding: 25px 50px;
+        width: 555px;
+
+        font-family: var(--font-family-roboto-regular);
+        font-weight: 400;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

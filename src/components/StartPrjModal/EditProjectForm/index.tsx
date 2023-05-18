@@ -7,7 +7,8 @@ import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import { normalizeFormData, formatTimeZones, handleSubmitBtn } from './utils';
+import timezoneData from 'assets/data/timezones.json';
+import { normalizeFormData, handleSubmitBtn } from './utils';
 import {
   useProjectData,
   useUpdateProjectData,
@@ -241,7 +242,7 @@ const EditProjectForm: FC<IEditProjectProps> = ({ onClose }) => {
               defaultValue={selectedTimeZones}
               isMulti
               styles={customStyles}
-              options={formatTimeZones()}
+              options={timezoneData}
               onChange={options => setSelectedTimeZones(options)}
               placeholder="Select Timezone"
             />

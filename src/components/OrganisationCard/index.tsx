@@ -2,17 +2,23 @@
 import { useNavigate } from 'react-router-dom';
 import Card from 'components/Card';
 import { ReactComponent as BrandImage } from 'assets/images/metadata/brand-image.svg';
+import { useFetchUserOrganisations } from 'queries/organisation';
+import { useFetchUserDetailsWrapper } from 'queries/user';
 import styles from './index.module.scss';
-import useFetchUserOrgs from './hooks';
 
 const OrganisationCard = () => {
-  const userOrgs = useFetchUserOrgs();
   const navigate = useNavigate();
+  const userData = useFetchUserDetailsWrapper();
+  const { data: userOrganisations, isLoading } = useFetchUserOrganisations(
+    userData?.user.userId
+  );
+
+  if (isLoading) return null;
 
   return (
     <div className={styles['profile-organisation-container']}>
-      {userOrgs?.data?.length === 0 && <p>No Organisations</p>}
-      {userOrgs?.data?.map((org: any) => {
+      {userOrganisations?.length === 0 && <p>No Organisations</p>}
+      {userOrganisations?.map((org: any) => {
         return (
           <div
             key={org.organisationId}

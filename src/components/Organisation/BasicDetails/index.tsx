@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { IOrganisation, IOwnerData } from 'interfaces/organisation';
 import getDefaultAvatarSrc from 'utils/getDefaultAvatarSrc';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
 import _debounce from 'lodash/debounce';
+import { useUpdateOrganisationDetails } from 'queries/organisation';
 import styles from './index.module.scss';
-import { useUpdateOrganisation } from '../Banner/hooks';
 
 interface IBasicDetails {
   organisation: IOrganisation;
@@ -18,6 +18,7 @@ interface IBasicDetails {
 }
 
 const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
+  const params = useParams();
   const [whitepaper, setWhitepaper] = useState(
     organisation.whitepaper ?? 'https://defi.xyz/whitepaper.html'
   );
@@ -27,7 +28,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
 
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
 
-  const updateOrganisation = useUpdateOrganisation(organisation.organisationId);
+  const updateOrganisationDetails = useUpdateOrganisationDetails(params.orgId);
 
   const payload = {
     name: organisation.name,
@@ -37,7 +38,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
   };
 
   const handleDebounceFn = (name: string, value: string) => {
-    updateOrganisation.mutate({
+    updateOrganisationDetails.mutate({
       ...payload,
       [name]: value,
     });

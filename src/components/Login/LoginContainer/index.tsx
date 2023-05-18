@@ -5,13 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reducers';
 import { ReactComponent as NeonSundaeLogo } from 'assets/illustrations/icons/neon-sundae-main-logo.svg';
 import BaseBlob from 'components/BaseBlob';
+import { Toaster } from 'react-hot-toast';
 import Step1 from '../Step1';
 import Step2 from '../Step2';
 import styles from './index.module.scss';
 
 const LoginContainer: FC = () => {
   const navigate = useNavigate();
-  const currentStep = useSelector((state: RootState) => state.auth.currentStep);
+  const loginStep = useSelector((state: RootState) => state.auth.loginStep);
+
   useEffect(() => {
     const accessToken = getAccessToken();
 
@@ -22,7 +24,7 @@ const LoginContainer: FC = () => {
   }, []);
 
   const renderSteps = () => {
-    switch (currentStep) {
+    switch (loginStep) {
       case 1:
         return <Step1 />;
       case 2:
@@ -35,6 +37,7 @@ const LoginContainer: FC = () => {
   return (
     <div className={styles.LoginContainer}>
       <div className={styles.StepContainer}>
+        <Toaster />
         <NeonSundaeLogo
           width={131}
           height={100}
