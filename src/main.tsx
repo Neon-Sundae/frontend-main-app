@@ -20,7 +20,10 @@ const queryClient = new QueryClient({
   },
 });
 
-if (import.meta.env.VITE_APPLICATION_ENV === 'prod') {
+if (
+  import.meta.env.VITE_APPLICATION_ENV === 'stage' ||
+  import.meta.env.VITE_APPLICATION_ENV === 'prod'
+) {
   initAmplitude();
 }
 
