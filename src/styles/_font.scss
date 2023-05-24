@@ -1,56 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+@font-face {
+  font-family: RobotoThin;
+  src: url('./fonts/roboto/roboto-thin-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-thin-webfont.woff') format('woff');
+  font-weight: 100;
+}
 
 @font-face {
   font-family: RobotoLight;
-  src: url('./fonts/roboto/Roboto-Light.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-light-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-light-webfont.woff') format('woff');
   font-weight: 300;
 }
 
 @font-face {
   font-family: RobotoRegular;
-  src: url('./fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-regular-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-regular-webfont.woff') format('woff');
   font-weight: 400;
 }
 
 @font-face {
   font-family: RobotoMedium;
-  src: url('./fonts/roboto/Roboto-Medium.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-medium-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-medium-webfont.woff') format('woff');
   font-weight: 500;
 }
 
 @font-face {
   font-family: RobotoBold;
-  src: url('./fonts/roboto/Roboto-Bold.ttf') format('truetype');
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: RobotoSlabLight;
-  src: url('./fonts/robotoslab/RobotoSlab-Light.ttf') format('truetype');
-  font-weight: 300;
-}
-
-@font-face {
-  font-family: RobotoSlabRegular;
-  src: url('./fonts/robotoslab/RobotoSlab-Regular.ttf') format('truetype');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: RobotoSlabMedium;
-  src: url('./fonts/robotoslab/RobotoSlab-Medium.ttf') format('truetype');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: RobotoSlabSemiBold;
-  src: url('./fonts/robotoslab/RobotoSlab-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: RobotoSlabBold;
-  src: url('./fonts/robotoslab/RobotoSlab-Bold.ttf') format('truetype');
+  src: url('./fonts/roboto/roboto-bold-webfont.woff2') format('woff2'),
+    url('./fonts/roboto/roboto-bold-webfont.woff') format('woff');
   font-weight: 700;
 }
 
@@ -83,39 +65,6 @@
   src: url('./fonts/inter/Inter-Bold.ttf') format('truetype');
   font-weight: 700;
 }
-
-@font-face {
-  font-family: asapRegular;
-  src: url('./fonts/asap/Asap-Regular.ttf') format('truetype');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: asapMedium;
-  src: url('./fonts/asap/Asap-Medium.ttf') format('truetype');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: asapSemiBold;
-  src: url('./fonts/asap/Asap-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: asapBold;
-  src: url('./fonts/asap/Asap-Bold.ttf') format('truetype');
-  font-weight: 700;
-}
-
-// import monteserrat font from fonts directory
-@font-face {
-  font-family: 'Montserrat';
-  src: url('./fonts/montserrat/Montserrat-Bold.ttf') format('truetype');
-  font-weight: 400;
-  font-style: bold;
-}
-
 
 /*
   * Material icons font file
@@ -177,22 +126,9 @@
 
   --font-family-roboto-flex: 'Roboto Flex', sans-serif;
 
-  --font-family-roboto-slab-light: RobotoSlabLight, sans-serif;
-  --font-family-roboto-slab-regular: RobotoSlabRegular, sans-serif;
-  --font-family-roboto-slab-medium: RobotoSlabMedium, sans-serif;
-  --font-family-roboto-semi-bold: RobotoSlabSemiBold, sans-serif;
-  --font-family-roboto-slab-bold: RobotoSlabBold, sans-serif;
-
   --font-family-inter-light: InterLight, sans-serif;
   --font-family-inter-regular: InterRegular, sans-serif;
   --font-family-inter-medium: InterMedium, sans-serif;
   --font-family-inter-semi-bold: InterSemiBold, sans-serif;
   --font-family-inter-bold: InterBold, sans-serif;
-
-  --font-family-asap-regular: InterRegular, sans-serif;
-  --font-family-asap-medium: InterMedium, sans-serif;
-  --font-family-asap-semi-bold: InterSemiBold, sans-serif;
-  --font-family-asap-bold: InterBold, sans-serif;
-
-  --font-family-montserrat: Montserrat, sans-serif;
 }
