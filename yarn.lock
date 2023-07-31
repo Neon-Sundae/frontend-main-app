@@ -84,7 +84,7 @@
     react-loader-spinner "^5.3.4"
     styled-components "^5.3.5"
 
-"@arcana/auth@^1.0.3":
+"@arcana/auth@^1.0.2":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@arcana/auth/-/auth-1.0.6.tgz#6b84a37e600b56c54651634debc11c8a01d3e129"
   integrity sha512-wJ/qP6bZcJR/U3YUtGWNF359grRjPoILrRYn4jix7zlguhY34Yc27NFhsDwq7yrgnPQYa4lLz6uOZf0pDOHbgA==
