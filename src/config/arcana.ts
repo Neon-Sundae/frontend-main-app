@@ -5,8 +5,8 @@ export const arcanaProvider = new AuthProvider(
   `${import.meta.env.VITE_ARCANA_AUTH_CLIENT_KEY}`,
   {
     chainConfig: {
-      chainId: config.chainId,
-      rpcUrl: config.rpcURL,
+      chainId: '80001',
+      rpcUrl: config?.rpcURL,
     },
     network: import.meta.env.VITE_ARCANA_NETWORK,
   }
