@@ -1,8 +1,6 @@
 FROM node as build
 WORKDIR /app
 
-RUN rm -rf /node_modules
-
 COPY package.json .
 
 RUN yarn install
