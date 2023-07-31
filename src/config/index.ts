@@ -46,8 +46,8 @@ const configs: Environment = {
     ...localContracts,
   },
   dev: {
-    ApiBaseUrl: 'https://api.develop.founderslab.xyz/development',
-    AppDomain: 'https://develop.founderslab.xyz',
+    ApiBaseUrl: 'https://ns-server-dev-lswtiyhelq-ue.a.run.app/development',
+    AppDomain: 'https://ns-fe-dev-lswtiyhelq-ue.a.run.app/',
     chainId: '0x13881',
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcURL: 'https://rpc-mumbai.maticvigil.com',
