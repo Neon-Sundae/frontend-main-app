@@ -8,6 +8,6 @@ export const arcanaProvider = new AuthProvider(
       chainId: '0x13881',
       rpcUrl: 'https://rpc-mumbai.maticvigil.com',
     },
-    network: import.meta.env.VITE_ARCANA_NETWORK,
+    network: 'testnet',
   }
 );
