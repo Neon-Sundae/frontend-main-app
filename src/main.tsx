@@ -6,7 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import reducer from 'reducers';
 import 'styles/main.scss';
 import { ProvideAuth } from '@arcana/auth-react';
-import { arcanaProvider } from 'config/arcana';
+// import { arcanaProvider } from 'config/arcana';
 import { initAmplitude } from './config/amplitude';
 import App from './App';
 
@@ -28,13 +28,13 @@ if (
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ProvideAuth provider={arcanaProvider}>
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </HelmetProvider>
-    </QueryClientProvider>
-  </ProvideAuth>
+  // <ProvideAuth provider={arcanaProvider}>
+  <QueryClientProvider client={queryClient}>
+    <HelmetProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </HelmetProvider>
+  </QueryClientProvider>
+  // </ProvideAuth>
 );
