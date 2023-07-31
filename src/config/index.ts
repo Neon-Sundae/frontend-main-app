@@ -40,7 +40,7 @@ const configs: Environment = {
   local: {
     ApiBaseUrl: 'http://localhost:3001/local',
     AppDomain: 'http://localhost:3000',
-    chainId: '0x13881',
+    chainId: '80001',
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcURL: 'https://rpc-mumbai.maticvigil.com',
     ...localContracts,
@@ -48,7 +48,7 @@ const configs: Environment = {
   dev: {
     ApiBaseUrl: 'https://ns-server-dev-lswtiyhelq-ue.a.run.app/development',
     AppDomain: 'https://ns-fe-dev-lswtiyhelq-ue.a.run.app/',
-    chainId: '0x13881',
+    chainId: '80001',
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcURL: 'https://rpc-mumbai.maticvigil.com',
     ...devContracts,
@@ -56,7 +56,7 @@ const configs: Environment = {
   stage: {
     ApiBaseUrl: 'https://api.develop.founderslab.xyz/staging',
     AppDomain: 'https://testnet.founderslab.xyz',
-    chainId: '0x13881',
+    chainId: '80001',
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcURL: 'https://rpc-mumbai.maticvigil.com',
     ...testnetContracts,
@@ -64,7 +64,7 @@ const configs: Environment = {
   prod: {
     ApiBaseUrl: 'https://api.neonsundae.xyz/production',
     AppDomain: 'https://app.neonsundae.xyz',
-    chainId: '0x89',
+    chainId: '137',
     explorerURL: 'https://polygonscan.com',
     rpcURL: 'https://polygon-mainnet.infura.io',
     ...mainnetContracts,
