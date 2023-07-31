@@ -17,11 +17,11 @@ import { RootState } from 'reducers';
 const useSetAppMetadata = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
-  const { provider: arcanaProvider } = useProvider();
+  // const { provider: arcanaProvider } = useProvider();
 
-  if (user?.authentication_method === 'arcana_network') {
-    if (!(arcanaProvider as any).connected) handleArcanaDisconnectedEvent();
-  }
+  // if (user?.authentication_method === 'arcana_network') {
+  //   if (!(arcanaProvider as any).connected) handleArcanaDisconnectedEvent();
+  // }
 
   const dispatch = useDispatch();
 
@@ -56,7 +56,7 @@ const useSetAppMetadata = () => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', handleChainChanged);
       window.ethereum.on('accountsChanged', handleAccountsChanged);
-      arcanaProvider.on('disconnect', handleArcanaLogout);
+      // arcanaProvider.on('disconnect', handleArcanaLogout);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
