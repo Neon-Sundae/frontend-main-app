@@ -5,8 +5,8 @@ export const arcanaProvider = new AuthProvider(
   `${import.meta.env.VITE_ARCANA_AUTH_CLIENT_KEY}`,
   {
     chainConfig: {
-      chainId: '80001',
-      rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
+      chainId: '0x13881',
+      rpcUrl: config.rpcURL,
     },
     network: import.meta.env.VITE_ARCANA_NETWORK,
   }
