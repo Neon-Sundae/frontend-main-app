@@ -1,13 +1,11 @@
 # gcloud app deploy app-dev.yaml
 
-service: ns-fe-dev
-runtime: nodejs16
 steps:
-  - name: node:10.15.1
-    entrypoint: npm
+  - name: node:16.20.1
+    entrypoint: yarn
     args: ['install']
-  - name: node:10.15.1
-    entrypoint: npm
+  - name: node:16.20.1
+    entrypoint: yarn
     args: ['run', 'create-env']
     env:
       - 'VITE_APPLICATION_ENV=${_VITE_APPLICATION_ENV}'
@@ -18,12 +16,3 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy']
 timeout: '1600s'
-handlers:
-  # Serve all static files with url ending with a file extension
-  - url: /(.*\..+)$
-    static_files: dist/\1
-    upload: dist/(.*\..+)$
-  # Catch all handler to index.html
-  - url: /.*
-    static_files: dist/index.html
-    upload: dist/index.html
