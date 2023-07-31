@@ -79,7 +79,7 @@ const Step1: FC = () => {
           style={style}
         />
       </div>
-      <ArcanaAuthLogin />
+      {/* <ArcanaAuthLogin /> */}
     </>
   );
 };
