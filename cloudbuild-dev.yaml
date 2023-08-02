@@ -1,6 +1,7 @@
-# to deploy manually use `gcloud app deploy --appyaml=cloudbuild-prod.yaml`
+# to deploy manually use `gcloud app deploy --appyaml=cloudbuild-dev.yaml`
+# dev env is default service on google app engine
 
-service: ns-fe-prod
+service: default
 runtime: nodejs16
 handlers:
   # Serve all static files with url ending with a file extension
@@ -11,3 +12,5 @@ handlers:
   - url: /.*
     static_files: dist/index.html
     upload: dist/index.html
+env_variables:
+  MY_VAR: 'my value'

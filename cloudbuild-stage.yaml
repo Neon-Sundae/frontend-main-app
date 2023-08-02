@@ -1,4 +1,4 @@
-# gcloud app deploy app-stage.yaml
+# # to deploy manually use `gcloud app deploy --appyaml=cloudbuild-stage.yaml`
 
 service: ns-fe-stage
 runtime: nodejs16
