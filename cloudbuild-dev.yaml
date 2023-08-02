@@ -12,5 +12,3 @@ handlers:
   - url: /.*
     static_files: dist/index.html
     upload: dist/index.html
-env_variables:
-  MY_VAR: 'my value'
