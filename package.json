@@ -15,7 +15,8 @@
     "eslint-watch-quiet": "esw -w --quiet --changed src/**",
     "lint": "eslint src --ext .ts,.tsx",
     "lint-fix": "eslint src --ext .ts,.tsx --fix",
-    "style-lint": "npx stylelint \"**/*.scss\""
+    "style-lint": "npx stylelint \"**/*.scss\"",
+    "create-env": "printenv > .env"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^1.10.3",
