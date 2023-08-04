@@ -1,7 +1,10 @@
-# to deploy manually use `gcloud app deploy --appyaml=cloudbuild-dev.yaml`
+# to deploy manually use `gcloud app deploy`
 # dev env is default service on google app engine
 
-service: ns-fe-dev
+service: fe-dev
+# for stage fe-stage
+# for prod fe-fe-prod
+
 runtime: nodejs16
 handlers:
   # Serve all static files with url ending with a file extension
