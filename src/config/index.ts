@@ -62,7 +62,7 @@ const configs: Environment = {
     ...testnetContracts,
   },
   prod: {
-    ApiBaseUrl: 'https://api.neonsundae.xyz/production',
+    ApiBaseUrl: 'https://api.neonsundae.xyz/prod',
     AppDomain: 'https://app.neonsundae.xyz',
     chainId: '0x89',
     explorerURL: 'https://polygonscan.com',
