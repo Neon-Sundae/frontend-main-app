@@ -47,7 +47,7 @@ const configs: Environment = {
   },
   dev: {
     ApiBaseUrl: 'https://dev-api.neonsundae.xyz/development',
-    AppDomain: 'https://develop.neonsundae.xyz',
+    AppDomain: 'https://dev.neonsundae.xyz',
     chainId: '0x13881',
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcURL: 'https://rpc-mumbai.maticvigil.com',
@@ -62,7 +62,7 @@ const configs: Environment = {
     ...testnetContracts,
   },
   prod: {
-    ApiBaseUrl: 'https://api.neonsundae.xyz/production',
+    ApiBaseUrl: 'https://api.neonsundae.xyz/prod',
     AppDomain: 'https://app.neonsundae.xyz',
     chainId: '0x89',
     explorerURL: 'https://polygonscan.com',
