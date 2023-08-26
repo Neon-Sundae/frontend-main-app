@@ -1,0 +1,27 @@
+.people-tab {
+  position: relative;
+  height: 45vh;
+  margin: auto;
+  margin-top: 50px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 160px);
+  grid-gap: 2rem;
+  justify-content: space-between;
+
+  @media (max-width: 1920px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 82%;
+  }
+}

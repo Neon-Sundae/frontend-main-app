@@ -4,6 +4,22 @@
   background-size: cover;
   color: #fff;
   overflow-y: hidden;
+  margin: auto;
+  position: relative;
+
+  .container-heading {
+    color: #fff;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 400;
+    font-size: 20.7511px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    position: absolute;
+    left: 15rem;
+    @media (min-width: 1024px) and (max-width: 1440px) {
+      left: 8rem;
+    }
+  }
 
   .job-cards-all-wrap {
     width: 72%;
@@ -12,20 +28,18 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    margin-top: 5%;
 
     @media (max-width: 1920px) {
       width: 71%;
-
     }
 
     @media (max-width: 1680px) {
       width: 72%;
-
     }
 
     @media (max-width: 1440px) {
       width: 78%;
-
     }
 
     @media (max-width: 1024px) {
@@ -45,25 +59,33 @@
       .create-job-btn {
         color: #fff;
         display: inline-flex;
+        justify-content: center;
         align-items: center;
         margin-bottom: 15px;
-        border: 1px solid #D3D3D3;
+        border: 1px solid #d3d3d3;
         border-radius: 16px;
         padding: 0 15px;
         font-family: var(--font-family-roboto-regular);
         font-size: 13.75px;
-        border: 1px solid #D3D3D3;
+        border: 1px solid #d3d3d3;
         border-radius: 16px;
         background: none;
-        width: 115px;
+        width: 145px;
         height: 38px;
         cursor: pointer;
       }
     }
 
+    p {
+      font-family: 'Poppins';
+      font-weight: 500;
+      font-size: 12.5743px;
+      line-height: 23px;
+      color: #fff;
+    }
   }
 
-  .jobs-cards-wrap>div:not(:last-child) {
+  .jobs-cards-wrap > div:not(:last-child) {
     margin-bottom: 20px;
   }
 

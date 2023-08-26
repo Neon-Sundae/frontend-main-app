@@ -5,8 +5,11 @@
 
   .organisation-heading,
   .projects-heading {
-    color: white;
+    color: #fff;
     font-family: var(--font-family-roboto-regular);
+    font-weight: 400;
+    font-size: 20.7511px;
+    margin-bottom: 15px;
   }
 
   @media (max-width: 1920px) {
@@ -72,7 +75,7 @@
       border: 1px solid #d3d3d3;
       border-radius: 16px;
       background: none;
-      width: 115px;
+      width: 155px;
       height: 38px;
       cursor: pointer;
     }
@@ -177,4 +180,12 @@
   gap: 49px;
   justify-content: flex-start;
   margin: auto;
+  p {
+    color: #ffffff;
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 12.5743px;
+    line-height: 23px;
+    color: #fff;
+  }
 }

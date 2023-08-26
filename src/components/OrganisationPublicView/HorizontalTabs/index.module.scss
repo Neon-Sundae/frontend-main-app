@@ -1,0 +1,84 @@
+.horizontal-tabs {
+  color: #fff;
+  position: relative;
+  margin: auto;
+  margin-top: 62.83px;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 1920px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+
+  .button-inactive {
+    background: none;
+    border: none;
+    margin-right: 20px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 26.28px;
+    font-family: var(--font-family-roboto-regular);
+    font-weight: 300;
+    text-transform: capitalize;
+  }
+
+  .button-inactive:hover {
+    text-decoration: underline;
+  }
+
+  .button-active {
+    @extend .button-inactive;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+  .custom-button {
+    font-family: var(--font-family-roboto-regular);
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    border: solid 0.72px #e49df4;
+    background: linear-gradient(
+        89.58deg,
+        #826af7 2.95%,
+        #db5dde 56.19%,
+        #e87aaf 103.17%
+      ),
+      linear-gradient(0deg, #e49df4, #e49df4),
+      radial-gradient(
+          116.97% 116.97% at 34.87% -2.72%,
+          #ff9bfb 0%,
+          #ffffff 100%
+        )
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+      linear-gradient(
+        94.63deg,
+        rgba(255, 255, 255, 0.16) 4.94%,
+        rgba(255, 255, 255, 0.04) 93.94%
+      );
+
+    border-radius: 22px;
+    box-shadow: 0px 4px 4px rgba(204, 204, 204, 0.1);
+    backdrop-filter: blur(40px);
+    -webkit-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.66);
+    width: 195px;
+    height: 55px;
+    & > a {
+      color: #fff;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.projects-tab {
+  color: #fff;
+  margin: auto;
+  position: relative;
+
+  @media (max-width: 1920px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 82%;
+  }
+}

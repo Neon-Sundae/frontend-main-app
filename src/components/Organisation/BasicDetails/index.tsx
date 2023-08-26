@@ -9,7 +9,10 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RootState } from 'reducers';
 import _debounce from 'lodash/debounce';
+import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
+
 import { useUpdateOrganisationDetails } from 'queries/organisation';
+import CustomButtonModal from '../CustomButtonModal';
 import styles from './index.module.scss';
 
 interface IBasicDetails {
@@ -25,6 +28,7 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
   const [description, setDescription] = useState(
     organisation.description ?? ''
   );
+  const [open, setOpen] = useState(false);
 
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
 
@@ -58,17 +62,48 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
     debounceFn(name, value);
   };
 
+  const handleCustomButtonClick = () => {
+    if (isEditable) setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className={styles.content}>
       <section className={styles.section}>
-        <div className={styles['organisation-profile-created']}>
-          <h3 className={styles['organisation-heading']}>Profile Created By</h3>
-          {owner && <CreatedBy owner={owner} />}
-        </div>
         <div className={styles['organisation-name-description']}>
-          <h3 className={styles['organisation-heading']}>
-            Company Description
-          </h3>
+          <span>
+            <h3 className={styles['organisation-heading']}>
+              Project Description
+            </h3>
+
+            <button
+              onClick={handleCustomButtonClick}
+              className={clsx(
+                styles.button,
+                isEditable && styles['button--edit']
+              )}
+            >
+              {organisation.customButtonLink && (
+                <a
+                  href={`${organisation.customButtonLink}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {organisation.customButtonLabel ?? 'Custom Button'}
+                </a>
+              )}
+
+              {!organisation.customButtonLink && (
+                <>{organisation.customButtonLabel ?? 'Custom Button'}</>
+              )}
+
+              {isEditable && <EditIcon width={50} height={50} />}
+            </button>
+          </span>
+
           <div
             className={clsx(
               styles.description,
@@ -116,6 +151,13 @@ const BasicDetails: FC<IBasicDetails> = ({ organisation, owner }) => {
           </div>
         </div>
       </section>
+      {open && (
+        <CustomButtonModal
+          handleClose={handleClose}
+          customButtonLabel={organisation.customButtonLabel || ''}
+          customButtonLink={organisation.customButtonLink || ''}
+        />
+      )}
     </div>
   );
 };

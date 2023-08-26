@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
 import BlurBlobs from 'components/BlurBlobs';
+import OrganisationPublicView from 'components/OrganisationPublicView';
+
 import {
   useFetchOrganisationDetail,
   useFetchOrganisationOwner,
@@ -60,6 +62,13 @@ const Landing: FC = () => {
     setTabSelected('home');
   };
 
+  console.log('user', user);
+  console.log('members', members);
+  console.log(
+    'isOrganisationMember(user, members)',
+    isOrganisationMember(user, members)
+  );
+
   const tabSelector = () => {
     switch (tabSelected) {
       case 'home':
@@ -67,12 +76,7 @@ const Landing: FC = () => {
           <>
             <Banner organisation={organisationDetail} />
             <BasicDetails organisation={organisationDetail} owner={owner} />
-            <div className={styles['organisation-project-jobs-wrap']}>
-              <OrganisationProjects organisation={organisationDetail} />
-              <OrganisationJobs
-                organisationId={organisationDetail.organisationId}
-              />
-            </div>
+            <div className={styles['organisation-project-jobs-wrap']}> </div>
           </>
         );
       case 'projects':
@@ -140,10 +144,7 @@ const Landing: FC = () => {
           </div>
         </div>
       ) : (
-        <div className={styles['organisation-container']}>
-          <NavBar />
-          {tabSelector()}
-        </div>
+        <OrganisationPublicView organisation={organisationDetail} />
       )}
     </>
   );

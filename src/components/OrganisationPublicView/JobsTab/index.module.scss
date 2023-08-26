@@ -1,0 +1,29 @@
+.jobs-tab {
+  color: #fff;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  margin-top: 50px;
+  position: relative;
+
+  @media (max-width: 1920px) {
+    width: 50%;
+  }
+
+  @media (max-width: 1680px) {
+    width: 70%;
+  }
+
+  @media (max-width: 1440px) {
+    width: 62%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 82%;
+  }
+  div {
+    color: #fff;
+    width: 389.05px;
+  }
+}

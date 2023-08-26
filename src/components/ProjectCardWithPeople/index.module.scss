@@ -1,0 +1,105 @@
+.project-card-with-people {
+  color: #fff;
+  position: relative;
+  height: 45vh;
+  width: 100%;
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 160px);
+  grid-gap: 2rem;
+  justify-content: space-between;
+
+  &--card {
+    width: 177px;
+    height: 230.13px;
+    border-radius: 15.53px;
+    padding: 15px 23.29px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border: 0.7px solid rgb(211, 155, 255);
+    background: linear-gradient(
+      126.59deg,
+      rgba(255, 255, 255, 0.12) 12.11%,
+      rgba(255, 255, 255, 0.03) 73.08%
+    );
+    backdrop-filter: blur(40px);
+    cursor: pointer;
+
+    & > h3 {
+      font-family: var(--font-family-roboto-flex);
+      font-style: normal;
+      font-weight: 500;
+      font-size: 17.0794px;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    & > p {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-family: var(--font-family-roboto-flex);
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+
+    & > span {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+
+      & > p {
+        font-family: var(--font-family-roboto-regular);
+
+        font-weight: 500;
+        font-size: 10.8687px;
+      }
+    }
+  }
+
+  .project-people-avatars {
+    display: flex;
+    margin-bottom: 10px;
+    position: relative;
+    min-height: 25px;
+
+    & > img {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    & > img[src='null'] {
+      font-size: 0;
+      text-indent: -10000px;
+    }
+
+    & > img:nth-child(1) {
+      background: #a1a1e5;
+    }
+
+    & > img:nth-child(2) {
+      background: #f0cc97;
+      position: absolute;
+      left: 12%;
+    }
+
+    & > p {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #eba8d0;
+      color: #514b66;
+      position: absolute;
+      left: 24%;
+    }
+  }
+}

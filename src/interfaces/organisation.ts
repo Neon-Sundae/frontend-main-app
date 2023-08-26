@@ -11,11 +11,16 @@ interface OrganisationUser {
   };
 }
 
-interface OrganisationProjects {
+export interface IProjectPerson {
+  profileId: number;
+  picture: string | undefined;
+}
+export interface OrganisationProjects {
   flProject_uuid: string;
   flProjectName: string;
   flProjectDescription: string;
   taskCount: number;
+  projectPeople: IProjectPerson[];
 }
 
 export interface IOrganisation {
@@ -33,6 +38,8 @@ export interface IOrganisation {
   bannerImage: string | null;
   OrganisationUser: OrganisationUser[];
   flProjects: OrganisationProjects[];
+  customButtonLabel: string | null;
+  customButtonLink: string | null;
 }
 
 export interface IOwnerData {
@@ -44,6 +51,7 @@ export interface IOwnerData {
     profile: {
       profileId: number;
       title: string | null;
+      description: string | null;
       picture: string | null;
       createdAt: string;
     };
@@ -51,8 +59,19 @@ export interface IOwnerData {
 }
 
 export interface IMember {
-  userId: number;
   role: string;
+  user: {
+    name: string;
+    email: string;
+    userId: number;
+    profile: {
+      profileId: number;
+      title: string | null;
+      description: string | null;
+      picture: string | null;
+      createdAt: string;
+    };
+  };
 }
 
 export interface IMemberData {

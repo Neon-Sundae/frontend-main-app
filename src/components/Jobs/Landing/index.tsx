@@ -1,14 +1,13 @@
 import NavBar from 'components/NavBar';
 import { useParams } from 'react-router-dom';
-import config from 'config';
-import { useQuery } from '@tanstack/react-query';
-import { getAccessToken } from 'utils/authFn';
 import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import isOrganisationMember from 'utils/accessFns/isOrganisationMember';
+
+import useFetchAllOrgJobs from 'hooks/useFetchAllOrgJobs';
 import {
   useFetchOrganisationDetail,
   useFetchOrganisationOwnerManager,
@@ -37,22 +36,7 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   );
   const { data: members } = useFetchOrganisationOwnerManager(params.orgId);
 
-  const {
-    data,
-    refetch,
-    isFetching,
-    isLoading: loading,
-  } = useQuery(
-    ['orgJobs'],
-    () =>
-      fetch(`${config.ApiBaseUrl}/job/organisation/${params.orgId}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }).then(response => response.json()),
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { data, refetch } = useFetchAllOrgJobs(Number(params.orgId));
 
   const { name: orgName, profileImage } = organisationDetail;
 
@@ -72,95 +56,96 @@ const JobsLanding: FC<JobsLandingProps> = ({ hideNavbar }) => {
   };
 
   if (isLoading) return null;
-  if (isFetching) return null;
-  if (loading) return null;
 
   return (
-    <div
-      className={styles.container}
-      style={{
-        backgroundColor: `${window.innerWidth <= 600} ? 'none' : '#242529'`,
-      }}
-    >
-      {!hideNavbar && <NavBar />}
+    <>
+      <div
+        className={styles.container}
+        style={{
+          backgroundColor: `${window.innerWidth <= 600} ? 'none' : '#242529'`,
+        }}
+      >
+        {!hideNavbar && <NavBar />}
+        <Toaster />
+        <h2 className={styles['container-heading']}>Jobs</h2>
+        <div className={styles['job-cards-all-wrap']}>
+          <div className={styles['jobs-cards-wrap']}>
+            {isOrganisationMember(user, members) && (
+              <div className={styles['job-create-btn-wrap']}>
+                <button
+                  onClick={() => {
+                    handleCreate();
+                  }}
+                  className={styles['create-job-btn']}
+                >
+                  Add new job
+                  <i className={clsx('material-icons', styles['add-icon'])}>
+                    add
+                  </i>
+                </button>
+              </div>
+            )}
 
-      <Toaster />
-      <div className={styles['job-cards-all-wrap']}>
-        <div className={styles['jobs-cards-wrap']}>
-          {isOrganisationMember(user, members) && (
-            <div className={styles['job-create-btn-wrap']}>
-              <button
-                onClick={() => {
-                  handleCreate();
-                }}
-                className={styles['create-job-btn']}
-              >
-                Add new
-                <i className={clsx('material-icons', styles['add-icon'])}>
-                  add
-                </i>
-              </button>
-            </div>
-          )}
-
-          {data.map((d: any) => {
-            return (
-              <JobCards
-                title={d.title}
-                orgName={orgName}
-                orgImage={profileImage}
-                salaryMin={d.salaryMin}
-                salaryMax={d.salaryMax}
-                currency={d.currency}
-                key={d.jobId_uuid}
-                jobUuid={d.jobId_uuid}
-                selectedJobUuid={selectedJobUuid}
-                handleCardClick={jobCardClicked}
-                setJobApplicantsData={setJobApplicantsData}
-              />
-            );
-          })}
-        </div>
-        <div className={styles['jobs-card-details-wrap']}>
-          {showCreate && !showView && (
-            <JobDetails
-              orgName={orgName}
-              setShowCreate={setShowCreate}
-              setShowView={setShowView}
-              selectedJobUuid={selectedJobUuid}
-              setSelectedJobUuid={setSelectedJobUuid}
-            />
-          )}
-          {!showCreate &&
-            showView &&
-            data.map((d: any) => {
+            {data?.map((d: any) => {
               return (
-                <JobView
+                <JobCards
                   title={d.title}
                   orgName={orgName}
+                  orgImage={profileImage}
                   salaryMin={d.salaryMin}
                   salaryMax={d.salaryMax}
                   currency={d.currency}
                   key={d.jobId_uuid}
                   jobUuid={d.jobId_uuid}
-                  location={d.location}
-                  role={d.role}
-                  isRemote={d.isRemote}
-                  description={d.description}
-                  refetch={refetch}
-                  setShowCreate={setShowCreate}
-                  setShowView={setShowView}
                   selectedJobUuid={selectedJobUuid}
-                  jobStatus={d.status}
-                  orgId={params.orgId}
-                  setSelectedJobUuid={setSelectedJobUuid}
-                  JobApplicantsData={JobApplicantsData}
+                  handleCardClick={jobCardClicked}
+                  setJobApplicantsData={setJobApplicantsData}
                 />
               );
             })}
+            {data?.length === 0 && <p>You may want to add some job(s).</p>}
+          </div>
+          <div className={styles['jobs-card-details-wrap']}>
+            {showCreate && !showView && (
+              <JobDetails
+                orgName={orgName}
+                setShowCreate={setShowCreate}
+                setShowView={setShowView}
+                selectedJobUuid={selectedJobUuid}
+                setSelectedJobUuid={setSelectedJobUuid}
+              />
+            )}
+            {!showCreate &&
+              showView &&
+              data?.map((d: any) => {
+                return (
+                  <JobView
+                    title={d.title}
+                    orgName={orgName}
+                    salaryMin={d.salaryMin}
+                    salaryMax={d.salaryMax}
+                    currency={d.currency}
+                    key={d.jobId_uuid}
+                    jobUuid={d.jobId_uuid}
+                    location={d.location}
+                    role={d.role}
+                    isRemote={d.isRemote}
+                    description={d.description}
+                    refetch={refetch}
+                    setShowCreate={setShowCreate}
+                    setShowView={setShowView}
+                    selectedJobUuid={selectedJobUuid}
+                    jobStatus={d.status}
+                    orgId={params.orgId}
+                    setSelectedJobUuid={setSelectedJobUuid}
+                    JobApplicantsData={JobApplicantsData}
+                  />
+                );
+              })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

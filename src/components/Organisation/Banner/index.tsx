@@ -11,7 +11,7 @@ import { IOrganisation } from 'interfaces/organisation';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import _debounce from 'lodash/debounce';
-import { editOrganisation } from 'actions/organisation';
+import { editOrganisation, setOrgPublicView } from 'actions/organisation';
 import { RootState } from 'reducers';
 import { ReactComponent as EditIcon } from 'assets/illustrations/icons/edit.svg';
 import Background from 'assets/illustrations/profile/pp-bg.png';
@@ -39,8 +39,10 @@ const Banner: FC<IBanner> = ({ organisation }) => {
   const dispatch = useDispatch();
   const isEditable = useSelector((state: RootState) => state.org.isEditable);
   const user = useSelector((state: RootState) => state.user.user);
+  const publicView = useSelector((state: RootState) => state.org.publicView);
 
-  const [nameLocal, setNameLocal] = useState(organisation.name ?? 'Polkadot');
+  const [nameLocal, setNameLocal] = useState(organisation.name ?? '');
+
   const [website, setWebsite] = useState(organisation.website ?? '');
   const [open, setOpen] = useState(false);
   const [orgLogoFileData, setOrgLogoFileData] = useState<File | null>(null);
@@ -133,6 +135,10 @@ const Banner: FC<IBanner> = ({ organisation }) => {
     }
   };
 
+  const showPublicView = () => {
+    dispatch(setOrgPublicView(!publicView));
+  };
+
   return (
     <div className={styles.container}>
       <Toaster />
@@ -208,28 +214,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
 
         <div className={clsx(styles.center, styles['org-socials'])}>
           <div className={styles['socials-row']}>
-            <span className={styles['socials-header']}>Website:</span>
-            {isEditable ? (
-              <input
-                type="text"
-                name="website"
-                className={styles['organisation-website--edit']}
-                value={website}
-                onChange={handleWebsiteChange}
-              />
-            ) : (
-              <a
-                href={`https://${website}` ?? '#'}
-                target="_blank"
-                rel="noreferrer"
-                className={styles['organisation-website']}
-              >
-                {website}
-              </a>
-            )}
-          </div>
-          <div className={styles['socials-row']}>
-            <span className={styles['socials-header']}>Socials:</span>
             {isEditable ? (
               <span
                 className={styles['social-icon-container--edit']}
@@ -239,6 +223,15 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               </span>
             ) : (
               <span className={styles['social-icon-container']}>
+                {organisation.instagram ? (
+                  <a
+                    href={`${organisation.twitter}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Instagram width={30} height={30} />
+                  </a>
+                ) : null}
                 {organisation.linkedin ? (
                   <a
                     href={`${organisation.linkedin}`}
@@ -257,15 +250,6 @@ const Banner: FC<IBanner> = ({ organisation }) => {
                     <Twitter width={30} height={30} />
                   </a>
                 ) : null}
-                {organisation.instagram ? (
-                  <a
-                    href={`${organisation.twitter}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Instagram width={30} height={30} />
-                  </a>
-                ) : null}
               </span>
             )}
           </div>
@@ -275,6 +259,15 @@ const Banner: FC<IBanner> = ({ organisation }) => {
               className={styles.coverPicBtn}
             >
               <EditIcon width={50} height={50} />
+            </button>
+          )}
+
+          {isOrganisationMember(user, members) && !isEditable && (
+            <button
+              className={styles[`view-as-public-button`]}
+              onClick={showPublicView}
+            >
+              {publicView ? 'View as admin' : 'View as public'}
             </button>
           )}
         </div>
